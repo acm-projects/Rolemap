@@ -85,15 +85,19 @@ Job preparation often feels overwhelming and unstructured. Rolemap solves this b
 
 # 🗺️ Development Timeline
 
-| Week | Focus | Frontend | Backend |
-|------|--------|----------|----------|
-| 1 | Setup & Scope | Next.js + TypeScript + Tailwind setup, layout structure, wireframes | PostgreSQL setup, initial schema (users, roles, skills, roadmaps, tasks), environment config |
-| 2 | Design & Data Modeling | High-fidelity Figma designs, onboarding flow, resume upload UI | Resume parsing logic, GitHub API integration, CRUD operations |
-| 3–4 | Skill Analysis & Roadmap Engine | Roadmap visualization, skill gap display, dashboard layout | GitHub repository analysis, skill weighting model, roadmap generation algorithm |
-| 5–6 | Task System & Gamification | Daily/weekly task views, task completion interactions, streaks & leaderboard UI | Task generation logic, progress tracking, scoring system, leaderboard queries |
-| 7–8 | Integration & Polish | UX refinements, responsive design, accessibility improvements | Performance optimization, data validation, security checks, bug fixes |
-| 8.5–10 | Demo & Final Prep | Final UI polish, testing | Full integration, demo rehearsal, presentation prep |
-
+| Week | Event / Date | Frontend | Backend |
+|------|--------------|---------------------|--------------------|
+| Week 1 | Feb 11 – Build Night 1 | Wireframes, basic layout, routing setup | Project setup, environment configuration |
+| Week 2 | Feb 12–18 – Design Day + Build Night 2 | High-fidelity onboarding flow UI (role/company selection), resume/GitHub linking UI | Preliminary schema planning |
+| Week 3 | Feb 19–25 – Build Night 3 | Onboarding flow fully functional, resume upload UI | Finalized schema, tables for users, roles, skills, roadmaps |
+| Week 4 | Feb 26–Mar 4 – Build Night 4 | Dashboard skeleton, skill gap components | Resume parsing logic, GitHub API integration, normalize extracted skills |
+| Week 5 | Mar 5–11 – Build Night 5 + Mid-Semester Review | Roadmap visualization with checkpoints | Skill gap analysis, weighted skill model, roadmap generation algorithm |
+| Week 6 | Mar 17–23 – Spring Break | Daily/weekly task UI | Task generation logic, connect tasks to roadmap checkpoints |
+| Week 7 | Mar 25 – Build Night 6 | Gamification UI (points, streaks, progress animations) | Progress tracking logic, scoring system backend support |
+| Week 8 | Mar 26–Apr 1 – Build Night 7 + Social 2 | Leaderboard UI, calendar integration UI | Leaderboard queries, Google Calendar API integration, notifications |
+| Week 9 | Apr 2–8 – Build Night 8 | Practice pitch/demo, refine UI polish | Practice demo, integration checks, bug fixes |
+| Week 10 | Apr 9–15 – Build Night 9 | Practice pitch/demo | Practice demo, final integration verification |
+| Final Week | Apr 16–22 – Mock Presentations & Presentation Night | Deliver final pitch/demo | Ensure deployment/stability for demo |
 ---
 
 # 🛠️ Tech Stack
