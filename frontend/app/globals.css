@@ -1,17 +1,25 @@
 @import "tailwindcss";
 
 :root {
+  /*Default light mode colors*/
   --background: #ffffff;
   --foreground: #171717;
+  /*node colors*/
+  --node-blue: #C8EAFB;
+  --node-border: #D9F4FF;
+  --grid-color: #C1B0B0; 
 }
 
+/*The @theme block tells Tailwind to make these CSS variables 
+  available as utility classes*/
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-node-blue: var(--node-blue);
+  --color-node-border: var(--node-border);
 }
 
+/*Automatically switches variables to dark colors if user uses dark mode"*/
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -19,8 +27,18 @@
   }
 }
 
+/*Resets margins and ensures the app takes up the full screen*/
 body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+/*For React Flow classes. Makes the ends of the connection lines 
+  rounded rather than sharp squares*/
+.react-flow__edge-path {
+  stroke-linecap: round;
+  /*for straight edges: stroke-linecap: square;*/
 }
