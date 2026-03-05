@@ -1,106 +1,44 @@
-.landing{
-  background-color: #F0F9FF;
-  min-height: 150vh;
-  font-family: "Inter", sans-serif;
-  background-image: 
-    linear-gradient(to right, #c1b0b050 1px, transparent 1px),
-    linear-gradient(to bottom, #c1b0b074 1px, transparent 1px);
-  background-size: 40px 40px;
+@import "tailwindcss";
+
+:root {
+  /*Default light mode colors*/
+  --background: #ffffff;
+  --foreground: #171717;
+  /*node colors*/
+  --node-blue: #C8EAFB;
+  --node-border: #D9F4FF;
+  --grid-color: #C1B0B0; 
 }
 
-.navbar {
-  display: flex;
-  justify-content: flex-end;
-  padding: 30px;
+/*The @theme block tells Tailwind to make these CSS variables 
+  available as utility classes*/
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-node-blue: var(--node-blue);
+  --color-node-border: var(--node-border);
 }
 
-.login-button {
-  background-color: #143251;
-  color: #F0F9FF;
-  border-radius: 12px;
-  padding: 15px 32px;
-  font-size: 20px;
+/*Automatically switches variables to dark colors if user uses dark mode"*/
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
 }
 
-.hero {
-  padding-top: 0;
-  padding-bottom: 5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0px;
-  min-height: 100vh;
-}
-
-.heading {
-  font-size: 80px;
-  color: #53D8F0;
-  font-weight: bold;
-  line-height: 1;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.subheading {
-  font-size: 70px;
-  font-weight: 600;
-  color: #0EA5E9;
-  margin-bottom: 0;
-  line-height: 1.1;
-}
-
-.span-subheading {
-  font-size: 65px;
-  font-weight: 600;
-  color: #143251;
+/*Resets margins and ensures the app takes up the full screen*/
+body {
   margin: 0;
-  line-height: 1.1;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  background: var(--background);
 }
 
-.description {
-  font-size: 30px;
-  color: #C1B0B0;
-  font-weight: 600;
-  max-width:1000px;
-}
-
-.features {
-  display: flex;
-  justify-content: center;
-  gap: 4rem;
-  padding: 2rem;
-}
-
-.card {
-  background-color: #FFFFFF;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  color: #114277;
-  border-radius: 12px;
-  padding: 2rem;
-  width: 300px;
-  height: 250px;
-  text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  font-size: larger;
-}
-
-.signup-button{
-  padding: 1rem 3rem;
-  font-size: 1.1rem;
-  border-radius: 12px;
-  border: none;
-  background: #0EA5E9;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  
-}
-
-.but{
-  margin-top: 0;
-  display: flex;
-  justify-content: center;
+/*For React Flow classes. Makes the ends of the connection lines 
+  rounded rather than sharp squares*/
+.react-flow__edge-path {
+  stroke-linecap: round;
+  /*for straight edges: stroke-linecap: square;*/
 }
