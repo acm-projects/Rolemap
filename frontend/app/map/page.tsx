@@ -52,7 +52,7 @@ const initialNodes = [
   { id: '4', type: 'roadmap', data: { label: 'React & Frameworks', progress: 0, locked: true}, position: { x: 0, y: 300 } },
   { id: '5', type: 'roadmap', data: { label: 'API Integration & Data', progress: 0, locked: true}, position: { x: 250, y: 450 } },
 ];
-
+ 
 //How nodes are connected.
 const initialEdges = [
   { id: 'e1-2', source: '1', target: '2', style: { stroke: '#00adef', strokeWidth: 3 } },

@@ -9,7 +9,7 @@ const Landing: React.FC = async () => {
       bg-[linear-gradient(to_right,#c1b0b050_1px,transparent_1px),linear-gradient(to_bottom,#c1b0b074_1px,transparent_1px)]
       bg-[size:40px_40px]
       "
-    >
+    > 
       {/* Navbar */}
       <Navbar />
       {/* Hero */}
