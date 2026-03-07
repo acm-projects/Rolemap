@@ -1,6 +1,7 @@
+import { Navbar } from "./components/Navbar";
 import React from "react";
 
-const Landing: React.FC = () => {
+const Landing: React.FC = async () => {
   return (
     <div
       className="
@@ -10,14 +11,7 @@ const Landing: React.FC = () => {
       "
     >
       {/* Navbar */}
-      <div className="flex justify-end p-[30px] padding-x-[50px] gap-6">
-        <button className="bg-[#143251] text-[#F0F9FF] rounded-xl px-8 py-4 text-[20px]">
-          Login
-        </button>
-        <button className="px-12 py-4 text-[1.1rem] rounded-xl bg-[#0EA5E9] text-white font-semibold cursor-pointer">
-          Sign Up
-        </button>
-      </div>
+      <Navbar />
       {/* Hero */}
       <div className="flex flex-col items-center justify-center min-h-screen gap-0 pb-20">
 
