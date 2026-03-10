@@ -2,7 +2,6 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 // Importing core components and hooks from the XYFlow (React Flow) library
 import { 
   ReactFlow, 
@@ -17,27 +16,6 @@ import '@xyflow/react/dist/style.css';
 
 //Importing your custom node design created in the other file
 import { RoadmapNode } from '@/app/components/RoadmapNode';
-
-//Nav Bar component with links to different sections of the app. 
-export function Navbar() {
-  return (
-    //Floating container for the navbar, centered at the top of the screen with some padding and a semi-transparent background
-    <nav className="absolute top-6 left-1/2 -translate-x-1/2 z-10 w-[90%] max-w-5xl">
-      {/*Glassmorphic styled navbar with rounded corners, border, and shadow. Contains navigation links.*/}
-      <div className="bg-[#dcf2ff]/80 backdrop-blur-md border border-white/40 h-12 rounded-xl flex items-center justify-around px-8 shadow-sm">
-        {['Dashboard', 'Map', 'Social', 'Daily'].map((item) => (
-          <Link 
-            key={item} 
-            href={`/${item.toLowerCase()}`} 
-            className="text-[#0a1f27] font-bold text-sm hover:opacity-70 transition-opacity cursor-pointer"
-          >
-            {item}
-          </Link>
-        ))}
-      </div>
-    </nav>
-  );
-}
 
 
 const nodeTypes = {
@@ -68,10 +46,7 @@ export default function RoadmapPage() {
   const [edges, , onEdgesChange] = useEdgesState(initialEdges);
 
   return (
-    <div className="h-screen w-screen bg-white dark:bg-black relative">
-      
-      <Navbar />
-      
+    <div className="h-screen w-screen bg-white relative">
       <ReactFlow
         nodes={nodes} //Pass the nodes state
         edges={edges} //Pass the edges state
