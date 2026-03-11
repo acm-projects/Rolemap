@@ -5,8 +5,8 @@
   --background: #ffffff;
   --foreground: #171717;
   /*node colors*/
-  --node-blue: #C8EAFB;
-  --node-border: #D9F4FF;
+  --node-black: #C8EAFB;
+  --node-border: black;
   --grid-color: #C1B0B0; 
 }
 
@@ -15,7 +15,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-node-blue: var(--node-blue);
+  --color-node-black: var(--node-black);
   --color-node-border: var(--node-border);
 }
 
