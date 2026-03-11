@@ -30,62 +30,68 @@ type RoadmapNodeData = {
 
 //Custom node component 
 export function RoadmapNode({ data }: { data: RoadmapNodeData }) {
-  //Stores whether node is locked
   const isLocked = data.locked;
   const isCompleted = data.progress === 100;
   const isInProgress = data.progress > 0 && data.progress < 100;
+  const isActive = isInProgress; // "active" = teal dark card
 
   return (
-    /*If the node is locked, then it appears greyed out and progress bar is hidden*/
-    <div className={`px-5 py-4 rounded-2xl border-2 w-64 shadow-sm transition-all
-      ${isLocked 
-        ? 'border-zinc-800 text-zinc-500 opacity-60' 
-        : 'border-black bg-white/5 text-black backdrop-blur-sm'} 
-    `}>   
-      {/*Top-down roadmap approach. Top (incoming).
-      Docking ports for connection lines. The opacity-0! class makes the handles invisible but still functional*/}
-      <Handle 
-        type="target" 
-        position={Position.Top} 
-        className="opacity-0!" 
-      />
-      
-      {/*Displays the node title (skill)*/}
+    <div className={`px-4 py-3 rounded-2xl w-56 shadow-sm transition-all border
+      ${isActive
+        ? 'bg-[#3d7a7a] border-[#2e6666] text-white'
+        : isLocked
+        ? 'bg-white/70 border-[#d0d7e3] text-slate-400'
+        : 'bg-white border-[#d0d7e3] text-slate-700'
+      }
+    `}>
+      <Handle type="target" position={Position.Left} className="opacity-0!" />
+
       <div className="flex flex-col gap-2">
-        <div className="flex justify-between items-center">
-          <span className="font-bold text-sm tracking-tight">{data.label}</span>
-          {isLocked && <div className="text-zinc-500"><LockIcon /></div>}
-          {!isLocked && isInProgress && <div className="text-black"><ProgressIcon /></div>}
-          {!isLocked && isCompleted && <div className="text-black"><CheckIcon /></div>}
+        {/* Header row */}
+        <div className="flex items-center gap-2">
+          {isLocked
+            ? <LockIcon />
+            : isCompleted
+            ? <CheckIcon />
+            : <ProgressIcon />
+          }
+          <span className={`font-semibold text-sm ${isActive ? 'text-white' : ''}`}>
+            {data.label}
+          </span>
+          {isActive && (
+            <div className="ml-auto w-2 h-2 rounded-full bg-slate-300/60" />
+          )}
         </div>
 
+        {/* Progress bar */}
         {!isLocked && (
-          <div className="flex items-end gap-1">
-            <div className="flex gap-1">
-              {[...Array(10)].map((_, i) => (
-                <div 
-                  key={i} 
-                  className={`h-4 w-3 rounded-sm ${
-                    i < Math.ceil(data.progress / 10) 
-                        ? 'bg-[#508484]' 
-                        : 'bg-white/30'}`} 
-                />
-              ))}
+          <div className="flex flex-col gap-1">
+            <div className="w-full h-1.5 rounded-full bg-slate-200/40 overflow-hidden">
+              <div
+                className={`h-full rounded-full ${isActive ? 'bg-white/80' : 'bg-[#3d7a7a]'}`}
+                style={{ width: `${data.progress}%` }}
+              />
             </div>
-            {/*Displays progress percentage*/}
-            <span className="ml-auto text-[10px] font-bold text-black">
-                {data.progress}%
-            </span>
+            <div className="flex justify-between items-center">
+              {isActive
+                ? <span className="text-[10px] text-white/70">Part 2 of 4</span>
+                : <span className="text-[10px] text-slate-400"></span>
+              }
+              <span className={`text-[10px] font-bold ml-auto 
+                ${isActive ? 'text-white/80' : 'text-slate-400'}`}>
+                {isActive ? 'IN PROGRESS' : `${data.progress}%`}
+              </span>
+            </div>
           </div>
+        )}
+
+        {/* Locked label */}
+        {isLocked && (
+          <span className="text-[10px] text-slate-400 uppercase tracking-wide">Locked</span>
         )}
       </div>
 
-      {/*Top-down roadmap approach. Bottom (outgoing) from the bottom. The node can create outgoing connections*/}
-      <Handle 
-        type="source" 
-        position={Position.Bottom} 
-        className="opacity-0!" 
-      />
+      <Handle type="source" position={Position.Right} className="opacity-0!" />
     </div>
   );
 }

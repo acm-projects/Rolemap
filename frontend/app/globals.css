@@ -1,13 +1,12 @@
 @import "tailwindcss";
 
+
 :root {
-  /*Default light mode colors*/
-  --background: #ffffff;
+  --background: #eef1f7;
   --foreground: #171717;
-  /*node colors*/
-  --node-black: #C8EAFB;
-  --node-border: black;
-  --grid-color: #C1B0B0; 
+  --node-black: #ffffff;
+  --node-border: #d0d7e3;
+  --grid-color: #c8d0dc;
 }
 
 /*The @theme block tells Tailwind to make these CSS variables 
@@ -24,6 +23,7 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    /*ededed*/
   }
 }
 
@@ -41,4 +41,15 @@ body {
 .react-flow__edge-path {
   stroke-linecap: round;
   /*for straight edges: stroke-linecap: square;*/
+  stroke-linejoin: round;
+}
+
+/* Scopes React Flow default styles so they don't leak to other pages */
+.reactflow-wrapper .react-flow__minimap-svg {
+  border-radius: 12px;
+}
+
+/* Hides the React Flow attribution logo */
+.reactflow-wrapper .react-flow__attribution {
+  display: none;
 }
