@@ -1,5 +1,5 @@
-import { Navbar } from "./components/Navbar";
 import React from "react";
+import { signIn } from "@/auth";
 
 const Landing: React.FC = async () => {
   return (
@@ -9,9 +9,36 @@ const Landing: React.FC = async () => {
       bg-[linear-gradient(to_right,#c1b0b050_1px,transparent_1px),linear-gradient(to_bottom,#c1b0b074_1px,transparent_1px)]
       bg-[size:40px_40px]
       "
-    > 
-      {/* Navbar */}
-      <Navbar />
+    >
+      {/* Header with Sign In and Sign Up Buttons */}
+      <div className="absolute top-0 right-0 p-6 flex gap-4">
+        <form
+          action={async () => {
+            "use server"
+            await signIn("google", { redirectTo: "/map" })
+          }}
+        >
+          <button
+            type="submit"
+            className="px-6 py-2 rounded-lg border-2 border-[#0EA5E9] text-[#0EA5E9] font-semibold hover:bg-[#0EA5E9] hover:text-white transition-all duration-200"
+          >
+            Sign In
+          </button>
+        </form>
+        <form
+          action={async () => {
+            "use server"
+            await signIn("google", { redirectTo: "/map" })
+          }}
+        >
+          <button
+            type="submit"
+            className="px-6 py-2 rounded-lg bg-[#0EA5E9] text-white font-semibold hover:bg-[#53D8F0] transition-all duration-200"
+          >
+            Sign Up
+          </button>
+        </form>
+      </div>
       {/* Hero */}
       <div className="flex flex-col items-center justify-center min-h-screen gap-0 pb-20">
 
