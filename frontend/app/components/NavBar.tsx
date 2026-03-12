@@ -18,8 +18,8 @@ export function Navbar() {
             </svg>
           </div>
           <div className="flex flex-col leading-tight">
-            <span className="text-sm font-bold text-slate-800">Rolemap</span>
-            <span className="text-[10px] text-slate-400 uppercase tracking-wide">Front End Developer</span>
+            <span className="text-lm font-bold text-slate-800">Rolemap</span>
+            {/*<span className="text-[10px] text-slate-400 uppercase tracking-wide">Front End Developer</span>*/}
           </div>
         </div>
 
@@ -81,7 +81,6 @@ export function Navbar() {
               </svg>
             </div>
           </div>
-
         </div>
       </div>
     </nav>

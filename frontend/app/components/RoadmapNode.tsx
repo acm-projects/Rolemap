@@ -43,6 +43,7 @@ export function RoadmapNode({ data }: { data: RoadmapNodeData }) {
         ? 'bg-white/70 border-[#d0d7e3] text-slate-400'
         : 'bg-white border-[#d0d7e3] text-slate-700'
       }
+
     `}>
       <Handle type="target" position={Position.Left} className="opacity-0!" />
 
@@ -58,9 +59,9 @@ export function RoadmapNode({ data }: { data: RoadmapNodeData }) {
           <span className={`font-semibold text-sm ${isActive ? 'text-white' : ''}`}>
             {data.label}
           </span>
-          {isActive && (
+          {/*{isActive && (
             <div className="ml-auto w-2 h-2 rounded-full bg-slate-300/60" />
-          )}
+          )}*/}
         </div>
 
         {/* Progress bar */}
@@ -74,7 +75,7 @@ export function RoadmapNode({ data }: { data: RoadmapNodeData }) {
             </div>
             <div className="flex justify-between items-center">
               {isActive
-                ? <span className="text-[10px] text-white/70">Part 2 of 4</span>
+                ? <span className="text-[10px] text-white/70">30%</span>
                 : <span className="text-[10px] text-slate-400"></span>
               }
               <span className={`text-[10px] font-bold ml-auto 
