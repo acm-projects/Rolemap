@@ -76,7 +76,9 @@ export default function RoadmapPage() {
             border: '1px solid #e2e8f0',
             boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
             width: 150,
-            height: 100
+            height: 100,
+            marginLeft: 'calc(max(50vw - 576px, 2.5vw))',
+            marginBottom: '16px',
           }}
         />
 

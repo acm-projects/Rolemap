@@ -43,6 +43,7 @@ export function Dashboard() {
   }, []);
 
   return (
+    //full height and width
     <div className="min-h-screen w-full bg-[#eef1f7] relative">
       <Navbar />
 
@@ -50,7 +51,7 @@ export function Dashboard() {
         <div className="max-w-7xl mx-auto">
 
           {/* Header */}
-          <div className="mb-6">
+          <div className="mb-6 pl-1">
             <h1 className="text-3xl font-bold text-slate-700">Dashboard</h1>
             <p className="text-sm text-slate-400 mt-1">Welcome back, Alex</p>
           </div>
@@ -60,15 +61,15 @@ export function Dashboard() {
 
             {/* 1. Current Roadmap - small */}
             <div className="col-span-2 bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col gap-1">
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Current Roadmap</p>
-              <p className="text-base font-bold text-slate-700 leading-tight">Front End</p>
-              <p className="text-xs text-slate-400">Developer Path</p>
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Current Roadmap</p>
+              <p className="text-base font-bold text-slate-700 leading-tight">Front End Developer Path</p>
+              {/*<p className="text-xs text-slate-400">Developer Path</p>*/}
             </div>
 
             {/* 2. 40 Skills - small */}
             <div className="col-span-2 bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col items-center justify-center gap-1">
               <div className="text-[#4a7c7c]"><CircleCheckIcon /></div>
-              <p className="text-xs font-medium text-slate-500">Completed</p>
+              <p className="text-xs font-bold text-slate-500">Completed</p>
               <p className="text-xl font-bold text-slate-700">40 Skills</p>
             </div>
 
@@ -76,7 +77,7 @@ export function Dashboard() {
             <div className="col-span-6 bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col gap-3">
               <div className="flex items-center gap-2">
                 <Star className="w-3.5 h-3.5 text-[#4a7c7c] fill-[#4a7c7c]" />
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Achievements</p>
+                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Achievements</p>
               </div>
               <div className="flex gap-3">
                 {achievements.map((a, idx) => (
@@ -125,7 +126,7 @@ export function Dashboard() {
                   </div>
                   <h2 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Streak Leaderboard</h2>
                 </div>
-                <span className="text-[10px] font-semibold text-slate-400 bg-slate-100 px-3 py-1 rounded-full uppercase tracking-wide">Today</span>
+                <span className="text-[10px] font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-full uppercase tracking-wide">Today</span>
               </div>
               <div className="space-y-3">
                 {leaderboard.map((user) => (
@@ -186,10 +187,11 @@ export function Dashboard() {
 
                 {/* Legend */}
                 <div className="space-y-4">
+                  {/*#6fa8a8, #93bfbf*/}
                   {[
                     { color: '#4a7c7c', label: 'HTML and CSS Basics',     pct: '100%' },
-                    { color: '#6fa8a8', label: 'JavaScript Fundamentals', pct: '20%'  },
-                    { color: '#93bfbf', label: 'Advanced CSS',            pct: '30%'  },
+                    { color: '#4a7c7c', label: 'JavaScript Fundamentals', pct: '100%'  },
+                    { color: '#6fa8a8', label: 'Advanced CSS',            pct: '30%'  },
                     { color: '#d0e6e6', label: 'React & Frameworks',      pct: '0%'   },
                   ].map((item) => (
                     <div key={item.label} className="flex items-center gap-3">
