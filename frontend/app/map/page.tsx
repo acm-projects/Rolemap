@@ -18,7 +18,7 @@ import '@xyflow/react/dist/style.css';
 
 //Importing your custom node design created in the other file
 import { RoadmapNode } from '@/app/components/RoadmapNode';
-import { Navbar } from '../components/NavBar';
+import { Navbar } from '../components/Navbar';
 
 const nodeTypes = {
   roadmap: RoadmapNode, 
