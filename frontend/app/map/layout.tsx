@@ -1,13 +1,16 @@
-import { AuthenticatedNavbar } from "@/app/components/AuthenticatedNavbar"
+import { Navbar } from "@/app/components/Navbar"
+import { auth } from "@/auth"
 
-export default function MapLayout({
+export default async function MapLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const session = await auth()
+  
   return (
     <>
-      <AuthenticatedNavbar />
+      <Navbar user={session?.user} />
       {children}
     </>
   )
