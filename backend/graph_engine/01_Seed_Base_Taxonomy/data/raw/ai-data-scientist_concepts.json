@@ -1,0 +1,38 @@
+{
+  "slug": "ai-data-scientist",
+  "concepts": [
+    {
+      "id": "aStaDENn5PhEa-cFvNzXa",
+      "name": "Mathematics"
+    },
+    {
+      "id": "4WZL_fzJ3cZdWLLDoWN8D",
+      "name": "Statistics"
+    },
+    {
+      "id": "Gd2egqKZPnbPW1W2jw4j8",
+      "name": "Econometrics"
+    },
+    {
+      "id": "XLDWuSt4tI4gnmqMFdpmy",
+      "name": "Coding"
+    },
+    {
+      "id": "l1027SBZxTHKzqWw98Ee-",
+      "name": "Exploratory Data Analysis"
+    },
+    {
+      "id": "kBdt_t2SvVsY3blfubWIz",
+      "name": "Machine Learning"
+    },
+    {
+      "id": "cjvVLN0XjrKPn6o20oMmc",
+      "name": "Deep Learning"
+    },
+    {
+      "id": "Qa85hEVe2kz62k9Pj4QCA",
+      "name": "MLOps"
+    }
+  ],
+  "prereq_edges": []
+}

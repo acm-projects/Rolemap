@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Apache Tomcat",
+    "hot_technology": true,
+    "in_demand": false
+  },
+  {
+    "name": "Spring Framework",
+    "hot_technology": true,
+    "in_demand": false
+  },
+  {
+    "name": "Blackboard software",
+    "hot_technology": false,
+    "in_demand": false
+  },
+  {
+    "name": "MySQL",
+    "hot_technology": true,
+    "in_demand": false
+  },
+  {
+    "name": "Oracle PeopleSoft",
+    "hot_technology": true,
+    "in_demand": false
+  },
+  {
+    "name": "SAP software",
+    "hot_technology": true,
+    "in_demand": false
+  }
+]

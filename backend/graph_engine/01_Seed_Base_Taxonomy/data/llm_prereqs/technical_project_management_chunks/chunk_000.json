@@ -1,0 +1,202 @@
+[
+  {
+    "from": "CLOUD COMPUTING",
+    "to": "AWS"
+  },
+  {
+    "from": "CLOUD COMPUTING",
+    "to": "AZURE"
+  },
+  {
+    "from": "AZURE",
+    "to": "AZURE DEVOPS"
+  },
+  {
+    "from": "CONTAINERIZATION",
+    "to": "DOCKER"
+  },
+  {
+    "from": "DATA MANAGEMENT",
+    "to": "DATA PIPELINES"
+  },
+  {
+    "from": "DATA PIPELINES",
+    "to": "AIRFLOW"
+  },
+  {
+    "from": "ANALYTICS TOOLS",
+    "to": "Amplitude"
+  },
+  {
+    "from": "DATA-DRIVEN DECISION MAKING",
+    "to": "ANALYTICS TOOLS"
+  },
+  {
+    "from": "DATA-DRIVEN DECISION MAKING",
+    "to": "COHORT ANALYSIS"
+  },
+  {
+    "from": "DATA-DRIVEN DECISION MAKING",
+    "to": "Advanced Analysis"
+  },
+  {
+    "from": "COHORT ANALYSIS",
+    "to": "Churn Rate"
+  },
+  {
+    "from": "COHORT ANALYSIS",
+    "to": "Conversion Rate"
+  },
+  {
+    "from": "COHORT ANALYSIS",
+    "to": "DAU (Daily Active Users)"
+  },
+  {
+    "from": "A/B TESTING",
+    "to": "Conversion Rate"
+  },
+  {
+    "from": "A/B TESTING",
+    "to": "Dark Launches"
+  },
+  {
+    "from": "A/B TESTING",
+    "to": "Baseline"
+  },
+  {
+    "from": "Advanced Analysis",
+    "to": "COHORT ANALYSIS"
+  },
+  {
+    "from": "Emotional Intelligence",
+    "to": "COMMUNICATION SKILLS"
+  },
+  {
+    "from": "COMMUNICATION SKILLS",
+    "to": "Active Listening"
+  },
+  {
+    "from": "COMMUNICATION SKILLS",
+    "to": "Alignment & Buy-In"
+  },
+  {
+    "from": "COMMUNICATION SKILLS",
+    "to": "Communicating the Roadmap"
+  },
+  {
+    "from": "COMMUNICATION SKILLS",
+    "to": "Communication Techniques"
+  },
+  {
+    "from": "COMMUNICATION SKILLS",
+    "to": "Communication Tools"
+  },
+  {
+    "from": "COMMUNICATION SKILLS",
+    "to": "CONFLICT RESOLUTION"
+  },
+  {
+    "from": "COMMUNICATION SKILLS",
+    "to": "Difficult Conversations"
+  },
+  {
+    "from": "CONFLICT RESOLUTION",
+    "to": "Difficult Conversations"
+  },
+  {
+    "from": "Emotional Intelligence",
+    "to": "Building and Leading Teams"
+  },
+  {
+    "from": "CONFLICT RESOLUTION",
+    "to": "Building and Leading Teams"
+  },
+  {
+    "from": "AGILE METHODOLOGY",
+    "to": "Daily Standups"
+  },
+  {
+    "from": "AGILE METHODOLOGY",
+    "to": "BACKLOG MANAGEMENT"
+  },
+  {
+    "from": "BACKLOG MANAGEMENT",
+    "to": "Continuous Roadmapping"
+  },
+  {
+    "from": "Defining Goals",
+    "to": "Creating a Roadmap"
+  },
+  {
+    "from": "Creating a Roadmap",
+    "to": "Communicating the Roadmap"
+  },
+  {
+    "from": "Defining Goals",
+    "to": "Defining Value Proposition"
+  },
+  {
+    "from": "Defining Value Proposition",
+    "to": "Blue Ocean Strategy"
+  },
+  {
+    "from": "Business",
+    "to": "CAC (Customer Acquisition Cost)"
+  },
+  {
+    "from": "Business",
+    "to": "Churn Rate"
+  },
+  {
+    "from": "Business",
+    "to": "Conversion Rate"
+  },
+  {
+    "from": "Business",
+    "to": "Competetive Advantage"
+  },
+  {
+    "from": "Business",
+    "to": "Competitive Strategy"
+  },
+  {
+    "from": "Business",
+    "to": "Emerging Market Trends"
+  },
+  {
+    "from": "Competitive Analysis",
+    "to": "Competitive Strategy"
+  },
+  {
+    "from": "Competitive Analysis",
+    "to": "Blue Ocean Strategy"
+  },
+  {
+    "from": "Brainstorming Techniques",
+    "to": "Brainwriting"
+  },
+  {
+    "from": "Brainstorming Techniques",
+    "to": "Discovery"
+  },
+  {
+    "from": "Design Thinking",
+    "to": "Discovery"
+  },
+  {
+    "from": "CI/CD",
+    "to": "AZURE DEVOPS"
+  },
+  {
+    "from": "C#",
+    "to": ".NET"
+  },
+  {
+    "from": "AI",
+    "to": "AI in Product Mgmt."
+  },
+  {
+    "from": "Contingency Planning",
+    "to": "Continuous Roadmapping"
+  }
+]

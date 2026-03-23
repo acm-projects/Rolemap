@@ -1,0 +1,9 @@
+input/*.pdf
+output/*.json
+__pycache__/
+*.pyc
+.env
+rolemap/AGENTS.md
+CLAUDE.md
+
+

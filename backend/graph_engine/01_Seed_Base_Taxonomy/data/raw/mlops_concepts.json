@@ -1,0 +1,227 @@
+{
+  "slug": "mlops",
+  "concepts": [
+    {
+      "id": "_7uvOebQUI4xaSwtMjpEd",
+      "name": "Programming Fundamentals"
+    },
+    {
+      "id": "Vh81GnOUOZvDOlOyI5PwT",
+      "name": "Python"
+    },
+    {
+      "id": "vdVq3RQvQF3mF8PQc6DMg",
+      "name": "Go"
+    },
+    {
+      "id": "mMzqJF2KQ49TDEk5F3VAI",
+      "name": "Bash"
+    },
+    {
+      "id": "oUhlUoWQQ1txx_sepD5ev",
+      "name": "Version Control Systems"
+    },
+    {
+      "id": "06T5CbZAGJU6fJhCmqCC8",
+      "name": "Git"
+    },
+    {
+      "id": "7t7jSb3YgyWlhgCe8Se1I",
+      "name": "GitHub"
+    },
+    {
+      "id": "00GZcwe25QYi7rDzaOoMt",
+      "name": "Cloud Computing"
+    },
+    {
+      "id": "u3E7FGW4Iwdsu61KYFxCX",
+      "name": "AWS / Azure / GCP"
+    },
+    {
+      "id": "kbfucfIO5KCsuv3jKbHTa",
+      "name": "Cloud-native ML Services"
+    },
+    {
+      "id": "tKeejLv8Q7QX40UtOjpav",
+      "name": "Containerization"
+    },
+    {
+      "id": "XIdCvT-4HyyglHJLRrHlz",
+      "name": "Docker"
+    },
+    {
+      "id": "XQoK9l-xtN2J8ZV8dw53X",
+      "name": "Kubernetes"
+    },
+    {
+      "id": "ulka7VEVjz6ls5SnI6a6z",
+      "name": "Machine Learning Fundamentals"
+    },
+    {
+      "id": "VykbCu7LWIx8fQpqKzoA7",
+      "name": "Data Engineering Fundamentals"
+    },
+    {
+      "id": "cOg3ejZRYE-u-M0c89IjM",
+      "name": "Data Pipelines"
+    },
+    {
+      "id": "wOogVDV4FIDLXVPwFqJ8C",
+      "name": "Data Lakes & Warehouses"
+    },
+    {
+      "id": "Berd78HvnulNEGOsHCf8n",
+      "name": "Data Ingestion Architecture"
+    },
+    {
+      "id": "pVSlVHXIap0unFxLGM-lQ",
+      "name": "Airflow"
+    },
+    {
+      "id": "UljuqA89_SlCSDWWMD_C_",
+      "name": "Spark"
+    },
+    {
+      "id": "fMNwzhgLgHlAZJ9NvKikR",
+      "name": "Kafka"
+    },
+    {
+      "id": "o6GQ3-8DgDtHzdX6yeg1w",
+      "name": "Flink"
+    },
+    {
+      "id": "iTsEHVCo6KGq7H2HMgy5S",
+      "name": "MLOps Principles"
+    },
+    {
+      "id": "l1xasxQy2vAY34NWaqKEe",
+      "name": "MLOps Components"
+    },
+    {
+      "id": "kHDSwlSq8WkLey4EJIQSR",
+      "name": "Version Control"
+    },
+    {
+      "id": "a6vawajw7BpL6plH_nuAz",
+      "name": "CI/CD"
+    },
+    {
+      "id": "fes7M--Y8i08_zeP98tVV",
+      "name": "Orchestration"
+    },
+    {
+      "id": "fGGWKmAJ50Ke6wWJBEgby",
+      "name": "Experiment Tracking & Model Registry"
+    },
+    {
+      "id": "6XgP_2NLuiw654zvTyueT",
+      "name": "Data Lineage & Feature Stores"
+    },
+    {
+      "id": "zsW1NRb0dMgS-KzWsI0QU",
+      "name": "Model Training & Serving"
+    },
+    {
+      "id": "r4fbUwD83uYumEO1X8f09",
+      "name": "Monitoring & Observability"
+    },
+    {
+      "id": "sf67bSL7HAx6iN7S6MYKs",
+      "name": "Infrastructure as Code"
+    }
+  ],
+  "prereq_edges": [
+    {
+      "from": "Programming Fundamentals",
+      "to": "Python"
+    },
+    {
+      "from": "Programming Fundamentals",
+      "to": "Go"
+    },
+    {
+      "from": "Programming Fundamentals",
+      "to": "Bash"
+    },
+    {
+      "from": "Programming Fundamentals",
+      "to": "Version Control Systems"
+    },
+    {
+      "from": "Version Control Systems",
+      "to": "Git"
+    },
+    {
+      "from": "Version Control Systems",
+      "to": "Cloud Computing"
+    },
+    {
+      "from": "Cloud Computing",
+      "to": "AWS / Azure / GCP"
+    },
+    {
+      "from": "Cloud Computing",
+      "to": "Cloud-native ML Services"
+    },
+    {
+      "from": "Cloud Computing",
+      "to": "Containerization"
+    },
+    {
+      "from": "Containerization",
+      "to": "Docker"
+    },
+    {
+      "from": "Containerization",
+      "to": "Kubernetes"
+    },
+    {
+      "from": "Containerization",
+      "to": "Machine Learning Fundamentals"
+    },
+    {
+      "from": "Machine Learning Fundamentals",
+      "to": "Data Engineering Fundamentals"
+    },
+    {
+      "from": "Data Engineering Fundamentals",
+      "to": "Data Pipelines"
+    },
+    {
+      "from": "Data Engineering Fundamentals",
+      "to": "Data Lakes & Warehouses"
+    },
+    {
+      "from": "Data Engineering Fundamentals",
+      "to": "Data Ingestion Architecture"
+    },
+    {
+      "from": "Data Engineering Fundamentals",
+      "to": "Kafka"
+    },
+    {
+      "from": "Data Engineering Fundamentals",
+      "to": "Spark"
+    },
+    {
+      "from": "Data Engineering Fundamentals",
+      "to": "Flink"
+    },
+    {
+      "from": "Data Engineering Fundamentals",
+      "to": "MLOps Principles"
+    },
+    {
+      "from": "Data Engineering Fundamentals",
+      "to": "MLOps Components"
+    },
+    {
+      "from": "MLOps Components",
+      "to": "Infrastructure as Code"
+    },
+    {
+      "from": "MLOps Principles",
+      "to": "Infrastructure as Code"
+    }
+  ]
+}

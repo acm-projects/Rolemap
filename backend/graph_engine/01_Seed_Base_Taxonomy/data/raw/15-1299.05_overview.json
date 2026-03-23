@@ -1,0 +1,106 @@
+{
+  "code": "15-1299.05",
+  "title": "Information Security Engineers",
+  "tags": {
+    "bright_outlook": true
+  },
+  "also_called": [
+    {
+      "title": "BISO (Business Information Security Officer)",
+      "summary": false
+    },
+    {
+      "title": "Cloud Engineer",
+      "summary": false
+    },
+    {
+      "title": "Engineer",
+      "summary": false
+    },
+    {
+      "title": "Information Security Auditor",
+      "summary": true
+    },
+    {
+      "title": "Information Security System Engineer",
+      "summary": true
+    },
+    {
+      "title": "Infrastructure Security Engineer",
+      "summary": true
+    },
+    {
+      "title": "Security Analyst",
+      "summary": false
+    },
+    {
+      "title": "Security Data Scientist",
+      "summary": false
+    },
+    {
+      "title": "Security Engineer",
+      "summary": true
+    },
+    {
+      "title": "Systems Engineer",
+      "summary": false
+    }
+  ],
+  "what_they_do": "Develop and oversee the implementation of information security procedures and policies. Build, maintain and upgrade security technology, such as firewalls, for the safe use of computer networks and the transmission and retrieval of information. Design and implement appropriate security controls to identify vulnerabilities and protect digital files and electronic infrastructures. Monitor and respond to computer security breaches, viruses, and intrusions, and perform forensic investigation. May oversee the assessment of information security systems.",
+  "on_the_job": [
+    "Identify security system weaknesses, using penetration tests.",
+    "Coordinate monitoring of networks or systems for security breaches or intrusions.",
+    "Assess the quality of security controls, using performance indicators."
+  ],
+  "word_cloud_terms": [
+    "electronic infrastructure",
+    "firewall",
+    "information system",
+    "computer application",
+    "use of computer networks",
+    "test computer system operation",
+    "implementation of information security procedures",
+    "safe use of computer networks",
+    "appropriate security control",
+    "computer security breach"
+  ],
+  "career_video": true,
+  "contents": [
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1299.05/knowledge",
+      "title": "Knowledge"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1299.05/skills",
+      "title": "Skills"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1299.05/abilities",
+      "title": "Abilities"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1299.05/personality",
+      "title": "Personality"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1299.05/technology",
+      "title": "Technology"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1299.05/education",
+      "title": "Education"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1299.05/job_outlook",
+      "title": "Job Outlook"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1299.05/check_out_my_state",
+      "title": "Check Out My State"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1299.05/explore_more",
+      "title": "Explore More"
+    }
+  ]
+}

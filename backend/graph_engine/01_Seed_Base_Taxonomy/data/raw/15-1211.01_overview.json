@@ -1,0 +1,106 @@
+{
+  "code": "15-1211.01",
+  "title": "Health Informatics Specialists",
+  "tags": {
+    "bright_outlook": true
+  },
+  "also_called": [
+    {
+      "title": "Clinical Electronic Health Record Nurse (Clinical EHR Nurse)",
+      "summary": false
+    },
+    {
+      "title": "Clinical Informaticist",
+      "summary": true
+    },
+    {
+      "title": "Clinical Informatics Analyst",
+      "summary": false
+    },
+    {
+      "title": "Clinical Informatics Nurse",
+      "summary": false
+    },
+    {
+      "title": "Clinical Informatics Specialist",
+      "summary": true
+    },
+    {
+      "title": "Health Informaticist",
+      "summary": true
+    },
+    {
+      "title": "Nursing Informatics Officer",
+      "summary": false
+    },
+    {
+      "title": "Nursing Informatics Specialist",
+      "summary": true
+    },
+    {
+      "title": "RN Clinical Information Systems Coordinator (Registered Nurse Clinical Information Systems Coordinator)",
+      "summary": false
+    },
+    {
+      "title": "RN Clinical Information Systems Educator (Registered Nurse Clinical Information Systems Educator)",
+      "summary": false
+    }
+  ],
+  "what_they_do": "Apply knowledge of nursing and informatics to assist in the design, development, and ongoing modification of computerized health care systems. May educate staff and assist in problem solving to promote the implementation of the health care system.",
+  "on_the_job": [
+    "Translate nursing practice information between nurses and systems engineers, analysts, or designers, using object-oriented models or other techniques.",
+    "Use informatics science to design or implement health information technology applications for resolution of clinical or health care administrative problems.",
+    "Develop or implement policies or practices to ensure the privacy, confidentiality, or security of patient information."
+  ],
+  "word_cloud_terms": [
+    "nursing practice",
+    "investigative",
+    "computer",
+    "patient",
+    "information",
+    "data",
+    "design",
+    "information technology",
+    "administration",
+    "customer"
+  ],
+  "career_video": true,
+  "contents": [
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1211.01/knowledge",
+      "title": "Knowledge"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1211.01/skills",
+      "title": "Skills"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1211.01/abilities",
+      "title": "Abilities"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1211.01/personality",
+      "title": "Personality"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1211.01/technology",
+      "title": "Technology"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1211.01/education",
+      "title": "Education"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1211.01/job_outlook",
+      "title": "Job Outlook"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1211.01/check_out_my_state",
+      "title": "Check Out My State"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1211.01/explore_more",
+      "title": "Explore More"
+    }
+  ]
+}

@@ -1,0 +1,515 @@
+"""
+Rolemap Backend API - Phase 4
+FastAPI application with 3 core endpoints
+Algorithms: BFS (prerequisites), Kahn's (roadmap), Bidirectional BFS (skill gap)
+"""
+
+import logging
+from typing import List, Dict, Set, Optional, Tuple
+from collections import deque, defaultdict
+
+from fastapi import FastAPI, HTTPException, Depends
+from fastapi.middleware.cors import CORSMiddleware
+from neo4j import Session
+
+from database import get_neo4j_session
+from models import (
+    PrerequisitesPathRequest, PrerequisitesPathResponse, ConceptWithHop,
+    RoadmapGenerateRequest, RoadmapGenerateResponse, RoadmapStep,
+    SkillGapAnalysisRequest, SkillGapAnalysisResponse,
+    ErrorResponse
+)
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Initialize FastAPI app
+app = FastAPI(
+    title="Rolemap Backend API",
+    description="Learning path generation using Neo4j prerequisite graph",
+    version="1.0.0"
+)
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+# ============================================================================
+# UTILITY FUNCTIONS
+# ============================================================================
+
+def estimate_learning_time(num_steps: int) -> str:
+    """Estimate learning time based on number of steps"""
+    weeks = num_steps * 1.5
+    if weeks <= 4:
+        return f"{int(weeks)}-{int(weeks + 2)} weeks"
+    elif weeks <= 12:
+        return f"{int(weeks)}-{int(weeks + 4)} weeks"
+    else:
+        months = weeks / 4
+        return f"{int(months)}-{int(months + 1)} months"
+
+
+def get_concept_details(session: Session, concept_name: str) -> Optional[Dict]:
+    """Fetch concept details from Neo4j"""
+    query = """
+    MATCH (c:Concept {name: $name})
+    RETURN c.name as name, c.level as level, c.domain as domain, c.description as description
+    """
+    result = session.run(query, name=concept_name)
+    record = result.single()
+    return dict(record) if record else None
+
+
+# ============================================================================
+# ENDPOINT 1: GET /api/v1/paths/prerequisites
+# Algorithm: BFS (Breadth-First Search)
+# Purpose: Find shortest path between two concepts
+# ============================================================================
+
+@app.get(
+    "/api/v1/paths/prerequisites",
+    response_model=PrerequisitesPathResponse,
+    responses={404: {"model": ErrorResponse}, 400: {"model": ErrorResponse}}
+)
+async def get_prerequisite_path(
+    foundation: str,
+    advanced: str,
+    session: Session = Depends(get_neo4j_session)
+) -> PrerequisitesPathResponse:
+    """
+    Get the prerequisite path between two concepts using BFS.
+    
+    **Algorithm**: Breadth-First Search (BFS)
+    - Finds the shortest path in terms of number of hops
+    - Returns the immediate neighborhood/tree structure
+    - Used for UI node expansion
+    
+    **Parameters**:
+    - foundation: Starting concept (e.g., "Internet")
+    - advanced: Target concept (e.g., "React")
+    
+    **Returns**: Complete path with all intermediate concepts and metadata
+    """
+    try:
+        # BFS via Neo4j's shortestPath() function
+        query = """
+        MATCH (foundation:Concept {name: $foundation})
+        MATCH (advanced:Concept {name: $advanced})
+        MATCH p = shortestPath((foundation)-[:PREREQUISITE_FOR*]->(advanced))
+        RETURN 
+            [node in nodes(p) | {
+                name: node.name,
+                level: node.level,
+                domain: node.domain,
+                description: node.description
+            }] as path_nodes
+        """
+        
+        result = session.run(query, foundation=foundation, advanced=advanced)
+        record = result.single()
+        
+        if not record or not record['path_nodes']:
+            raise HTTPException(
+                status_code=404,
+                detail=f"No path found from '{foundation}' to '{advanced}'"
+            )
+        
+        path_nodes = record['path_nodes']
+        
+        # Build response with hop distances
+        path_with_hops = [
+            ConceptWithHop(
+                name=node['name'],
+                level=node['level'],
+                domain=node['domain'],
+                description=node['description'],
+                hop=i
+            )
+            for i, node in enumerate(path_nodes)
+        ]
+        
+        # Calculate metadata
+        total_hops = len(path_nodes) - 1
+        domain_transitions = sum(
+            1 for i in range(len(path_nodes) - 1)
+            if path_nodes[i]['domain'] != path_nodes[i + 1]['domain']
+        )
+        
+        return PrerequisitesPathResponse(
+            path=path_with_hops,
+            total_hops=total_hops,
+            estimated_learning_time=estimate_learning_time(total_hops),
+            domain_transitions=domain_transitions,
+            path_quality="optimal" if total_hops <= 8 else "long"
+        )
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error in get_prerequisite_path: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        session.close()
+
+
+# ============================================================================
+# ENDPOINT 2: POST /api/v1/roadmap/generate
+# Algorithm: Kahn's Algorithm (Topological Sort)
+# Purpose: Generate step-by-step learning roadmap for a job
+# ============================================================================
+
+@app.post(
+    "/api/v1/roadmap/generate",
+    response_model=RoadmapGenerateResponse,
+    responses={404: {"model": ErrorResponse}, 400: {"model": ErrorResponse}}
+)
+async def generate_roadmap(
+    request: RoadmapGenerateRequest,
+    session: Session = Depends(get_neo4j_session)
+) -> RoadmapGenerateResponse:
+    """
+    Generate a complete learning roadmap using Kahn's Algorithm.
+    
+    **Algorithm**: Kahn's Topological Sort
+    - Takes a sub-graph and flattens it into a strict linear sequence
+    - Ensures all prerequisites come before dependents
+    - Generates step-by-step syllabus
+    
+    **Parameters**:
+    - target_concept: Target concept/skill to reach (e.g., "React")
+    - current_skills: Skills user already has
+    - include_optional: Include optional skills in roadmap
+    
+    **Returns**: Ordered step-by-step learning plan
+    """
+    try:
+        # Verify target concept exists
+        verify_query = "MATCH (c:Concept {name: $target_concept}) RETURN c.name"
+        if not session.run(verify_query, target_concept=request.target_concept).single():
+            raise HTTPException(
+                status_code=404,
+                detail=f"Concept '{request.target_concept}' not found"
+            )
+        
+        # Fetch all required skills to reach this concept (including the concept itself)
+        req_query = """
+        MATCH (target:Concept {name: $target_concept})
+        OPTIONAL MATCH (prereq:Concept)-[:PREREQUISITE_FOR*1..15]->(target)
+        WITH target.name AS target_name, collect(DISTINCT prereq.name) AS prereqs
+        RETURN [x IN prereqs WHERE x IS NOT NULL] + [target_name] AS required_skills
+        """
+        result = session.run(req_query, target_concept=request.target_concept)
+        required_skills = set(result.single()['required_skills'])
+        
+        current_skills = set(request.current_skills)
+        missing_skills = required_skills - current_skills
+        
+        if not missing_skills:
+            return RoadmapGenerateResponse(
+                target_concept=request.target_concept,
+                current_skills=list(current_skills),
+                missing_skills=[],
+                roadmap=[],
+                total_steps=0,
+                estimated_total_time="No additional learning needed"
+            )
+        
+        # Fetch prerequisite graph for missing skills using Kahn's Algorithm
+        # Build in-degree map and adjacency list
+        graph_query = """
+        MATCH (c:Concept)
+        WHERE c.name IN $missing_skills
+        WITH c
+        MATCH (c)<-[:PREREQUISITE_FOR*]-(prereq:Concept)
+        RETURN DISTINCT prereq.name as concept, prereq.level as level
+        """
+        
+        result = session.run(graph_query, missing_skills=list(missing_skills))
+        concepts_to_learn = set(missing_skills)
+        in_degree = defaultdict(int)
+        adjacency = defaultdict(list)
+        
+        for record in result:
+            concept = record['concept']
+            concepts_to_learn.add(concept)
+        
+        # Build graph edges
+        edge_query = """
+        MATCH (a:Concept)-[:PREREQUISITE_FOR]->(b:Concept)
+        WHERE a.name IN $concepts AND b.name IN $concepts
+        RETURN a.name as source, b.name as target
+        """
+        
+        result = session.run(edge_query, concepts=list(concepts_to_learn))
+        
+        for record in result:
+            source = record['source']
+            target = record['target']
+            adjacency[source].append(target)
+            in_degree[target] += 1
+        
+        # Initialize in_degree for all concepts
+        for concept in concepts_to_learn:
+            if concept not in in_degree:
+                in_degree[concept] = 0
+        
+        # Kahn's Algorithm: Topological Sort
+        queue = deque([concept for concept in concepts_to_learn if in_degree[concept] == 0])
+        topological_order = []
+        
+        while queue:
+            current = queue.popleft()
+            topological_order.append(current)
+            
+            for neighbor in adjacency[current]:
+                in_degree[neighbor] -= 1
+                if in_degree[neighbor] == 0:
+                    queue.append(neighbor)
+        
+        # Check for cycles (shouldn't happen in our graph)
+        if len(topological_order) != len(concepts_to_learn):
+            raise HTTPException(
+                status_code=400,
+                detail="Cycle detected in prerequisite graph"
+            )
+        
+        # Build roadmap steps
+        roadmap_steps = []
+        for order, concept_name in enumerate(topological_order, 1):
+            # Get concept details
+            detail_query = """
+            MATCH (c:Concept {name: $name})
+            RETURN c.level as level, c.domain as domain
+            """
+            
+            result = session.run(detail_query, name=concept_name)
+            detail_record = result.single()
+            
+            # Find prerequisites that are already in the roadmap
+            prerequisites_met = [
+                dep for dep in adjacency.get(concept_name, [])
+                if dep in topological_order[:order - 1]
+            ]
+            
+            step = RoadmapStep(
+                order=order,
+                concept=concept_name,
+                prerequisites_met=prerequisites_met,
+                estimated_duration="1-2 weeks",
+                resources=[]
+            )
+            roadmap_steps.append(step)
+        
+        return RoadmapGenerateResponse(
+            target_concept=request.target_concept,
+            current_skills=list(current_skills),
+            missing_skills=list(missing_skills),
+            roadmap=roadmap_steps,
+            total_steps=len(roadmap_steps),
+            estimated_total_time=estimate_learning_time(len(roadmap_steps))
+        )
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error in generate_roadmap: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        session.close()
+
+
+# ============================================================================
+# ENDPOINT 3: POST /api/v1/concepts/analyze (Skill Gap Analysis)
+# Algorithm: Bidirectional BFS
+# Purpose: Find shortest path between current skills and target skill
+# ============================================================================
+
+@app.post(
+    "/api/v1/concepts/analyze",
+    response_model=SkillGapAnalysisResponse,
+    responses={404: {"model": ErrorResponse}, 400: {"model": ErrorResponse}}
+)
+async def analyze_skill_gap(
+    request: SkillGapAnalysisRequest,
+    session: Session = Depends(get_neo4j_session)
+) -> SkillGapAnalysisResponse:
+    """
+    Analyze skill gap using Bidirectional BFS.
+    
+    **Algorithm**: Bidirectional BFS
+    - Searches from both current skills and target skill simultaneously
+    - Finds the shortest path between them
+    - More efficient than unidirectional BFS for large graphs
+    
+    **Parameters**:
+    - current_skills: User's current skill set
+    - target_skill: Desired skill to reach
+    
+    **Returns**: Ordered list of missing concepts to close the gap
+    """
+    try:
+        current_skill_set = set(request.current_skills)
+        target = request.target_skill
+        
+        # Verify target exists
+        verify_query = "MATCH (c:Concept {name: $name}) RETURN c.name"
+        result = session.run(verify_query, name=target)
+        if not result.single():
+            raise HTTPException(
+                status_code=404,
+                detail=f"Target skill '{target}' not found"
+            )
+        
+        # Bidirectional BFS implementation
+        # Forward search: from current skills towards target
+        # Backward search: from target towards current skills
+        
+        forward_queue = deque(current_skill_set)
+        forward_visited = set(current_skill_set)
+        forward_parent = {skill: None for skill in current_skill_set}
+        
+        backward_queue = deque([target])
+        backward_visited = {target}
+        backward_parent = {target: None}
+        
+        meeting_point = None
+        
+        # Cypher query to get adjacent concepts
+        adjacency_query = """
+        MATCH (a:Concept)-[:PREREQUISITE_FOR]->(b:Concept)
+        WHERE a.name = $concept
+        RETURN b.name as adjacent
+        """
+        
+        reverse_adjacency_query = """
+        MATCH (a:Concept)-[:PREREQUISITE_FOR]->(b:Concept)
+        WHERE b.name = $concept
+        RETURN a.name as adjacent
+        """
+        
+        # Bidirectional BFS search
+        while forward_queue or backward_queue:
+            # Forward search step
+            if forward_queue:
+                current = forward_queue.popleft()
+                
+                result = session.run(adjacency_query, concept=current)
+                for record in result:
+                    adjacent = record['adjacent']
+                    
+                    if adjacent in backward_visited:
+                        meeting_point = (current, adjacent)
+                        break
+                    
+                    if adjacent not in forward_visited:
+                        forward_visited.add(adjacent)
+                        forward_parent[adjacent] = current
+                        forward_queue.append(adjacent)
+                
+                if meeting_point:
+                    break
+            
+            # Backward search step
+            if backward_queue and not meeting_point:
+                current = backward_queue.popleft()
+                
+                result = session.run(reverse_adjacency_query, concept=current)
+                for record in result:
+                    adjacent = record['adjacent']
+                    
+                    if adjacent in forward_visited:
+                        meeting_point = (adjacent, current)
+                        break
+                    
+                    if adjacent not in backward_visited:
+                        backward_visited.add(adjacent)
+                        backward_parent[adjacent] = current
+                        backward_queue.append(adjacent)
+                
+                if meeting_point:
+                    break
+        
+        # Reconstruct path if found
+        if not meeting_point:
+            raise HTTPException(
+                status_code=404,
+                detail=f"No path found from current skills to '{target}'"
+            )
+        
+        forward_point, backward_point = meeting_point
+        
+        # Reconstruct forward path
+        forward_path = []
+        current = forward_point
+        while current is not None:
+            forward_path.append(current)
+            current = forward_parent.get(current)
+        forward_path.reverse()
+        
+        # Reconstruct backward path
+        backward_path = []
+        current = backward_parent.get(backward_point)
+        while current is not None:
+            backward_path.append(current)
+            current = backward_parent.get(current)
+        
+        # Combine paths
+        missing_path = forward_path + backward_path
+        
+        # Remove concepts user already knows
+        missing_path = [c for c in missing_path if c not in current_skill_set]
+        
+        gap_size = len(missing_path)
+        
+        return SkillGapAnalysisResponse(
+            target_skill=target,
+            missing_path=missing_path,
+            gap_size=gap_size,
+            estimated_time=estimate_learning_time(gap_size)
+        )
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error in analyze_skill_gap: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        session.close()
+
+
+# ============================================================================
+# HEALTH CHECK ENDPOINT
+# ============================================================================
+
+@app.get("/health")
+async def health_check():
+    """Health check endpoint"""
+    return {"status": "ok", "service": "rolemap-api"}
+
+
+@app.get("/")
+async def root():
+    """Root endpoint with API documentation link"""
+    return {
+        "service": "Rolemap Backend API",
+        "version": "1.0.0",
+        "docs": "/docs",
+        "endpoints": {
+            "prerequisites": "GET /api/v1/paths/prerequisites",
+            "roadmap": "POST /api/v1/roadmap/generate",
+            "skill_gap": "POST /api/v1/concepts/analyze"
+        }
+    }
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

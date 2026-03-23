@@ -1,0 +1,1267 @@
+{
+  "slug": "cyber-security",
+  "concepts": [
+    {
+      "id": "oimYzZYFXKjgvc7D4c-2u",
+      "name": "Fundamental IT Skills"
+    },
+    {
+      "id": "Ih0YZt8u9vDwYo8y1t41n",
+      "name": "Computer Hardware Components"
+    },
+    {
+      "id": "F1QVCEmGkgvz-_H5lTxY2",
+      "name": "Connection Types and their function"
+    },
+    {
+      "id": "pJUhQin--BGMuXHPwx3JJ",
+      "name": "OS-Independent Troubleshooting"
+    },
+    {
+      "id": "_7RjH4Goi0x6Noy6za0rP",
+      "name": "Understand Basics of Popular Suites"
+    },
+    {
+      "id": "T0aU8ZQGShmF9uXhWY4sD",
+      "name": "Basics of Computer Networking"
+    },
+    {
+      "id": "hwAUFLYpc_ftCfXq95dey",
+      "name": "NFC"
+    },
+    {
+      "id": "fUBNKHNPXbemRYrnzH3VT",
+      "name": "WiFi"
+    },
+    {
+      "id": "DbWf5LdqiByPiJa4xHtl_",
+      "name": "Bluetooth"
+    },
+    {
+      "id": "KsZ63c3KQLLn373c5CZnp",
+      "name": "Infrared"
+    },
+    {
+      "id": "E7yfALgu9E2auOYDOTmex",
+      "name": "iCloud"
+    },
+    {
+      "id": "IOK_FluAv34j3Tj_NvwdO",
+      "name": "Google Suite"
+    },
+    {
+      "id": "-5haJATqlmj0SFSFAqN6A",
+      "name": "MS Office Suite"
+    },
+    {
+      "id": "wkuE_cChPZT2MHyGjUuU4",
+      "name": "HackTheBox"
+    },
+    {
+      "id": "kht-L7_v-DbglMYUHuchp",
+      "name": "TryHackMe"
+    },
+    {
+      "id": "W94wY_otBuvVW_-EFlKA6",
+      "name": "VulnHub"
+    },
+    {
+      "id": "pou5xHwnz9Zsy5J6lNlKq",
+      "name": "picoCTF"
+    },
+    {
+      "id": "WCeJrvWl837m1BIjuA1Mu",
+      "name": "SANS Holiday Hack Challenge"
+    },
+    {
+      "id": "lbAgU5lR1O7L_5mCbNz_D",
+      "name": "CompTIA A+"
+    },
+    {
+      "id": "p34Qwlj2sjwEPR2ay1WOK",
+      "name": "CompTIA Linux+"
+    },
+    {
+      "id": "4RGbNOfMPDbBcvUFWTTCV",
+      "name": "CompTIA Network+"
+    },
+    {
+      "id": "4RD22UZATfL8dc71YkJwQ",
+      "name": "CCNA"
+    },
+    {
+      "id": "AxeDcKK3cUtEojtHQPBw7",
+      "name": "CompTIA Security+"
+    },
+    {
+      "id": "AAo7DXB7hyBzO6p05gx1i",
+      "name": "CEH"
+    },
+    {
+      "id": "lqFp4VLY_S-5tAbhNQTew",
+      "name": "CISA"
+    },
+    {
+      "id": "s86x24SHPEbbOB9lYNU-w",
+      "name": "CISM"
+    },
+    {
+      "id": "nlmATCTgHoIoMcEOW8bUW",
+      "name": "GSEC"
+    },
+    {
+      "id": "t4h9rEKWz5Us0qJKXhxlX",
+      "name": "GPEN"
+    },
+    {
+      "id": "rwniCTWfYpKP5gi02Pa9f",
+      "name": "GWAPT"
+    },
+    {
+      "id": "ZiUT-lyIBfHTzG-dwSy96",
+      "name": "GIAC"
+    },
+    {
+      "id": "SwVGVP2bbCFs2uNg9Qtxb",
+      "name": "OSCP"
+    },
+    {
+      "id": "rA1skdztev3-8VmAtIlmr",
+      "name": "CREST"
+    },
+    {
+      "id": "BqvijNoRzSGYLCMP-6hhr",
+      "name": "CISSP"
+    },
+    {
+      "id": "UY6xdt_V3YMkZxZ1hZLvW",
+      "name": "Operating Systems"
+    },
+    {
+      "id": "BNUKEQ4YpZmIhSPQdkHgU",
+      "name": "Windows"
+    },
+    {
+      "id": "4frVcjYI1VlVU9hQgpwcT",
+      "name": "Linux"
+    },
+    {
+      "id": "dztwr-DSckggQbcNIi4_2",
+      "name": "MacOS"
+    },
+    {
+      "id": "02aaEP9E5tlefeGBxf_Rj",
+      "name": "Installation and Configuration"
+    },
+    {
+      "id": "yXOGqlufAZ69uiBzKFfh6",
+      "name": "Different Versions and Differences"
+    },
+    {
+      "id": "MGitS_eJBoY99zOR-W3F4",
+      "name": "Navigating using GUI and CLI"
+    },
+    {
+      "id": "bTfL7cPOmBBFl-eHxUJI6",
+      "name": "Understand Permissions"
+    },
+    {
+      "id": "Ot3LGpM-CT_nKsNqIKIye",
+      "name": "Installing Software and Applications"
+    },
+    {
+      "id": "zRXyoJMap9irOYo3AdHE8",
+      "name": "Performing CRUD on Files"
+    },
+    {
+      "id": "xeRWOX1fWQDLNLWMAFTEe",
+      "name": "Troubleshooting"
+    },
+    {
+      "id": "WDrSO7wBNn-2jB8mcyT7j",
+      "name": "Common Commands"
+    },
+    {
+      "id": "gSLr-Lc119eX9Ig-kDzJ2",
+      "name": "Networking Knowledge"
+    },
+    {
+      "id": "OXUd1UPPsBhNoUGLKZJGV",
+      "name": "Understand the OSI Model"
+    },
+    {
+      "id": "ViF-mpR17MB3_KJ1rV8mS",
+      "name": "Common Protocols and their Uses"
+    },
+    {
+      "id": "0tx2QYDYXhm85iYrCWd9U",
+      "name": "Common Ports and their Uses"
+    },
+    {
+      "id": "dJ0NUsODFhk52W2zZxoPh",
+      "name": "SSL and TLS Basics"
+    },
+    {
+      "id": "umbMBQ0yYmB5PgWfY6zfO",
+      "name": "Basics of NAS and SAN"
+    },
+    {
+      "id": "E8Z7qFFW-I9ivr0HzoXCq",
+      "name": "Basics of Subnetting"
+    },
+    {
+      "id": "2nQfhnvBjJg1uDZ28aE4v",
+      "name": "Public vs Private IP Addresses"
+    },
+    {
+      "id": "0TWwox-4pSwuXojI8ixFO",
+      "name": "localhost"
+    },
+    {
+      "id": "W_oloLu2Euz5zRSy7v_T8",
+      "name": "loopback"
+    },
+    {
+      "id": "PPIH1oHW4_ZDyD3U3shDg",
+      "name": "CIDR"
+    },
+    {
+      "id": "f-v8qtweWXFY_Ryo3oYUF",
+      "name": "subnet mask"
+    },
+    {
+      "id": "5rKaFtjYx0n2iF8uTLs8X",
+      "name": "default gateway"
+    },
+    {
+      "id": "d5Cv3EXf6OXW19yPJ4x6e",
+      "name": "VLAN"
+    },
+    {
+      "id": "gfpvDQz61I3zTB7tGu7vp",
+      "name": "DMZ"
+    },
+    {
+      "id": "M52V7hmG4ORf4TIVw3W3J",
+      "name": "ARP"
+    },
+    {
+      "id": "ZTC5bLWEIQcdmowc7sk_E",
+      "name": "VM"
+    },
+    {
+      "id": "T4312p70FqRBkzVfWKMaR",
+      "name": "DHCP"
+    },
+    {
+      "id": "ORIdKG8H97VkBUYpiDtXf",
+      "name": "DNS"
+    },
+    {
+      "id": "Kkd3f_0OYNCdpDgrJ-_Ju",
+      "name": "NAT"
+    },
+    {
+      "id": "FdoqB2---uDAyz6xZjk_u",
+      "name": "IP"
+    },
+    {
+      "id": "lwSFIbIX-xOZ0QK2sGFb1",
+      "name": "Router"
+    },
+    {
+      "id": "r9byGV8XuBPzoqj5ZPf2W",
+      "name": "Switch"
+    },
+    {
+      "id": "gTozEpxJeG1NTkVBHH-05",
+      "name": "VPN"
+    },
+    {
+      "id": "LrwTMH_1fTd8iB9wJg-0t",
+      "name": "MAN"
+    },
+    {
+      "id": "xWxusBtMEWnd-6n7oqjHz",
+      "name": "LAN"
+    },
+    {
+      "id": "vCkTJMkDXcQmwsmeNUAX5",
+      "name": "WAN"
+    },
+    {
+      "id": "QCVYF1rmPsMVtklBNDNaB",
+      "name": "WLAN"
+    },
+    {
+      "id": "R5HEeh6jwpQDo27rz1KSH",
+      "name": "DHCP"
+    },
+    {
+      "id": "r1IKvhpwg2umazLGlQZL1",
+      "name": "DNS"
+    },
+    {
+      "id": "tf0TymdPHbplDHvuVIIh4",
+      "name": "NTP"
+    },
+    {
+      "id": "hN8p5YBcSaPm-byQUIz8L",
+      "name": "IPAM"
+    },
+    {
+      "id": "P0ZhAXd_H-mTOMr13Ag31",
+      "name": "Star"
+    },
+    {
+      "id": "9vEUVJ8NTh0wKyIE6-diY",
+      "name": "Ring"
+    },
+    {
+      "id": "PYeF15e7iVB9seFrrO7W6",
+      "name": "Mesh"
+    },
+    {
+      "id": "0DWh4WmLK_ENDuqQmQcu4",
+      "name": "Bus"
+    },
+    {
+      "id": "8Mog890Lj-gVBpWa05EzT",
+      "name": "SSH"
+    },
+    {
+      "id": "Ia6M1FKPNpqLDiWx7CwDh",
+      "name": "RDP"
+    },
+    {
+      "id": "ftYYMxRpVer-jgSswHLNa",
+      "name": "FTP"
+    },
+    {
+      "id": "YEy6o-clTBKZp1yOkLwNb",
+      "name": "SFTP"
+    },
+    {
+      "id": "3Awm221OJHxXNLiL9yxfd",
+      "name": "HTTP / HTTPS"
+    },
+    {
+      "id": "LKK1A5-xawA7yCIAWHS8P",
+      "name": "SSL / TLS"
+    },
+    {
+      "id": "AjywuCZdBi9atGUbetlUL",
+      "name": "VMWare"
+    },
+    {
+      "id": "vGVFhZXYOZOy4qFpLLbxp",
+      "name": "VirtualBox"
+    },
+    {
+      "id": "BisNooct1vJDKaBKsGR7_",
+      "name": "esxi"
+    },
+    {
+      "id": "jqX1A5hFF3Qznqup4lfiF",
+      "name": "proxmox"
+    },
+    {
+      "id": "CIoLaRv5I3sCr9tBnZHEi",
+      "name": "Hypervisor"
+    },
+    {
+      "id": "251sxqoHggQ4sZ676iX5w",
+      "name": "VM"
+    },
+    {
+      "id": "LocGETHz6ANYinNd5ZLsS",
+      "name": "GuestOS"
+    },
+    {
+      "id": "p7w3C94xjLwSMm5qA8XlL",
+      "name": "HostOS"
+    },
+    {
+      "id": "tk4iG5i1Ml9w9KRO1tGJU",
+      "name": "nslookup"
+    },
+    {
+      "id": "jr8JlyqmN3p7Ol3_kD9AH",
+      "name": "iptables"
+    },
+    {
+      "id": "k6UX0BJho5arjGD2RWPgH",
+      "name": "Packet Sniffers"
+    },
+    {
+      "id": "u-6xuZUyOrogh1bU4cwER",
+      "name": "ipconfig"
+    },
+    {
+      "id": "2M3PRbGzo14agbEPe32ww",
+      "name": "netstat"
+    },
+    {
+      "id": "iJRQHzh5HXADuWpCouwxv",
+      "name": "Port Scanners"
+    },
+    {
+      "id": "GuuY-Q6FZzfspB3wrH64r",
+      "name": "ping"
+    },
+    {
+      "id": "D2YYv1iTRGken75sHO0Gt",
+      "name": "dig"
+    },
+    {
+      "id": "hkO3Ga6KctKODr4gos6qX",
+      "name": "arp"
+    },
+    {
+      "id": "K05mEAsjImyPge0hDtsU0",
+      "name": "Protocol Analyzers"
+    },
+    {
+      "id": "xqwIEyGfdZFxk6QqbPswe",
+      "name": "nmap"
+    },
+    {
+      "id": "xFuWk7M-Vctk_xb7bHbWs",
+      "name": "route"
+    },
+    {
+      "id": "y8GaUNpaCT1Ai88wPOk6d",
+      "name": "tcpdump"
+    },
+    {
+      "id": "cSz9Qx3PGwmhq3SSKYKfg",
+      "name": "tracert"
+    },
+    {
+      "id": "lG6afUOx3jSQFxbH92otL",
+      "name": "Kerberos"
+    },
+    {
+      "id": "lV3swvD6QGLmD9iVfbKIF",
+      "name": "LDAP"
+    },
+    {
+      "id": "xL32OqDKm6O043TYgVV1r",
+      "name": "SSO"
+    },
+    {
+      "id": "tH3RLnJseqOzRIbZMklHD",
+      "name": "RADIUS"
+    },
+    {
+      "id": "WXRaVCYwuGQsjJ5wyvbea",
+      "name": "Certificates"
+    },
+    {
+      "id": "vYvFuz7lAJXZ1vK_4999a",
+      "name": "Local Auth"
+    },
+    {
+      "id": "_hYN0gEi9BL24nptEtXWU",
+      "name": "Security Skills and Knowledge"
+    },
+    {
+      "id": "rzY_QsvnC1shDTPQ-til0",
+      "name": "Understand Common Hacking Tools"
+    },
+    {
+      "id": "Lg7mz4zeCToEzZBFxYuaU",
+      "name": "Understand Common Exploit Frameworks"
+    },
+    {
+      "id": "Rae-f9DHDZuwIwW6eRtKF",
+      "name": "Understand Concept of Defense in Depth"
+    },
+    {
+      "id": "Ec6EairjFJLCHc7b-1xxe",
+      "name": "Understand Concept of Runbooks"
+    },
+    {
+      "id": "7KLGFfco-hw7a62kXtS3d",
+      "name": "Understand Basics of Forensics"
+    },
+    {
+      "id": "_x3BgX93N-Pt1_JK7wk0p",
+      "name": "Basics and Concepts of Threat Hunting"
+    },
+    {
+      "id": "lcxAXtO6LoGd85nOFnLo8",
+      "name": "Basics of Vulnerability Management"
+    },
+    {
+      "id": "uoGA4T_-c-2ip_zfEUcJJ",
+      "name": "Basics of Reverse Engineering"
+    },
+    {
+      "id": "NkAAQikwH-A6vrF8fWpuB",
+      "name": "Penetration Testing Rules of Engagement"
+    },
+    {
+      "id": "PUgPgpKio4Npzs86qEXa7",
+      "name": "Perimiter vs DMZ vs Segmentation"
+    },
+    {
+      "id": "HavEL0u65ZxHt92TfbLzk",
+      "name": "Core Concepts of Zero Trust"
+    },
+    {
+      "id": "kqT0FRLt9Ak9P8PhHldO-",
+      "name": "Roles of Compliance and Auditors"
+    },
+    {
+      "id": "ggAja18sBUUdCfVsT0vCv",
+      "name": "Understand the Definition of Risk"
+    },
+    {
+      "id": "9asy3STW4oTYYHcUazaRj",
+      "name": "Understand Backups and Resiliency"
+    },
+    {
+      "id": "H38Vb7xvuBJXVzgPBdRdT",
+      "name": "Cyber Kill Chain"
+    },
+    {
+      "id": "pnfVrOjDeG1uYAeqHxhJP",
+      "name": "MFA & 2FA"
+    },
+    {
+      "id": "_S25EOGS3P8647zLM5i-g",
+      "name": "Operating System Hardening"
+    },
+    {
+      "id": "aDF7ZcOX9uR8l0W4aqhYn",
+      "name": "Understand Concept of Isolation"
+    },
+    {
+      "id": "FJsEBOFexbDyAj86XWBCc",
+      "name": "Basics of IDS and IPS"
+    },
+    {
+      "id": "bj5YX8zhlam0yoNckL8e4",
+      "name": "Honeypots"
+    },
+    {
+      "id": "WG7DdsxESm31VcLFfkVTz",
+      "name": "Authentication vs Authorization"
+    },
+    {
+      "id": "7tDxTcKJNAUxbHLPCnPFO",
+      "name": "Blue / Red / Purple Teams"
+    },
+    {
+      "id": "XwRCZf-yHJsXVjaRfb3R4",
+      "name": "False Negative / False Positive"
+    },
+    {
+      "id": "M6uwyD4ibguxytf1od-og",
+      "name": "True Negative / True Positive"
+    },
+    {
+      "id": "wN5x5pY53B8d0yopa1z8F",
+      "name": "Basics of Threat Intel, OSINT"
+    },
+    {
+      "id": "zQx_VUS1zRmF4zCGjJD5-",
+      "name": "Understand Handshakes"
+    },
+    {
+      "id": "uz6ELaLEu9U4fHVfnQiOa",
+      "name": "Understand CIA Triad"
+    },
+    {
+      "id": "cvI8-sxY5i8lpelW9iY_5",
+      "name": "Privilege Escalation"
+    },
+    {
+      "id": "fyOYVqiBqyKC4aqc6-y0q",
+      "name": "Web Based Attacks and OWASP10"
+    },
+    {
+      "id": "v7CD_sHqLWbm9ibXXESIK",
+      "name": "Learn how Malware works and Types"
+    },
+    {
+      "id": "Hoou7kWyfB2wx_yFHug_H",
+      "name": "nmap"
+    },
+    {
+      "id": "jJtS0mgCYc0wbjuXssDRO",
+      "name": "tracert"
+    },
+    {
+      "id": "OUarb1oS1-PX_3OXNR0rV",
+      "name": "nslookup"
+    },
+    {
+      "id": "W7iQUCjODGYgE4PjC5TZI",
+      "name": "curl"
+    },
+    {
+      "id": "Cclbt4bNfkHwFwZOvJuLK",
+      "name": "hping"
+    },
+    {
+      "id": "yfTpp-ePuDB931FnvNB-Y",
+      "name": "ping"
+    },
+    {
+      "id": "fzdZF-nzIL69kaA7kwOCn",
+      "name": "arp"
+    },
+    {
+      "id": "D2ptX6ja_HvFEafMIzWOy",
+      "name": "cat"
+    },
+    {
+      "id": "9xbU_hrEOUtMm-Q09Fe6t",
+      "name": "dd"
+    },
+    {
+      "id": "VNmrb5Dm4UKUgL8JBfhnE",
+      "name": "head"
+    },
+    {
+      "id": "Dfz-6aug0juUpMmOJLCJ9",
+      "name": "grep"
+    },
+    {
+      "id": "Sm9bxKUElINHND8FdZ5f2",
+      "name": "wireshark"
+    },
+    {
+      "id": "gNan93Mg9Ym2AF3Q2gqoi",
+      "name": "winhex"
+    },
+    {
+      "id": "wspNQPmqWRjKoFm6x_bVw",
+      "name": "memdump"
+    },
+    {
+      "id": "_jJhL1RtaqHJmlcWrd-Ak",
+      "name": "FTK Imager"
+    },
+    {
+      "id": "bIwpjIoxSUZloxDuQNpMu",
+      "name": "autopsy"
+    },
+    {
+      "id": "XyaWZZ45axJMKXoWwsyFj",
+      "name": "dig"
+    },
+    {
+      "id": "762Wf_Eh-3zq69CZZiIjR",
+      "name": "tail"
+    },
+    {
+      "id": "IXNGFF4sOFbQ_aND-ELK0",
+      "name": "ipconfig"
+    },
+    {
+      "id": "jqWhR6oTyX6yolUBv71VC",
+      "name": "Salting"
+    },
+    {
+      "id": "0UZmAECMnfioi-VeXcvg8",
+      "name": "Hashing"
+    },
+    {
+      "id": "rmR6HJqEhHDgX55Xy5BAW",
+      "name": "Key Exchange"
+    },
+    {
+      "id": "fxyJxrf3mnFTa3wXk1MCW",
+      "name": "PKI"
+    },
+    {
+      "id": "7svh9qaaPp0Hz23yinIye",
+      "name": "Private vs Public Keys"
+    },
+    {
+      "id": "kxlg6rpfqqoBfmMMg3EkJ",
+      "name": "Obfuscation"
+    },
+    {
+      "id": "auR7fNyd77W2UA-PjXeJS",
+      "name": "ATT&CK"
+    },
+    {
+      "id": "7Bmp4x6gbvWMuVDdGRUGj",
+      "name": "Kill Chain"
+    },
+    {
+      "id": "AY-hoPGnAZSd1ExaYX8LR",
+      "name": "Diamond Model"
+    },
+    {
+      "id": "oRssaVG-K-JwlL6TAHhXw",
+      "name": "ISO"
+    },
+    {
+      "id": "SOkJUTd1NUKSwYMIprv4m",
+      "name": "NIST"
+    },
+    {
+      "id": "fjEdufrZAfW4Rl6yDU8Hk",
+      "name": "RMF"
+    },
+    {
+      "id": "sSihnptkoEqUsHjDpckhG",
+      "name": "CIS"
+    },
+    {
+      "id": "HjfgaSEZjW9BOXy_Ixzkk",
+      "name": "CSF"
+    },
+    {
+      "id": "c2kY3wZVFKZYxMARhLIwO",
+      "name": "SIEM"
+    },
+    {
+      "id": "i0ulrA-GJrNhIVmzdWDrn",
+      "name": "SOAR"
+    },
+    {
+      "id": "zR6djXnfTSFVEfvJonQjf",
+      "name": "ParrotOS"
+    },
+    {
+      "id": "w6wXkoLrv0_d-Ah0txUHd",
+      "name": "Kali Linux"
+    },
+    {
+      "id": "10qbxX8DCrfyH7tgYexxQ",
+      "name": "LOLBAS"
+    },
+    {
+      "id": "KbFwL--xF-eYjGy8PZdrM",
+      "name": "Event Logs"
+    },
+    {
+      "id": "7oFwRkmoZom8exMDtMslX",
+      "name": "syslogs"
+    },
+    {
+      "id": "xXz-SwvXA2cLfdCd-hLtW",
+      "name": "netflow"
+    },
+    {
+      "id": "TIxEkfBrN6EXQ3IKP1B7u",
+      "name": "Packet Captures"
+    },
+    {
+      "id": "np0PwKy-EvIa_f_LC6Eem",
+      "name": "Firewall Logs"
+    },
+    {
+      "id": "OAukNfV5T0KTnIF9jKYRF",
+      "name": "MAC-based"
+    },
+    {
+      "id": "6oAzYfwsHQYNVbi7c2Tly",
+      "name": "NAC-based"
+    },
+    {
+      "id": "W7bcydXdwlubXF2PHKOuq",
+      "name": "Port Blocking"
+    },
+    {
+      "id": "FxuMJmDoDkIsPFp2iocFg",
+      "name": "Group Policy"
+    },
+    {
+      "id": "8JM95sonFUhZCdaynUA_M",
+      "name": "ACLs"
+    },
+    {
+      "id": "oFgyQYL3Ws-l7B5AF-bTR",
+      "name": "Sinkholes"
+    },
+    {
+      "id": "e-MDyUR3GEv-e4Qsx_5vV",
+      "name": "Patching"
+    },
+    {
+      "id": "UF3BV1sEEOrqh5ilnfM1B",
+      "name": "Jump Server"
+    },
+    {
+      "id": "LEgJtu1GZKOtoAXyOGWLE",
+      "name": "Endpoint Security"
+    },
+    {
+      "id": "9Z6HPHPj4escSVDWftFEx",
+      "name": "FTP vs SFTP"
+    },
+    {
+      "id": "6ILPXeUDDmmYRiA_gNTSr",
+      "name": "SSL vs TLS"
+    },
+    {
+      "id": "gNFVtBxSYP5Uw3o3tlJ0M",
+      "name": "IPSEC"
+    },
+    {
+      "id": "LLGXONul7JfZGUahnK0AZ",
+      "name": "DNSSEC"
+    },
+    {
+      "id": "z_fDvTgKw51Uepo6eMQd9",
+      "name": "LDAPS"
+    },
+    {
+      "id": "_9lQSG6fn69Yd9rs1pQdL",
+      "name": "SRTP"
+    },
+    {
+      "id": "9rmDvycXFcsGOq3v-_ziD",
+      "name": "S/MIME"
+    },
+    {
+      "id": "3140n5prZYySsuBHjqGOJ",
+      "name": "Antivirus"
+    },
+    {
+      "id": "9QtY1hMJ7NKLFztYK-mHY",
+      "name": "Antimalware"
+    },
+    {
+      "id": "QvHWrmMzO8IvNQ234E_wf",
+      "name": "EDR"
+    },
+    {
+      "id": "iolsTC-63d_1wzKGul-cT",
+      "name": "DLP"
+    },
+    {
+      "id": "35oCRzhzpVfitQPL4K9KC",
+      "name": "ACL"
+    },
+    {
+      "id": "tWDo5R3KU5KOjDdtv801x",
+      "name": "Firewall & Nextgen Firewall"
+    },
+    {
+      "id": "l5EnhOCnkN-RKvgrS9ylH",
+      "name": "HIPS"
+    },
+    {
+      "id": "LIPtxl_oKZRcbvXT4EdNf",
+      "name": "NIDS"
+    },
+    {
+      "id": "7w9qj16OD4pUzq-ItdxeK",
+      "name": "NIPS"
+    },
+    {
+      "id": "jWl1VWkZn3n1G2eHq6EnX",
+      "name": "Host Based Firewall"
+    },
+    {
+      "id": "SLKwuLHHpC7D1FqrpPRAe",
+      "name": "Sandboxing"
+    },
+    {
+      "id": "1jwtExZzR9ABKvD_S9zFG",
+      "name": "EAP vs PEAP"
+    },
+    {
+      "id": "HSCGbM2-aTnJWUX6jGaDP",
+      "name": "WPS"
+    },
+    {
+      "id": "MBnDE0VyVh2u2p-r90jVk",
+      "name": "WPA vs WPA2 vs WPA3 vs WEP"
+    },
+    {
+      "id": "w6V4JOtXKCMPAkKIQxvMg",
+      "name": "Preparation"
+    },
+    {
+      "id": "XsRoldaBXUSiGbvY1TjQd",
+      "name": "Identification"
+    },
+    {
+      "id": "l7WnKuR2HTD4Vf9U2TxkK",
+      "name": "Containment"
+    },
+    {
+      "id": "N17xAIo7sgbB0nrIDMWju",
+      "name": "Eradication"
+    },
+    {
+      "id": "vFjbZAJq8OfLb3_tsc7oT",
+      "name": "Recovery"
+    },
+    {
+      "id": "ErRol7AT02HTn3umsPD_0",
+      "name": "Lessons Learned"
+    },
+    {
+      "id": "zqRaMmqcLfx400kJ-h0LO",
+      "name": "Zero Day"
+    },
+    {
+      "id": "HPlPGKs7NLqmBidHJkOZg",
+      "name": "Known vs Unknown"
+    },
+    {
+      "id": "l0BvDtwWoRSEjm6O0WDPy",
+      "name": "APT"
+    },
+    {
+      "id": "rxzcAzHjzIc9lkWSw0fef",
+      "name": "VirusTotal"
+    },
+    {
+      "id": "h__KxKa0Q74_egY7GOe-L",
+      "name": "Joe Sandbox"
+    },
+    {
+      "id": "GZHFR43UzN0WIIxGKZOdX",
+      "name": "any.run"
+    },
+    {
+      "id": "lFt1k1Q-NlWWqyDA3gWD1",
+      "name": "urlvoid"
+    },
+    {
+      "id": "lMiW2q-b72KUl-2S7M6Vb",
+      "name": "urlscan"
+    },
+    {
+      "id": "-RnlvUltJ9IDtH0HEnMbN",
+      "name": "WHOIS"
+    },
+    {
+      "id": "7obusm5UtHwWMcMMEB3lt",
+      "name": "Phishing"
+    },
+    {
+      "id": "M65fCl72qlF0VTbGNT6du",
+      "name": "Whishing"
+    },
+    {
+      "id": "KSwl6sX2W47vUmytpm8LH",
+      "name": "Whaling"
+    },
+    {
+      "id": "d4U6Jq-CUB1nNN2OCFoum",
+      "name": "Smishing"
+    },
+    {
+      "id": "cbEMUyg_btIPjdx-XqIM5",
+      "name": "Spam vs Spim"
+    },
+    {
+      "id": "FD0bkmxNpPXiUB_NevEUf",
+      "name": "Shoulder Surfing"
+    },
+    {
+      "id": "Iu0Qtk13RjrhHpSlm0uyh",
+      "name": "Dumpster Diving"
+    },
+    {
+      "id": "o-keJgF9hmifQ_hUD91iN",
+      "name": "Tailgating"
+    },
+    {
+      "id": "v9njgIxZyabJZ5iND3JGc",
+      "name": "Zero day"
+    },
+    {
+      "id": "O1VceThdxRlgQ6DcGyY7Y",
+      "name": "Social Engineering"
+    },
+    {
+      "id": "UU_inxa8Y2lLP2BRhdLDT",
+      "name": "Reconnaissance"
+    },
+    {
+      "id": "ZEgxmvjWPp5NofLFz_FTJ",
+      "name": "Impersonation"
+    },
+    {
+      "id": "dcvuKHq0nHgHLcLwtl4IJ",
+      "name": "Watering Hole Attack"
+    },
+    {
+      "id": "cO70zHvHgBAH29khF-hBW",
+      "name": "Drive by Attack"
+    },
+    {
+      "id": "0LeDwj_tMaXjQBBOUJ5CL",
+      "name": "Typo Squatting"
+    },
+    {
+      "id": "Q0i-plPQkb_NIvOQBVaDd",
+      "name": "Brute Force vs Password Spray"
+    },
+    {
+      "id": "IF5H0ZJ72XnqXti3jRWYF",
+      "name": "DoS vs DDoS"
+    },
+    {
+      "id": "ODlVT6MhV-RVUbRMG0mHi",
+      "name": "MITM"
+    },
+    {
+      "id": "LteSouUtAj3JWWOzcjQPl",
+      "name": "Spoofing"
+    },
+    {
+      "id": "O1fY2n40yjZtJUEeoItKr",
+      "name": "Evil Twin"
+    },
+    {
+      "id": "urtsyYWViEzbqYLoNfQAh",
+      "name": "DNS Poisoning"
+    },
+    {
+      "id": "LfWJJaT3fv0p6fUeS8b84",
+      "name": "Deauth Attack"
+    },
+    {
+      "id": "u4hySof6if5hiONSaW-Uf",
+      "name": "VLAN Hopping"
+    },
+    {
+      "id": "Ee7LfbhwJbiWjJ3b_bbni",
+      "name": "Rogue Access Point"
+    },
+    {
+      "id": "n8ZOZxNhlnw7DpzoXe_f_",
+      "name": "Buffer Overflow"
+    },
+    {
+      "id": "nOND14t7ISgSH3zNpV3F8",
+      "name": "Memory Leak"
+    },
+    {
+      "id": "2jo1r9O_rCnDwRv1_4Wo-",
+      "name": "XSS"
+    },
+    {
+      "id": "P-Am25WJV8cFd_KsX7cdj",
+      "name": "SQL Injection"
+    },
+    {
+      "id": "pK2iRArULlK-B3iSVo4-n",
+      "name": "CSRF"
+    },
+    {
+      "id": "mIX8PsIGuwgPCGQZ6ok2H",
+      "name": "Replay Attack"
+    },
+    {
+      "id": "sMuKqf27y4iG0GrCdF5DN",
+      "name": "Pass the Hash"
+    },
+    {
+      "id": "L0ROYh2DNlkybNDO2ezJY",
+      "name": "Directory Traversal"
+    },
+    {
+      "id": "lv6fI3WeJawuCbwKtMRIh",
+      "name": "Stakeholders"
+    },
+    {
+      "id": "05tH6WhToC615JTFN-TPc",
+      "name": "HR"
+    },
+    {
+      "id": "C5bCIdPi0gGkY_r4qqoXZ",
+      "name": "Legal"
+    },
+    {
+      "id": "05Gbgy6aawYlYIx38u8DE",
+      "name": "Compliance"
+    },
+    {
+      "id": "s9tHpzYRj2HCImwQhnjFM",
+      "name": "Management"
+    },
+    {
+      "id": "vVaBQ5VtsE_ZeXbCOF8ux",
+      "name": "Cloud Skills and Knowledge"
+    },
+    {
+      "id": "ThLsXkqLw--uddHz0spCH",
+      "name": "Understand the Concept of Security in the Cloud"
+    },
+    {
+      "id": "XL3FVeGFDhAl_gSol6Tjt",
+      "name": "Understand the basics and general flow of deploying in the cloud"
+    },
+    {
+      "id": "KGjYM4Onr5GQf1Yv9IabI",
+      "name": "Understand the differences between cloud and on-premises"
+    },
+    {
+      "id": "RJctUpvlUJGAdwBNtDSXw",
+      "name": "Understand the concept of Infrastructure as Code"
+    },
+    {
+      "id": "-83ltMEl3le3yD68OFnTM",
+      "name": "Understand the Concept of Serverless"
+    },
+    {
+      "id": "sVw5KVNxPEatBRKb2ZbS_",
+      "name": "SaaS"
+    },
+    {
+      "id": "PQ_np6O-4PK2V-r5lywQg",
+      "name": "PaaS"
+    },
+    {
+      "id": "1nPifNUm-udLChIqLC_uK",
+      "name": "IaaS"
+    },
+    {
+      "id": "ecpMKP1cQXXsfKETDUrSf",
+      "name": "Private"
+    },
+    {
+      "id": "ZDj7KBuyZsKyEMZViMoXW",
+      "name": "Public"
+    },
+    {
+      "id": "ywRlTuTfh5-NHnv4ZyW1t",
+      "name": "Hybrid"
+    },
+    {
+      "id": "0LztOTc3NG3OujCVwlcVU",
+      "name": "AWS"
+    },
+    {
+      "id": "tOLA5QPKi6LHl1ljsOMwX",
+      "name": "GCP"
+    },
+    {
+      "id": "GklBi7Qx1akN_cS9UMrha",
+      "name": "Azure"
+    },
+    {
+      "id": "2jsTgT7k8MeaDtx6RJhOP",
+      "name": "S3"
+    },
+    {
+      "id": "9OastXVfiG1YRMm68ecnn",
+      "name": "Dropbox"
+    },
+    {
+      "id": "4Man3Bd-ySLFlAdxbLOHw",
+      "name": "Box"
+    },
+    {
+      "id": "MWqnhDKm9jXvDDjkeVNxm",
+      "name": "OneDrive"
+    },
+    {
+      "id": "fTZ4PqH-AMhYA_65w4wFO",
+      "name": "Google Drive"
+    },
+    {
+      "id": "Wqy6ki13hP5c0VhGYEhHj",
+      "name": "iCloud"
+    },
+    {
+      "id": "_RnuQ7952N8GWZfPD60sJ",
+      "name": "Programming Skills"
+    },
+    {
+      "id": "XiHvGy--OkPFfJeKA6-LP",
+      "name": "Python"
+    },
+    {
+      "id": "jehVvdz8BnruKjqHMKu5v",
+      "name": "Go"
+    },
+    {
+      "id": "2SThr6mHpX6rpW-gmsqxG",
+      "name": "JavaScript"
+    },
+    {
+      "id": "8jj9hpe9jQIgCc8Txyw3O",
+      "name": "C++"
+    },
+    {
+      "id": "tao0Bb_JR0Ubl62HO8plp",
+      "name": "Bash"
+    },
+    {
+      "id": "paY9x2VJA98FNGBFGRXp2",
+      "name": "Power Shell"
+    },
+    {
+      "id": "Jd9t8e9r29dHRsN40dDOk",
+      "name": "GTFOBINS"
+    },
+    {
+      "id": "Rnpx7VkhrBkSQTni6UuTR",
+      "name": "WADCOMS"
+    }
+  ],
+  "prereq_edges": [
+    {
+      "from": "Connection Types and their function",
+      "to": "NFC"
+    },
+    {
+      "from": "Connection Types and their function",
+      "to": "WiFi"
+    },
+    {
+      "from": "Understand Basics of Popular Suites",
+      "to": "MS Office Suite"
+    },
+    {
+      "from": "Understand Basics of Popular Suites",
+      "to": "iCloud"
+    },
+    {
+      "from": "Understand Basics of Popular Suites",
+      "to": "Google Suite"
+    },
+    {
+      "from": "Security Skills and Knowledge",
+      "to": "Blue / Red / Purple Teams"
+    },
+    {
+      "from": "Cloud Skills and Knowledge",
+      "to": "Programming Skills"
+    },
+    {
+      "from": "Programming Skills",
+      "to": "Python"
+    },
+    {
+      "from": "Programming Skills",
+      "to": "Go"
+    },
+    {
+      "from": "Programming Skills",
+      "to": "Programming Skills"
+    },
+    {
+      "from": "Programming Skills",
+      "to": "JavaScript"
+    },
+    {
+      "from": "Programming Skills",
+      "to": "C++"
+    },
+    {
+      "from": "Programming Skills",
+      "to": "Bash"
+    },
+    {
+      "from": "Programming Skills",
+      "to": "Power Shell"
+    }
+  ]
+}

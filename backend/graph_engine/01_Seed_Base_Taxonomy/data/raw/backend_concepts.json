@@ -1,0 +1,843 @@
+{
+  "slug": "backend",
+  "concepts": [
+    {
+      "id": "gKTSe9yQFVbPVlLzWB0hC",
+      "name": "Search Engines"
+    },
+    {
+      "id": "9Fpoor-Os_9lvrwu5Zjh-",
+      "name": "Design and Development Principles"
+    },
+    {
+      "id": "EwvLPSI6AlZ4TnNIJTZA4",
+      "name": "Learn about APIs"
+    },
+    {
+      "id": "SiYUdtYMDImRPmV2_XPkH",
+      "name": "Internet"
+    },
+    {
+      "id": "CWwh2abwqx4hAxpAGvhIx",
+      "name": "Rust"
+    },
+    {
+      "id": "l9Wrq_Ad9-Ju4NIB0m5Ha",
+      "name": "PHP"
+    },
+    {
+      "id": "BdXbcz4-ar3XOX0wIKzBp",
+      "name": "Go"
+    },
+    {
+      "id": "8-lO-v6jCYYoklEJXULxN",
+      "name": "JavaScript"
+    },
+    {
+      "id": "ANeSwxJDJyQ-49pO2-CCI",
+      "name": "Java"
+    },
+    {
+      "id": "J_sVHsD72Yzyqb9KCIvAY",
+      "name": "Python"
+    },
+    {
+      "id": "rImbMHLLfJwjf3l25vBkc",
+      "name": "C#"
+    },
+    {
+      "id": "SlH0Rl07yURDko2nDPfFy",
+      "name": "Ruby"
+    },
+    {
+      "id": "2f0ZO6GJElfZ2Eis28Hzg",
+      "name": "Pick a Language"
+    },
+    {
+      "id": "_I1E__wCIVrhjMk6IMieE",
+      "name": "Git"
+    },
+    {
+      "id": "ezdqQW9wTUw93F6kjOzku",
+      "name": "Version Control Systems"
+    },
+    {
+      "id": "ptD8EVqwFUYr4W5A_tABY",
+      "name": "GitHub"
+    },
+    {
+      "id": "Ry_5Y-BK7HrkIc6X0JG1m",
+      "name": "Bitbucket"
+    },
+    {
+      "id": "Wcp-VDdFHipwa7hNAp1z_",
+      "name": "GitLab"
+    },
+    {
+      "id": "NvUcSDWBhzJZ31nzT4UlE",
+      "name": "Repo Hosting Services"
+    },
+    {
+      "id": "FihTrMO56kj9jT8O_pO2T",
+      "name": "PostgreSQL"
+    },
+    {
+      "id": "dEsTje8kfHwWjCI3zcgLC",
+      "name": "MS SQL"
+    },
+    {
+      "id": "VPxOdjJtKAqmM5V0LR5OC",
+      "name": "MySQL"
+    },
+    {
+      "id": "h1SAjQltHtztSt8QmRgab",
+      "name": "Oracle"
+    },
+    {
+      "id": "tD3i-8gBpMKCHB-ITyDiU",
+      "name": "MariaDB"
+    },
+    {
+      "id": "r45b461NxLN6wBODJ5CNP",
+      "name": "Relational Databases"
+    },
+    {
+      "id": "F8frGuv1dunOdcVJ_IiGs",
+      "name": "NoSQL Databases"
+    },
+    {
+      "id": "Z7jp_Juj5PffSxV7UZcBb",
+      "name": "ORMs"
+    },
+    {
+      "id": "Ge2SnKBrQQrU-oGLz6TmT",
+      "name": "Normalization"
+    },
+    {
+      "id": "qSAdfaGUfn8mtmDjHJi3z",
+      "name": "ACID"
+    },
+    {
+      "id": "GwApfL4Yx-b5Y8dB9Vy__",
+      "name": "Failure Modes"
+    },
+    {
+      "id": "rq_y_OBMD9AH_4aoecvAi",
+      "name": "Transactions"
+    },
+    {
+      "id": "SYXJhanu0lFmGj2m2XXhS",
+      "name": "Profiling Perfor."
+    },
+    {
+      "id": "bQnOAu863hsHdyNMNyJop",
+      "name": "N+1 Problem"
+    },
+    {
+      "id": "LJt27onEOeIBomiEMTyKd",
+      "name": "More about Databases"
+    },
+    {
+      "id": "y-xkHFE9YzhNIX3EiWspL",
+      "name": "Database Indexes"
+    },
+    {
+      "id": "zWstl08R4uzqve4BdYurp",
+      "name": "Sharding Strategies"
+    },
+    {
+      "id": "wrl7HHWXOaxoKVlNZxZ6d",
+      "name": "Data Replication"
+    },
+    {
+      "id": "LAdKDJ4LcMaDWqslMvE8X",
+      "name": "CAP Theorem"
+    },
+    {
+      "id": "95d9itpUZ4s9roZN8kG9x",
+      "name": "Scaling Databases"
+    },
+    {
+      "id": "dLY0KafPstajCcSbslC4M",
+      "name": "HATEOAS"
+    },
+    {
+      "id": "sNceS4MpSIjRkWhNDmrFg",
+      "name": "JSON APIs"
+    },
+    {
+      "id": "9cD5ag1L0GqHx4_zxc5JX",
+      "name": "Open API Specs"
+    },
+    {
+      "id": "sSNf93azjuyMzQqIHE0Rh",
+      "name": "SOAP"
+    },
+    {
+      "id": "J-TOE2lT4At1mSdNoxPS1",
+      "name": "gRPC"
+    },
+    {
+      "id": "lfNFDZZNdrB0lbEaMtU71",
+      "name": "REST"
+    },
+    {
+      "id": "zp3bq38tMnutT2N0tktOW",
+      "name": "GraphQL"
+    },
+    {
+      "id": "KWTbEVX_WxS8jmSaAX3Fe",
+      "name": "Client Side"
+    },
+    {
+      "id": "Nq2BO53bHJdFT1rGZPjYx",
+      "name": "CDN"
+    },
+    {
+      "id": "z1-eP4sV75GBEIdM4NvL9",
+      "name": "Server Side"
+    },
+    {
+      "id": "ELj8af7Mi38kUbaPJfCUR",
+      "name": "Caching"
+    },
+    {
+      "id": "RBrIP5KbVQ2F0ly7kMfTo",
+      "name": "Web Security"
+    },
+    {
+      "id": "381Kw1IMRv7CJp-Uf--qd",
+      "name": "Integration Testing"
+    },
+    {
+      "id": "NAGisfq2CgeK3SsuRjnMw",
+      "name": "Functional Testing"
+    },
+    {
+      "id": "3OYm6b9f6WOrKi4KTOZYK",
+      "name": "Unit Testing"
+    },
+    {
+      "id": "STQQbPa7PE3gbjMdL6P-t",
+      "name": "Testing"
+    },
+    {
+      "id": "mGfD7HfuP184lFkXZzGjG",
+      "name": "CI / CD"
+    },
+    {
+      "id": "6XIWO0MoE-ySl4qh_ihXa",
+      "name": "GOF Design Patterns"
+    },
+    {
+      "id": "u8IRw5PuXGUcmxA0YYXgx",
+      "name": "CQRS"
+    },
+    {
+      "id": "BvHi5obg0L1JDZFKBzx9t",
+      "name": "Domain Driven Design"
+    },
+    {
+      "id": "wqE-mkxvehOzOv8UyE39p",
+      "name": "Event Sourcing"
+    },
+    {
+      "id": "I-PUAE2AzbEaUkW9vMaUM",
+      "name": "Test Driven Development"
+    },
+    {
+      "id": "Ke522R-4k6TDeiDRyZbbU",
+      "name": "Monolithic Apps"
+    },
+    {
+      "id": "nkmIv3dNwre4yrULMgTh3",
+      "name": "Serverless"
+    },
+    {
+      "id": "K55h3aqOGe6-hgVhiFisT",
+      "name": "Microservices"
+    },
+    {
+      "id": "n14b7sfTOwsjKTpFC9EZ2",
+      "name": "Service Mesh"
+    },
+    {
+      "id": "tObmzWpjsJtK4GWhx6pwB",
+      "name": "SOA"
+    },
+    {
+      "id": "8DmabQJXlrT__COZrDVTV",
+      "name": "Twelve Factor Apps"
+    },
+    {
+      "id": "tHiUpG9LN35E5RaHddMv5",
+      "name": "Architectural Patterns"
+    },
+    {
+      "id": "GPFRMcY1DEtRgnaZwJ3vW",
+      "name": "RabbitMQ"
+    },
+    {
+      "id": "VoYSis1F1ZfTxMlQlXQKB",
+      "name": "Kafka"
+    },
+    {
+      "id": "nJ5FpFgGCRaALcWmAKBKT",
+      "name": "Message Brokers"
+    },
+    {
+      "id": "31ZlpfIPr9-5vYZqvjUeL",
+      "name": "LXC"
+    },
+    {
+      "id": "SGVwJme-jT_pbOTvems0v",
+      "name": "Containerization vs Virtualization"
+    },
+    {
+      "id": "sVuIdAe08IWJVqAt4z-ag",
+      "name": "WebSockets"
+    },
+    {
+      "id": "RUSdlokJUcEYbCvq5FJBJ",
+      "name": "Server Sent Events"
+    },
+    {
+      "id": "z5AdThp9ByulmM9uekgm-",
+      "name": "Nginx"
+    },
+    {
+      "id": "Op-PSPNoyj6Ss9CS09AXh",
+      "name": "Caddy"
+    },
+    {
+      "id": "jjjonHTHHo-NiAf6p9xPv",
+      "name": "Apache"
+    },
+    {
+      "id": "0NJDgfe6eMa7qPUOI6Eya",
+      "name": "MS IIS"
+    },
+    {
+      "id": "fekyMpEnaGqjh1Cu4Nyc4",
+      "name": "Web Servers"
+    },
+    {
+      "id": "SHmbcMRsc3SygEDksJQBD",
+      "name": "Building For Scale"
+    },
+    {
+      "id": "g8GjkJAhvnSxXTZks0V1g",
+      "name": "Redis"
+    },
+    {
+      "id": "xPvVwGQw28uMeLYIWn8yn",
+      "name": "Memcached"
+    },
+    {
+      "id": "28U6q_X-NTYf7OSKHjoWH",
+      "name": "MongoDB"
+    },
+    {
+      "id": "qOlNzZ7U8LhIGukb67n7U",
+      "name": "CouchDB"
+    },
+    {
+      "id": "BTNJfWemFKEeNeTyENXui",
+      "name": "Neo4j"
+    },
+    {
+      "id": "G9AI_i3MkUE1BsO3_-PH7",
+      "name": "Graceful Degradation"
+    },
+    {
+      "id": "qAu-Y4KI2Z_y-EqiG86cR",
+      "name": "Throttling"
+    },
+    {
+      "id": "JansCqGDyXecQkD1K7E7e",
+      "name": "Backpressure"
+    },
+    {
+      "id": "HoQdX7a4SnkFRU4RPQ-D5",
+      "name": "Loadshifting"
+    },
+    {
+      "id": "spkiQTPvXY4qrhhVUkoPV",
+      "name": "Circuit Breaker"
+    },
+    {
+      "id": "f7iWBkC0X7yyCoP_YubVd",
+      "name": "Migration Strategies"
+    },
+    {
+      "id": "osQlGGy38xMcKLtgZtWaZ",
+      "name": "Types of Scaling"
+    },
+    {
+      "id": "4X-sbqpP0NDhM99bKdqIa",
+      "name": "Instrumentation"
+    },
+    {
+      "id": "QvMEEsXh0-rzn5hDGcmEv",
+      "name": "Monitoring"
+    },
+    {
+      "id": "neVRtPjIHP_VG7lHwfah0",
+      "name": "Telemetry"
+    },
+    {
+      "id": "jWwA6yX4Zjx-r_KpDaD3c",
+      "name": "MD5"
+    },
+    {
+      "id": "JVN38r5jENoteia3YeIQ3",
+      "name": "SHA"
+    },
+    {
+      "id": "kGTALrvCpxyVCXHRmkI7s",
+      "name": "scrypt"
+    },
+    {
+      "id": "dlG1bVkDmjI3PEGpkm1xH",
+      "name": "bcrypt"
+    },
+    {
+      "id": "x-WBJjBd8u93ym5gtxGsR",
+      "name": "HTTPS"
+    },
+    {
+      "id": "AAgciyxuDvS2B_c6FRMvT",
+      "name": "OWASP Risks"
+    },
+    {
+      "id": "0v3OsaghJEGHeXX0c5kqn",
+      "name": "SSL/TLS"
+    },
+    {
+      "id": "LU6WUbkWKbPM1rb2_gEqa",
+      "name": "CORS"
+    },
+    {
+      "id": "TZ0BWOENPv6pQm8qYB8Ow",
+      "name": "Server Security"
+    },
+    {
+      "id": "HgQBde1zLUFtlwB66PR6_",
+      "name": "CSP"
+    },
+    {
+      "id": "yCnn-NfSxIybUQ2iTuUGq",
+      "name": "How does the internet work?"
+    },
+    {
+      "id": "R12sArWVpbIs_PHxBqVaR",
+      "name": "What is HTTP?"
+    },
+    {
+      "id": "ZhSuu2VArnzPDp6dPQQSC",
+      "name": "What is Domain Name?"
+    },
+    {
+      "id": "aqMaEY8gkKMikiqleV5EP",
+      "name": "What is hosting?"
+    },
+    {
+      "id": "hkxw9jPGYphmjhTjw8766",
+      "name": "DNS and how it works?"
+    },
+    {
+      "id": "P82WFaTPgQEPNp5IIuZ1Y",
+      "name": "Browsers and how they work?"
+    },
+    {
+      "id": "PY9G7KQy8bF6eIdr1ydHf",
+      "name": "Authentication"
+    },
+    {
+      "id": "UxS_mzVUjLigEwKrXnEeB",
+      "name": "JWT"
+    },
+    {
+      "id": "yRiJgjjv2s1uV9vgo3n8m",
+      "name": "Basic Authentication"
+    },
+    {
+      "id": "0rGj7FThLJZouSQUhnqGW",
+      "name": "Token Authentication"
+    },
+    {
+      "id": "vp-muizdICcmU0gN8zmkS",
+      "name": "OAuth"
+    },
+    {
+      "id": "ffzsh8_5yRq85trFt9Xhk",
+      "name": "Cookie Based Auth"
+    },
+    {
+      "id": "z3EJBpgGm0_Uj3ymhypbX",
+      "name": "OpenID"
+    },
+    {
+      "id": "UCHtaePVxS-0kpqlYxbfC",
+      "name": "SAML"
+    },
+    {
+      "id": "NulaE1isWqn-feYHg4YQT",
+      "name": "Elasticsearch"
+    },
+    {
+      "id": "iN_1EuIwCx_7lRBw1Io4U",
+      "name": "Solr"
+    },
+    {
+      "id": "5XGvep2qoti31bsyqNzrU",
+      "name": "Real-Time Data"
+    },
+    {
+      "id": "osvajAJlwGI3XnX0fE-kA",
+      "name": "Long Polling"
+    },
+    {
+      "id": "Tt7yr-ChHncJG0Ge1f0Xk",
+      "name": "Short Polling"
+    },
+    {
+      "id": "M0iaSSdVPWaCUpyTG50Vf",
+      "name": "Redis"
+    },
+    {
+      "id": "dwfEHInbX2eFiafM-nRMX",
+      "name": "DynamoDB"
+    },
+    {
+      "id": "RyJFLLGieJ8Xjt-DlIayM",
+      "name": "Firebase"
+    },
+    {
+      "id": "5T0ljwlHL0545ICCeehcQ",
+      "name": "RethinkDB"
+    },
+    {
+      "id": "kdulE3Z_BdbtRmq6T2KmR",
+      "name": "SQLite"
+    },
+    {
+      "id": "XbM4TDImSH-56NsITjyHK",
+      "name": "Influx DB"
+    },
+    {
+      "id": "WiAK70I0z-_bzbWNwiHUd",
+      "name": "TimeScale"
+    },
+    {
+      "id": "gT6-z2vhdIQDzmR2K1g1U",
+      "name": "Cassandra"
+    },
+    {
+      "id": "QZwTLOvjUTaSb_9deuxsR",
+      "name": "Base"
+    },
+    {
+      "id": "5xy66yQrz1P1w7n6PcAFq",
+      "name": "AWS Neptune"
+    },
+    {
+      "id": "Z01E67D6KjrShvQCHjGR7",
+      "name": "Observability"
+    },
+    {
+      "id": "ZsZvStCvKwFhlBYe9HGhl",
+      "name": "Migrations"
+    }
+  ],
+  "prereq_edges": [
+    {
+      "from": "Web Servers",
+      "to": "Nginx"
+    },
+    {
+      "from": "Web Servers",
+      "to": "Apache"
+    },
+    {
+      "from": "MS IIS",
+      "to": "Web Servers"
+    },
+    {
+      "from": "Caddy",
+      "to": "Web Servers"
+    },
+    {
+      "from": "Internet",
+      "to": "How does the internet work?"
+    },
+    {
+      "from": "Internet",
+      "to": "What is HTTP?"
+    },
+    {
+      "from": "Internet",
+      "to": "What is Domain Name?"
+    },
+    {
+      "from": "Internet",
+      "to": "What is hosting?"
+    },
+    {
+      "from": "Internet",
+      "to": "DNS and how it works?"
+    },
+    {
+      "from": "Internet",
+      "to": "Browsers and how they work?"
+    },
+    {
+      "from": "Internet",
+      "to": "Pick a Language"
+    },
+    {
+      "from": "Pick a Language",
+      "to": "Rust"
+    },
+    {
+      "from": "Pick a Language",
+      "to": "Version Control Systems"
+    },
+    {
+      "from": "Version Control Systems",
+      "to": "Repo Hosting Services"
+    },
+    {
+      "from": "Relational Databases",
+      "to": "MySQL"
+    },
+    {
+      "from": "Relational Databases",
+      "to": "MariaDB"
+    },
+    {
+      "from": "Relational Databases",
+      "to": "MS SQL"
+    },
+    {
+      "from": "Relational Databases",
+      "to": "Oracle"
+    },
+    {
+      "from": "Version Control Systems",
+      "to": "Git"
+    },
+    {
+      "from": "Repo Hosting Services",
+      "to": "Relational Databases"
+    },
+    {
+      "from": "Relational Databases",
+      "to": "PostgreSQL"
+    },
+    {
+      "from": "Relational Databases",
+      "to": "Learn about APIs"
+    },
+    {
+      "from": "Learn about APIs",
+      "to": "REST"
+    },
+    {
+      "from": "Server Side",
+      "to": "Memcached"
+    },
+    {
+      "from": "Caching",
+      "to": "Server Side"
+    },
+    {
+      "from": "Caching",
+      "to": "CDN"
+    },
+    {
+      "from": "Caching",
+      "to": "Client Side"
+    },
+    {
+      "from": "Learn about APIs",
+      "to": "Caching"
+    },
+    {
+      "from": "Caching",
+      "to": "Web Security"
+    },
+    {
+      "from": "Web Security",
+      "to": "scrypt"
+    },
+    {
+      "from": "Web Security",
+      "to": "SHA"
+    },
+    {
+      "from": "Web Security",
+      "to": "MD5"
+    },
+    {
+      "from": "Web Security",
+      "to": "bcrypt"
+    },
+    {
+      "from": "Web Security",
+      "to": "Testing"
+    },
+    {
+      "from": "Testing",
+      "to": "Unit Testing"
+    },
+    {
+      "from": "Testing",
+      "to": "Integration Testing"
+    },
+    {
+      "from": "Testing",
+      "to": "Functional Testing"
+    },
+    {
+      "from": "Testing",
+      "to": "CI / CD"
+    },
+    {
+      "from": "CI / CD",
+      "to": "More about Databases"
+    },
+    {
+      "from": "More about Databases",
+      "to": "ORMs"
+    },
+    {
+      "from": "More about Databases",
+      "to": "ACID"
+    },
+    {
+      "from": "More about Databases",
+      "to": "Transactions"
+    },
+    {
+      "from": "More about Databases",
+      "to": "N+1 Problem"
+    },
+    {
+      "from": "More about Databases",
+      "to": "Normalization"
+    },
+    {
+      "from": "More about Databases",
+      "to": "Failure Modes"
+    },
+    {
+      "from": "More about Databases",
+      "to": "Profiling Perfor."
+    },
+    {
+      "from": "More about Databases",
+      "to": "Scaling Databases"
+    },
+    {
+      "from": "Scaling Databases",
+      "to": "Database Indexes"
+    },
+    {
+      "from": "Scaling Databases",
+      "to": "Sharding Strategies"
+    },
+    {
+      "from": "Scaling Databases",
+      "to": "Data Replication"
+    },
+    {
+      "from": "Scaling Databases",
+      "to": "CAP Theorem"
+    },
+    {
+      "from": "Design and Development Principles",
+      "to": "GOF Design Patterns"
+    },
+    {
+      "from": "Design and Development Principles",
+      "to": "Domain Driven Design"
+    },
+    {
+      "from": "Design and Development Principles",
+      "to": "Test Driven Development"
+    },
+    {
+      "from": "Design and Development Principles",
+      "to": "CQRS"
+    },
+    {
+      "from": "Design and Development Principles",
+      "to": "Event Sourcing"
+    },
+    {
+      "from": "Architectural Patterns",
+      "to": "Monolithic Apps"
+    },
+    {
+      "from": "Design and Development Principles",
+      "to": "Containerization vs Virtualization"
+    },
+    {
+      "from": "Containerization vs Virtualization",
+      "to": "Message Brokers"
+    },
+    {
+      "from": "Message Brokers",
+      "to": "Search Engines"
+    },
+    {
+      "from": "Search Engines",
+      "to": "Web Servers"
+    },
+    {
+      "from": "Web Servers",
+      "to": "Real-Time Data"
+    },
+    {
+      "from": "Real-Time Data",
+      "to": "Server Sent Events"
+    },
+    {
+      "from": "Real-Time Data",
+      "to": "WebSockets"
+    },
+    {
+      "from": "Real-Time Data",
+      "to": "Long Polling"
+    },
+    {
+      "from": "Real-Time Data",
+      "to": "Short Polling"
+    },
+    {
+      "from": "Relational Databases",
+      "to": "SQLite"
+    },
+    {
+      "from": "NoSQL Databases",
+      "to": "Building For Scale"
+    },
+    {
+      "from": "Building For Scale",
+      "to": "Migration Strategies"
+    },
+    {
+      "from": "Repo Hosting Services",
+      "to": "Bitbucket"
+    },
+    {
+      "from": "Repo Hosting Services",
+      "to": "GitLab"
+    },
+    {
+      "from": "More about Databases",
+      "to": "Migrations"
+    }
+  ]
+}

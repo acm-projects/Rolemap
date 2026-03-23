@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Apple iOS",
+    "hot_technology": true,
+    "in_demand": false
+  },
+  {
+    "name": "Microsoft Windows Server",
+    "hot_technology": true,
+    "in_demand": false
+  },
+  {
+    "name": "Atlassian Confluence",
+    "hot_technology": true,
+    "in_demand": false
+  },
+  {
+    "name": "Microsoft Teams",
+    "hot_technology": true,
+    "in_demand": false
+  },
+  {
+    "name": "Go",
+    "hot_technology": true,
+    "in_demand": false
+  },
+  {
+    "name": "Microsoft PowerShell",
+    "hot_technology": true,
+    "in_demand": true
+  }
+]

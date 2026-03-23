@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Oracle Java 2 Platform Enterprise Edition J2EE",
+    "hot_technology": true,
+    "in_demand": false
+  },
+  {
+    "name": "Oracle SQL Developer",
+    "hot_technology": true,
+    "in_demand": false
+  },
+  {
+    "name": "Blackboard software",
+    "hot_technology": false,
+    "in_demand": false
+  },
+  {
+    "name": "GraphQL",
+    "hot_technology": true,
+    "in_demand": false
+  },
+  {
+    "name": "Apache Spark",
+    "hot_technology": true,
+    "in_demand": false
+  },
+  {
+    "name": "TypeScript",
+    "hot_technology": true,
+    "in_demand": true
+  }
+]

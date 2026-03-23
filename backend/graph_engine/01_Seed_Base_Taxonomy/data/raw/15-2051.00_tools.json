@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Amazon Elastic Compute Cloud EC2",
+    "hot_technology": true,
+    "in_demand": false
+  },
+  {
+    "name": "PyTorch",
+    "hot_technology": true,
+    "in_demand": true
+  },
+  {
+    "name": "Microsoft PowerPoint",
+    "hot_technology": true,
+    "in_demand": true
+  },
+  {
+    "name": "C#",
+    "hot_technology": true,
+    "in_demand": false
+  },
+  {
+    "name": "Scala",
+    "hot_technology": true,
+    "in_demand": false
+  }
+]
