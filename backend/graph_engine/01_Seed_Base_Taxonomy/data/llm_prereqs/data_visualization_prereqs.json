@@ -1,0 +1,26 @@
+[
+  {
+    "from": "SCRUM",
+    "to": "RETROSPECTIVES"
+  },
+  {
+    "from": "SCRUM",
+    "to": "SPRINT PLANNING"
+  },
+  {
+    "from": "SCRUM",
+    "to": "USER STORIES"
+  },
+  {
+    "from": "STATISTICS",
+    "to": "SCIKIT-LEARN"
+  },
+  {
+    "from": "STATISTICS",
+    "to": "TENSORFLOW"
+  },
+  {
+    "from": "VERSION CONTROL",
+    "to": "VERSION CONTROL SYSTEMS"
+  }
+]

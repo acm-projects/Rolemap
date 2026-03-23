@@ -1,0 +1,27 @@
+[
+  {
+    "name": "eClinicalWorks EHR software",
+    "hot_technology": true,
+    "in_demand": false
+  },
+  {
+    "name": "Epic Systems",
+    "hot_technology": true,
+    "in_demand": false
+  },
+  {
+    "name": "Microsoft PowerPoint",
+    "hot_technology": true,
+    "in_demand": true
+  },
+  {
+    "name": "Microsoft SQL Server Reporting Services SSRS",
+    "hot_technology": true,
+    "in_demand": false
+  },
+  {
+    "name": "Perl",
+    "hot_technology": true,
+    "in_demand": false
+  }
+]

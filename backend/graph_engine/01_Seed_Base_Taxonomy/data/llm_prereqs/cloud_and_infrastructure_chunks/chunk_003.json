@@ -1,0 +1,30 @@
+[
+  {
+    "from": "VERSION CONTROL",
+    "to": "VERSION CONTROL SYSTEMS"
+  },
+  {
+    "from": "VERSION CONTROL",
+    "to": "Version Control Systems"
+  },
+  {
+    "from": "VERSION CONTROL SYSTEMS",
+    "to": "VCS Hosting"
+  },
+  {
+    "from": "Version Control Systems",
+    "to": "VCS Hosting"
+  },
+  {
+    "from": "Ubuntu / Debian",
+    "to": "VAULT"
+  },
+  {
+    "from": "Ubuntu / Debian",
+    "to": "Vault"
+  },
+  {
+    "from": "Ubuntu / Debian",
+    "to": "Zabbix"
+  }
+]

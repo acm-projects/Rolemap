@@ -1,0 +1,350 @@
+[
+  {
+    "from": "Debugging",
+    "to": "Debugging Techniques"
+  },
+  {
+    "from": "Debugging",
+    "to": "Debug Navigator"
+  },
+  {
+    "from": "Development IDE",
+    "to": "Debugging"
+  },
+  {
+    "from": "Editors",
+    "to": "Development IDE"
+  },
+  {
+    "from": "EDITORS",
+    "to": "Development IDE"
+  },
+  {
+    "from": "Dependency Injection",
+    "to": "Dagger"
+  },
+  {
+    "from": "Design & Architecture",
+    "to": "Domain Driven Design"
+  },
+  {
+    "from": "Design & Architecture",
+    "to": "Event Sourcing"
+  },
+  {
+    "from": "Design & Architecture",
+    "to": "GOF Design Patterns"
+  },
+  {
+    "from": "GOF Design Patterns",
+    "to": "Factory Pattern"
+  },
+  {
+    "from": "GOF Design Patterns",
+    "to": "Delegate Pattern"
+  },
+  {
+    "from": "Design and Development Principles",
+    "to": "Domain Driven Design"
+  },
+  {
+    "from": "Design and Development Principles",
+    "to": "Event Sourcing"
+  },
+  {
+    "from": "Design and Development Principles",
+    "to": "GOF Design Patterns"
+  },
+  {
+    "from": "File System",
+    "to": "Data Persistence"
+  },
+  {
+    "from": "Data Persistence",
+    "to": "DataStore"
+  },
+  {
+    "from": "Data Persistence",
+    "to": "FireStore"
+  },
+  {
+    "from": "Data Persistence",
+    "to": "DynamoDB"
+  },
+  {
+    "from": "Data Persistence",
+    "to": "DYNAMODB"
+  },
+  {
+    "from": "Data Persistence",
+    "to": "Firebase"
+  },
+  {
+    "from": "Data Persistence",
+    "to": "Database Indexes"
+  },
+  {
+    "from": "ELASTICSEARCH",
+    "to": "ELASTIC STACK"
+  },
+  {
+    "from": "Firebase",
+    "to": "FireStore"
+  },
+  {
+    "from": "Firebase",
+    "to": "Firebase Distribution"
+  },
+  {
+    "from": "GITHUB",
+    "to": "GITHUB ACTIONS"
+  },
+  {
+    "from": "Frameworks",
+    "to": "Flutter"
+  },
+  {
+    "from": "Frameworks",
+    "to": "Electron"
+  },
+  {
+    "from": "Frameworks",
+    "to": "FASTAPI"
+  },
+  {
+    "from": "Frameworks",
+    "to": "FLASK"
+  },
+  {
+    "from": "Frameworks & Library",
+    "to": "Flutter"
+  },
+  {
+    "from": "Frameworks & Library",
+    "to": "Electron"
+  },
+  {
+    "from": "Frameworks & Library",
+    "to": "FASTAPI"
+  },
+  {
+    "from": "Frameworks & Library",
+    "to": "FLASK"
+  },
+  {
+    "from": "PROGRAMMING SKILLS",
+    "to": "Objective-C Basics"
+  },
+  {
+    "from": "PROGRAMMING SKILLS",
+    "to": "PHP"
+  },
+  {
+    "from": "PROGRAMMING SKILLS",
+    "to": "PYTHON"
+  },
+  {
+    "from": "PROGRAMMING SKILLS",
+    "to": "RUST"
+  },
+  {
+    "from": "PROGRAMMING SKILLS",
+    "to": "Ruby"
+  },
+  {
+    "from": "PROGRAMMING SKILLS",
+    "to": "REACT"
+  },
+  {
+    "from": "PROGRAMMING SKILLS",
+    "to": "Qwik"
+  },
+  {
+    "from": "PROGRAMMING SKILLS",
+    "to": "Parsing"
+  },
+  {
+    "from": "PROGRAMMING SKILLS",
+    "to": "Playwright"
+  },
+  {
+    "from": "PYTHON",
+    "to": "PYTORCH"
+  },
+  {
+    "from": "REACT",
+    "to": "REACT NATIVE"
+  },
+  {
+    "from": "RELATIONAL DATABASES",
+    "to": "POSTGRESQL"
+  },
+  {
+    "from": "RELATIONAL DATABASES",
+    "to": "Oracle"
+  },
+  {
+    "from": "RELATIONAL DATABASES",
+    "to": "Room Database"
+  },
+  {
+    "from": "REST",
+    "to": "REST API"
+  },
+  {
+    "from": "REST",
+    "to": "RESTful APIs"
+  },
+  {
+    "from": "REST API",
+    "to": "OkHttp"
+  },
+  {
+    "from": "Observer Pattern",
+    "to": "Observables & observers"
+  },
+  {
+    "from": "Observer Pattern",
+    "to": "Publishers / Subscribers"
+  },
+  {
+    "from": "Observer Pattern",
+    "to": "Reactive Programming"
+  },
+  {
+    "from": "Observables & observers",
+    "to": "Operators"
+  },
+  {
+    "from": "Observables & observers",
+    "to": "Operators & Pipelines"
+  },
+  {
+    "from": "Reactive Programming",
+    "to": "RxJava"
+  },
+  {
+    "from": "Reactive Programming",
+    "to": "RxKotlin"
+  },
+  {
+    "from": "PERFORMANCE METRICS",
+    "to": "Profiling Instruments"
+  },
+  {
+    "from": "PERFORMANCE METRICS",
+    "to": "Profiling Perfor."
+  },
+  {
+    "from": "Package Managers",
+    "to": "Parcel"
+  },
+  {
+    "from": "Package Managers",
+    "to": "ROLLUP"
+  },
+  {
+    "from": "Objective-C Basics",
+    "to": "Operation Queues"
+  },
+  {
+    "from": "Presenting / Dismissing views",
+    "to": "Pushing Presenting"
+  },
+  {
+    "from": "PRODUCT ROADMAP",
+    "to": "PROJECT MANAGEMENT TOOLS"
+  },
+  {
+    "from": "RETROSPECTIVES",
+    "to": "PROJECT MANAGEMENT TOOLS"
+  },
+  {
+    "from": "RISK ASSESSMENT",
+    "to": "PROJECT MANAGEMENT TOOLS"
+  },
+  {
+    "from": "Swift Basics",
+    "to": "SWIFT"
+  },
+  {
+    "from": "SWIFT",
+    "to": "Swift Package Manager"
+  },
+  {
+    "from": "SWIFT",
+    "to": "SwiftFormat"
+  },
+  {
+    "from": "SWIFT",
+    "to": "SwiftLint"
+  },
+  {
+    "from": "SWIFT",
+    "to": "SwiftUI"
+  },
+  {
+    "from": "SWIFT",
+    "to": "RxSwift"
+  },
+  {
+    "from": "RxSwift",
+    "to": "RxSwift with MVVM"
+  },
+  {
+    "from": "SWIFT",
+    "to": "TCA"
+  },
+  {
+    "from": "SWIFT",
+    "to": "Storyboards"
+  },
+  {
+    "from": "SQL",
+    "to": "SQLite"
+  },
+  {
+    "from": "SQL",
+    "to": "Scaling Databases"
+  },
+  {
+    "from": "Scaling Databases",
+    "to": "Sharding Strategies"
+  },
+  {
+    "from": "SERVER SIDE",
+    "to": "SSR"
+  },
+  {
+    "from": "SERVER SIDE",
+    "to": "Server Security"
+  },
+  {
+    "from": "SERVER SIDE",
+    "to": "Server Sent Events"
+  },
+  {
+    "from": "SERVER SIDE",
+    "to": "Serverless"
+  },
+  {
+    "from": "Services",
+    "to": "SERVICE MESH"
+  },
+  {
+    "from": "Services",
+    "to": "SOA"
+  },
+  {
+    "from": "SOA",
+    "to": "SOAP"
+  },
+  {
+    "from": "SCRUM",
+    "to": "SPRINT PLANNING"
+  },
+  {
+    "from": "Svelte",
+    "to": "Svelte Kit"
+  }
+]

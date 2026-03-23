@@ -1,0 +1,547 @@
+{
+  "slug": "android",
+  "concepts": [
+    {
+      "id": "Suws-7f_6Z1ChpfcnxX2M",
+      "name": "Pick a Language"
+    },
+    {
+      "id": "qIzUv8-GgQnkqChEdgD50",
+      "name": "Kotlin"
+    },
+    {
+      "id": "RBABbkzD_uNFwEO-hssZO",
+      "name": "Java"
+    },
+    {
+      "id": "HlUUGj3dOZ68t4gIjerXh",
+      "name": "The Fundamentals"
+    },
+    {
+      "id": "ZRGsokU313Ky-anWbWK6q",
+      "name": "Development IDE"
+    },
+    {
+      "id": "jl1FsQ5-WGKeFyaILNt_p",
+      "name": "Basics of Kotlin"
+    },
+    {
+      "id": "j69erqfosSZMDlmKcnnn0",
+      "name": "Basics of OOP"
+    },
+    {
+      "id": "cNeT1dJDfgn0ndPzSxhSL",
+      "name": "Data Structures and Algorithms"
+    },
+    {
+      "id": "FVxNjbDBxgf6vkZWw1Awt",
+      "name": "What is and how to use Gradle?"
+    },
+    {
+      "id": "5m_7DvInF8C_4Ml1xVI6L",
+      "name": "Create a Basic Hello World App"
+    },
+    {
+      "id": "5s1CqsYCOXjNroDHaGKGa",
+      "name": "Version Control"
+    },
+    {
+      "id": "rqSZ2ATeHbOdIQE9Jlb0B",
+      "name": "Git"
+    },
+    {
+      "id": "H-2eb8fLwz8IKYXbeSVKK",
+      "name": "GitHub"
+    },
+    {
+      "id": "5LFZdUiFYYU_1sYsouyan",
+      "name": "Bitbucket"
+    },
+    {
+      "id": "Q47BtQphp59NkkZoeNXmP",
+      "name": "GitLab"
+    },
+    {
+      "id": "5Li8J5iR_ZuyIlxX0LYei",
+      "name": "App Components"
+    },
+    {
+      "id": "nwuVlPmzwJ17mtVQ8Hi9w",
+      "name": "Activity"
+    },
+    {
+      "id": "PcHmU1c9hqKyzSjwlRPHk",
+      "name": "Services"
+    },
+    {
+      "id": "nkcdjrswv0WCzUs48BAt9",
+      "name": "Content Provider"
+    },
+    {
+      "id": "tFuAToid1Fkmu96BDtW7K",
+      "name": "Broadcast Receiver"
+    },
+    {
+      "id": "hv_9imIQpthxEaMLXEUHI",
+      "name": "Intent"
+    },
+    {
+      "id": "FVg438cVBBzqJFkGWVbQM",
+      "name": "Activity LifeCycle"
+    },
+    {
+      "id": "oUjetA2eduvQIeLcQlLcu",
+      "name": "State Changes"
+    },
+    {
+      "id": "-O-G9bg36ut8NnZcdOaop",
+      "name": "Tasks & Backstack"
+    },
+    {
+      "id": "gGdz3j33x0gfrFDp_rw8Z",
+      "name": "Implicit Intents"
+    },
+    {
+      "id": "TmIeCF3xVCe5Sy3ITmM31",
+      "name": "Explicit Intents"
+    },
+    {
+      "id": "b-sfh6NoS-APqaNKm5L5S",
+      "name": "Intent Filters"
+    },
+    {
+      "id": "jePGzTejFe4ryA5qFFmjl",
+      "name": "Design & Architecture"
+    },
+    {
+      "id": "Dp2DOX10u2xJUjB8Okhzh",
+      "name": "Frame"
+    },
+    {
+      "id": "U8iMGGOd2EgPxSuwSG39Z",
+      "name": "Linear"
+    },
+    {
+      "id": "yE0qAQZiEC9R8WvCdskpr",
+      "name": "Relative"
+    },
+    {
+      "id": "3fFNMhQIuuh-NRzSXYpXO",
+      "name": "Constraint"
+    },
+    {
+      "id": "xIvplWfe-uDr9iHjPT1Mx",
+      "name": "RecyclerView"
+    },
+    {
+      "id": "znvZp24L-PcQwkSObtixs",
+      "name": "TextView"
+    },
+    {
+      "id": "2iDJrxjXOt7o2fPp2HfRl",
+      "name": "Fragments"
+    },
+    {
+      "id": "boMz0HZlMAsLdCZlpUo-H",
+      "name": "EditText"
+    },
+    {
+      "id": "Mtx0bY0drmaTw8sCM5YTl",
+      "name": "Dialogs"
+    },
+    {
+      "id": "WhfzFOUpm0DFEj7Oeq21R",
+      "name": "Buttons"
+    },
+    {
+      "id": "BVgO9n7tGlVdiS72-hFSd",
+      "name": "Toast"
+    },
+    {
+      "id": "A4rtNULX_MoV93IH1Lgqw",
+      "name": "ImageView"
+    },
+    {
+      "id": "Z4Tbd5ClnqCXGPGG09F-G",
+      "name": "Bottom Sheet"
+    },
+    {
+      "id": "EzLjX4iRT7AxkAOsJYnSU",
+      "name": "ListView"
+    },
+    {
+      "id": "amTxz7mS98lkhOrNMJXG_",
+      "name": "Drawer"
+    },
+    {
+      "id": "pEBpXv3Jf1AzBNHlvVrG8",
+      "name": "Tabs"
+    },
+    {
+      "id": "Xn1VQ-xOT67ZfJJTM4r1p",
+      "name": "Animations"
+    },
+    {
+      "id": "60Vm-77rseUqpMiFvp-dA",
+      "name": "Jetpack Compose"
+    },
+    {
+      "id": "xV475jHTlLuHtpHZeXb7P",
+      "name": "App Shortcuts"
+    },
+    {
+      "id": "o5rzmnaQeiSh9ocvfJPpK",
+      "name": "Navigation Components"
+    },
+    {
+      "id": "Bz-BkfzsDHAbAw3HD7WCd",
+      "name": "MVI"
+    },
+    {
+      "id": "pSU-NZtjBh-u0WKTYfjk_",
+      "name": "MVVM"
+    },
+    {
+      "id": "aF_xFIqTjQbENtC7pkXvJ",
+      "name": "MVP"
+    },
+    {
+      "id": "w1A6wPKSd3Yh2luuHV-aE",
+      "name": "MVC"
+    },
+    {
+      "id": "ZF5XgO7I_J9928bD3CVXo",
+      "name": "Repository Pattern"
+    },
+    {
+      "id": "784fiIdKrQDlIm3VIiJQN",
+      "name": "Builder Pattern"
+    },
+    {
+      "id": "DeOxj6RzQBYfEWV-M1Ybm",
+      "name": "Factory Pattern"
+    },
+    {
+      "id": "N_auRfGKkeIIc-qiHLkR_",
+      "name": "Observer Pattern"
+    },
+    {
+      "id": "W-WTIiQml8dLK6i_V69JK",
+      "name": "Flow"
+    },
+    {
+      "id": "xk0vnWr7uESdzYRxwFjoK",
+      "name": "RxJava"
+    },
+    {
+      "id": "7rbsp1o5bzIJP11BRIoeG",
+      "name": "RxKotlin"
+    },
+    {
+      "id": "TiokceMGU9caqiR0lbFYL",
+      "name": "LiveData"
+    },
+    {
+      "id": "qtXM9K7wyjOFuEMlZrB3C",
+      "name": "Dependency Injection"
+    },
+    {
+      "id": "CK7Ce632fdTgxeFsRUVvd",
+      "name": "Dagger"
+    },
+    {
+      "id": "UMqZ-jmXKDXKuu8bzqDH_",
+      "name": "Koin"
+    },
+    {
+      "id": "ooo_k2k_vUBR_jQ7Ke6Et",
+      "name": "Hilt"
+    },
+    {
+      "id": "dc7k50PjCYZcElHhCk66p",
+      "name": "Kodein"
+    },
+    {
+      "id": "0fNQWRxst8xRstIfPaPO6",
+      "name": "Storage"
+    },
+    {
+      "id": "PKql1HY0PLMfp50FRELXL",
+      "name": "Shared Preferences"
+    },
+    {
+      "id": "GWq3s1iTxQOp1BstHscJ9",
+      "name": "DataStore"
+    },
+    {
+      "id": "Bfg4So5RlI09zFNcburJd",
+      "name": "Room Database"
+    },
+    {
+      "id": "A4kdaj6AFueUgPI7hwKi5",
+      "name": "File System"
+    },
+    {
+      "id": "Yb6aKJMMCxU1QVltWg3Dr",
+      "name": "Network"
+    },
+    {
+      "id": "dDMRYiqrKyOBnRRQc8zsp",
+      "name": "Retro"
+    },
+    {
+      "id": "5pVuwOItAhUxxJX8ysAsn",
+      "name": "OkHttp"
+    },
+    {
+      "id": "ww0fTbdXwVr-QIOClU7ng",
+      "name": "Apollo-Android"
+    },
+    {
+      "id": "cFYZ2C7yNnY6NHKUNP2Z4",
+      "name": "Asynchronism"
+    },
+    {
+      "id": "i_cKmTnGAYw8xpHwZHjAd",
+      "name": "Coroutines"
+    },
+    {
+      "id": "BeGrA5BDBMZP1Jy7n-wl-",
+      "name": "Threads"
+    },
+    {
+      "id": "zXsNEyRbb8UpEOAUv6FpY",
+      "name": "RxJava"
+    },
+    {
+      "id": "4h37WBpYxRRyw9oH8ge7o",
+      "name": "RxKotlin"
+    },
+    {
+      "id": "OAb_JD64uGm2tPoue7w6t",
+      "name": "WorkManager"
+    },
+    {
+      "id": "ZEdn2yy-IwHN3kOYr2ZbC",
+      "name": "Common Services"
+    },
+    {
+      "id": "Xv0es_z64vh-QzivMeAT3",
+      "name": "Authentication"
+    },
+    {
+      "id": "xB4evbD07n1VrHOIpowV4",
+      "name": "Crashlytics"
+    },
+    {
+      "id": "1Tz-Shj_Tuz2U8llEAcLr",
+      "name": "Remote Config"
+    },
+    {
+      "id": "e3vHFaFFMV7kI9q6yf5e9",
+      "name": "Cloud Messaging"
+    },
+    {
+      "id": "3EEfKAd-ppIQpdQSEhbA1",
+      "name": "FireStore"
+    },
+    {
+      "id": "D4ZXQOKJkyFYNZIy-MJ9Y",
+      "name": "Google Admob"
+    },
+    {
+      "id": "m5rumeynEbS8T27pelr0-",
+      "name": "Google Play Services"
+    },
+    {
+      "id": "S5FVF9rMgVSSDKXJW2GYb",
+      "name": "Google Maps"
+    },
+    {
+      "id": "77F9F3oI5CPgwgM_hxWfa",
+      "name": "Linting"
+    },
+    {
+      "id": "zMbXQH17Q52opdbitPzj7",
+      "name": "Ktlint"
+    },
+    {
+      "id": "RUvuCp_JK5MQQT13SSHUV",
+      "name": "Detekt"
+    },
+    {
+      "id": "6KbSUAoT_jTudFoIbwMpA",
+      "name": "Debugging"
+    },
+    {
+      "id": "VFOD4JrV8kZ2583G3oT95",
+      "name": "Timber"
+    },
+    {
+      "id": "3i4g9ZWgLxKb2UMgRJi4Q",
+      "name": "Leak Canary"
+    },
+    {
+      "id": "7RKN1FNtRE_BE6QeAQrKb",
+      "name": "Chucker"
+    },
+    {
+      "id": "ACUJlDDR0jqEohsFzWEoQ",
+      "name": "Jetpack Benchmark"
+    },
+    {
+      "id": "ZOQm5OlzCA-h_yxywwDrW",
+      "name": "Testing"
+    },
+    {
+      "id": "-ONSC-ImGSELbamKmjIlH",
+      "name": "Espresso"
+    },
+    {
+      "id": "gvGAwjk_nhEgxzZ_c3f6b",
+      "name": "JUnit"
+    },
+    {
+      "id": "kc6buUsLAeZeUb4Tk0apM",
+      "name": "Distribution"
+    },
+    {
+      "id": "T7q_quNaIAuGi96OdnDT1",
+      "name": "Firebase Distribution"
+    },
+    {
+      "id": "HgRdgi2Hu4C8YLG5PXfoo",
+      "name": "Google Playstore"
+    },
+    {
+      "id": "_FSlD_qTz5Xo0x3pB6sZI",
+      "name": "Signed APK"
+    },
+    {
+      "id": "4_e76QafrB419S2INOeKd",
+      "name": "Interface & Navigation"
+    }
+  ],
+  "prereq_edges": [
+    {
+      "from": "Pick a Language",
+      "to": "Kotlin"
+    },
+    {
+      "from": "Pick a Language",
+      "to": "Java"
+    },
+    {
+      "from": "Pick a Language",
+      "to": "The Fundamentals"
+    },
+    {
+      "from": "The Fundamentals",
+      "to": "Development IDE"
+    },
+    {
+      "from": "The Fundamentals",
+      "to": "Basics of Kotlin"
+    },
+    {
+      "from": "The Fundamentals",
+      "to": "Basics of OOP"
+    },
+    {
+      "from": "The Fundamentals",
+      "to": "Data Structures and Algorithms"
+    },
+    {
+      "from": "The Fundamentals",
+      "to": "What is and how to use Gradle?"
+    },
+    {
+      "from": "The Fundamentals",
+      "to": "Create a Basic Hello World App"
+    },
+    {
+      "from": "The Fundamentals",
+      "to": "Version Control"
+    },
+    {
+      "from": "Version Control",
+      "to": "App Components"
+    },
+    {
+      "from": "Distribution",
+      "to": "Google Playstore"
+    },
+    {
+      "from": "Distribution",
+      "to": "Firebase Distribution"
+    },
+    {
+      "from": "App Components",
+      "to": "Interface & Navigation"
+    },
+    {
+      "from": "App Components",
+      "to": "Activity"
+    },
+    {
+      "from": "Interface & Navigation",
+      "to": "Jetpack Compose"
+    },
+    {
+      "from": "Interface & Navigation",
+      "to": "App Shortcuts"
+    },
+    {
+      "from": "Interface & Navigation",
+      "to": "Design & Architecture"
+    },
+    {
+      "from": "Storage",
+      "to": "Shared Preferences"
+    },
+    {
+      "from": "Storage",
+      "to": "DataStore"
+    },
+    {
+      "from": "Storage",
+      "to": "Room Database"
+    },
+    {
+      "from": "Storage",
+      "to": "File System"
+    },
+    {
+      "from": "Network",
+      "to": "Asynchronism"
+    },
+    {
+      "from": "Asynchronism",
+      "to": "Common Services"
+    },
+    {
+      "from": "Common Services",
+      "to": "Linting"
+    },
+    {
+      "from": "Linting",
+      "to": "Testing"
+    },
+    {
+      "from": "Testing",
+      "to": "Debugging"
+    },
+    {
+      "from": "Debugging",
+      "to": "Distribution"
+    },
+    {
+      "from": "Debugging",
+      "to": "Jetpack Benchmark"
+    },
+    {
+      "from": "Distribution",
+      "to": "Signed APK"
+    }
+  ]
+}

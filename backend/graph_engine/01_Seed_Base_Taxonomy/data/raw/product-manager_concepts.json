@@ -1,0 +1,1091 @@
+{
+  "slug": "product-manager",
+  "concepts": [
+    {
+      "id": "luk1vnpy0duneVjen8WzO",
+      "name": "What is Product Management?"
+    },
+    {
+      "id": "V-IeFB9S2tToxANHIzpMs",
+      "name": "Product vs Project Management"
+    },
+    {
+      "id": "Dx6ee8P_Agpw1MLKlAPGI",
+      "name": "Roles and Responsibilities"
+    },
+    {
+      "id": "5W-3jh1-4qSU5kagrWv9z",
+      "name": "Key Skills"
+    },
+    {
+      "id": "kB8e26BUm8BpTY1_O3N3_",
+      "name": "Product Development Lifecycle"
+    },
+    {
+      "id": "5okUFVMuG6mjRki4fyCcF",
+      "name": "Development"
+    },
+    {
+      "id": "GoYEAU_lZ186M3IJY48O6",
+      "name": "Introduction"
+    },
+    {
+      "id": "ke5vl9p3ouupjVmgU5IKw",
+      "name": "Growth"
+    },
+    {
+      "id": "aUJTPvO9Eb1UOD0MIY4Mf",
+      "name": "Maturity"
+    },
+    {
+      "id": "yOve7g_05UMpXHcGpdZcW",
+      "name": "Decline"
+    },
+    {
+      "id": "beca7sTxYY06RwNn5jpZM",
+      "name": "Mind Mapping"
+    },
+    {
+      "id": "0emyqhl028_M6tdilfFC3",
+      "name": "Brainwriting"
+    },
+    {
+      "id": "uLSPKcypF06AhzoeNVtDk",
+      "name": "SCAMPER"
+    },
+    {
+      "id": "69IgqluiW9cVfezSIKInD",
+      "name": "Brainstorming Techniques"
+    },
+    {
+      "id": "vP4tfzP-hOiAsv4K4RsQy",
+      "name": "Discovery"
+    },
+    {
+      "id": "toc34xxsB_tnHtekk1UmN",
+      "name": "Selection"
+    },
+    {
+      "id": "fK3ZaX7Amna1oa_T5axVk",
+      "name": "Validation"
+    },
+    {
+      "id": "1HytzY1KRYIQWoQa5FMwY",
+      "name": "Iterative Process"
+    },
+    {
+      "id": "LhNgyNDeqCAD--dAzf6u8",
+      "name": "Execution"
+    },
+    {
+      "id": "gjdCSm_jZmG_q6YjG_8Qu",
+      "name": "Blue Ocean Strategy"
+    },
+    {
+      "id": "DEwte-c-jxAFpiaBXAPSO",
+      "name": "TRIZ (Theory of Inventive Problem Solving)"
+    },
+    {
+      "id": "aBJUQvgXmvpLPOhpDTn7l",
+      "name": "Problem Framing"
+    },
+    {
+      "id": "fmpJB_14CYn7PVuoGZdoz",
+      "name": "Product Identification"
+    },
+    {
+      "id": "Eusp5p6gNIxtU_yVvOkmu",
+      "name": "Market Analysis"
+    },
+    {
+      "id": "8LAy6uBfrdtrjF8ygAGoo",
+      "name": "User Research"
+    },
+    {
+      "id": "YPqdrZguH0ArEFSe-VwKS",
+      "name": "Positioning"
+    },
+    {
+      "id": "LkDLk6DsEvbFXZPGOhD0C",
+      "name": "Identifying Market Needs"
+    },
+    {
+      "id": "PBDlYIyS8LAyPE6tV-kU7",
+      "name": "Competitive Analysis"
+    },
+    {
+      "id": "aDhSpLRZ6Sd8SnkcwtyLf",
+      "name": "Emerging Market Trends"
+    },
+    {
+      "id": "0y8F9x6MhApQkS1VhS8Dx",
+      "name": "User Personas"
+    },
+    {
+      "id": "5kt8AkCsdAdlBmsKOkKFH",
+      "name": "User Interviews"
+    },
+    {
+      "id": "a_5AyOKAgcg0rArZfapA_",
+      "name": "Surveys and Questionnaires"
+    },
+    {
+      "id": "VwI7plziVzwkp3KZd4466",
+      "name": "Ethnographic Research"
+    },
+    {
+      "id": "tKDlfVvNym_OIqkommiJ8",
+      "name": "USP (Unique Selling Point)"
+    },
+    {
+      "id": "3MYjrnd6h2ZlcfaXjUbkC",
+      "name": "Market Segmentation"
+    },
+    {
+      "id": "JhhjMPTNb646aQKlS_cji",
+      "name": "Case Studies"
+    },
+    {
+      "id": "l-KrmCOKEfpLHq4j-9SoY",
+      "name": "Vision & Mission"
+    },
+    {
+      "id": "DnKHDm0TZ7QQUyrhPdqkV",
+      "name": "Statement"
+    },
+    {
+      "id": "ZCTSbMHAMSaOxlqaJImzr",
+      "name": "Proposition"
+    },
+    {
+      "id": "8srsCEv55zh1y4gsp-rCO",
+      "name": "Capabilities"
+    },
+    {
+      "id": "eKJ2XfDxu0NAKA932tbzy",
+      "name": "Solved Constraints"
+    },
+    {
+      "id": "wuqZntn1ivkr9AV_09zYX",
+      "name": "Future Constraints"
+    },
+    {
+      "id": "uXseNTJlteD6Fgi1bzQB4",
+      "name": "Reference Materials"
+    },
+    {
+      "id": "zS_CjYSTOIkJZn-oUEvgh",
+      "name": "Narrative"
+    },
+    {
+      "id": "n2AYdM2dlJfuZ97jXY49U",
+      "name": "Defining Goals"
+    },
+    {
+      "id": "tmlFCmEuYpcUnt8VvVP9R",
+      "name": "Target"
+    },
+    {
+      "id": "GPRqshiha8Pi4a4ImW8-5",
+      "name": "Baseline"
+    },
+    {
+      "id": "s8mK1llA32B69_rzOwcwN",
+      "name": "Trend"
+    },
+    {
+      "id": "E1yPzEhssJWMDLeSiL4cj",
+      "name": "Timeframe"
+    },
+    {
+      "id": "6OjKcLbUZVJdUDC7if0Uy",
+      "name": "Value Proposition"
+    },
+    {
+      "id": "1j2ZSo7UGnBgoLpYzsA5t",
+      "name": "Defining Value Proposition"
+    },
+    {
+      "id": "kjKUrKdtCM95VinlluKDS",
+      "name": "Value Proposition Canvas"
+    },
+    {
+      "id": "0AQj2F1n8VKHBwuF4ywrp",
+      "name": "Value vs Features"
+    },
+    {
+      "id": "xu8A_QKs6lXzKPMiifNF_",
+      "name": "Finding Balance"
+    },
+    {
+      "id": "GbFbURxIRD76kyR9vKfdg",
+      "name": "Feature Creep"
+    },
+    {
+      "id": "m46lX4dUHik_BSHQwaU2l",
+      "name": "Strategic Thinking"
+    },
+    {
+      "id": "qy_IXzenBOEVBMvVlXPaY",
+      "name": "Competitive Strategy"
+    },
+    {
+      "id": "8CW_clQsc6SC4piQ3__0I",
+      "name": "Five Forces Analysis"
+    },
+    {
+      "id": "tTUp4GQHvjLZYkySasQFE",
+      "name": "Competetive Advantage"
+    },
+    {
+      "id": "jWU_odHoQYk3GKCPoRV2n",
+      "name": "Strategic Partners"
+    },
+    {
+      "id": "1M6WpW1wbJcXMb3nf10U2",
+      "name": "Identify Partners"
+    },
+    {
+      "id": "vXnf1AcMidLww5EypChWk",
+      "name": "Managing Partnerships"
+    },
+    {
+      "id": "0tJ7zlgOIaioCMmVavfqz",
+      "name": "Product Requirements"
+    },
+    {
+      "id": "0FqpBfvnkGN_oE2KSC-_8",
+      "name": "Writing PRDs"
+    },
+    {
+      "id": "kN-UfAbQ8j7g0jDdqWK55",
+      "name": "User Stories"
+    },
+    {
+      "id": "B9fgJmzVViaq7dvSuEglb",
+      "name": "Job Stories"
+    },
+    {
+      "id": "gS3ofDrqDRKbecIskIyGi",
+      "name": "Product Roadmap"
+    },
+    {
+      "id": "eiqV86PWizZPWsyqoBU5k",
+      "name": "Creating a Roadmap"
+    },
+    {
+      "id": "k7Zv7IS9y-jkI_zGrBQG3",
+      "name": "Prioritising Features"
+    },
+    {
+      "id": "qGvHqOSTPyVKll4mMVk7i",
+      "name": "Continuous Roadmapping"
+    },
+    {
+      "id": "1uAfy3ISLKGmLirvIfzfE",
+      "name": "Outcome-Based Roadmaps"
+    },
+    {
+      "id": "NjLt_B_kV7FdnkOomqayx",
+      "name": "Communicating the Roadmap"
+    },
+    {
+      "id": "lq5Hl1ZXBQRRI_4ywn7yA",
+      "name": "Backlog Management"
+    },
+    {
+      "id": "Slb0P_LVdl7-GzUqbO33c",
+      "name": "Prioritization Techniques"
+    },
+    {
+      "id": "sqxgqfxWMluhWtCWN8spG",
+      "name": "Grooming Sessions"
+    },
+    {
+      "id": "3JY85Tu40ABy9XfoliaqE",
+      "name": "User Story Mapping"
+    },
+    {
+      "id": "-lFYy5W1YqWuTiM3QRF4k",
+      "name": "UX / UI Design"
+    },
+    {
+      "id": "TwL-EqDorSgUpBYr4O4rf",
+      "name": "Principles of UX Design"
+    },
+    {
+      "id": "zwrmh-djneZ8HIqbaBOkN",
+      "name": "Wireframing and Prototyping"
+    },
+    {
+      "id": "yPtxGBDEJkFBhF8ZgQUVH",
+      "name": "Design Thinking"
+    },
+    {
+      "id": "lxU25qxxgxnNF3c3kdZxz",
+      "name": "Service Design"
+    },
+    {
+      "id": "S_-9msr3vGZgOQ36zErnf",
+      "name": "Interaction Design"
+    },
+    {
+      "id": "v3hKowLMBVq9eCXkUhrDZ",
+      "name": "User Testing"
+    },
+    {
+      "id": "1uXjKKvOKqpO50m1pM627",
+      "name": "Usability Testing"
+    },
+    {
+      "id": "Ws7IFrHQNoBjLE2Td2xIZ",
+      "name": "A/B Testing"
+    },
+    {
+      "id": "5fze1aw1in3Gp3K31bvin",
+      "name": "Remote User Testing"
+    },
+    {
+      "id": "sAu4Gr1hg8S4jAV0bOSdY",
+      "name": "Agile Methodology"
+    },
+    {
+      "id": "2r-NPGcROFmw-pd4rvsAJ",
+      "name": "Working with Engineering Teams"
+    },
+    {
+      "id": "WNCVmFrpHW7rMaIzlLaXl",
+      "name": "Scrum Basics"
+    },
+    {
+      "id": "kJ2HQFEsnc5yISU8d9Lla",
+      "name": "Kanban Basics"
+    },
+    {
+      "id": "bu-xm-L1XJgIPAFs2PieE",
+      "name": "Sprint Planning"
+    },
+    {
+      "id": "BzgGJbXIwQb0yR2ZMCmul",
+      "name": "Daily Standups"
+    },
+    {
+      "id": "AkKl7PrIPrIqXnss88v18",
+      "name": "Retrospectives"
+    },
+    {
+      "id": "mm5yvAaROsbwDgQUfnqyl",
+      "name": "Minimum Viable Product (MVP)"
+    },
+    {
+      "id": "53XS2zKdK6IDdOP07yiT7",
+      "name": "Go-to-Market Strategy"
+    },
+    {
+      "id": "PbhuFKsVNO6xGJHqXCwFl",
+      "name": "Launch Planning"
+    },
+    {
+      "id": "YYo_7lmTw7h74Y4J5pp-_",
+      "name": "Marketing Strategies"
+    },
+    {
+      "id": "wWWcIfPDGB92ed-1kV-uj",
+      "name": "Growth Hacking"
+    },
+    {
+      "id": "VqNK1rNAnr_yvi_a0YZEs",
+      "name": "Release Strategies"
+    },
+    {
+      "id": "7BCnM9A9PwYqsLmcNVfvt",
+      "name": "Feature Toggles"
+    },
+    {
+      "id": "8_VCWpSZkRWmsD1_thMYS",
+      "name": "Phased Rollouts"
+    },
+    {
+      "id": "aCoVHIAZllwKckkkwExR7",
+      "name": "Dark Launches"
+    },
+    {
+      "id": "RfllpwFxWBeHF29oUwGo_",
+      "name": "Key Product Metrics"
+    },
+    {
+      "id": "g2EgVtqwQxLfjBjomUqcU",
+      "name": "DAU (Daily Active Users)"
+    },
+    {
+      "id": "Sbi5Y72nU_B1Jk6xNp17u",
+      "name": "MAU (Monthly Active Users)"
+    },
+    {
+      "id": "avkgeNNVQOCE7dvEKFVZv",
+      "name": "Conversion Rate"
+    },
+    {
+      "id": "mfG1UheUwzO8dbS4oglgo",
+      "name": "Retention Rate"
+    },
+    {
+      "id": "jRWVaNpTfBXVjpi4WNT7H",
+      "name": "Churn Rate"
+    },
+    {
+      "id": "DB-dN0bfG29Xv_a8iV8Yg",
+      "name": "LTV (Lifetime Value)"
+    },
+    {
+      "id": "kVd36zDyjLvVG2Nw9gsXi",
+      "name": "CAC (Customer Acquisition Cost)"
+    },
+    {
+      "id": "MYKZIDHSIXr-69BdtFcNR",
+      "name": "North Star Metric"
+    },
+    {
+      "id": "eO7glnL0HixQYnoF3uvSW",
+      "name": "Data-Driven Decision Making"
+    },
+    {
+      "id": "V3yGVN7z_ihLkScO0_92_",
+      "name": "A/B Testing"
+    },
+    {
+      "id": "APdoU9kzHEqpUgKGKfyp9",
+      "name": "Cohort Analysis"
+    },
+    {
+      "id": "YsDt5I0prvYeaFfn4_lpx",
+      "name": "Predictive Analytics"
+    },
+    {
+      "id": "kirIe5QsxruRUbWGfQtbD",
+      "name": "Feedback Loops"
+    },
+    {
+      "id": "5-4MXlRjH-4PlF2giZpVL",
+      "name": "Communication Skills"
+    },
+    {
+      "id": "O5Ipa7PHeXUNEjQ6Mla7Y",
+      "name": "Interpersonal"
+    },
+    {
+      "id": "LPiCtvd00hWsCAefTIUxy",
+      "name": "Business"
+    },
+    {
+      "id": "XGnJUxZu7_WnPkklvROon",
+      "name": "Communication Techniques"
+    },
+    {
+      "id": "iWCcvEEllfACoaXm5Ul5D",
+      "name": "Difficult Conversations"
+    },
+    {
+      "id": "FwYc1942Z0_KYih0BQ1CL",
+      "name": "Active Listening"
+    },
+    {
+      "id": "sQvkXvluZHgTIGS7W3Fj4",
+      "name": "Conflict Resolution"
+    },
+    {
+      "id": "D5GXDeApGwjmLG2-KF2pr",
+      "name": "Alignment & Buy-In"
+    },
+    {
+      "id": "XxeB3t8MjTbUzZj2hdKF3",
+      "name": "Showing Impact"
+    },
+    {
+      "id": "X-2mVBut_pn4o_fEGVrib",
+      "name": "Managing Stakeholders"
+    },
+    {
+      "id": "Cryuk9pCI3y78HDGv6TMK",
+      "name": "Identifying Stakeholders"
+    },
+    {
+      "id": "bHA-9gQhvjh40Cy8jbI9u",
+      "name": "Stakeholder Mapping"
+    },
+    {
+      "id": "rvqZRvbt73BY5X98dA3Sq",
+      "name": "Stakeholder Engagement"
+    },
+    {
+      "id": "QGAb7dQM052XPA0Ll-R1P",
+      "name": "Remote Stakeholders"
+    },
+    {
+      "id": "XG-QBb--HXL-1r-jInYDN",
+      "name": "Roadmapping Tools"
+    },
+    {
+      "id": "Yjxk2gUi5jQONeLzBaeJz",
+      "name": "Project Management Tools"
+    },
+    {
+      "id": "lJ_7-oYaFWST8aBd5lIgM",
+      "name": "Analytics Tools"
+    },
+    {
+      "id": "IAta7OX7pAxUzkFdHibY9",
+      "name": "Communication Tools"
+    },
+    {
+      "id": "70yvt_oKcadnjZgg8FtAh",
+      "name": "Product Board"
+    },
+    {
+      "id": "dr5BLjsZXk50R7vp3cMsu",
+      "name": "Aha"
+    },
+    {
+      "id": "dk1YzX84UUe_es1x-dfp2",
+      "name": "Notion"
+    },
+    {
+      "id": "EPQ4-cKr-RqJ457XniP6w",
+      "name": "Jira"
+    },
+    {
+      "id": "PIIGfDN6t8H6tXZuKuE04",
+      "name": "Linear"
+    },
+    {
+      "id": "SD98_s1ET_j2eIIKmcKRc",
+      "name": "Trello"
+    },
+    {
+      "id": "Z5oorppEJ0ydvwMXSlk1J",
+      "name": "Amplitude"
+    },
+    {
+      "id": "xas-t2sAKmJNfb0-Zcpwy",
+      "name": "Heap"
+    },
+    {
+      "id": "y8Ys_WfPXLVfJngOLryGR",
+      "name": "Looker"
+    },
+    {
+      "id": "UdOJDzkDP_R3E5f_IltYh",
+      "name": "Slack"
+    },
+    {
+      "id": "z72akk5E5XjEuLraS9Gug",
+      "name": "Teams"
+    },
+    {
+      "id": "e6gO1twjter9xWm14g9S9",
+      "name": "Discord"
+    },
+    {
+      "id": "oO-ujKApmpoQdkPEkOQG7",
+      "name": "Identifying Risks"
+    },
+    {
+      "id": "0zRGIArMUe9xVDSKfnoHZ",
+      "name": "Risk Identification Techniques"
+    },
+    {
+      "id": "WBnLicFo9p2zm57pyXciI",
+      "name": "Risk Register"
+    },
+    {
+      "id": "0uRTNYMwTU9JzvIWSvDSm",
+      "name": "Risk Assessment"
+    },
+    {
+      "id": "KXadmIkKJM0XLV4Qz0Stj",
+      "name": "Qualitative Risk Assessment"
+    },
+    {
+      "id": "g0sBLcG8kEfeHHtsJSb4i",
+      "name": "Quantitative Risk Assessment"
+    },
+    {
+      "id": "A-srndVB0olGq0qkApnwi",
+      "name": "Risk Mitigation"
+    },
+    {
+      "id": "4gV80Qrd08_Y8oZB_hahV",
+      "name": "Mitigation Strategies"
+    },
+    {
+      "id": "ybq-zRDLvtTTl8X8GnRNf",
+      "name": "Contingency Planning"
+    },
+    {
+      "id": "zJGg20NPStLPkeL5LKoGm",
+      "name": "Monitoring and Controlling Risks"
+    },
+    {
+      "id": "S2w72SRx-9QvRO7RNBlKZ",
+      "name": "Risk Monitoring Tools"
+    },
+    {
+      "id": "ao2uUq_UZWtB-LRKH1x40",
+      "name": "Risk Audits"
+    },
+    {
+      "id": "4i_kX9oZunMBFYevu7lyi",
+      "name": "Scaling Products"
+    },
+    {
+      "id": "4-w4BpDh4dpmnU9qfjqbU",
+      "name": "Growth Strategies"
+    },
+    {
+      "id": "lIdogd1DAzCo1ct7cdvYD",
+      "name": "Internationalization"
+    },
+    {
+      "id": "EEi56Ww04QbuF2I7B7xW8",
+      "name": "Platform Thinking"
+    },
+    {
+      "id": "BGtxI9CHtJfhRMdUEIfWa",
+      "name": "Portfolio Management"
+    },
+    {
+      "id": "9y_I41kJhkmyBJjiTw8Xd",
+      "name": "Advanced Analysis"
+    },
+    {
+      "id": "h5N51_YgjaTHhPUHxkqQR",
+      "name": "Predictive Analytics"
+    },
+    {
+      "id": "rzrxYqFENQ3d0WpZv9-0Q",
+      "name": "ML in Product Mgmt."
+    },
+    {
+      "id": "H7sf23kwv73XjnFCdKHPi",
+      "name": "AI in Product Mgmt."
+    },
+    {
+      "id": "WyKJxhfnbz6jx-Tvg40_j",
+      "name": "Leadership and Influence"
+    },
+    {
+      "id": "MP-jZtofXCufnvtSldxqU",
+      "name": "Building and Leading Teams"
+    },
+    {
+      "id": "CMge123Tm9DrZ31LvipLD",
+      "name": "Influencing without Authority"
+    },
+    {
+      "id": "gyNOziqf1VsfI2j-FaNZ_",
+      "name": "Emotional Intelligence"
+    },
+    {
+      "id": "9vy4uIoykk2zSSyIok4_S",
+      "name": "Introduction"
+    }
+  ],
+  "prereq_edges": [
+    {
+      "from": "Product Identification",
+      "to": "Brainstorming Techniques"
+    },
+    {
+      "from": "Product Identification",
+      "to": "Iterative Process"
+    },
+    {
+      "from": "Product Identification",
+      "to": "Blue Ocean Strategy"
+    },
+    {
+      "from": "Market Analysis",
+      "to": "Identifying Market Needs"
+    },
+    {
+      "from": "Market Analysis",
+      "to": "Competitive Analysis"
+    },
+    {
+      "from": "Market Analysis",
+      "to": "Emerging Market Trends"
+    },
+    {
+      "from": "Market Analysis",
+      "to": "User Research"
+    },
+    {
+      "from": "User Research",
+      "to": "User Personas"
+    },
+    {
+      "from": "User Research",
+      "to": "User Interviews"
+    },
+    {
+      "from": "User Research",
+      "to": "Surveys and Questionnaires"
+    },
+    {
+      "from": "User Research",
+      "to": "Ethnographic Research"
+    },
+    {
+      "from": "User Research",
+      "to": "Positioning"
+    },
+    {
+      "from": "Positioning",
+      "to": "USP (Unique Selling Point)"
+    },
+    {
+      "from": "Positioning",
+      "to": "Market Segmentation"
+    },
+    {
+      "from": "Positioning",
+      "to": "Case Studies"
+    },
+    {
+      "from": "Vision & Mission",
+      "to": "Statement"
+    },
+    {
+      "from": "Vision & Mission",
+      "to": "Proposition"
+    },
+    {
+      "from": "Vision & Mission",
+      "to": "Capabilities"
+    },
+    {
+      "from": "Vision & Mission",
+      "to": "Solved Constraints"
+    },
+    {
+      "from": "Vision & Mission",
+      "to": "Future Constraints"
+    },
+    {
+      "from": "Vision & Mission",
+      "to": "Reference Materials"
+    },
+    {
+      "from": "Vision & Mission",
+      "to": "Narrative"
+    },
+    {
+      "from": "Vision & Mission",
+      "to": "Defining Goals"
+    },
+    {
+      "from": "Defining Goals",
+      "to": "Value Proposition"
+    },
+    {
+      "from": "Value Proposition",
+      "to": "Defining Value Proposition"
+    },
+    {
+      "from": "Value vs Features",
+      "to": "Finding Balance"
+    },
+    {
+      "from": "Value Proposition",
+      "to": "Value vs Features"
+    },
+    {
+      "from": "Value vs Features",
+      "to": "Strategic Thinking"
+    },
+    {
+      "from": "Strategic Thinking",
+      "to": "Competitive Strategy"
+    },
+    {
+      "from": "Product Requirements",
+      "to": "Writing PRDs"
+    },
+    {
+      "from": "Product Requirements",
+      "to": "User Stories"
+    },
+    {
+      "from": "Product Requirements",
+      "to": "Job Stories"
+    },
+    {
+      "from": "Product Requirements",
+      "to": "Product Roadmap"
+    },
+    {
+      "from": "Product Roadmap",
+      "to": "Communicating the Roadmap"
+    },
+    {
+      "from": "Backlog Management",
+      "to": "User Story Mapping"
+    },
+    {
+      "from": "Product Roadmap",
+      "to": "Backlog Management"
+    },
+    {
+      "from": "UX / UI Design",
+      "to": "Principles of UX Design"
+    },
+    {
+      "from": "UX / UI Design",
+      "to": "Wireframing and Prototyping"
+    },
+    {
+      "from": "UX / UI Design",
+      "to": "Design Thinking"
+    },
+    {
+      "from": "UX / UI Design",
+      "to": "Service Design"
+    },
+    {
+      "from": "Service Design",
+      "to": "Interaction Design"
+    },
+    {
+      "from": "Interaction Design",
+      "to": "User Testing"
+    },
+    {
+      "from": "User Testing",
+      "to": "Remote User Testing"
+    },
+    {
+      "from": "User Testing",
+      "to": "A/B Testing"
+    },
+    {
+      "from": "User Testing",
+      "to": "Usability Testing"
+    },
+    {
+      "from": "Agile Methodology",
+      "to": "Working with Engineering Teams"
+    },
+    {
+      "from": "Agile Methodology",
+      "to": "Kanban Basics"
+    },
+    {
+      "from": "Key Product Metrics",
+      "to": "DAU (Daily Active Users)"
+    },
+    {
+      "from": "Key Product Metrics",
+      "to": "MAU (Monthly Active Users)"
+    },
+    {
+      "from": "Key Product Metrics",
+      "to": "Conversion Rate"
+    },
+    {
+      "from": "Key Product Metrics",
+      "to": "Retention Rate"
+    },
+    {
+      "from": "Key Product Metrics",
+      "to": "Churn Rate"
+    },
+    {
+      "from": "Key Product Metrics",
+      "to": "LTV (Lifetime Value)"
+    },
+    {
+      "from": "Key Product Metrics",
+      "to": "CAC (Customer Acquisition Cost)"
+    },
+    {
+      "from": "Key Product Metrics",
+      "to": "North Star Metric"
+    },
+    {
+      "from": "Key Product Metrics",
+      "to": "Data-Driven Decision Making"
+    },
+    {
+      "from": "Data-Driven Decision Making",
+      "to": "A/B Testing"
+    },
+    {
+      "from": "Data-Driven Decision Making",
+      "to": "Cohort Analysis"
+    },
+    {
+      "from": "Data-Driven Decision Making",
+      "to": "Predictive Analytics"
+    },
+    {
+      "from": "Data-Driven Decision Making",
+      "to": "Feedback Loops"
+    },
+    {
+      "from": "Managing Stakeholders",
+      "to": "Identifying Stakeholders"
+    },
+    {
+      "from": "Communication Skills",
+      "to": "Managing Stakeholders"
+    },
+    {
+      "from": "Roadmapping Tools",
+      "to": "Notion"
+    },
+    {
+      "from": "Roadmapping Tools",
+      "to": "Aha"
+    },
+    {
+      "from": "Roadmapping Tools",
+      "to": "Product Board"
+    },
+    {
+      "from": "Roadmapping Tools",
+      "to": "Project Management Tools"
+    },
+    {
+      "from": "Project Management Tools",
+      "to": "Jira"
+    },
+    {
+      "from": "Project Management Tools",
+      "to": "Linear"
+    },
+    {
+      "from": "Project Management Tools",
+      "to": "Trello"
+    },
+    {
+      "from": "Project Management Tools",
+      "to": "Analytics Tools"
+    },
+    {
+      "from": "Analytics Tools",
+      "to": "Amplitude"
+    },
+    {
+      "from": "Analytics Tools",
+      "to": "Heap"
+    },
+    {
+      "from": "Analytics Tools",
+      "to": "Looker"
+    },
+    {
+      "from": "Analytics Tools",
+      "to": "Communication Tools"
+    },
+    {
+      "from": "Communication Tools",
+      "to": "Discord"
+    },
+    {
+      "from": "Communication Tools",
+      "to": "Teams"
+    },
+    {
+      "from": "Communication Tools",
+      "to": "Slack"
+    },
+    {
+      "from": "Identifying Risks",
+      "to": "Risk Register"
+    },
+    {
+      "from": "Identifying Risks",
+      "to": "Risk Identification Techniques"
+    },
+    {
+      "from": "Identifying Risks",
+      "to": "Risk Assessment"
+    },
+    {
+      "from": "Risk Assessment",
+      "to": "Qualitative Risk Assessment"
+    },
+    {
+      "from": "Risk Mitigation",
+      "to": "Contingency Planning"
+    },
+    {
+      "from": "Risk Assessment",
+      "to": "Risk Mitigation"
+    },
+    {
+      "from": "Risk Mitigation",
+      "to": "Monitoring and Controlling Risks"
+    },
+    {
+      "from": "Monitoring and Controlling Risks",
+      "to": "Risk Monitoring Tools"
+    },
+    {
+      "from": "Scaling Products",
+      "to": "Platform Thinking"
+    },
+    {
+      "from": "Scaling Products",
+      "to": "Portfolio Management"
+    },
+    {
+      "from": "Portfolio Management",
+      "to": "Advanced Analysis"
+    },
+    {
+      "from": "Advanced Analysis",
+      "to": "Predictive Analytics"
+    },
+    {
+      "from": "Advanced Analysis",
+      "to": "ML in Product Mgmt."
+    },
+    {
+      "from": "Advanced Analysis",
+      "to": "AI in Product Mgmt."
+    },
+    {
+      "from": "Advanced Analysis",
+      "to": "Leadership and Influence"
+    },
+    {
+      "from": "Leadership and Influence",
+      "to": "Building and Leading Teams"
+    },
+    {
+      "from": "Leadership and Influence",
+      "to": "Influencing without Authority"
+    },
+    {
+      "from": "Leadership and Influence",
+      "to": "Emotional Intelligence"
+    },
+    {
+      "from": "Introduction",
+      "to": "What is Product Management?"
+    },
+    {
+      "from": "Introduction",
+      "to": "Product vs Project Management"
+    },
+    {
+      "from": "Introduction",
+      "to": "Roles and Responsibilities"
+    },
+    {
+      "from": "Introduction",
+      "to": "Key Skills"
+    }
+  ]
+}

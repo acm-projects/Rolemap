@@ -1,0 +1,98 @@
+{
+  "code": "15-1212.00",
+  "title": "Information Security Analysts",
+  "tags": {
+    "bright_outlook": true
+  },
+  "also_called": [
+    {
+      "title": "Information Security Officer",
+      "summary": true
+    },
+    {
+      "title": "Information Security Specialist",
+      "summary": false
+    },
+    {
+      "title": "Information Systems Security Analyst",
+      "summary": false
+    },
+    {
+      "title": "Information Systems Security Officer (ISSO)",
+      "summary": true
+    },
+    {
+      "title": "Information Technology Security Analyst (IT Security Analyst)",
+      "summary": true
+    },
+    {
+      "title": "Network Security Analyst",
+      "summary": true
+    },
+    {
+      "title": "Security Analyst",
+      "summary": false
+    },
+    {
+      "title": "Systems Analyst",
+      "summary": false
+    }
+  ],
+  "what_they_do": "Plan, implement, upgrade, or monitor security measures for the protection of computer networks and information. Assess system vulnerabilities for security risks and propose and implement risk mitigation strategies. May ensure appropriate security controls are in place that will safeguard digital files and vital electronic infrastructure. May respond to computer security breaches and viruses.",
+  "on_the_job": [
+    "Develop plans to safeguard computer files against accidental or unauthorized modification, destruction, or disclosure and to meet emergency data processing needs.",
+    "Monitor current reports of computer viruses to determine when to update virus protection systems.",
+    "Encrypt data transmissions and erect firewalls to conceal confidential information as it is being transmitted and to keep out tainted digital transfers."
+  ],
+  "word_cloud_terms": [
+    "security",
+    "software",
+    "procedure",
+    "information",
+    "computer",
+    "conventional interests",
+    "computer file",
+    "electronic infrastructure",
+    "security analyst",
+    "document"
+  ],
+  "career_video": true,
+  "contents": [
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1212.00/knowledge",
+      "title": "Knowledge"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1212.00/skills",
+      "title": "Skills"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1212.00/abilities",
+      "title": "Abilities"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1212.00/personality",
+      "title": "Personality"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1212.00/technology",
+      "title": "Technology"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1212.00/education",
+      "title": "Education"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1212.00/job_outlook",
+      "title": "Job Outlook"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1212.00/check_out_my_state",
+      "title": "Check Out My State"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/15-1212.00/explore_more",
+      "title": "Explore More"
+    }
+  ]
+}

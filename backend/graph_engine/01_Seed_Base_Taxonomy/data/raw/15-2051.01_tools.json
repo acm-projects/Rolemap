@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Apache Kafka",
+    "hot_technology": true,
+    "in_demand": false
+  },
+  {
+    "name": "Oracle SQL Developer",
+    "hot_technology": true,
+    "in_demand": false
+  },
+  {
+    "name": "Airtable",
+    "hot_technology": false,
+    "in_demand": false
+  },
+  {
+    "name": "IBM DB2",
+    "hot_technology": true,
+    "in_demand": false
+  },
+  {
+    "name": "Django",
+    "hot_technology": true,
+    "in_demand": false
+  },
+  {
+    "name": "Microsoft ASP.NET",
+    "hot_technology": true,
+    "in_demand": false
+  }
+]

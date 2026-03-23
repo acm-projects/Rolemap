@@ -1,0 +1,106 @@
+{
+  "code": "11-3021.00",
+  "title": "Computer & Information Systems Managers",
+  "tags": {
+    "bright_outlook": true
+  },
+  "also_called": [
+    {
+      "title": "Application Development Director",
+      "summary": false
+    },
+    {
+      "title": "Computing Services Director",
+      "summary": false
+    },
+    {
+      "title": "Data Processing Manager",
+      "summary": false
+    },
+    {
+      "title": "Information Systems Director (IS Director)",
+      "summary": true
+    },
+    {
+      "title": "Information Systems Manager (IS Manager)",
+      "summary": true
+    },
+    {
+      "title": "Information Systems Supervisor (IS Supervisor)",
+      "summary": false
+    },
+    {
+      "title": "Information Technology Director (IT Director)",
+      "summary": true
+    },
+    {
+      "title": "Information Technology Manager (IT Manager)",
+      "summary": true
+    },
+    {
+      "title": "MIS Director (Management Information Systems Director)",
+      "summary": false
+    },
+    {
+      "title": "Technical Services Manager",
+      "summary": false
+    }
+  ],
+  "what_they_do": "Plan, direct, or coordinate activities in such fields as electronic data processing, information systems, systems analysis, and computer programming.",
+  "on_the_job": [
+    "Direct daily operations of department, analyzing workflow, establishing priorities, developing standards and setting deadlines.",
+    "Meet with department heads, managers, supervisors, vendors, and others, to solicit cooperation and resolve problems.",
+    "Review project plans to plan and coordinate project activity."
+  ],
+  "word_cloud_terms": [
+    "computer",
+    "conventional interests",
+    "software",
+    "data",
+    "plan",
+    "control",
+    "information system",
+    "hardware",
+    "organizational goal",
+    "manager"
+  ],
+  "career_video": true,
+  "contents": [
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/11-3021.00/knowledge",
+      "title": "Knowledge"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/11-3021.00/skills",
+      "title": "Skills"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/11-3021.00/abilities",
+      "title": "Abilities"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/11-3021.00/personality",
+      "title": "Personality"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/11-3021.00/technology",
+      "title": "Technology"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/11-3021.00/education",
+      "title": "Education"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/11-3021.00/job_outlook",
+      "title": "Job Outlook"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/11-3021.00/check_out_my_state",
+      "title": "Check Out My State"
+    },
+    {
+      "href": "https://api-v2.onetcenter.org/mnm/careers/11-3021.00/explore_more",
+      "title": "Explore More"
+    }
+  ]
+}

@@ -1,0 +1,166 @@
+[
+  {
+    "from": "PYTHON",
+    "to": "PYTORCH"
+  },
+  {
+    "from": "PYTHON",
+    "to": "TENSORFLOW"
+  },
+  {
+    "from": "Phased Rollouts",
+    "to": "Release Strategies"
+  },
+  {
+    "from": "Prioritization Techniques",
+    "to": "Prioritising Features"
+  },
+  {
+    "from": "Problem Framing",
+    "to": "Product Identification"
+  },
+  {
+    "from": "Product Development Lifecycle",
+    "to": "Product Roadmap"
+  },
+  {
+    "from": "Product Development Lifecycle",
+    "to": "Release Strategies"
+  },
+  {
+    "from": "Product Development Lifecycle",
+    "to": "Scaling Products"
+  },
+  {
+    "from": "Product Identification",
+    "to": "Product Requirements"
+  },
+  {
+    "from": "Product Requirements",
+    "to": "Prioritising Features"
+  },
+  {
+    "from": "Product Requirements",
+    "to": "Product Roadmap"
+  },
+  {
+    "from": "Product Roadmap",
+    "to": "Roadmapping Tools"
+  },
+  {
+    "from": "Risk Assessment",
+    "to": "Qualitative Risk Assessment"
+  },
+  {
+    "from": "Risk Assessment",
+    "to": "Quantitative Risk Assessment"
+  },
+  {
+    "from": "Risk Assessment",
+    "to": "Risk Audits"
+  },
+  {
+    "from": "Risk Assessment",
+    "to": "Risk Mitigation"
+  },
+  {
+    "from": "Risk Assessment",
+    "to": "Risk Monitoring Tools"
+  },
+  {
+    "from": "Risk Assessment",
+    "to": "Risk Register"
+  },
+  {
+    "from": "Risk Identification Techniques",
+    "to": "Risk Assessment"
+  },
+  {
+    "from": "Risk Mitigation",
+    "to": "Risk Audits"
+  },
+  {
+    "from": "Risk Mitigation",
+    "to": "Risk Monitoring Tools"
+  },
+  {
+    "from": "SCRUM",
+    "to": "RETROSPECTIVES"
+  },
+  {
+    "from": "SCRUM",
+    "to": "SPRINT PLANNING"
+  },
+  {
+    "from": "STATISTICS",
+    "to": "Predictive Analytics"
+  },
+  {
+    "from": "STATISTICS",
+    "to": "Retention Rate"
+  },
+  {
+    "from": "STATISTICS",
+    "to": "Trend"
+  },
+  {
+    "from": "STAKEHOLDER ENGAGEMENT",
+    "to": "Remote Stakeholders"
+  },
+  {
+    "from": "STAKEHOLDER ENGAGEMENT",
+    "to": "Stakeholder Mapping"
+  },
+  {
+    "from": "STRATEGIC THINKING",
+    "to": "Platform Thinking"
+  },
+  {
+    "from": "STRATEGIC THINKING",
+    "to": "Portfolio Management"
+  },
+  {
+    "from": "STRATEGIC THINKING",
+    "to": "Positioning"
+  },
+  {
+    "from": "STRATEGIC THINKING",
+    "to": "Proposition"
+  },
+  {
+    "from": "STRATEGIC THINKING",
+    "to": "Strategic Partners"
+  },
+  {
+    "from": "STRATEGIC THINKING",
+    "to": "USP (Unique Selling Point)"
+  },
+  {
+    "from": "Scrum Basics",
+    "to": "SCRUM"
+  },
+  {
+    "from": "USABILITY TESTING",
+    "to": "UX / UI Design"
+  },
+  {
+    "from": "USER RESEARCH",
+    "to": "Principles of UX Design"
+  },
+  {
+    "from": "USER RESEARCH",
+    "to": "Remote User Testing"
+  },
+  {
+    "from": "USER RESEARCH",
+    "to": "Surveys and Questionnaires"
+  },
+  {
+    "from": "USER RESEARCH",
+    "to": "USABILITY TESTING"
+  },
+  {
+    "from": "Principles of UX Design",
+    "to": "UX / UI Design"
+  }
+]
