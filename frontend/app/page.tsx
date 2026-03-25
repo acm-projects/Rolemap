@@ -1,6 +1,7 @@
 import React from "react";
+import { signIn } from "@/auth";
 
-const Landing: React.FC = () => {
+const Landing: React.FC = async () => {
   return (
     <div
       className="
@@ -9,14 +10,34 @@ const Landing: React.FC = () => {
       bg-[size:40px_40px]
       "
     >
-      {/* Navbar */}
-      <div className="flex justify-end p-[30px] padding-x-[50px] gap-6">
-        <button className="bg-[#143251] text-[#F0F9FF] rounded-xl px-8 py-4 text-[20px]">
-          Login
-        </button>
-        <button className="px-12 py-4 text-[1.1rem] rounded-xl bg-[#0EA5E9] text-white font-semibold cursor-pointer">
-          Sign Up
-        </button>
+      {/* Header with Sign In and Sign Up Buttons */}
+      <div className="absolute top-0 right-0 p-6 flex gap-4">
+        <form
+          action={async () => {
+            "use server"
+            await signIn("google", { redirectTo: "/map" })
+          }}
+        >
+          <button
+            type="submit"
+            className="px-6 py-2 rounded-lg border-2 border-[#0EA5E9] text-[#0EA5E9] font-semibold hover:bg-[#0EA5E9] hover:text-white transition-all duration-200"
+          >
+            Sign In
+          </button>
+        </form>
+        <form
+          action={async () => {
+            "use server"
+            await signIn("google", { redirectTo: "/map" })
+          }}
+        >
+          <button
+            type="submit"
+            className="px-6 py-2 rounded-lg bg-[#0EA5E9] text-white font-semibold hover:bg-[#53D8F0] transition-all duration-200"
+          >
+            Sign Up
+          </button>
+        </form>
       </div>
       {/* Hero */}
       <div className="flex flex-col items-center justify-center min-h-screen gap-0 pb-20">
