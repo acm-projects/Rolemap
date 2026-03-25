@@ -1,5 +1,6 @@
 import NextAuth from "next-auth"
 import Google from "next-auth/providers/google"
+import GitHub from "next-auth/providers/github";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -10,6 +11,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           prompt: "select_account",
         },
       },
+    }),
+    GitHub({
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+      allowDangerousEmailAccountLinking: true,
     }),
   ],
   session: {
@@ -22,18 +28,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   callbacks: {
     redirect: async ({ url, baseUrl }) => {
-      // After successful Google OAuth, redirect to /map
-      // Otherwise, allow redirects to the base URL or specified redirectTo
-      if (url.startsWith(baseUrl)) return url
-      else if (url.startsWith("/")) return new URL(url, baseUrl).toString()
-      return baseUrl
-    },
+    if (url.startsWith(baseUrl)) return url
+    if (url.startsWith("/")) return new URL(url, baseUrl).toString()
+    return new URL("/dashboard", baseUrl).toString()
+},
   },
   events: {
-    async signOut() {
-      // This event fires when the user signs out
-      // NextAuth clears the JWT token automatically
-    },
+    async signOut() {},
   },
   trustHost: true,
 })
