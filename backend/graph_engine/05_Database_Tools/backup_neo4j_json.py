@@ -7,8 +7,13 @@ from dotenv import load_dotenv
 from neo4j import GraphDatabase
 
 
+def custom_serializer(obj):
+    if hasattr(obj, "isoformat"):
+        return obj.isoformat()
+    return str(obj)
+
 def main():
-    load_dotenv(Path(__file__).parent / ".env")
+    load_dotenv(Path(__file__).parent.parent.parent / ".env")
 
     uri = os.getenv("NEO4J_URI", "neo4j://localhost:7687")
     user = os.getenv("NEO4J_USER", "neo4j")
@@ -47,7 +52,7 @@ def main():
             }
 
         with open(out_file, "w", encoding="utf-8") as f:
-            json.dump(payload, f, ensure_ascii=False)
+            json.dump(payload, f, ensure_ascii=False, default=custom_serializer)
 
         print(f"Backup written: {out_file}")
         print(f"Nodes: {len(payload['nodes'])}")

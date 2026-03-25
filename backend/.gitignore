@@ -3,7 +3,7 @@ output/*.json
 __pycache__/
 *.pyc
 .env
-rolemap/AGENTS.md
+AGENTS.md
 CLAUDE.md
 
 

@@ -169,7 +169,68 @@ class SkillGapAnalysisResponse(BaseModel):
 
 
 # ============================================================================
-# Error Models
+# Endpoint 4: Task Generation (API-Free)
+# ============================================================================
+
+class LearningTask(BaseModel):
+    """A single learning task"""
+    title: str = Field(..., description="Task title")
+    description: str = Field(..., description="Task description")
+    url: str = Field(..., description="Resource URL")
+    type: str = Field(..., description="Task type: Learning or Coding")
+    curated_by: str = Field(default="rule-based (no hallucination)")
+
+
+class TaskGenerationRequest(BaseModel):
+    """Request for task generation"""
+    job: str = Field(..., description="Job profile (e.g., 'Backend Engineer')")
+    concept: str = Field(..., description="Concept name")
+    subtopic: str = Field(..., description="Subtopic name")
+    preference: str = Field(default="Interactive-Heavy", description="Learning preference")
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "job": "Backend Engineer",
+                "concept": "Docker",
+                "subtopic": "Container Networking",
+                "preference": "Hands-on-Heavy"
+            }
+        }
+
+
+class TaskGenerationResponse(BaseModel):
+    """Response with generated tasks"""
+    metadata: dict = Field(..., description="Generation metadata")
+    learning_tasks: List[LearningTask] = Field(default_factory=list, description="Learning resources")
+    coding_tasks: List[LearningTask] = Field(default_factory=list, description="Coding exercises")
+    total_resources_found: int = Field(..., description="Total resources discovered")
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "metadata": {
+                    "concept": "Docker",
+                    "subtopic": "Container Networking",
+                    "preference": "Hands-on-Heavy",
+                    "api_calls_made": 0,
+                    "mode": "API-FREE"
+                },
+                "learning_tasks": [
+                    {
+                        "title": "Docker Networking",
+                        "description": "Learn Container Networking from official Docker docs",
+                        "url": "https://docs.docker.com/engine/network/",
+                        "type": "Learning",
+                        "curated_by": "rule-based (no hallucination)"
+                    }
+                ],
+                "coding_tasks": [],
+                "total_resources_found": 10
+            }
+        }
+
+
 # ============================================================================
 
 class ErrorResponse(BaseModel):
