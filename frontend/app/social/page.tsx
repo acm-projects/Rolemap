@@ -1,4 +1,4 @@
-import { Navbar } from "../components/NavBar";
+import { Navbar } from '@/app/components/Navbar';
 export default function Social() {
   return (
     <div className="p-8">
