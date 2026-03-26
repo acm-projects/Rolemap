@@ -232,6 +232,73 @@ class TaskGenerationResponse(BaseModel):
 
 
 # ============================================================================
+# Endpoint 5: Quiz Generation
+# ============================================================================
+
+class QuizQuestion(BaseModel):
+    """A single quiz question"""
+    question: str
+    type: str = Field(..., description="multiple_choice | true_false | short_answer | code_challenge")
+    options: List[str] = Field(default_factory=list, description="Answer options (MCQ/T_F only)")
+    correct_answer: str
+    explanation: str
+    difficulty: int
+    topic: str
+
+
+class QuizGenerationRequest(BaseModel):
+    """Request for quiz generation"""
+    topics: List[str] = Field(..., description="Concept/node names to test")
+    learned_resources: List[str] = Field(default_factory=list, description="URLs/titles the user has already studied")
+    difficulty: int = Field(default=3, ge=1, le=5, description="Difficulty 1 (Beginner) to 5 (Expert)")
+    learning_style: str = Field(default="Interactive-Heavy", description="Learner preference")
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "topics": ["Docker", "Container Networking"],
+                "learned_resources": ["https://docs.docker.com/engine/network/"],
+                "difficulty": 3,
+                "learning_style": "Hands-on"
+            }
+        }
+
+
+class QuizGenerationResponse(BaseModel):
+    """Response with generated quiz questions"""
+    metadata: dict = Field(..., description="Generation metadata")
+    questions: List[QuizQuestion]
+    total_questions: int
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "metadata": {
+                    "topics": ["Docker"],
+                    "difficulty": 3,
+                    "difficulty_label": "Intermediate",
+                    "learning_style": "Hands-on",
+                    "resources_used": 1,
+                    "processing_time_seconds": 2.1,
+                    "model": "gemini-2.0-flash"
+                },
+                "questions": [
+                    {
+                        "question": "Which Docker network driver isolates containers on a single host?",
+                        "type": "multiple_choice",
+                        "options": ["A. host", "B. overlay", "C. bridge", "D. macvlan"],
+                        "correct_answer": "C",
+                        "explanation": "The bridge driver is the default and creates an isolated network on a single host.",
+                        "difficulty": 3,
+                        "topic": "Docker"
+                    }
+                ],
+                "total_questions": 7
+            }
+        }
+
+
+# ============================================================================
 
 class ErrorResponse(BaseModel):
     """Standard error response"""

@@ -16,6 +16,7 @@ import asyncio
 import time
 from typing import List, Dict, Any
 from pathlib import Path
+from urllib.parse import urlparse
 from dotenv import load_dotenv
 from ddgs import DDGS
 import google.generativeai as genai
@@ -23,31 +24,46 @@ import google.generativeai as genai
 # Load environment variables
 load_dotenv(Path(__file__).parent.parent / ".env")
 
-# Configure Gemini with key rotation
-GEMINI_API_KEYS = [
-    os.getenv("GEMINI_API_KEY"),
-    os.getenv("GEMINI_API_KEY_2")
-]
+# Load all GEMINI_API_KEY, GEMINI_API_KEY_2, GEMINI_API_KEY_3, ... dynamically
+def _load_gemini_keys() -> List[str]:
+    keys = []
+    k = os.getenv("GEMINI_API_KEY")
+    if k:
+        keys.append(k)
+    i = 2
+    while True:
+        k = os.getenv(f"GEMINI_API_KEY_{i}")
+        if not k:
+            break
+        keys.append(k)
+        i += 1
+    return keys
+
+GEMINI_API_KEYS = _load_gemini_keys()
 CURRENT_KEY_INDEX = 0
 
+
 def get_gemini_client():
-    """Get Gemini client with automatic key rotation."""
+    """Return a Gemini client, cycling to the next key on failure."""
     global CURRENT_KEY_INDEX
-    
-    for attempt in range(len(GEMINI_API_KEYS)):
+
+    if not GEMINI_API_KEYS:
+        raise Exception("No Gemini API keys configured in .env")
+
+    last_error = None
+    for _ in range(len(GEMINI_API_KEYS)):
+        key = GEMINI_API_KEYS[CURRENT_KEY_INDEX]
         try:
-            key = GEMINI_API_KEYS[CURRENT_KEY_INDEX]
-            if key:
-                genai.configure(api_key=key)
-                # Use the correct model name (Gemini 2.0 Flash)
-                return genai.GenerativeModel('gemini-2.0-flash')
-            else:
-                CURRENT_KEY_INDEX = (CURRENT_KEY_INDEX + 1) % len(GEMINI_API_KEYS)
+            genai.configure(api_key=key)
+            client = genai.GenerativeModel("gemini-2.0-flash")
+            print(f"  [GEMINI] Key {CURRENT_KEY_INDEX + 1}/{len(GEMINI_API_KEYS)} used")
+            return client
         except Exception as e:
-            print(f"  [WARNING] API key {CURRENT_KEY_INDEX + 1} failed: {str(e)[:50]}")
+            last_error = e
+            print(f"  [WARNING] Gemini key {CURRENT_KEY_INDEX + 1}/{len(GEMINI_API_KEYS)} failed: {str(e)[:60]}")
             CURRENT_KEY_INDEX = (CURRENT_KEY_INDEX + 1) % len(GEMINI_API_KEYS)
-    
-    raise Exception("All Gemini API keys exhausted")
+
+    raise Exception(f"All {len(GEMINI_API_KEYS)} Gemini keys failed. Last: {last_error}")
 
 # --- Helper Functions (from V2) ---
 
@@ -68,63 +84,81 @@ def get_best_domains_no_api(concept: str, domain_list: List[str]) -> List[str]:
     """Rule-based domain selection (enhanced from V2)."""
     keyword_map = {
         # Web Development
-        'web': ['w3schools.com', 'developer.mozilla.org', 'freecodecamp.org', 'mdn.io'],
-        'react': ['react.dev', 'developer.mozilla.org', 'freecodecamp.org'],
-        'vue': ['vuejs.org', 'developer.mozilla.org', 'freecodecamp.org'],
-        'html': ['w3schools.com', 'developer.mozilla.org', 'mdn.io'],
-        'css': ['w3schools.com', 'developer.mozilla.org', 'mdn.io'],
-        'javascript': ['developer.mozilla.org', 'javascript.info', 'freecodecamp.org'],
-        
+        'web': ['w3schools.com', 'developer.mozilla.org', 'freecodecamp.org', 'mdn.io', 'css-tricks.com', 'smashingmagazine.com'],
+        'react': ['react.dev', 'developer.mozilla.org', 'freecodecamp.org', 'kentcdodds.com', 'javascript.info', 'w3schools.com'],
+        'vue': ['vuejs.org', 'developer.mozilla.org', 'freecodecamp.org', 'w3schools.com', 'javascript.info', 'css-tricks.com'],
+        'angular': ['angular.io', 'developer.mozilla.org', 'freecodecamp.org', 'w3schools.com', 'javascript.info'],
+        'html': ['w3schools.com', 'developer.mozilla.org', 'mdn.io', 'freecodecamp.org', 'css-tricks.com', 'smashingmagazine.com'],
+        'css': ['w3schools.com', 'developer.mozilla.org', 'mdn.io', 'css-tricks.com', 'smashingmagazine.com', 'freecodecamp.org'],
+        'javascript': ['developer.mozilla.org', 'javascript.info', 'freecodecamp.org', 'w3schools.com', 'kentcdodds.com', 'dev.to'],
+        'typescript': ['typescriptlang.org', 'developer.mozilla.org', 'freecodecamp.org', 'javascript.info', 'dev.to'],
+
         # Python & Data
-        'python': ['docs.python.org', 'realpython.com', 'freecodecamp.org'],
-        'pandas': ['pandas.pydata.org', 'realpython.com', 'freecodecamp.org'],
-        'numpy': ['numpy.org', 'realpython.com', 'freecodecamp.org'],
-        'machine learning': ['scikit-learn.org', 'tensorflow.org', 'pytorch.org', 'realpython.com'],
-        'neural networks': ['tensorflow.org', 'pytorch.org', 'deeplearning.ai', 'fast.ai'],
-        'data science': ['scikit-learn.org', 'tensorflow.org', 'realpython.com', 'deeplearning.ai'],
-        
-        # DevOps & Infrastructure  
-        'docker': ['docs.docker.com', 'docker.com', 'kubernetes.io', 'freecodecamp.org'],
-        'kubernetes': ['kubernetes.io', 'docker.com', 'freecodecamp.org'],
-        'container': ['docs.docker.com', 'kubernetes.io', 'freecodecamp.org'],
-        'devops': ['kubernetes.io', 'docker.com', 'terraform.io', 'ansible.com'],
-        'terraform': ['developer.hashicorp.com', 'terraform.io', 'hashicorp.com', 'freecodecamp.org'],
-        'jenkins': ['jenkins.io', 'freecodecamp.org', 'github.com'],
-        'ci/cd': ['jenkins.io', 'github.com', 'freecodecamp.org'],
-        'ansible': ['docs.ansible.com', 'ansible.com', 'freecodecamp.org'],
-        'vault': ['developer.hashicorp.com', 'vaultproject.io', 'hashicorp.com'],
-        
+        'python': ['docs.python.org', 'realpython.com', 'freecodecamp.org', 'python.org', 'dev.to', 'geeksforgeeks.org'],
+        'pandas': ['pandas.pydata.org', 'realpython.com', 'freecodecamp.org', 'geeksforgeeks.org', 'towardsdatascience.com', 'kaggle.com'],
+        'numpy': ['numpy.org', 'realpython.com', 'freecodecamp.org', 'geeksforgeeks.org', 'towardsdatascience.com'],
+        'machine learning': ['scikit-learn.org', 'tensorflow.org', 'pytorch.org', 'realpython.com', 'huggingface.co', 'towardsdatascience.com'],
+        'neural network': ['tensorflow.org', 'pytorch.org', 'huggingface.co', 'fast.ai', 'towardsdatascience.com', 'realpython.com'],
+        'data science': ['scikit-learn.org', 'tensorflow.org', 'realpython.com', 'towardsdatascience.com', 'kaggle.com', 'huggingface.co'],
+
+        # DevOps & Infrastructure
+        'docker': ['docs.docker.com', 'docker.com', 'kubernetes.io', 'freecodecamp.org', 'dev.to', 'geeksforgeeks.org'],
+        'kubernetes': ['kubernetes.io', 'docs.docker.com', 'freecodecamp.org', 'dev.to', 'killercoda.com', 'kodekloud.com'],
+        'container': ['docs.docker.com', 'kubernetes.io', 'freecodecamp.org', 'dev.to', 'kodekloud.com'],
+        'devops': ['kubernetes.io', 'docs.docker.com', 'terraform.io', 'docs.ansible.com', 'freecodecamp.org', 'dev.to'],
+        'terraform': ['developer.hashicorp.com', 'terraform.io', 'hashicorp.com', 'freecodecamp.org', 'dev.to', 'kodekloud.com'],
+        'jenkins': ['jenkins.io', 'freecodecamp.org', 'github.com', 'dev.to', 'geeksforgeeks.org'],
+        'ci/cd': ['jenkins.io', 'github.com', 'freecodecamp.org', 'dev.to', 'docs.docker.com'],
+        'ansible': ['docs.ansible.com', 'ansible.com', 'freecodecamp.org', 'dev.to', 'geeksforgeeks.org'],
+        'vault': ['developer.hashicorp.com', 'vaultproject.io', 'hashicorp.com', 'freecodecamp.org', 'dev.to'],
+
+        # Cloud
+        'aws': ['docs.aws.amazon.com', 'aws.amazon.com', 'freecodecamp.org', 'dev.to', 'acloudguru.com'],
+        'azure': ['learn.microsoft.com', 'azure.microsoft.com', 'freecodecamp.org', 'dev.to', 'acloudguru.com'],
+        'gcp': ['cloud.google.com', 'freecodecamp.org', 'dev.to', 'acloudguru.com', 'qwiklabs.com'],
+        'cloud': ['docs.aws.amazon.com', 'learn.microsoft.com', 'cloud.google.com', 'freecodecamp.org', 'acloudguru.com'],
+
         # Security
-        'security': ['owasp.org', 'portswigger.net', 'tryhackme.com'],
-        'owasp': ['owasp.org', 'portswigger.net', 'tryhackme.com'],
-        'cryptography': ['cryptography.io', 'owasp.org', 'portswigger.net'],
-        
+        'security': ['owasp.org', 'portswigger.net', 'tryhackme.com', 'hackthebox.com', 'freecodecamp.org', 'cloudflare.com'],
+        'owasp': ['owasp.org', 'portswigger.net', 'tryhackme.com', 'freecodecamp.org', 'geeksforgeeks.org'],
+        'cryptography': ['cryptography.io', 'owasp.org', 'portswigger.net', 'freecodecamp.org', 'geeksforgeeks.org'],
+        'network': ['cloudflare.com', 'cisco.com', 'freecodecamp.org', 'geeksforgeeks.org', 'developer.mozilla.org'],
+
         # Databases
-        'database': ['postgresql.org', 'mongodb.com', 'redis.io'],
-        'postgresql': ['postgresql.org', 'freecodecamp.org', 'realpython.com'],
-        'mongodb': ['docs.mongodb.com', 'mongodb.com', 'freecodecamp.org'],
-        'sql': ['postgresql.org', 'w3schools.com', 'freecodecamp.org'],
-        
+        'database': ['postgresql.org', 'docs.mongodb.com', 'redis.io', 'freecodecamp.org', 'geeksforgeeks.org', 'dev.to'],
+        'postgresql': ['postgresql.org', 'postgresqltutorial.com', 'freecodecamp.org', 'realpython.com', 'geeksforgeeks.org'],
+        'mongodb': ['docs.mongodb.com', 'mongodb.com', 'freecodecamp.org', 'dev.to', 'geeksforgeeks.org'],
+        'redis': ['redis.io', 'freecodecamp.org', 'dev.to', 'geeksforgeeks.org', 'realpython.com'],
+        'sql': ['postgresql.org', 'w3schools.com', 'freecodecamp.org', 'sqlzoo.net', 'geeksforgeeks.org', 'postgresqltutorial.com'],
+
         # Backend
-        'nodejs': ['nodejs.org', 'freecodecamp.org', 'github.com'],
-        'express': ['expressjs.com', 'freecodecamp.org', 'github.com'],
-        'fastapi': ['fastapi.tiangolo.com', 'realpython.com', 'github.com'],
-        'django': ['docs.djangoproject.com', 'djangoproject.com', 'realpython.com'],
-        'flask': ['flask.palletsprojects.com', 'realpython.com', 'freecodecamp.org'],
+        'nodejs': ['nodejs.org', 'freecodecamp.org', 'developer.mozilla.org', 'dev.to', 'geeksforgeeks.org'],
+        'express': ['expressjs.com', 'freecodecamp.org', 'developer.mozilla.org', 'dev.to', 'geeksforgeeks.org'],
+        'fastapi': ['fastapi.tiangolo.com', 'realpython.com', 'github.com', 'dev.to', 'geeksforgeeks.org'],
+        'django': ['docs.djangoproject.com', 'djangoproject.com', 'realpython.com', 'dev.to', 'geeksforgeeks.org'],
+        'flask': ['flask.palletsprojects.com', 'realpython.com', 'freecodecamp.org', 'dev.to', 'geeksforgeeks.org'],
+
+        # Architecture & Design
+        'architecture': ['martinfowler.com', 'refactoring.guru', 'freecodecamp.org', 'dev.to', 'geeksforgeeks.org'],
+        'design pattern': ['refactoring.guru', 'martinfowler.com', 'freecodecamp.org', 'dev.to', 'geeksforgeeks.org'],
+
+        # Project Management
+        'agile': ['atlassian.com', 'scrum.org', 'pmi.org', 'freecodecamp.org', 'dev.to'],
+        'scrum': ['scrum.org', 'atlassian.com', 'pmi.org', 'freecodecamp.org', 'dev.to'],
     }
-    
+
     concept_lower = concept.lower()
-    
+
     # Try exact keyword matches (prioritize longer matches)
     for keyword in sorted(keyword_map.keys(), key=len, reverse=True):
         if keyword in concept_lower:
             matches = keyword_map[keyword]
             available = [d for d in matches if d in domain_list]
             if available:
-                return available[:2]
-    
-    # Fallback: return first 2 domains
-    return domain_list[:2] if domain_list else []
+                return available[:5]
+
+    # Fallback: return first 5 domains
+    return domain_list[:5] if domain_list else []
 
 def perform_ddg_search(query: str, max_results: int = 10) -> List[Dict]:
     """Performs DuckDuckGo search (from V2)."""
@@ -183,6 +217,70 @@ def basic_quality_filter(search_results: List[Dict]) -> List[Dict]:
         good_results.append(result)
     
     return good_results
+
+def filter_similar_links(results: List[Dict]) -> List[Dict]:
+    """
+    Remove URLs that are sub-paths of other URLs on the same domain.
+
+    Example: if both /engine/network/ and /engine/network/drivers/bridge/
+    are present, keep only the more specific (longer path) one.
+    """
+    if not results:
+        return []
+
+    parsed = []
+    for r in results:
+        url = r.get('url', '')
+        try:
+            p = urlparse(url.lower().rstrip('/'))
+            parts = [x for x in p.path.split('/') if x]
+            parsed.append((r, p.netloc, parts))
+        except Exception:
+            parsed.append((r, '', []))
+
+    keep = [True] * len(parsed)
+
+    for i in range(len(parsed)):
+        if not keep[i]:
+            continue
+        ri, domain_i, parts_i = parsed[i]
+        for j in range(len(parsed)):
+            if i == j or not keep[j]:
+                continue
+            rj, domain_j, parts_j = parsed[j]
+            if domain_i != domain_j or not domain_i:
+                continue
+            # Check if parts_i is a strict prefix of parts_j (same section of docs)
+            if len(parts_i) < len(parts_j) and parts_j[:len(parts_i)] == parts_i:
+                # i is the parent; discard i, keep the more specific j
+                keep[i] = False
+                break
+
+    filtered = [r for r, flag in zip(results, keep) if flag]
+    removed = len(results) - len(filtered)
+    if removed:
+        print(f"  [SIMILARITY] Removed {removed} near-duplicate URL(s)")
+    return filtered
+
+
+def prioritize_by_credible_domains(results: List[Dict], credible_domains: List[str]) -> List[Dict]:
+    """
+    Boost results whose domain appears in the credible CSV list to the front.
+    If there are ≥5 credible results, return only those (skip the rest).
+    """
+    credible, other = [], []
+    for r in results:
+        url = r.get('url', '').lower()
+        if any(domain in url for domain in credible_domains):
+            credible.append(r)
+        else:
+            other.append(r)
+
+    if len(credible) >= 5:
+        print(f"  [CREDIBLE] {len(credible)} credible-domain results — skipping non-credible sources")
+        return credible
+    return credible + other
+
 
 # --- V3 NEW: INTELLIGENT LLM JUDGE ---
 
@@ -304,41 +402,49 @@ def fallback_rule_curation(concept: str, subtopic: str, task_type: str, search_r
 
 # --- V3 MAIN PIPELINE ---
 
-async def gather_links_v3(concept: str, subtopic: str, task_type: str, domains_file: str, wild_west_keywords: str) -> List[Dict]:
-    """V3: Enhanced link gathering with better domain selection."""
-    
+async def gather_links_v3(concept: str, subtopic: str, task_type: str, domains_file: str, wild_west_keywords: str):
+    """V3: Enhanced link gathering with better domain selection.
+
+    Returns (filtered_results, all_trusted_domains) so the caller can
+    run domain prioritization before LLM curation.
+    """
+
     # 1. Enhanced Domain Selection
     all_trusted_domains = load_domains(domains_file)
     selected_domains = get_best_domains_no_api(concept, all_trusted_domains)
-    
+
     if not selected_domains:
-        selected_domains = all_trusted_domains[:2]
-    
+        selected_domains = all_trusted_domains[:5]
+
     print(f"\n--- V3 Gathering {task_type} Links ---")
-    print(f"  Concept-matched domains: {', '.join(selected_domains[:2])}")
-    
-    # 2. Dual Search (same as V2)
+    print(f"  Concept-matched domains: {', '.join(selected_domains)}")
+
+    # 2. Dual Search
     domain_keywords = " OR ".join(selected_domains)
     walled_garden_query = f"{concept} {subtopic} ({domain_keywords})"
     wild_west_query = f'"{concept}" "{subtopic}" {wild_west_keywords}'
-    
+
     walled_garden_results = perform_ddg_search(walled_garden_query, max_results=10)
     wild_west_results = perform_ddg_search(wild_west_query, max_results=10)
-    
+
     # 3. Mark sources and combine
-    for r in walled_garden_results: 
+    for r in walled_garden_results:
         r['source_type'] = 'Walled Garden'
-    for r in wild_west_results: 
+    for r in wild_west_results:
         r['source_type'] = 'Wild West'
-    
+
     combined = walled_garden_results + wild_west_results
-    
-    # 4. Basic quality filtering
-    filtered = basic_quality_filter(combined)
-    
-    print(f"  Found: {len(walled_garden_results)} walled + {len(wild_west_results)} wild = {len(filtered)} after filtering")
-    
-    return filtered
+
+    # 4. Link similarity filtering (remove near-duplicate URLs before quality filter)
+    deduplicated = filter_similar_links(combined)
+
+    # 5. Basic quality filtering
+    filtered = basic_quality_filter(deduplicated)
+
+    print(f"  Found: {len(walled_garden_results)} walled + {len(wild_west_results)} wild"
+          f" → {len(deduplicated)} after similarity check → {len(filtered)} after quality filter")
+
+    return filtered, all_trusted_domains
 
 async def generate_tasks_v3(job: str, concept: str, subtopic: str, preference: str):
     """
@@ -362,26 +468,31 @@ async def generate_tasks_v3(job: str, concept: str, subtopic: str, preference: s
     
     try:
         # 1. Gather Learning Links
-        learning_links = await gather_links_v3(
+        learning_links, learn_credible_domains = await gather_links_v3(
             concept=concept,
-            subtopic=subtopic, 
+            subtopic=subtopic,
             task_type="Learning",
             domains_file="credible_website_learn.csv",
             wild_west_keywords="tutorial OR explanation OR guide OR documentation"
         )
-        
+
         # 2. Gather Coding Links
-        coding_links = await gather_links_v3(
+        coding_links, coding_credible_domains = await gather_links_v3(
             concept=concept,
             subtopic=subtopic,
-            task_type="Coding", 
+            task_type="Coding",
             domains_file="credible_website_coding.csv",
             wild_west_keywords="interactive exercise OR coding practice OR GitHub template OR example"
         )
-        
-        # 3. V3 INNOVATION: Intelligent LLM Curation
+
+        # 3. Prioritize results from credible domain lists (before LLM curation)
+        print(f"\n--- V3 Domain Prioritization ---")
+        learning_links = prioritize_by_credible_domains(learning_links, learn_credible_domains)
+        coding_links = prioritize_by_credible_domains(coding_links, coding_credible_domains)
+
+        # 4. V3 INNOVATION: Intelligent LLM Curation
         print(f"\n--- V3 Intelligent LLM Curation ---")
-        
+
         learning_tasks = intelligent_llm_curation(concept, subtopic, preference, "Learning", learning_links, 3)
         coding_tasks = intelligent_llm_curation(concept, subtopic, preference, "Coding", coding_links, 2)
         
