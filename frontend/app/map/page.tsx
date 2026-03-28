@@ -17,7 +17,7 @@ import '@xyflow/react/dist/style.css';
 
 import { RoadmapNode } from '@/app/components/RoadmapNode';
 import { NodePanel, NodePanelData } from '@/app/components/NodePanel';
-import { Navbar } from '@/app/components/Navbar';
+import { Navbar } from '@/app/components/NavBar';
 
 const nodeTypes = {
   roadmap: RoadmapNode,
