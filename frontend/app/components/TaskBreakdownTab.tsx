@@ -1,7 +1,7 @@
 'use client';
 import Image, { StaticImageData } from "next/image";
-import pic1 from "../daily/target.png";
-import pic2 from "../daily/idea.png";
+import pic1 from "../tasks/target.png";
+import pic2 from "../tasks/idea.png";
 
 interface Module {
   id: string;

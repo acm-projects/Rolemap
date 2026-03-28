@@ -1,10 +1,10 @@
 'use client';
 import { useState } from "react";
-import { Navbar } from "../components/Navbar";
+import { Navbar } from "../components/NavBar";
 import Image from "next/image";
-import pic3 from "../daily/html.png";
-import pic4 from "../daily/css.png";
-import pic5 from "../daily/js.png";
+import pic3 from "../tasks/html.png";
+import pic4 from "../tasks/css.png";
+import pic5 from "../tasks/js.png";
 import { TaskBreakdownPanel } from "../components/TaskBreakdownTab";
 
 const modules = [
