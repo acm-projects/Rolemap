@@ -15,9 +15,10 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
+
 import { RoadmapNode } from '@/app/components/RoadmapNode';
-import { NodePanel, NodePanelData } from '@/app/components/NodePanel';
-import { Navbar } from '@/app/components/Navbar';
+import { NodePanel, NodePanelData } from '@/app/components/ConceptNodePanel';
+import { Navbar } from '../components/NavBar';
 
 const nodeTypes = {
   roadmap: RoadmapNode,
@@ -74,12 +75,13 @@ const nodePanelData: Record<string, NodePanelData> = {
     label: 'Layouts Master Quiz', 
     progress: 100, 
     locked: false, 
-    description: "Validate your proficiency in modern layout techniques. This assessment presents real-world styling scenarios to test your problem-solving skills, ensuring you can accurately diagnose and resolve complex CSS issues across different browsers and devices.", 
+    kind: 'quiz', 
+    description: "Validate your proficiency in modern layout techniques. This quiz presents real-world styling scenarios to test your ability to build, scale, and debug modern web interfaces.",
     learningGoals: [
-      "Troubleshoot common Flexbox and Grid rendering bugs", 
-      "Select optimal layout strategies for specific UI patterns", 
-      "Verify responsive logic across mobile and desktop breakpoints", 
-      "Manage style priority using the CSS cascade and inheritance"
+      "Solve complex positioning and alignment challenges", 
+      "Build components that respond to their environment", 
+      "Debug sizing issues in high-fidelity designs", 
+      "Master logic for style overrides and consistency"
     ] 
   },
   '4': { 
@@ -150,12 +152,13 @@ function RoadmapContent() {
   const [activePanel, setActivePanel] = useState<NodePanelData | null>(null);
   const { setCenter, fitView } = useReactFlow();
 
+
   useEffect(() => {
     const activeNode = nodes.find(n => !n.data.locked && n.data.progress < 100);
 
     if (activeNode) {
       const timer = setTimeout(() => {
-        setCenter(activeNode.position.x, activeNode.position.y, { 
+        setCenter(activeNode.position.x, activeNode.position.y + 50, { 
           zoom: 1.2, 
           duration: 1000 
         });
@@ -167,14 +170,13 @@ function RoadmapContent() {
   }, []); 
 
   const handleNodeClick: NodeMouseHandler = useCallback((_event, node) => {
-    const data = node.data as { label: string; progress: number; locked: boolean };
+    const data = node.data as { label: string; progress: number; locked: boolean; kind?: string };
     if (data.locked) return;
-    
+
     const panel = nodePanelData[node.id];
     if (panel) {
       setActivePanel(panel);
-      // Focus on the clicked node, offset slightly to account for the panel
-      setCenter(node.position.x + 300, node.position.y, { zoom: 1.1, duration: 800 });
+      setCenter(node.position.x + 300, node.position.y + 50, { zoom: 1.1, duration: 800 });
     }
   }, [setCenter]);
 

@@ -5,13 +5,12 @@ import { usePathname } from "next/navigation";
 
 export function Navbar() {
   const pathname = usePathname();
-  const navItems = ['Dashboard', 'Map', 'Tasks', 'Settings'];
+  const navItems = ['Dashboard', 'Map', 'Tasks'];
 
 
   return (
     <nav className="absolute top-4 left-1/2 -translate-x-1/2 z-10 w-[95%] max-w-6xl">
       <div className="bg-white border border-slate-200 h-16 rounded-xl flex items-center px-5 shadow-sm gap-6">
-
 
         {/* Logo */}
         <div className="flex items-center gap-2 mr-4 shrink-0">
@@ -59,22 +58,14 @@ export function Navbar() {
         <div className="ml-auto flex items-center gap-3 shrink-0">
 
 
-          {/* Bell */}
-          <button className="p-2 rounded-full hover:bg-slate-100 text-slate-400">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
-            </svg>
-          </button>
 
 
-          {/* CTA button */}
-          <button className="flex items-center gap-2 bg-[#3d7a7a] hover:bg-[#2e6666] text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
+          {/* CTA button           <button className="flex items-center gap-2 bg-[#3d7a7a] hover:bg-[#2e6666] text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-3.5 h-3.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
             </svg>
             Continue Learning
-          </button>
-
+          </button>*/}
 
           {/* Separator */}
           <div className="h-7 w-px bg-slate-200" />
@@ -96,4 +87,3 @@ export function Navbar() {
     </nav>
   );
 }
-

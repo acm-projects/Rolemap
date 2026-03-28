@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Navbar } from '../components/Navbar';
+import { Navbar } from '../components/NavBar';
 
 //Icons 
 
@@ -155,7 +155,7 @@ export default function Dashboard() {
     <div className="min-h-screen w-full bg-[#eef1f7] relative">
       <Navbar />
 
-      <div className="pt-24 px-8 pb-8">
+      <div className="pt-28 px-8 pb-8">
         <div className="max-w-7xl mx-auto">
 
           {/* Header row: title left, stats + challenge right ── */}
