@@ -18,7 +18,7 @@ import '@xyflow/react/dist/style.css';
 
 import { RoadmapNode } from '@/app/components/RoadmapNode';
 import { NodePanel, NodePanelData } from '@/app/components/ConceptNodePanel';
-import { Navbar } from '../components/NavBar';
+import { Navbar } from '@/app/components/NavBar';
 
 const nodeTypes = {
   roadmap: RoadmapNode,
@@ -30,20 +30,20 @@ const initialNodes = [
   { id: '3', type: 'roadmap', data: { label: 'Layouts Master Quiz', progress: 100, locked: false, kind: 'quiz' }, position: { x: 600, y: 150 } },
   { id: '4', type: 'roadmap', data: { label: 'JS Logic & Variables', progress: 100, locked: false, kind: 'lesson' }, position: { x: 900, y: 50 } },
   { id: '5', type: 'roadmap', data: { label: 'DOM & Events', progress: 100, locked: false, kind: 'lesson' }, position: { x: 900, y: 250 } },
-  { id: '6', type: 'roadmap', data: { label: 'Interactive Site Project', progress: 30, locked: false, kind: 'project' }, position: { x: 1250, y: 150 } },
+  { id: '6', type: 'roadmap', data: { label: 'Interactive Site Project', progress: 40, locked: false, kind: 'project' }, position: { x: 1250, y: 150 } },
   { id: '7', type: 'roadmap', data: { label: 'Asynchronous JS', progress: 0, locked: true, kind: 'lesson' }, position: { x: 1550, y: 150 } },
   { id: '8', type: 'roadmap', data: { label: 'React Fundamentals', progress: 0, locked: true, kind: 'lesson' }, position: { x: 1850, y: 150 } },
 ];
 
 const initialEdges = [
-  { id: 'e1-2', source: '1', target: '2', type: 'bezier', animated: false, style: { stroke: '#4a7c7c', strokeWidth: 1.5, strokeDasharray: '6 4' } },
-  { id: 'e2-3', source: '2', target: '3', type: 'bezier', animated: false, style: { stroke: '#4a7c7c', strokeWidth: 1.5, strokeDasharray: '6 4' } },
-  { id: 'e3-4', source: '3', target: '4', type: 'bezier', animated: false, style: { stroke: '#4a7c7c', strokeWidth: 1.5, strokeDasharray: '6 4' } },
-  { id: 'e3-5', source: '3', target: '5', type: 'bezier', animated: false, style: { stroke: '#4a7c7c', strokeWidth: 1.5, strokeDasharray: '6 4' } },
-  { id: 'e4-6', source: '4', target: '6', type: 'bezier', animated: false, style: { stroke: '#4a7c7c', strokeWidth: 1.5, strokeDasharray: '6 4' } },
-  { id: 'e5-6', source: '5', target: '6', type: 'bezier', animated: false, style: { stroke: '#4a7c7c', strokeWidth: 1.5, strokeDasharray: '6 4' } },
-  { id: 'e6-7', source: '6', target: '7', type: 'bezier', animated: false, style: { stroke: '#c8d0dc', strokeWidth: 1.5, strokeDasharray: '6 4' } },
-  { id: 'e7-8', source: '7', target: '8', type: 'bezier', animated: false, style: { stroke: '#c8d0dc', strokeWidth: 1.5, strokeDasharray: '6 4' } },
+  { id: 'e1-2', source: '1', target: '2', type: 'default', animated: false, style: { stroke: '#4a7c7c', strokeWidth: 1.5, strokeDasharray: '6 4' } },
+  { id: 'e2-3', source: '2', target: '3', type: 'default', animated: false, style: { stroke: '#4a7c7c', strokeWidth: 1.5, strokeDasharray: '6 4' } },
+  { id: 'e3-4', source: '3', target: '4', type: 'default', animated: false, style: { stroke: '#4a7c7c', strokeWidth: 1.5, strokeDasharray: '6 4' } },
+  { id: 'e3-5', source: '3', target: '5', type: 'default', animated: false, style: { stroke: '#4a7c7c', strokeWidth: 1.5, strokeDasharray: '6 4' } },
+  { id: 'e4-6', source: '4', target: '6', type: 'default', animated: false, style: { stroke: '#4a7c7c', strokeWidth: 1.5, strokeDasharray: '6 4' } },
+  { id: 'e5-6', source: '5', target: '6', type: 'default', animated: false, style: { stroke: '#4a7c7c', strokeWidth: 1.5, strokeDasharray: '6 4' } },
+  { id: 'e6-7', source: '6', target: '7', type: 'default', animated: false, style: { stroke: '#c8d0dc', strokeWidth: 1.5, strokeDasharray: '6 4' } },
+  { id: 'e7-8', source: '7', target: '8', type: 'default', animated: false, style: { stroke: '#c8d0dc', strokeWidth: 1.5, strokeDasharray: '6 4' } },
 ];
 
 const nodePanelData: Record<string, NodePanelData> = {
@@ -158,7 +158,7 @@ function RoadmapContent() {
 
     if (activeNode) {
       const timer = setTimeout(() => {
-        setCenter(activeNode.position.x, activeNode.position.y + 50, { 
+        setCenter(activeNode.position.x, activeNode.position.y + 85, { 
           zoom: 1.2, 
           duration: 1000 
         });
@@ -176,7 +176,7 @@ function RoadmapContent() {
     const panel = nodePanelData[node.id];
     if (panel) {
       setActivePanel(panel);
-      setCenter(node.position.x + 300, node.position.y + 50, { zoom: 1.1, duration: 800 });
+      setCenter(node.position.x + 300, node.position.y + 85, { zoom: 1.1, duration: 800 });
     }
   }, [setCenter]);
 
