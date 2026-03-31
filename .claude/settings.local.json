@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \"from models import ProjectGenerateRequest, ProjectGenerateResponse, ProjectEvaluateRequest, ProjectEvaluateResponse, EvaluationSection, AIDetectionSection, ConceptMasterySection; print\\(''models OK''\\)\")",
+      "Bash(python -c \"from Project_Gen.generator import generate_project_idea; from Project_Gen.evaluator import evaluate_repository; from Project_Gen.repo_fetcher import parse_github_url; print\\(''Project_Gen OK''\\)\")",
+      "Bash(python -c \"import main; print\\(''main.py OK''\\)\")",
+      "Bash(python -c \":*)",
+      "Bash(pip show:*)",
+      "Bash(find D:NoobceptRolemapbackend -type f -name *database* -o -name *db*)",
+      "Bash(ls:*)",
+      "Bash(xargs grep:*)",
+      "Bash(powershell -Command \"& { [System.IO.File]::Delete\\(''\\\\?\\\\d:\\\\Noobcept\\\\Rolemap\\\\backend\\\\nul''\\) }\")"
+    ]
+  }
+}
