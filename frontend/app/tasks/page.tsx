@@ -1,5 +1,5 @@
 'use client';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navbar } from "../components/NavBar";
 import Image from "next/image";
 import pic3 from "../tasks/html.png";
@@ -23,8 +23,15 @@ export default function DailyPage() {
   const [activeTask, setActiveTask] = useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [animKey, setAnimKey] = useState(0);
-  const [completed, setCompleted] = useState<string[]>([]);
+  const [completed, setCompleted] = useState<string[]>(() => {
+    const saved = localStorage.getItem('completedTasks');
+    return saved ? JSON.parse(saved) : [];
+  });
   const activeModule = modules.find((m) => m.id === activeTask);
+
+  useEffect(() => {
+  localStorage.setItem('completedTasks', JSON.stringify(completed));
+}, [completed]);
 
   function openTask(id: string) {
     setActiveTask(id);
