@@ -12,7 +12,6 @@ export function Navbar() {
     <nav className="absolute top-4 left-1/2 -translate-x-1/2 z-10 w-[95%] max-w-6xl">
       <div className="bg-white border border-slate-200 h-16 rounded-xl flex items-center px-5 shadow-sm gap-6">
 
-
         {/* Logo */}
         <div className="flex items-center gap-2 mr-4 shrink-0">
           <div className="w-9 h-9 rounded-lg bg-[#3D7A7A] flex items-center justify-center">
