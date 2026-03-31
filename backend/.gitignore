@@ -3,6 +3,8 @@ output/*.json
 __pycache__/
 *.pyc
 .env
+nul
+
 AGENTS.md
 CLAUDE.md
 

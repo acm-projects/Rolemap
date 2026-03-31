@@ -15,7 +15,7 @@ from collections import deque, defaultdict
 from pathlib import Path
 from ddgs import DDGS
 from dotenv import load_dotenv
-import google.generativeai as genai
+from google import genai
 
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
@@ -28,8 +28,14 @@ from models import (
     SkillGapAnalysisRequest, SkillGapAnalysisResponse,
     TaskGenerationRequest, TaskGenerationResponse, LearningTask,
     QuizGenerationRequest, QuizGenerationResponse, QuizQuestion,
+    ProjectGenerateRequest, ProjectGenerateResponse,
+    ProjectEvaluateRequest, ProjectEvaluateResponse,
+    EvaluationSection, AIDetectionSection, ConceptMasterySection,
     ErrorResponse
 )
+from Project_Gen.generator import generate_project_idea
+from Project_Gen.evaluator import evaluate_repository
+from Project_Gen.repo_fetcher import parse_github_url
 
 # Load environment variables
 load_dotenv(Path(__file__).parent / ".env")
@@ -53,29 +59,17 @@ def _load_gemini_keys() -> List[str]:
 
 GEMINI_API_KEYS = _load_gemini_keys()
 CURRENT_KEY_INDEX = 0
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 
 
 def get_gemini_client():
-    """Return a Gemini client, cycling to the next key on failure."""
-    global CURRENT_KEY_INDEX
-
+    """Return a Gemini Client using the current key."""
     if not GEMINI_API_KEYS:
         logger.error("No Gemini API keys configured in .env")
         return None
-
-    for _ in range(len(GEMINI_API_KEYS)):
-        key = GEMINI_API_KEYS[CURRENT_KEY_INDEX]
-        try:
-            genai.configure(api_key=key)
-            client = genai.GenerativeModel("gemini-2.0-flash")
-            logger.debug(f"Using Gemini key {CURRENT_KEY_INDEX + 1}/{len(GEMINI_API_KEYS)}")
-            return client
-        except Exception as e:
-            logger.warning(f"Gemini key {CURRENT_KEY_INDEX + 1} failed: {str(e)[:60]}")
-            CURRENT_KEY_INDEX = (CURRENT_KEY_INDEX + 1) % len(GEMINI_API_KEYS)
-
-    logger.error("All Gemini API keys exhausted")
-    return None
+    key = GEMINI_API_KEYS[CURRENT_KEY_INDEX % len(GEMINI_API_KEYS)]
+    logger.debug(f"Using Gemini key {CURRENT_KEY_INDEX + 1}/{len(GEMINI_API_KEYS)}")
+    return genai.Client(api_key=key)
 
 
 def call_gemini(prompt: str) -> str:
@@ -93,21 +87,15 @@ def call_gemini(prompt: str) -> str:
     for _ in range(len(GEMINI_API_KEYS)):
         key = GEMINI_API_KEYS[CURRENT_KEY_INDEX]
         try:
-            genai.configure(api_key=key)
-            model = genai.GenerativeModel("gemini-2.0-flash")
-            response = model.generate_content(prompt)
+            client = genai.Client(api_key=key)
+            response = client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
             return response.text
         except Exception as e:
-            err = str(e).lower()
             last_error = e
             logger.warning(f"Gemini key {CURRENT_KEY_INDEX + 1}/{len(GEMINI_API_KEYS)} failed: {str(e)[:80]}")
-            # Always rotate on any error
             CURRENT_KEY_INDEX = (CURRENT_KEY_INDEX + 1) % len(GEMINI_API_KEYS)
 
     raise RuntimeError(f"All {len(GEMINI_API_KEYS)} Gemini keys failed. Last error: {last_error}")
-
-
-    return None  # All keys exhausted, will use fallback
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -1210,7 +1198,7 @@ async def generate_quiz(request: QuizGenerationRequest) -> QuizGenerationRespons
                 "learning_style": request.learning_style,
                 "resources_used": len(request.learned_resources),
                 "processing_time_seconds": elapsed,
-                "model": "gemini-2.0-flash",
+                "model": "gemini-2.5-flash",
             },
             questions=questions,
             total_questions=len(questions),
@@ -1220,6 +1208,94 @@ async def generate_quiz(request: QuizGenerationRequest) -> QuizGenerationRespons
         raise
     except Exception as e:
         logger.error(f"Error in generate_quiz: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ============================================================================
+# PROJECT GENERATION ENDPOINTS
+# ============================================================================
+
+@app.post(
+    "/api/v1/projects/generate",
+    response_model=ProjectGenerateResponse,
+    responses={503: {"model": ErrorResponse}, 500: {"model": ErrorResponse}},
+)
+async def generate_project(request: ProjectGenerateRequest) -> ProjectGenerateResponse:
+    """
+    Generate a tailored project prompt for a learner.
+
+    **Pipeline**:
+    1. Map difficulty (1–5) to complexity label and estimated hours range
+    2. Inject optional user context (level, language, background)
+    3. Prompt Gemini to produce a realistic project that requires ALL listed concepts
+    4. Validate and return structured prompt
+
+    **Difficulty levels**:
+    - 1 Beginner   : single-file, 4–8 h
+    - 2 Elementary : multi-file, 8–16 h
+    - 3 Intermediate: full-feature, 16–30 h
+    - 4 Advanced   : multi-component, 30–60 h
+    - 5 Expert     : production-grade, 60–120 h
+    """
+    try:
+        logger.info(f"Project generate: concepts={request.concepts}, difficulty={request.difficulty}")
+        result = generate_project_idea(
+            request.concepts, request.difficulty, request.user_info, call_gemini
+        )
+        return ProjectGenerateResponse(**result)
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+    except (json.JSONDecodeError, KeyError, ValueError) as e:
+        logger.error(f"Project generate parse error: {e}")
+        raise HTTPException(status_code=500, detail=f"LLM returned invalid structure: {e}")
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error in generate_project: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post(
+    "/api/v1/projects/evaluate",
+    response_model=ProjectEvaluateResponse,
+    responses={422: {"model": ErrorResponse}, 503: {"model": ErrorResponse}, 500: {"model": ErrorResponse}},
+)
+async def evaluate_project(request: ProjectEvaluateRequest) -> ProjectEvaluateResponse:
+    """
+    Evaluate a GitHub repository against the concepts it should demonstrate.
+
+    **Pipeline**:
+    1. Parse and validate the GitHub URL
+    2. Fetch repo metadata, file tree, selected file contents, and commit history
+    3. Compute pre-LLM AI detection signals from commit patterns
+    4. Send everything to Gemini for structured evaluation
+    5. Recompute overall_score server-side for determinism
+
+    **Evaluation dimensions**:
+    - **code_quality** (30%): naming, structure, patterns, readability
+    - **ai_detection** (20%, inverted): commit patterns, code style signals
+    - **project_structure** (25%): folder layout, separation of concerns, README
+    - **concept_mastery** (25%): depth of concept usage in actual code
+    """
+    try:
+        owner, repo = parse_github_url(request.github_url)
+        logger.info(f"Project evaluate: {owner}/{repo}, concepts={request.concepts}")
+        result = evaluate_repository(
+            owner, repo, request.concepts, request.project_description,
+            GITHUB_TOKEN, call_gemini
+        )
+        return ProjectEvaluateResponse(**result)
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+    except (json.JSONDecodeError, KeyError) as e:
+        logger.error(f"Project evaluate parse error: {e}")
+        raise HTTPException(status_code=500, detail=f"LLM returned invalid structure: {e}")
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error in evaluate_project: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -1245,7 +1321,9 @@ async def root():
             "roadmap": "POST /api/v1/roadmap/generate",
             "skill_gap": "POST /api/v1/concepts/analyze",
             "tasks": "POST /api/v1/tasks/generate",
-            "quiz": "POST /api/v1/quiz/generate"
+            "quiz": "POST /api/v1/quiz/generate",
+            "project_generate": "POST /api/v1/projects/generate",
+            "project_evaluate": "POST /api/v1/projects/evaluate"
         }
     }
 

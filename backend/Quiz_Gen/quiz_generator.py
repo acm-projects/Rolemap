@@ -22,7 +22,7 @@ import argparse
 from typing import List, Dict, Any
 from pathlib import Path
 from dotenv import load_dotenv
-import google.generativeai as genai
+from google import genai
 
 load_dotenv(Path(__file__).parent.parent / ".env")
 
@@ -59,9 +59,8 @@ def call_gemini(prompt: str) -> str:
     for _ in range(len(GEMINI_API_KEYS)):
         key = GEMINI_API_KEYS[CURRENT_KEY_INDEX]
         try:
-            genai.configure(api_key=key)
-            model = genai.GenerativeModel("gemini-2.0-flash")
-            response = model.generate_content(prompt)
+            client = genai.Client(api_key=key)
+            response = client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
             print(f"  [GEMINI] Key {CURRENT_KEY_INDEX + 1}/{len(GEMINI_API_KEYS)} used")
             return response.text
         except Exception as e:
@@ -256,7 +255,7 @@ def generate_quiz(
             "learning_style": learning_style,
             "resources_used": len(learned_resources),
             "processing_time_seconds": elapsed,
-            "model": "gemini-2.0-flash",
+            "model": "gemini-2.5-flash",
         },
         "questions": questions,
         "total_questions": len(questions),

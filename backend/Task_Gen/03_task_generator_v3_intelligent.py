@@ -19,7 +19,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 from dotenv import load_dotenv
 from ddgs import DDGS
-import google.generativeai as genai
+from google import genai
 
 # Load environment variables
 load_dotenv(Path(__file__).parent.parent / ".env")
@@ -44,26 +44,12 @@ CURRENT_KEY_INDEX = 0
 
 
 def get_gemini_client():
-    """Return a Gemini client, cycling to the next key on failure."""
-    global CURRENT_KEY_INDEX
-
+    """Return a Gemini Client using the current key."""
     if not GEMINI_API_KEYS:
         raise Exception("No Gemini API keys configured in .env")
-
-    last_error = None
-    for _ in range(len(GEMINI_API_KEYS)):
-        key = GEMINI_API_KEYS[CURRENT_KEY_INDEX]
-        try:
-            genai.configure(api_key=key)
-            client = genai.GenerativeModel("gemini-2.0-flash")
-            print(f"  [GEMINI] Key {CURRENT_KEY_INDEX + 1}/{len(GEMINI_API_KEYS)} used")
-            return client
-        except Exception as e:
-            last_error = e
-            print(f"  [WARNING] Gemini key {CURRENT_KEY_INDEX + 1}/{len(GEMINI_API_KEYS)} failed: {str(e)[:60]}")
-            CURRENT_KEY_INDEX = (CURRENT_KEY_INDEX + 1) % len(GEMINI_API_KEYS)
-
-    raise Exception(f"All {len(GEMINI_API_KEYS)} Gemini keys failed. Last: {last_error}")
+    key = GEMINI_API_KEYS[CURRENT_KEY_INDEX % len(GEMINI_API_KEYS)]
+    print(f"  [GEMINI] Key {CURRENT_KEY_INDEX + 1}/{len(GEMINI_API_KEYS)} selected")
+    return genai.Client(api_key=key)
 
 # --- Helper Functions (from V2) ---
 
@@ -317,7 +303,7 @@ TASK: Select the {count} BEST resources for {task_type} tasks. Prioritize:
 Return ONLY a JSON list of the selected result numbers (e.g., [1, 3, 5] for results 1, 3, and 5).
 Do not include explanations, just the JSON array of numbers."""
 
-        response = client.generate_content(prompt)
+        response = client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
         
         # Parse LLM response
         response_text = response.text.strip()

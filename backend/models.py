@@ -3,7 +3,7 @@ Pydantic models for Rolemap API
 Request/Response schemas
 """
 
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, Field
 
 
@@ -305,3 +305,90 @@ class ErrorResponse(BaseModel):
     error: str
     detail: Optional[str] = None
     status_code: int
+
+
+# ============================================================================
+# Project Generation
+# ============================================================================
+
+class EvaluationSection(BaseModel):
+    """Evaluation result for a single dimension"""
+    score: int = Field(..., ge=0, le=100)
+    positives: List[str] = Field(default_factory=list, description="What was done well")
+    negatives: List[str] = Field(default_factory=list, description="What needs improvement")
+    feedback: str = Field(..., description="Narrative feedback for this dimension")
+
+
+class AIDetectionSection(EvaluationSection):
+    """AI detection result — score = confidence (0-100) that AI wrote the code"""
+    is_likely_ai: bool = Field(..., description="True if AI confidence score > 65")
+
+
+class ConceptMasterySection(EvaluationSection):
+    """Concept mastery evaluation"""
+    concepts_demonstrated: List[str] = Field(default_factory=list)
+    concepts_missing: List[str] = Field(default_factory=list)
+
+
+class ProjectGenerateRequest(BaseModel):
+    """Request for project idea generation"""
+    concepts: List[str] = Field(..., min_length=1, description="Concepts the project must test")
+    difficulty: int = Field(..., ge=1, le=5, description="Difficulty 1 (Beginner) to 5 (Expert)")
+    user_info: Optional[Dict[str, Any]] = Field(
+        default=None,
+        description="Optional learner context: level, preferred_language, background"
+    )
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "concepts": ["React hooks", "useEffect", "useState"],
+                "difficulty": 2,
+                "user_info": {"level": "junior", "preferred_language": "JavaScript"}
+            }
+        }
+
+
+class ProjectGenerateResponse(BaseModel):
+    """Generated project prompt"""
+    project_title: str
+    project_description: str
+    requirements: List[str]
+    tech_stack: List[str]
+    success_criteria: List[str]
+    bonus_challenges: List[str]
+    estimated_hours: int
+    concepts_tested: List[str]
+
+
+class ProjectEvaluateRequest(BaseModel):
+    """Request for GitHub project evaluation"""
+    github_url: str = Field(
+        ...,
+        description="GitHub repo URL (https://github.com/user/repo) or shorthand (user/repo)"
+    )
+    concepts: List[str] = Field(..., description="Concepts this project should demonstrate")
+    project_description: Optional[str] = Field(
+        default=None,
+        description="Original project prompt if available"
+    )
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "github_url": "https://github.com/octocat/Hello-World",
+                "concepts": ["React hooks", "useEffect", "useState"],
+                "project_description": "Build a data fetching dashboard using React hooks."
+            }
+        }
+
+
+class ProjectEvaluateResponse(BaseModel):
+    """Full project evaluation result"""
+    overall_score: int = Field(..., ge=0, le=100)
+    code_quality: EvaluationSection
+    ai_detection: AIDetectionSection
+    project_structure: EvaluationSection
+    concept_mastery: ConceptMasterySection
+    overall_feedback: str = Field(..., description="2-3 paragraph constructive summary")
+    recommendations: List[str] = Field(..., description="3-5 specific actionable next steps")
