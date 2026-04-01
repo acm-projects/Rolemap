@@ -7,7 +7,6 @@ function getDecayLevel(next_review: string, sm2_interval: number) {
   const daysUntil = Math.ceil(
     (nextReview.getTime() - now.getTime()) / (1000 * 3600 * 24)
   );
-
   if (daysUntil > 3) return "fresh";
   if (daysUntil > 0) return "review_soon";
   if (daysUntil > -sm2_interval) return "decaying";
@@ -37,7 +36,6 @@ export async function GET() {
     const days_until_review = Math.ceil(
       (nextReview.getTime() - now.getTime()) / (1000 * 3600 * 24)
     );
-
     return {
       id: row.id,
       skill: row.skill_name,
@@ -67,7 +65,6 @@ export async function POST(req: Request) {
 
   let { sm2_interval, sm2_easiness, sm2_repetitions, times_practiced } = rows[0];
 
-  // SM-2 formula
   if (quality >= 3) {
     if (sm2_repetitions === 0) sm2_interval = 1;
     else if (sm2_repetitions === 1) sm2_interval = 6;
