@@ -9,34 +9,70 @@
       "xp_total": 2450,
       "current_streak": 24,
       "longest_streak": 31,
-      "onboarding_completed": true,
-      "onboarding_step": 5,
+      "onboarding_completed": false,
+      "onboarding_step": 0,
       "created_at": "2025-09-01T00:00:00Z"
     }
   ],
-
   "roles": [
-    { "id": "r-001", "title": "Front End Developer", "domain": "Software Engineering" },
-    { "id": "r-002", "title": "Full Stack Developer", "domain": "Software Engineering" },
-    { "id": "r-003", "title": "Data Scientist", "domain": "Machine Learning" },
-    { "id": "r-004", "title": "UX Designer", "domain": "Design" }
+    {
+      "id": "r-001",
+      "title": "Front End Developer",
+      "domain": "Software Engineering"
+    },
+    {
+      "id": "r-002",
+      "title": "Full Stack Developer",
+      "domain": "Software Engineering"
+    },
+    {
+      "id": "r-003",
+      "title": "Data Scientist",
+      "domain": "Machine Learning"
+    },
+    {
+      "id": "r-004",
+      "title": "UX Designer",
+      "domain": "Design"
+    }
   ],
-
   "companies": [
-    { "id": "c-001", "name": "Google", "logo_url": null },
-    { "id": "c-002", "name": "Meta", "logo_url": null },
-    { "id": "c-003", "name": "Stripe", "logo_url": null }
+    {
+      "id": "c-001",
+      "name": "Google",
+      "logo_url": null
+    },
+    {
+      "id": "c-002",
+      "name": "Meta",
+      "logo_url": null
+    },
+    {
+      "id": "c-003",
+      "name": "Stripe",
+      "logo_url": null
+    }
   ],
-
   "user_target_roles": [
-    { "id": "utr-001", "user_id": "u-001", "role_id": "r-001", "is_primary": true }
+    {
+      "id": "utr-001",
+      "user_id": "u-001",
+      "role_id": "r-001",
+      "is_primary": true
+    }
   ],
-
   "user_target_companies": [
-    { "id": "utc-001", "user_id": "u-001", "company_id": "c-001" },
-    { "id": "utc-002", "user_id": "u-001", "company_id": "c-002" }
+    {
+      "id": "utc-001",
+      "user_id": "u-001",
+      "company_id": "c-001"
+    },
+    {
+      "id": "utc-002",
+      "user_id": "u-001",
+      "company_id": "c-002"
+    }
   ],
-
   "user_learning_preferences": [
     {
       "id": "ulp-001",
@@ -46,21 +82,53 @@
       "difficulty": "intermediate"
     }
   ],
-
   "skills": [
-    { "id": "sk-001", "name": "HTML", "category": "markup" },
-    { "id": "sk-002", "name": "CSS", "category": "styling" },
-    { "id": "sk-003", "name": "JavaScript", "category": "language" },
-    { "id": "sk-004", "name": "React", "category": "framework" },
-    { "id": "sk-005", "name": "Python", "category": "language" }
+    {
+      "id": "sk-001",
+      "name": "HTML",
+      "category": "markup"
+    },
+    {
+      "id": "sk-002",
+      "name": "CSS",
+      "category": "styling"
+    },
+    {
+      "id": "sk-003",
+      "name": "JavaScript",
+      "category": "language"
+    },
+    {
+      "id": "sk-004",
+      "name": "React",
+      "category": "framework"
+    },
+    {
+      "id": "sk-005",
+      "name": "Python",
+      "category": "language"
+    }
   ],
-
   "user_skills": [
-    { "id": "us-001", "user_id": "u-001", "skill_id": "sk-001", "proficiency": 0.9 },
-    { "id": "us-002", "user_id": "u-001", "skill_id": "sk-002", "proficiency": 0.8 },
-    { "id": "us-003", "user_id": "u-001", "skill_id": "sk-003", "proficiency": 0.6 }
+    {
+      "id": "us-001",
+      "user_id": "u-001",
+      "skill_id": "sk-001",
+      "proficiency": 0.9
+    },
+    {
+      "id": "us-002",
+      "user_id": "u-001",
+      "skill_id": "sk-002",
+      "proficiency": 0.8
+    },
+    {
+      "id": "us-003",
+      "user_id": "u-001",
+      "skill_id": "sk-003",
+      "proficiency": 0.6
+    }
   ],
-
   "roadmaps": [
     {
       "id": "rm-001",
@@ -95,7 +163,6 @@
       "progress_percentage": 45
     }
   ],
-
   "roadmap_checkpoints": [
     {
       "id": "cp-001",
@@ -104,7 +171,10 @@
       "kind": "lesson",
       "progress": 100,
       "locked": false,
-      "position": { "x": 0, "y": 150 },
+      "position": {
+        "x": 0,
+        "y": 150
+      },
       "description": "Master the building blocks of the web. You'll learn how browsers parse HTML, semantic element choices that affect SEO and accessibility, and how to structure a document that's both human-readable and machine-friendly.",
       "learning_goals": [
         "Understand the role of semantic HTML elements (header, main, article, section)",
@@ -120,7 +190,10 @@
       "kind": "lesson",
       "progress": 100,
       "locked": false,
-      "position": { "x": 300, "y": 150 },
+      "position": {
+        "x": 300,
+        "y": 150
+      },
       "description": "Go beyond basic styling. This checkpoint covers CSS Grid and Flexbox layouts, responsive design with media queries, CSS custom properties (variables), and modern techniques like clamp() and container queries.",
       "learning_goals": [
         "Build complex two-dimensional layouts using CSS Grid",
@@ -136,7 +209,10 @@
       "kind": "quiz",
       "progress": 100,
       "locked": false,
-      "position": { "x": 600, "y": 150 },
+      "position": {
+        "x": 600,
+        "y": 150
+      },
       "description": "Test your knowledge of HTML structure and CSS layouts. This quiz covers semantic markup, Flexbox, Grid, and responsive design patterns encountered in real-world projects.",
       "learning_goals": [
         "Recall the difference between block, inline, and inline-block elements",
@@ -152,7 +228,10 @@
       "kind": "lesson",
       "progress": 100,
       "locked": false,
-      "position": { "x": 900, "y": 50 },
+      "position": {
+        "x": 900,
+        "y": 50
+      },
       "description": "Learn the fundamentals of JavaScript: data types, variable scoping (var vs let vs const), operators, control flow, and functions. This is the foundation for all JS-powered interactivity.",
       "learning_goals": [
         "Distinguish between let, const, and var and when to use each",
@@ -168,7 +247,10 @@
       "kind": "lesson",
       "progress": 100,
       "locked": false,
-      "position": { "x": 900, "y": 250 },
+      "position": {
+        "x": 900,
+        "y": 250
+      },
       "description": "Bring web pages to life by manipulating the DOM and responding to user events. Covers querySelector, event listeners, event propagation, and the difference between innerHTML and textContent.",
       "learning_goals": [
         "Select and modify DOM elements using querySelector and querySelectorAll",
@@ -184,7 +266,10 @@
       "kind": "project",
       "progress": 40,
       "locked": false,
-      "position": { "x": 1250, "y": 150 },
+      "position": {
+        "x": 1250,
+        "y": 150
+      },
       "description": "Apply everything learned so far to build a small interactive website — a to-do list, a quiz app, or a weather dashboard. Focus on clean HTML structure, responsive CSS, and vanilla JS logic with no frameworks.",
       "learning_goals": [
         "Plan a small project by breaking it into HTML structure, CSS styles, and JS logic",
@@ -200,7 +285,10 @@
       "kind": "lesson",
       "progress": 0,
       "locked": true,
-      "position": { "x": 1550, "y": 150 },
+      "position": {
+        "x": 1550,
+        "y": 150
+      },
       "description": "Understand how JavaScript handles async operations: the event loop, callbacks, Promises, and async/await syntax. Learn to fetch data from APIs and handle loading and error states gracefully.",
       "learning_goals": [
         "Explain the JavaScript event loop and call stack",
@@ -216,7 +304,10 @@
       "kind": "lesson",
       "progress": 0,
       "locked": true,
-      "position": { "x": 1850, "y": 150 },
+      "position": {
+        "x": 1850,
+        "y": 150
+      },
       "description": "Introduction to React: JSX syntax, functional components, props, and the useState and useEffect hooks. Build a small component-driven UI and understand the virtual DOM and reconciliation.",
       "learning_goals": [
         "Write functional components using JSX and pass data via props",
@@ -226,7 +317,6 @@
       ]
     }
   ],
-
   "tasks": [
     {
       "id": "t-001",
@@ -265,7 +355,6 @@
       "description": "Explore Python syntax, data structures, and scripting basics."
     }
   ],
-
   "user_task_progress": [
     {
       "id": "utp-001",
@@ -300,7 +389,6 @@
       "completed_at": null
     }
   ],
-
   "user_gamification": [
     {
       "id": "ug-001",
@@ -313,7 +401,6 @@
       "updated_at": "2026-03-29T12:00:00Z"
     }
   ],
-
   "achievements": [
     {
       "id": "ach-001",
@@ -337,13 +424,26 @@
       "xp_reward": 150
     }
   ],
-
   "user_achievements": [
-    { "id": "ua-001", "user_id": "u-001", "achievement_id": "ach-001", "earned_at": "2026-02-10T09:00:00Z" },
-    { "id": "ua-002", "user_id": "u-001", "achievement_id": "ach-002", "earned_at": "2026-03-01T14:30:00Z" },
-    { "id": "ua-003", "user_id": "u-001", "achievement_id": "ach-003", "earned_at": "2026-03-15T08:00:00Z" }
+    {
+      "id": "ua-001",
+      "user_id": "u-001",
+      "achievement_id": "ach-001",
+      "earned_at": "2026-02-10T09:00:00Z"
+    },
+    {
+      "id": "ua-002",
+      "user_id": "u-001",
+      "achievement_id": "ach-002",
+      "earned_at": "2026-03-01T14:30:00Z"
+    },
+    {
+      "id": "ua-003",
+      "user_id": "u-001",
+      "achievement_id": "ach-003",
+      "earned_at": "2026-03-15T08:00:00Z"
+    }
   ],
-
   "leaderboard": [
     {
       "rank": 1,
@@ -381,5 +481,119 @@
       "avatar": "MJ",
       "avatar_bg": "#ef4444"
     }
-  ]
+  ],
+  "roadmap_edges": [
+    {
+      "id": "e-cp001-cp002",
+      "roadmap_id": "rm-001",
+      "source": "cp-001",
+      "target": "cp-002"
+    },
+    {
+      "id": "e-cp002-cp003",
+      "roadmap_id": "rm-001",
+      "source": "cp-002",
+      "target": "cp-003"
+    },
+    {
+      "id": "e-cp003-cp004",
+      "roadmap_id": "rm-001",
+      "source": "cp-003",
+      "target": "cp-004"
+    },
+    {
+      "id": "e-cp003-cp005",
+      "roadmap_id": "rm-001",
+      "source": "cp-003",
+      "target": "cp-005"
+    },
+    {
+      "id": "e-cp004-cp006",
+      "roadmap_id": "rm-001",
+      "source": "cp-004",
+      "target": "cp-006"
+    },
+    {
+      "id": "e-cp005-cp006",
+      "roadmap_id": "rm-001",
+      "source": "cp-005",
+      "target": "cp-006"
+    },
+    {
+      "id": "e-cp006-cp007",
+      "roadmap_id": "rm-001",
+      "source": "cp-006",
+      "target": "cp-007"
+    },
+    {
+      "id": "e-cp007-cp008",
+      "roadmap_id": "rm-001",
+      "source": "cp-007",
+      "target": "cp-008"
+    }
+  ],
+  "quiz_questions": {
+    "cp-003": [
+      {
+        "id": 1,
+        "question": "Which property allows a nested grid to align its tracks exactly with those of its parent container?",
+        "options": [
+          "display: contents;",
+          "grid-template-columns: subgrid;",
+          "grid-auto-flow: dense;",
+          "align-content: stretch;"
+        ],
+        "correct": 1,
+        "explanation": "The grid-template-columns: subgrid; property allows a nested grid to align its tracks with its parent container."
+      },
+      {
+        "id": 2,
+        "question": "Which CSS feature is best for changing a component's layout based on the width of its own parent container?",
+        "options": [
+          "Media Queries",
+          "Viewport Units (vw)",
+          "Container Queries",
+          "Flex-grow"
+        ],
+        "correct": 2,
+        "explanation": "Container Queries are used to change a component's layout based on the width of its own parent container."
+      },
+      {
+        "id": 3,
+        "question": "If an element has width: 300px, padding: 20px, and box-sizing: border-box, what is its total rendered width?",
+        "options": [
+          "300px",
+          "340px",
+          "360px",
+          "400px"
+        ],
+        "correct": 0,
+        "explanation": "With box-sizing: border-box, the padding is included in the width, so the total rendered width remains 300px."
+      },
+      {
+        "id": 4,
+        "question": "What is the most semantic HTML5 element for a group of introductory content or navigation links?",
+        "options": [
+          "<section>",
+          "<div>",
+          "<header>",
+          "<aside>"
+        ],
+        "correct": 2,
+        "explanation": "The <header> element is specifically designed for introductory content, logos, and navigational aids."
+      },
+      {
+        "id": 5,
+        "question": "How can you manage style priority without relying on high-specificity selectors or !important?",
+        "options": [
+          "Inline styling",
+          "Cascade Layers (@layers)",
+          "ID Selectors",
+          "Chaining classes"
+        ],
+        "correct": 1,
+        "explanation": "Cascade Layers (@layers) allow you to manage style priority without relying on high-specificity selectors or !important."
+      }
+    ]
+  }
 }

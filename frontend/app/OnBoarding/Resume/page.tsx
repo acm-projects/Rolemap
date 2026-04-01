@@ -2,6 +2,7 @@
 import React, { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { api } from "@/lib/api";
 
 const TOTAL_STEPS = 5;
 const CURRENT_STEP = 4;
@@ -12,6 +13,7 @@ const ResumeUpload: React.FC = () => {
   const [dragging, setDragging] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [githubConnected, setGithubConnected] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const canContinue = !!file || githubConnected;
 
@@ -113,7 +115,14 @@ const ResumeUpload: React.FC = () => {
 
           {/* GitHub Connect */}
           <button
-            onClick={() => signIn("github", { callbackUrl: "/OnBoarding/Generate" })}
+            onClick={async () => {
+              if (file) {
+                setUploading(true);
+                try { await api.uploadResume(file); } catch { /* continue even if upload fails */ }
+                finally { setUploading(false); }
+              }
+              signIn("github", { callbackUrl: "/OnBoarding/Generate" });
+            }}
             className="
               bg-white rounded-xl px-10 py-6 cursor-pointer
               border-2 border-transparent hover:border-[#a0b8b8]
@@ -151,12 +160,19 @@ const ResumeUpload: React.FC = () => {
               Skip for now
             </button>
             <button
-              onClick={() => router.push("/OnBoarding/Generate")}
-              disabled={!canContinue}
+              onClick={async () => {
+                if (file) {
+                  setUploading(true);
+                  try { await api.uploadResume(file); } catch { /* continue even if upload fails */ }
+                  finally { setUploading(false); }
+                }
+                router.push("/OnBoarding/Generate");
+              }}
+              disabled={!canContinue || uploading}
               className={`px-6 py-2 rounded-lg font-semibold text-sm transition-all duration-200
-                ${canContinue ? "bg-[#508484] text-white hover:bg-[#6a9e9e]" : "bg-[#d4d4d4] text-[#a0b8b8] cursor-not-allowed"}`}
+                ${canContinue && !uploading ? "bg-[#508484] text-white hover:bg-[#6a9e9e]" : "bg-[#d4d4d4] text-[#a0b8b8] cursor-not-allowed"}`}
             >
-              Continue →
+              {uploading ? "Uploading..." : "Continue →"}
             </button>
           </div>
         </div>

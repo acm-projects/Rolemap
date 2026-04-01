@@ -1,5 +1,6 @@
 'use client';
 import { useRef, useEffect, useState } from "react";
+import { signIn } from "next-auth/react";
 
 // ─── Icon paths (only those used in this file) ───────────────────────────────
 const PATHS = {
@@ -301,7 +302,7 @@ export default function LandingPage() {
               </p>
             </div>
             <div className="flex gap-4">
-              <button className="bg-[#4e8888] text-white rounded-lg h-12 px-7 text-base font-bold cursor-pointer hover:bg-[#3d7070] transition-colors">
+              <button onClick={() => signIn("google", { callbackUrl: "/OnBoarding/Major" })} className="bg-[#4e8888] text-white rounded-lg h-12 px-7 text-base font-bold cursor-pointer hover:bg-[#3d7070] transition-colors">
                 Get Started
               </button>
               <button className="bg-transparent text-[#4e8888] border-2 border-[#4e8888]/25 rounded-lg h-12 px-7 text-base font-bold cursor-pointer hover:border-[#4e8888]/50 transition-colors">
@@ -357,7 +358,7 @@ export default function LandingPage() {
       <div className="px-20 pb-20">
         <div className="bg-[#4e8888] rounded-3xl p-12 flex flex-col items-center gap-8 shadow-2xl text-center">
           <h2 className="text-5xl font-black text-white">Ready to level up your career?</h2>
-          <button className="bg-white text-[#4e8888] rounded-xl h-14 px-8 text-lg font-bold cursor-pointer hover:bg-slate-50 transition-colors">
+          <button onClick={() => signIn("google", { callbackUrl: "/OnBoarding/Major" })} className="bg-white text-[#4e8888] rounded-xl h-14 px-8 text-lg font-bold cursor-pointer hover:bg-slate-50 transition-colors">
             Start My Journey Now
           </button>
         </div>

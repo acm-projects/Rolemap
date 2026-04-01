@@ -1,33 +1,66 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { api } from "@/lib/api";
 
 const TOTAL_STEPS = 5;
 const CURRENT_STEP = 5;
 const PROGRESS = Math.round((CURRENT_STEP / TOTAL_STEPS) * 100);
 
+const PROGRESS_STEPS = [
+  "Fetching GitHub profile...",
+  "Analyzing repositories...",
+  "Parsing resume...",
+  "Mapping skills to knowledge graph...",
+  "Running topological sort...",
+  "Finalizing your roadmap...",
+];
 
 const GenerateRoadmap: React.FC = () => {
-    const router = useRouter();
-    const [generating, setGenerating] = useState(false);
-    const [done, setDone] = useState(false);
+  const router = useRouter();
+  const { data: session } = useSession();
+  const [generating, setGenerating] = useState(false);
+  const [done, setDone] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [stepIdx, setStepIdx] = useState(0);
+  const [result, setResult] = useState<{ steps_count: number; role: string } | null>(null);
 
-    const handleGenerate = () => {
-        setGenerating(true);
-        setTimeout(() => {
-            setGenerating(false);
-            setDone(true);
-        }, 2000);
-    };
+  useEffect(() => {
+    if (!generating) return;
+    const timer = setInterval(() => {
+      setStepIdx(i => (i + 1) % PROGRESS_STEPS.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [generating]);
 
-    return (
-    <div
-      className="
-        min-h-[100vh] font-[Inter] bg-[#E4E4E4]
-        flex flex-col
-      "
-    >
+  const handleGenerate = async () => {
+    setGenerating(true);
+    setError(null);
+    setStepIdx(0);
+    try {
+      const role = localStorage.getItem("ob_role") ?? "software engineer";
+      const githubUsername =
+        ((session?.user as Record<string, unknown>)?.githubUsername as string) ?? "";
+
+      const res = await api.generateRoadmap({ role, github_username: githubUsername });
+      setResult({ steps_count: res.steps_count, role: res.role });
+      ["ob_role", "ob_companies", "ob_preferences"].forEach(k =>
+        localStorage.removeItem(k)
+      );
+      setDone(true);
+    } catch (e) {
+      setError(
+        e instanceof Error ? e.message : "Generation failed. You can still continue."
+      );
+      setDone(true);
+    } finally {
+      setGenerating(false);
+    }
+  };
+
+  return (
+    <div className="min-h-[100vh] font-[Inter] bg-[#E4E4E4] flex flex-col">
       {/* Nav */}
       <nav className="bg-white/80 backdrop-blur border-b border-[#d4d4d4] px-8 h-14 flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -71,21 +104,47 @@ const GenerateRoadmap: React.FC = () => {
 
         {/* Card */}
         <div className="bg-white rounded-2xl shadow-sm border border-[#d4d4d4] max-w-[580px] mx-auto p-16 flex flex-col items-center text-center gap-6">
-          {/* Sparkle Icon */}
+          {/* Icon */}
           <div className="text-[#508484] text-5xl leading-none select-none">
-            {done ? "🎉" : "✦✦"}
+            {done ? (error ? "⚠️" : "🎉") : generating ? "⚙️" : "✦✦"}
           </div>
 
           <div className="flex flex-col gap-2">
             <h2 className="text-[22px] font-extrabold text-[#1B1B1B]">
-              {done ? "Roadmap ready!" : "Ready to generate?"}
+              {done
+                ? error
+                  ? "Partial success"
+                  : `Roadmap ready!`
+                : generating
+                ? "Building your roadmap..."
+                : "Ready to generate?"}
             </h2>
             <p className="text-sm text-[#555555] max-w-[380px] leading-relaxed">
               {done
-                ? "Your personalized career roadmap has been created. Hit Continue to start your journey."
-                : "We've analyzed your inputs. Based on your profile, we'll create a personalized career roadmap tailored to your chosen role and target companies."}
+                ? error
+                  ? error
+                  : result
+                  ? `Generated ${result.steps_count} learning steps for ${result.role}. Hit Continue to start your journey.`
+                  : "Your personalized career roadmap has been created."
+                : generating
+                ? PROGRESS_STEPS[stepIdx]
+                : "We'll analyze your GitHub profile and resume, then build a personalized learning roadmap ordered by prerequisites."}
             </p>
           </div>
+
+          {/* Progress dots while generating */}
+          {generating && (
+            <div className="flex gap-1.5">
+              {PROGRESS_STEPS.map((_, i) => (
+                <div
+                  key={i}
+                  className={`w-2 h-2 rounded-full transition-all duration-500 ${
+                    i === stepIdx ? "bg-[#508484] scale-125" : "bg-[#d4d4d4]"
+                  }`}
+                />
+              ))}
+            </div>
+          )}
 
           <button
             onClick={handleGenerate}
@@ -100,36 +159,41 @@ const GenerateRoadmap: React.FC = () => {
               }
             `}
           >
-            {done ? "✓ Roadmap Generated" : generating ? "Generating..." : "Generate Roadmap"}
+            {done
+              ? "✓ Roadmap Generated"
+              : generating
+              ? "Generating..."
+              : "Generate Roadmap"}
           </button>
         </div>
       </main>
 
       {/* Footer */}
       <footer className="max-w-[1040px] mx-auto w-full px-6 py-8">
-  <div className="border-t border-[#d4d4d4] pt-6 flex justify-between items-center">
-    <button
-      onClick={() => router.push("/OnBoarding/Resume")}
-      className="flex items-center gap-2 text-sm text-[#555555] font-medium hover:text-[#1B1B1B] transition-colors duration-200"
-    >
-      ← Back
-    </button>
-    <button
-      disabled={!done}
-      onClick={() => router.push("/dashboard")}
-      className={`
-        px-6 py-2 rounded-lg font-semibold text-sm transition-all duration-200
-        ${done
-          ? "bg-[#508484] text-white hover:bg-[#6a9e9e]"
-          : "bg-[#d4d4d4] text-[#a0b8b8] cursor-not-allowed"
-        }
-      `}
-    >
-      Continue →
-    </button>
-  </div>
-</footer>
+        <div className="border-t border-[#d4d4d4] pt-6 flex justify-between items-center">
+          <button
+            onClick={() => router.push("/OnBoarding/Resume")}
+            className="flex items-center gap-2 text-sm text-[#555555] font-medium hover:text-[#1B1B1B] transition-colors duration-200"
+          >
+            ← Back
+          </button>
+          <button
+            disabled={!done}
+            onClick={() => router.push("/dashboard")}
+            className={`
+              px-6 py-2 rounded-lg font-semibold text-sm transition-all duration-200
+              ${done
+                ? "bg-[#508484] text-white hover:bg-[#6a9e9e]"
+                : "bg-[#d4d4d4] text-[#a0b8b8] cursor-not-allowed"
+              }
+            `}
+          >
+            Continue →
+          </button>
+        </div>
+      </footer>
     </div>
   );
 };
+
 export default GenerateRoadmap;
