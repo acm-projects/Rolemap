@@ -1,6 +1,7 @@
 "use client";
-import React, { useState, useRef, useEffect, use } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { api } from "@/lib/api";
 import { Code2, BarChart2, Server, Cloud, Shield, GitBranch } from "lucide-react";
 
 type Specialty = {
@@ -72,6 +73,15 @@ const OnBoardingPage: React.FC = () => {
     const [query, setQuery] = useState<string>("");
     const [showDropdown, setShowDropdown] = useState(false);
     const searchRef = useRef<HTMLDivElement>(null);
+
+    // Returning users who already completed onboarding go straight to dashboard
+    useEffect(() => {
+        api.currentUser()
+            .then(user => {
+                if (user.onboarding_completed) router.replace("/dashboard");
+            })
+            .catch(() => { /* ignore — let them through if API is down */ });
+    }, [router]);
 
     // Filter specialties based on query
     const suggestions = query.trim().length > 0
@@ -256,7 +266,10 @@ const OnBoardingPage: React.FC = () => {
                             Skip for now
                         </button>
                         <button
-                            onClick={() => router.push("/OnBoarding/Company")}
+                            onClick={() => {
+                                if (selected) localStorage.setItem("ob_role", selected);
+                                router.push("/OnBoarding/Company");
+                            }}
                             disabled={!selected}
                             className={`px-6 py-2 rounded-lg font-semibold text-sm transition-all duration-200
                                 ${selected ? "bg-[#508484] text-white hover:bg-[#6a9e9e]" : "bg-[#d4d4d4] text-[#a0b8b8] cursor-not-allowed"}`}

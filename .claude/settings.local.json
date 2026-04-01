@@ -9,7 +9,41 @@
       "Bash(find D:NoobceptRolemapbackend -type f -name *database* -o -name *db*)",
       "Bash(ls:*)",
       "Bash(xargs grep:*)",
-      "Bash(powershell -Command \"& { [System.IO.File]::Delete\\(''\\\\?\\\\d:\\\\Noobcept\\\\Rolemap\\\\backend\\\\nul''\\) }\")"
+      "Bash(powershell -Command \"& { [System.IO.File]::Delete\\(''\\\\?\\\\d:\\\\Noobcept\\\\Rolemap\\\\backend\\\\nul''\\) }\")",
+      "Read(//d/Noobcept/Rolemap/frontend//**)",
+      "Read(//d/Noobcept/Rolemap/frontend/lib//**)",
+      "Skill(update-config)",
+      "Bash(curl:*)",
+      "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d[:3] if isinstance\\(d,list\\) else {k: \\(v[:2] if isinstance\\(v,list\\) else v\\) for k,v in d.items\\(\\)}, indent=2\\)\\)\")",
+      "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('active_roadmap:', d['active_roadmap']\\)\")",
+      "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(f'checkpoints: {len\\(d[\\\\\"checkpoints\\\\\"]\\)}, edges: {len\\(d[\\\\\"edges\\\\\"]\\)}'\\)\")",
+      "Bash(python:*)"
+    ]
+  },
+  "hooks": {
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "Add-Type -AssemblyName System.Windows.Forms; $n = New-Object System.Windows.Forms.NotifyIcon; $n.Icon = [System.Drawing.SystemIcons]::Information; $n.Visible = $true; $n.ShowBalloonTip(4000, 'Claude', 'needs perms 🥀', [System.Windows.Forms.ToolTipIcon]::Info); Start-Sleep 4; $n.Dispose()",
+            "shell": "powershell",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "Add-Type -AssemblyName System.Windows.Forms; $n = New-Object System.Windows.Forms.NotifyIcon; $n.Icon = [System.Drawing.SystemIcons]::Information; $n.Visible = $true; $n.ShowBalloonTip(4000, 'Claude', 'done ❇️', [System.Windows.Forms.ToolTipIcon]::Info); Start-Sleep 4; $n.Dispose()",
+            "shell": "powershell",
+            "async": true
+          }
+        ]
+      }
     ]
   }
 }

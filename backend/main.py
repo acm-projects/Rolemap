@@ -10,18 +10,37 @@ import asyncio
 import csv
 import os
 import json
+from contextlib import asynccontextmanager
 from typing import List, Dict, Set, Optional, Tuple
 from collections import deque, defaultdict
 from pathlib import Path
-from ddgs import DDGS
-from dotenv import load_dotenv
-from google import genai
 
+# Configure logging early so all import-time messages are visible
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    datefmt="%H:%M:%S",
+)
+logger = logging.getLogger(__name__)
+
+logger.info("Loading environment variables...")
+from dotenv import load_dotenv
+load_dotenv(Path(__file__).parent / ".env")
+
+logger.info("Importing ddgs...")
+from ddgs import DDGS
+
+genai = None  # lazy-loaded in get_gemini_client()
+
+logger.info("Importing FastAPI...")
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from neo4j import Session
 
+logger.info("Importing Neo4j driver...")
+from neo4j import Session
 from database import get_neo4j_session
+
+logger.info("Importing models...")
 from models import (
     PrerequisitesPathRequest, PrerequisitesPathResponse, ConceptWithHop,
     RoadmapGenerateRequest, RoadmapGenerateResponse, RoadmapStep,
@@ -33,12 +52,14 @@ from models import (
     EvaluationSection, AIDetectionSection, ConceptMasterySection,
     ErrorResponse
 )
+
+logger.info("Importing Project_Gen...")
 from Project_Gen.generator import generate_project_idea
 from Project_Gen.evaluator import evaluate_repository
 from Project_Gen.repo_fetcher import parse_github_url
 
-# Load environment variables
-load_dotenv(Path(__file__).parent / ".env")
+logger.info("Importing routers...")
+from routers.user_state import router as user_state_router
 
 # Load all GEMINI_API_KEY, GEMINI_API_KEY_2, GEMINI_API_KEY_3, ... dynamically
 def _load_gemini_keys() -> List[str]:
@@ -64,6 +85,12 @@ GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 
 def get_gemini_client():
     """Return a Gemini Client using the current key."""
+    global genai
+    if genai is None:
+        logger.info("Importing google-genai (lazy)...")
+        from google import genai as _genai
+        genai = _genai
+        logger.info("  google-genai imported OK")
     if not GEMINI_API_KEYS:
         logger.error("No Gemini API keys configured in .env")
         return None
@@ -87,7 +114,7 @@ def call_gemini(prompt: str) -> str:
     for _ in range(len(GEMINI_API_KEYS)):
         key = GEMINI_API_KEYS[CURRENT_KEY_INDEX]
         try:
-            client = genai.Client(api_key=key)
+            client = get_gemini_client()
             response = client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
             return response.text
         except Exception as e:
@@ -97,15 +124,35 @@ def call_gemini(prompt: str) -> str:
 
     raise RuntimeError(f"All {len(GEMINI_API_KEYS)} Gemini keys failed. Last error: {last_error}")
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    logger.info("Starting up Rolemap API...")
+
+    logger.info("Loading Gemini API keys...")
+    keys = _load_gemini_keys()
+    logger.info(f"  Gemini keys loaded: {len(keys)} key(s) found")
+
+    logger.info("Connecting to Neo4j...")
+    try:
+        session = get_neo4j_session()
+        session.run("RETURN 1")
+        session.close()
+        logger.info("  Neo4j connection OK")
+    except Exception as e:
+        logger.warning(f"  Neo4j connection FAILED: {e}")
+        logger.warning("  Graph endpoints will be unavailable — frontend (mock) endpoints still work")
+
+    logger.info("Rolemap API ready at http://localhost:8000  |  /docs for Swagger")
+    yield
+    logger.info("Shutting down Rolemap API...")
+
 
 # Initialize FastAPI app
 app = FastAPI(
     title="Rolemap Backend API",
     description="Learning path generation using Neo4j prerequisite graph",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan,
 )
 
 # Add CORS middleware
@@ -116,6 +163,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(user_state_router, prefix="/api/v1")
 
 
 # ============================================================================

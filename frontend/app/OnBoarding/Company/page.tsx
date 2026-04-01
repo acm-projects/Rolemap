@@ -226,7 +226,10 @@ const CompanySelection: React.FC = () => {
                             Skip for now
                         </button>
                         <button
-                            onClick={() => router.push("/OnBoarding/Preferences")}
+                            onClick={() => {
+                                if (selected.length > 0) localStorage.setItem("ob_companies", JSON.stringify(selected));
+                                router.push("/OnBoarding/Preferences");
+                            }}
                             disabled={selected.length === 0}
                             className={`px-6 py-2 rounded-lg font-semibold text-sm transition-all duration-200
                                 ${selected.length > 0 ? "bg-[#508484] text-white hover:bg-[#6a9e9e]" : "bg-[#d4d4d4] text-[#a0b8b8] cursor-not-allowed"}`}

@@ -185,7 +185,7 @@ def topological_sort_path(user_nodes: list[dict], job_graph: dict) -> list[dict]
     
     while queue:
         # Sort queue so that we tie-break nicely: Core skills and Heaviest weights bubble up
-        queue = deque(sorted(queue, key=lambda nid: (nodes_info[nid]['is_core'], nodes_info[nid]['weight']), reverse=True))
+        queue = deque(sorted(queue, key=lambda nid: (nodes_info[nid]['is_core'] or False, nodes_info[nid]['weight'] or 0.0), reverse=True))
         
         current_id = queue.popleft()
         learning_path.append(nodes_info[current_id])

@@ -199,7 +199,12 @@ const LearningPreferences: React.FC = () => {
                             Skip for now
                         </button>
                         <button
-                            onClick={() => router.push("/OnBoarding/Resume")}
+                            onClick={() => {
+                                if (canContinue) {
+                                    localStorage.setItem("ob_preferences", JSON.stringify({ preferences: selected, other: otherText }));
+                                }
+                                router.push("/OnBoarding/Resume");
+                            }}
                             disabled={!canContinue}
                             className={`px-6 py-2 rounded-lg font-semibold text-sm transition-all duration-200
                                 ${canContinue ? "bg-[#508484] text-white hover:bg-[#6a9e9e]" : "bg-[#d4d4d4] text-[#a0b8b8] cursor-not-allowed"}`}
