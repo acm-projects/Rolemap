@@ -5,12 +5,12 @@
       "email": "alex.morgan@example.com",
       "name": "Alex Morgan",
       "image_url": null,
-      "github_username": "alexmorgan",
+      "github_username": "OhamjDung",
       "xp_total": 2450,
       "current_streak": 24,
       "longest_streak": 31,
-      "onboarding_completed": false,
-      "onboarding_step": 0,
+      "onboarding_completed": true,
+      "onboarding_step": 5,
       "created_at": "2025-09-01T00:00:00Z"
     }
   ],
@@ -130,6 +130,13 @@
     }
   ],
   "roadmaps": [
+    {
+      "id": "rm-generated",
+      "user_id": "u-001",
+      "title": "Technical Project Manager Roadmap",
+      "progress_percentage": 0,
+      "status": "active"
+    },
     {
       "id": "rm-001",
       "user_id": "u-001",
@@ -270,7 +277,7 @@
         "x": 1250,
         "y": 150
       },
-      "description": "Apply everything learned so far to build a small interactive website — a to-do list, a quiz app, or a weather dashboard. Focus on clean HTML structure, responsive CSS, and vanilla JS logic with no frameworks.",
+      "description": "Apply everything learned so far to build a small interactive website \u2014 a to-do list, a quiz app, or a weather dashboard. Focus on clean HTML structure, responsive CSS, and vanilla JS logic with no frameworks.",
       "learning_goals": [
         "Plan a small project by breaking it into HTML structure, CSS styles, and JS logic",
         "Implement CRUD operations (add, edit, delete items) using DOM manipulation",
@@ -314,6 +321,630 @@
         "Manage local component state with the useState hook",
         "Trigger side effects and data fetching with useEffect",
         "Compose a multi-component page with a clear data-flow hierarchy"
+      ]
+    },
+    {
+      "id": "cp-gen-000",
+      "roadmap_id": "rm-generated",
+      "label": "Product Development Lifecycle",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": false,
+      "position": {
+        "x": 300,
+        "y": 100
+      },
+      "description": "Master the sequential stages a product undergoes from initial concept to market launch and beyond. Understanding the Product Development Lifecycle is crucial for Technical Project Managers to effectively plan, execute, and deliver products that meet strategic goals and user needs.",
+      "learning_goals": [
+        "Describe the key phases and activities within a typical product development lifecycle (PDLC).",
+        "Identify critical inputs, outputs, and stakeholders for each stage of the PDLC.",
+        "Analyze how different project management methodologies (e.g., Agile, Waterfall) map to and influence the PDLC.",
+        "Recognize potential risks and challenges specific to different PDLC stages and propose mitigation strategies."
+      ]
+    },
+    {
+      "id": "cp-gen-001",
+      "roadmap_id": "rm-generated",
+      "label": "Development",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 500,
+        "y": 230
+      },
+      "description": "This lesson focuses on understanding the core phases and practices of software development from a project management perspective. You'll learn how development teams operate, the common methodologies they employ, and how to effectively interact with and support engineering efforts without needing to code.",
+      "learning_goals": [
+        "Identify and explain common Software Development Life Cycle (SDLC) models (e.g., Agile, Waterfall, Scrum, Kanban).",
+        "Describe the key roles and responsibilities within a typical software development team.",
+        "Understand basic development concepts like version control, build processes, and deployment pipelines.",
+        "Explain how to effectively track development progress and identify potential roadblocks or dependencies."
+      ]
+    },
+    {
+      "id": "cp-gen-002",
+      "roadmap_id": "rm-generated",
+      "label": "Introduction",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 300,
+        "y": 360
+      },
+      "description": "This introductory lesson defines the role of a Technical Project Manager (TPM), outlining its unique blend of technical understanding and project management principles. It distinguishes the TPM from traditional project managers and technical leads, highlighting the critical impact this role has within technology-driven organizations.",
+      "learning_goals": [
+        "Define the core responsibilities of a Technical Project Manager.",
+        "Differentiate the TPM role from traditional Project Manager and technical lead roles.",
+        "Identify the key technical and soft skills essential for a successful TPM.",
+        "Understand the value and impact a TPM brings to technology projects."
+      ]
+    },
+    {
+      "id": "cp-gen-003",
+      "roadmap_id": "rm-generated",
+      "label": "Product Development Lifecycle + Development + Introduction Quiz",
+      "kind": "quiz",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 500,
+        "y": 490
+      },
+      "description": "This quiz evaluates your foundational knowledge of the end-to-end product development lifecycle, from ideation and development to market introduction. It assesses your understanding of key stages, typical activities, and associated methodologies.",
+      "learning_goals": [
+        "Recall the sequential stages of a typical product development lifecycle.",
+        "Identify core activities and deliverables within each development phase.",
+        "Differentiate between common product development methodologies (e.g., Agile, Waterfall, Scrum).",
+        "Understand key considerations for successful product introduction and launch."
+      ]
+    },
+    {
+      "id": "cp-gen-004",
+      "roadmap_id": "rm-generated",
+      "label": "Growth",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 300,
+        "y": 620
+      },
+      "description": "Embrace continuous learning and adapt to evolving technologies and methodologies. This checkpoint focuses on expanding your influence, developing advanced leadership skills, and proactively shaping your career trajectory beyond day-to-day project execution.",
+      "learning_goals": [
+        "Develop a personalized continuous learning plan, including technical and leadership skill development.",
+        "Identify and pursue advanced leadership or strategic management training/certifications relevant to future career aspirations.",
+        "Actively mentor junior project managers or team members, contributing to team growth and knowledge sharing.",
+        "Implement a structured approach to seeking and utilizing peer and stakeholder feedback for continuous professional improvement."
+      ]
+    },
+    {
+      "id": "cp-gen-005",
+      "roadmap_id": "rm-generated",
+      "label": "Maturity",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 500,
+        "y": 750
+      },
+      "description": "Cultivate the self-awareness, emotional intelligence, and strategic mindset necessary for leading complex technical initiatives and guiding teams through challenges with poise and wisdom. This checkpoint focuses on personal growth beyond technical proficiency.",
+      "learning_goals": [
+        "Identify and articulate your personal leadership style, strengths, and areas for development.",
+        "Develop advanced emotional intelligence to effectively manage team dynamics, stakeholder expectations, and personal stress.",
+        "Master conflict resolution and negotiation techniques to foster collaborative environments and secure desired outcomes.",
+        "Cultivate a strategic foresight to anticipate challenges, mitigate risks, and align project execution with long-term organizational goals."
+      ]
+    },
+    {
+      "id": "cp-gen-006",
+      "roadmap_id": "rm-generated",
+      "label": "Decline",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 300,
+        "y": 880
+      },
+      "description": "Learning to decline effectively is a critical skill for Technical Project Managers to manage scope, protect team capacity, and ensure successful project delivery. This lesson focuses on strategic refusal to prevent overcommitment, mitigate risks, and maintain focus on high-priority objectives.",
+      "learning_goals": [
+        "Recognize situations where declining is necessary for project health and team capacity.",
+        "Formulate clear, data-backed justifications for declining requests or commitments.",
+        "Communicate 'no' professionally while offering alternatives or compromises.",
+        "Understand how strategic declines contribute to long-term project success and team well-being."
+      ]
+    },
+    {
+      "id": "cp-gen-007",
+      "roadmap_id": "rm-generated",
+      "label": "Growth + Maturity + Decline Quiz",
+      "kind": "quiz",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 500,
+        "y": 1010
+      },
+      "description": "This quiz assesses your understanding of the distinct characteristics and strategic implications of product, project, and even company lifecycles: growth, maturity, and decline. It evaluates your ability to recognize key indicators and challenges inherent in each phase.",
+      "learning_goals": [
+        "Accurately identify the defining characteristics of growth, maturity, and decline phases.",
+        "Formulate and adapt project and product strategies to align with the current lifecycle stage.",
+        "Make informed decisions regarding resource allocation, investment, or divestment based on lifecycle phase.",
+        "Proactively anticipate and plan for common risks and opportunities associated with each stage."
+      ]
+    },
+    {
+      "id": "cp-gen-008",
+      "roadmap_id": "rm-generated",
+      "label": "Mind Mapping",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 300,
+        "y": 1140
+      },
+      "description": "Learn to visually organize ideas, information, and tasks, enabling clearer thought processes and more effective planning. Mind mapping helps break down complex projects into manageable components and connect disparate concepts for comprehensive understanding.",
+      "learning_goals": [
+        "Create a comprehensive mind map for a project idea or problem statement.",
+        "Utilize mind mapping for requirements gathering and stakeholder analysis.",
+        "Organize complex technical information into a structured visual hierarchy.",
+        "Employ mind mapping to brainstorm solutions and identify potential project risks."
+      ]
+    },
+    {
+      "id": "cp-gen-009",
+      "roadmap_id": "rm-generated",
+      "label": "SCAMPER",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 500,
+        "y": 1270
+      },
+      "description": "SCAMPER is a powerful brainstorming technique used to spark creativity and develop new products or improve existing ones by asking a series of targeted questions. For a Technical Project Manager, it helps in systematically challenging assumptions and finding innovative solutions for project obstacles, feature improvements, or process enhancements.",
+      "learning_goals": [
+        "Understand each element of the SCAMPER mnemonic and its application.",
+        "Apply SCAMPER to generate creative solutions for project risks, product features, or process inefficiencies.",
+        "Facilitate brainstorming sessions using the SCAMPER method with project teams or stakeholders.",
+        "Utilize SCAMPER to drive innovation and problem-solving throughout the project lifecycle."
+      ]
+    },
+    {
+      "id": "cp-gen-010",
+      "roadmap_id": "rm-generated",
+      "label": "Selection",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 300,
+        "y": 1400
+      },
+      "description": "This lesson explores the critical process of project and solution selection, equipping Technical Project Managers with the skills to evaluate proposals against strategic objectives and technical feasibility. Learn to identify key decision-making factors and facilitate informed choices for successful project initiation.",
+      "learning_goals": [
+        "Identify and apply various project selection criteria and methodologies.",
+        "Evaluate project proposals based on strategic alignment, technical feasibility, and resource availability.",
+        "Facilitate stakeholder discussions to achieve consensus on project selection.",
+        "Understand the impact of selected projects on the overall portfolio and business objectives."
+      ]
+    },
+    {
+      "id": "cp-gen-011",
+      "roadmap_id": "rm-generated",
+      "label": "Technical Project Manager Project #1",
+      "kind": "project",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 500,
+        "y": 1530
+      },
+      "description": "Lead the setup and initial configuration of a new internal team tool (e.g., a simple CI/CD pipeline for a mock project, or a project management dashboard). Define core requirements, set up the infrastructure, and onboard a small 'team' to its basic use, focusing on foundational planning and hands-on technical execution.",
+      "learning_goals": [
+        "Elicit and document technical and functional requirements.",
+        "Execute hands-on technical system setup and configuration.",
+        "Develop a basic project plan with tasks, estimates, and timeline.",
+        "Communicate project status and facilitate user onboarding."
+      ]
+    },
+    {
+      "id": "cp-gen-012",
+      "roadmap_id": "rm-generated",
+      "label": "Execution",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 300,
+        "y": 1660
+      },
+      "description": "This lesson focuses on the critical phase of turning project plans into tangible outcomes. You will learn to drive progress, manage day-to-day operations, and ensure the project stays on track through proactive problem-solving and effective team coordination.",
+      "learning_goals": [
+        "Master task and sprint management techniques to track and drive progress effectively.",
+        "Proactively identify, escalate, and resolve technical and process blockers and impediments.",
+        "Implement real-time risk and issue management strategies to mitigate project threats.",
+        "Develop clear and consistent communication channels for project status updates to all stakeholders."
+      ]
+    },
+    {
+      "id": "cp-gen-013",
+      "roadmap_id": "rm-generated",
+      "label": "TRIZ (Theory of Inventive Problem Solving)",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 500,
+        "y": 1790
+      },
+      "description": "Learn TRIZ, a methodology for inventive problem solving that systematically identifies contradictions and applies established principles to generate innovative solutions. This enables Technical Project Managers to overcome technical challenges without compromise and to proactively envision system evolution.",
+      "learning_goals": [
+        "Understand the core principles and tools of TRIZ, including the Contradiction Matrix and 40 Inventive Principles.",
+        "Apply TRIZ methods to analyze and frame technical or project-related problems effectively.",
+        "Generate inventive, non-compromising solutions to complex technical and organizational challenges.",
+        "Utilize TRIZ to anticipate system evolution and inform strategic planning for product or project development."
+      ]
+    },
+    {
+      "id": "cp-gen-014",
+      "roadmap_id": "rm-generated",
+      "label": "Problem Framing",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 300,
+        "y": 1920
+      },
+      "description": "Learn to identify the true underlying problems rather than just addressing symptoms. This lesson focuses on techniques to clearly define and articulate a problem statement, crucial for effective project planning and stakeholder alignment.",
+      "learning_goals": [
+        "Identify and distinguish between symptoms and root causes of technical issues.",
+        "Formulate precise and actionable problem statements for project initiatives.",
+        "Define clear scope boundaries and success metrics derived from the problem.",
+        "Engage relevant stakeholders to gather diverse perspectives on a given problem."
+      ]
+    },
+    {
+      "id": "cp-gen-015",
+      "roadmap_id": "rm-generated",
+      "label": "Execution + TRIZ (Theory of Inventive Problem Solving) + Problem Framing Quiz",
+      "kind": "quiz",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 500,
+        "y": 2050
+      },
+      "description": "This quiz assesses your ability to apply TRIZ principles to resolve technical project execution challenges and effectively frame complex problems. You'll analyze scenarios, identify contradictions, and propose innovative solutions using inventive thinking frameworks.",
+      "learning_goals": [
+        "Demonstrate understanding of key TRIZ principles and tools for inventive problem-solving.",
+        "Apply TRIZ methodologies to identify and resolve contradictions in technical project execution scenarios.",
+        "Effectively frame ambiguous or complex project problems into actionable statements.",
+        "Integrate structured problem-solving techniques into decision-making for project success."
+      ]
+    },
+    {
+      "id": "cp-gen-016",
+      "roadmap_id": "rm-generated",
+      "label": "Target",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 300,
+        "y": 2180
+      },
+      "description": "This lesson helps you define the ideal Technical Project Manager role you aspire to, including industries, company sizes, and specific responsibilities that align with your skills and interests.",
+      "learning_goals": [
+        "Identify target industries and sectors for TPM roles.",
+        "Determine preferred company sizes and organizational structures.",
+        "Outline key responsibilities and challenges of an ideal TPM role.",
+        "Articulate personal strengths and interests applicable to your target TPM profile."
+      ]
+    },
+    {
+      "id": "cp-gen-017",
+      "roadmap_id": "rm-generated",
+      "label": "Baseline",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 500,
+        "y": 2310
+      },
+      "description": "This lesson introduces the fundamental role of a Technical Project Manager, outlining core responsibilities and differentiating it from general project management. It provides an overview of essential project management concepts and the typical project lifecycle. Understand the foundational knowledge required for effective technical project oversight.",
+      "learning_goals": [
+        "Define the Technical Project Manager (TPM) role and its unique responsibilities in a tech environment.",
+        "Identify core project management methodologies (e.g., Agile, Waterfall) and their appropriate contexts.",
+        "Outline the standard project lifecycle phases from initiation to closure.",
+        "Recognize key skills and knowledge areas crucial for success as a TPM."
+      ]
+    },
+    {
+      "id": "cp-gen-018",
+      "roadmap_id": "rm-generated",
+      "label": "Timeframe",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 300,
+        "y": 2440
+      },
+      "description": "This lesson focuses on mastering project time management, from initial estimation to final delivery. Learn to build realistic schedules, identify critical paths, and effectively manage deadlines to ensure projects stay on track and meet stakeholder expectations.",
+      "learning_goals": [
+        "Master various project estimation techniques (e.g., Agile, PERT, Three-point).",
+        "Develop comprehensive project schedules, including critical path analysis and milestone definition.",
+        "Learn to monitor schedule progress, identify deviations, and implement corrective actions.",
+        "Effectively communicate timeline risks, changes, and progress to project stakeholders."
+      ]
+    },
+    {
+      "id": "cp-gen-019",
+      "roadmap_id": "rm-generated",
+      "label": "Target + Baseline + Timeframe Quiz",
+      "kind": "quiz",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 500,
+        "y": 2570
+      },
+      "description": "This quiz assesses your ability to clearly define project targets, establish accurate baselines, and set realistic timeframes. It ensures you understand the foundational elements required for effective project planning and tracking.",
+      "learning_goals": [
+        "Clearly define project targets and success metrics.",
+        "Establish comprehensive project baselines (scope, schedule, cost).",
+        "Set realistic and achievable project timeframes and milestones.",
+        "Understand the critical interdependencies between targets, baselines, and timeframes."
+      ]
+    },
+    {
+      "id": "cp-gen-020",
+      "roadmap_id": "rm-generated",
+      "label": "Feature Creep",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 300,
+        "y": 2700
+      },
+      "description": "Feature creep is the uncontrolled expansion of a project's scope by adding new features beyond initial requirements, leading to missed deadlines, budget overruns, and diminished quality. A Technical Project Manager must actively identify and manage this common challenge.",
+      "learning_goals": [
+        "Identify early signs of feature creep in project discussions and change requests.",
+        "Implement strong scope definition and change control processes to prevent unauthorized additions.",
+        "Communicate the impact of scope changes (time, cost, resources) effectively to stakeholders.",
+        "Negotiate and prioritize feature requests against existing project goals and constraints."
+      ]
+    },
+    {
+      "id": "cp-gen-021",
+      "roadmap_id": "rm-generated",
+      "label": "Five Forces Analysis",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 500,
+        "y": 2830
+      },
+      "description": "Learn Porter's Five Forces framework to analyze the competitive intensity and attractiveness of an industry. This understanding is crucial for Technical Project Managers to evaluate market conditions, identify potential risks, and strategically position projects for success within their competitive landscape.",
+      "learning_goals": [
+        "Define and explain each of Porter's Five Forces.",
+        "Apply the Five Forces framework to analyze a specific tech product or industry segment.",
+        "Evaluate how competitive forces influence project risks, opportunities, and strategic positioning.",
+        "Utilize Five Forces analysis to inform project scope, feature prioritization, or market entry strategies."
+      ]
+    },
+    {
+      "id": "cp-gen-022",
+      "roadmap_id": "rm-generated",
+      "label": "Identify Partners",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 300,
+        "y": 2960
+      },
+      "description": "Learn to systematically identify all internal and external parties crucial for a project's success, including engineering teams, product managers, vendors, and end-users. Understand their roles, interests, and potential impact on project delivery.",
+      "learning_goals": [
+        "Categorize various internal and external stakeholders relevant to a technical project.",
+        "Apply techniques to map stakeholder influence, interest, and communication needs.",
+        "Identify critical decision-makers and subject matter experts within the partner ecosystem.",
+        "Outline initial strategies for engaging and communicating with diverse partner groups."
+      ]
+    },
+    {
+      "id": "cp-gen-023",
+      "roadmap_id": "rm-generated",
+      "label": "Technical Project Manager Project #2",
+      "kind": "project",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 500,
+        "y": 3090
+      },
+      "description": "Lead the development and integration of a small, internal API service or a critical system feature. This project emphasizes managing technical dependencies, coordinating a small team, and delivering a functional component while addressing potential technical risks.",
+      "learning_goals": [
+        "Practice effective technical requirement gathering and decomposition.",
+        "Manage technical dependencies and identify potential integration challenges.",
+        "Coordinate a small development team through an agile sprint cycle.",
+        "Plan and execute a successful deployment and post-release monitoring."
+      ]
+    },
+    {
+      "id": "cp-gen-024",
+      "roadmap_id": "rm-generated",
+      "label": "Managing Partnerships",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 300,
+        "y": 3220
+      },
+      "description": "This lesson equips Technical Project Managers with the essential skills to identify, engage, and sustain effective partnerships, both internal and external. You will learn to navigate the complexities of collaborative relationships, ensuring alignment with project goals and successful delivery.",
+      "learning_goals": [
+        "Identify key internal and external stakeholders and potential partners for technical projects.",
+        "Develop effective communication and engagement strategies tailored for diverse partner types.",
+        "Negotiate and define clear scope, deliverables, and responsibilities with partnering entities.",
+        "Implement strategies for monitoring partner performance, mitigating risks, and resolving conflicts proactively."
+      ]
+    },
+    {
+      "id": "cp-gen-025",
+      "roadmap_id": "rm-generated",
+      "label": "Outcome-Based Roadmaps",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 500,
+        "y": 3350
+      },
+      "description": "Outcome-based roadmaps shift focus from delivering features to achieving measurable business results and impact. For a Technical Project Manager, mastering this approach ensures technical efforts directly align with strategic goals, facilitating better prioritization and stakeholder communication around delivered value.",
+      "learning_goals": [
+        "Differentiate between outcome-driven and output-driven roadmap approaches.",
+        "Identify and articulate measurable outcomes relevant to technical projects.",
+        "Structure a roadmap that clearly links technical initiatives to desired business outcomes.",
+        "Communicate the strategic value of an outcome-based roadmap to diverse stakeholders."
+      ]
+    },
+    {
+      "id": "cp-gen-026",
+      "roadmap_id": "rm-generated",
+      "label": "Prioritization Techniques",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 300,
+        "y": 3480
+      },
+      "description": "This lesson covers essential techniques for identifying critical tasks and ordering them effectively within a project. Learn to apply frameworks like MoSCoW, Eisenhower Matrix, and ICE scoring to manage project scope, allocate resources, and align with strategic objectives, ultimately enhancing project delivery and stakeholder satisfaction.",
+      "learning_goals": [
+        "Identify and describe at least three common prioritization frameworks (e.g., MoSCoW, Eisenhower, RICE).",
+        "Apply selected prioritization techniques to a given project scenario to create a ranked task list.",
+        "Evaluate the suitability of different prioritization techniques based on project context and constraints.",
+        "Justify prioritization decisions to stakeholders, explaining the rationale and expected impact."
+      ]
+    },
+    {
+      "id": "cp-gen-027",
+      "roadmap_id": "rm-generated",
+      "label": "Managing Partnerships + Outcome-Based Roadmaps + Prioritization Techniques Quiz",
+      "kind": "quiz",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 500,
+        "y": 3610
+      },
+      "description": "This quiz assesses your understanding of effective partnership management strategies, the principles behind creating outcome-based roadmaps, and various prioritization techniques. It evaluates your ability to apply these concepts to drive successful project outcomes and strategic alignment.",
+      "learning_goals": [
+        "Understand key stages and best practices for managing technical partnerships.",
+        "Differentiate between outcome-based and output-based roadmaps and their strategic implications.",
+        "Identify and explain common prioritization techniques (e.g., MoSCoW, RICE, WSJF) and their suitable contexts.",
+        "Apply knowledge of partnerships, roadmaps, and prioritization to evaluate project scenarios and make informed decisions."
+      ]
+    },
+    {
+      "id": "cp-gen-028",
+      "roadmap_id": "rm-generated",
+      "label": "Grooming Sessions",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 300,
+        "y": 3740
+      },
+      "description": "Master the art of facilitating productive grooming sessions to refine backlog items, clarify requirements, and ensure shared understanding among development teams and stakeholders. Learn techniques for effective communication and decision-making during these crucial meetings.",
+      "learning_goals": [
+        "Facilitate efficient grooming sessions that lead to well-defined user stories and tasks.",
+        "Effectively articulate requirements and constraints to the development team.",
+        "Identify and resolve ambiguities or conflicts in backlog items.",
+        "Ensure alignment between business objectives and technical implementation plans."
+      ]
+    },
+    {
+      "id": "cp-gen-029",
+      "roadmap_id": "rm-generated",
+      "label": "Agile Methodology",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 500,
+        "y": 3870
+      },
+      "description": "This lesson introduces the core principles and values of Agile methodology, a highly iterative and collaborative approach essential for technical project management. Learn how Agile enables teams to adapt quickly to changes, deliver value incrementally, and foster continuous improvement within a technical context.",
+      "learning_goals": [
+        "Define the core principles and values of Agile methodology.",
+        "Differentiate Agile from traditional project management approaches.",
+        "Identify key Agile frameworks such as Scrum and Kanban.",
+        "Understand the common roles, ceremonies, and artifacts within an Agile team."
+      ]
+    },
+    {
+      "id": "cp-gen-030",
+      "roadmap_id": "rm-generated",
+      "label": "Minimum Viable Product (MVP)",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 300,
+        "y": 4000
+      },
+      "description": "Learn to define, scope, and deliver a Minimum Viable Product (MVP). Understand how to identify core functionality, gather early user feedback, and iterate rapidly to validate market assumptions and reduce development risk, all while managing stakeholder expectations effectively.",
+      "learning_goals": [
+        "Define MVP and articulate its strategic importance in product development.",
+        "Identify and prioritize core features essential for an MVP, distinguishing them from later enhancements.",
+        "Collaborate with stakeholders to set realistic MVP scope and manage expectations.",
+        "Explain the benefits of an MVP approach for reducing risk and accelerating product learning."
+      ]
+    },
+    {
+      "id": "cp-gen-031",
+      "roadmap_id": "rm-generated",
+      "label": "Grooming Sessions + Agile Methodology + Minimum Viable Product (MVP) Quiz",
+      "kind": "quiz",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 500,
+        "y": 4130
+      },
+      "description": "Learn Grooming Sessions + Agile Methodology + Minimum Viable Product (MVP) Quiz",
+      "learning_goals": [
+        "Grooming Sessions + Agile Methodology + Minimum Viable Product (MVP) Quiz"
+      ]
+    },
+    {
+      "id": "cp-gen-032",
+      "roadmap_id": "rm-generated",
+      "label": "Go-to-Market Strategy",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": {
+        "x": 300,
+        "y": 4260
+      },
+      "description": "Learn the essentials of a Go-to-Market (GTM) strategy, focusing on how technical projects align with business launch plans and market objectives. Understand the TPM's role in coordinating technical deliverables with product, marketing, and sales efforts for a successful product launch.",
+      "learning_goals": [
+        "Understand the core components of a GTM strategy (product, price, place, promotion).",
+        "Identify how technical project deliverables integrate into the overall GTM plan.",
+        "Learn to collaborate with marketing, sales, and product teams to define launch readiness.",
+        "Understand key performance indicators (KPIs) for launch success and post-launch analysis."
       ]
     }
   ],
@@ -530,6 +1161,198 @@
       "roadmap_id": "rm-001",
       "source": "cp-007",
       "target": "cp-008"
+    },
+    {
+      "id": "edge-gen-001",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-000",
+      "target": "cp-gen-001"
+    },
+    {
+      "id": "edge-gen-002",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-001",
+      "target": "cp-gen-002"
+    },
+    {
+      "id": "edge-gen-003",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-002",
+      "target": "cp-gen-003"
+    },
+    {
+      "id": "edge-gen-004",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-003",
+      "target": "cp-gen-004"
+    },
+    {
+      "id": "edge-gen-005",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-004",
+      "target": "cp-gen-005"
+    },
+    {
+      "id": "edge-gen-006",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-005",
+      "target": "cp-gen-006"
+    },
+    {
+      "id": "edge-gen-007",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-006",
+      "target": "cp-gen-007"
+    },
+    {
+      "id": "edge-gen-008",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-007",
+      "target": "cp-gen-008"
+    },
+    {
+      "id": "edge-gen-009",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-008",
+      "target": "cp-gen-009"
+    },
+    {
+      "id": "edge-gen-010",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-009",
+      "target": "cp-gen-010"
+    },
+    {
+      "id": "edge-gen-011",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-010",
+      "target": "cp-gen-011"
+    },
+    {
+      "id": "edge-gen-012",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-011",
+      "target": "cp-gen-012"
+    },
+    {
+      "id": "edge-gen-013",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-012",
+      "target": "cp-gen-013"
+    },
+    {
+      "id": "edge-gen-014",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-013",
+      "target": "cp-gen-014"
+    },
+    {
+      "id": "edge-gen-015",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-014",
+      "target": "cp-gen-015"
+    },
+    {
+      "id": "edge-gen-016",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-015",
+      "target": "cp-gen-016"
+    },
+    {
+      "id": "edge-gen-017",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-016",
+      "target": "cp-gen-017"
+    },
+    {
+      "id": "edge-gen-018",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-017",
+      "target": "cp-gen-018"
+    },
+    {
+      "id": "edge-gen-019",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-018",
+      "target": "cp-gen-019"
+    },
+    {
+      "id": "edge-gen-020",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-019",
+      "target": "cp-gen-020"
+    },
+    {
+      "id": "edge-gen-021",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-020",
+      "target": "cp-gen-021"
+    },
+    {
+      "id": "edge-gen-022",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-021",
+      "target": "cp-gen-022"
+    },
+    {
+      "id": "edge-gen-023",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-022",
+      "target": "cp-gen-023"
+    },
+    {
+      "id": "edge-gen-024",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-023",
+      "target": "cp-gen-024"
+    },
+    {
+      "id": "edge-gen-025",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-024",
+      "target": "cp-gen-025"
+    },
+    {
+      "id": "edge-gen-026",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-025",
+      "target": "cp-gen-026"
+    },
+    {
+      "id": "edge-gen-027",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-026",
+      "target": "cp-gen-027"
+    },
+    {
+      "id": "edge-gen-028",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-027",
+      "target": "cp-gen-028"
+    },
+    {
+      "id": "edge-gen-029",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-028",
+      "target": "cp-gen-029"
+    },
+    {
+      "id": "edge-gen-030",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-029",
+      "target": "cp-gen-030"
+    },
+    {
+      "id": "edge-gen-031",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-030",
+      "target": "cp-gen-031"
+    },
+    {
+      "id": "edge-gen-032",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-031",
+      "target": "cp-gen-032"
     }
   ],
   "quiz_questions": {
