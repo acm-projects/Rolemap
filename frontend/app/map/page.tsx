@@ -20,6 +20,7 @@ import { RoadmapNode } from '@/app/components/RoadmapNode';
 import { NodePanel, NodePanelData } from '@/app/components/ConceptNodePanel';
 import { Navbar } from '@/app/components/NavBar';
 import { api, type Checkpoint, type RoadmapEdge } from '@/lib/api';
+import { applyDagreLayout } from '@/lib/layout';
 
 const nodeTypes = { roadmap: RoadmapNode };
 
@@ -40,7 +41,7 @@ function toFlowEdges(edges: RoadmapEdge[], checkpoints: Checkpoint[]) {
       id: e.id,
       source: e.source,
       target: e.target,
-      type: 'default' as const,
+      type: 'smoothstep' as const,
       animated: false,
       style: {
         stroke: unlocked ? '#4a7c7c' : '#c8d0dc',
@@ -66,14 +67,21 @@ function RoadmapContent() {
     api.roadmapMap('rm-generated')
       .then(data => {
         setCheckpoints(data.checkpoints);
-        setNodes(toFlowNodes(data.checkpoints));
-        setEdges(toFlowEdges(data.edges, data.checkpoints));
 
-        // Auto-center on first in-progress node
-        const activeNode = data.checkpoints.find(cp => !cp.locked && cp.progress < 100);
-        if (activeNode) {
+        const flowNodes = toFlowNodes(data.checkpoints);
+        const flowEdges = toFlowEdges(data.edges, data.checkpoints);
+        const laidOutNodes = applyDagreLayout(flowNodes, flowEdges);
+
+        setNodes(laidOutNodes);
+        setEdges(flowEdges);
+
+        // Auto-center on first in-progress node using dagre-computed position
+        const activeCP = data.checkpoints.find(cp => !cp.locked && cp.progress < 100);
+        if (activeCP) {
+          const laidOutNode = laidOutNodes.find(n => n.id === activeCP.id);
+          const pos = laidOutNode?.position ?? activeCP.position;
           setTimeout(() => {
-            setCenter(activeNode.position.x, activeNode.position.y + 85, { zoom: 1.2, duration: 1000 });
+            setCenter(pos.x + 128, pos.y + 70, { zoom: 1.2, duration: 1000 });
           }, 200);
         } else {
           setTimeout(() => fitView({ duration: 1000 }), 200);
