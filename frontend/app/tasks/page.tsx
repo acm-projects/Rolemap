@@ -55,7 +55,7 @@ export default function DailyPage() {
     <div className="p-8 bg-[#f4f7f7] min-h-screen">
       <Navbar />
 
-      <div className="flex justify-center gap-8 mt-20">
+      <div className="flex justify-end gap-8 mt-20">
 
         {/* ── Left Panel (Daily Tasks) ── */}
         <div className="flex flex-col bg-white w-[400px] h-[calc(100vh-7rem)] rounded-3xl shadow-sm border border-[#e4eeee] p-6">
