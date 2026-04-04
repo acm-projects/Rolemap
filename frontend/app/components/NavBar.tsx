@@ -1,6 +1,9 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
+import { useState, useRef, useEffect } from "react";
+import { signOut, useSession } from "next-auth/react";
+
 import { usePathname } from "next/navigation";
 import gear from "../../icons/settings.png";
 
