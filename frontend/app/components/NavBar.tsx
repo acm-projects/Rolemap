@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-
+import gear from "../../icons/settings.png";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -69,8 +70,9 @@ export function Navbar() {
 
           {/* Separator */}
           <div className="h-7 w-px bg-slate-200" />
-
-
+            
+          <Image src={gear} alt={"Settings Icon"} className="h-15 w-15"/>
+            
           {/* Profile */}
           <div className="flex items-center gap-2">
             <div className="flex flex-col leading-tight text-right">

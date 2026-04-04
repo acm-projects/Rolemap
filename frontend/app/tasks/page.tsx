@@ -1,5 +1,9 @@
 'use client';
+<<<<<<< HEAD
 import { useState, useEffect } from "react";
+=======
+import { useEffect, useState } from "react";
+>>>>>>> d7be10439bb332672b1fe410b20b7579dbf96af6
 import { Navbar } from "../components/NavBar";
 import Image, { type StaticImageData } from "next/image";
 import pic3 from "../tasks/html.png";
@@ -32,6 +36,7 @@ export default function DailyPage() {
   const [activeTask, setActiveTask] = useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [animKey, setAnimKey] = useState(0);
+<<<<<<< HEAD
   const [completed, setCompleted] = useState<string[]>([]);
 
   useEffect(() => {
@@ -54,6 +59,17 @@ export default function DailyPage() {
         tag: activeTaskObj.tag,
       }
     : null;
+=======
+  const [completed, setCompleted] = useState<string[]>(() => {
+    const saved = localStorage.getItem('completedTasks');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const activeModule = modules.find((m) => m.id === activeTask);
+>>>>>>> d7be10439bb332672b1fe410b20b7579dbf96af6
+
+  useEffect(() => {
+  localStorage.setItem('completedTasks', JSON.stringify(completed));
+}, [completed]);
 
   function openTask(id: string) {
     setActiveTask(id);
