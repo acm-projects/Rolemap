@@ -88,7 +88,7 @@ export function NodePanel({ data, onClose }: { data: NodePanelData; onClose: () 
         {/* Footer */}
         <div className="px-6 pb-6 pt-4 border-t border-slate-50">
           <Link 
-            href={data.kind === 'quiz' ? `/quiz?label=${encodeURIComponent(data.label)}` : '/daily'}
+            href={data.kind === 'quiz' ? `/quiz?label=${encodeURIComponent(data.label)}` : '/tasks'}
             className="block w-full bg-[#4a7c7c] hover:bg-[#3d6e6e] text-white font-bold text-sm py-4 rounded-2xl text-center shadow-lg shadow-[#4a7c7c]/10 transition-all active:scale-[0.98]"
           >
             {data.kind === 'quiz' ? 'Take Quiz' : data.progress > 0 ? 'Continue Learning' : 'Start Module'} →
