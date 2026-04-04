@@ -1,135 +1,146 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import PixelButton from "../../components/PixelButton";
+import PixelProgress from "../../components/PixelProgress";
+import TypewriterText from "../../components/Typewriter";
 
-const TOTAL_STEPS = 5;
-const CURRENT_STEP = 5;
-const PROGRESS = Math.round((CURRENT_STEP / TOTAL_STEPS) * 100);
+export default function GenerateRoadmap() {
+  const router = useRouter();
+  const [generating, setGenerating] = useState(false);
+  const [done, setDone] = useState(false);
 
+  const handleGenerate = () => {
+    setGenerating(true);
+    setTimeout(() => {
+      setGenerating(false);
+      setDone(true);
+    }, 2000);
+  };
 
-const GenerateRoadmap: React.FC = () => {
-    const router = useRouter();
-    const [generating, setGenerating] = useState(false);
-    const [done, setDone] = useState(false);
+  return (
+    <div className="relative h-screen overflow-hidden w-full bg-[#f0f8f8] p-3 flex flex-col">
+      <div className="scanlines" />
 
-    const handleGenerate = () => {
-        setGenerating(true);
-        setTimeout(() => {
-            setGenerating(false);
-            setDone(true);
-        }, 2000);
-    };
-
-    return (
-    <div
-      className="
-        min-h-[100vh] font-[Inter] bg-[#E4E4E4]
-        flex flex-col
-      "
-    >
-      {/* Nav */}
-      <nav className="bg-white/80 backdrop-blur border-b border-[#d4d4d4] px-8 h-14 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-[#508484] flex items-center justify-center text-white text-xs font-bold">
-            RM
-          </div>
-          <span className="font-bold text-[#1B1B1B] text-base">RoleMap</span>
-        </div>
-        <button className="text-sm text-[#508484] font-semibold hover:text-[#6a9e9e] transition-colors duration-200">
-          Save & Exit
-        </button>
-      </nav>
-
-      {/* Main */}
-      <main className="flex-1 max-w-[1040px] mx-auto w-full px-6 pt-12">
-        {/* Progress Header */}
-        <div className="flex justify-between items-start mb-4">
-          <div>
-            <p className="text-xs font-bold tracking-widest text-[#508484] uppercase mb-1">
-              Onboarding
-            </p>
-            <h1 className="text-[28px] font-extrabold text-[#1B1B1B]">
-              Almost there
-            </h1>
-          </div>
-          <div className="text-right shrink-0 ml-8">
-            <p className="text-sm font-bold text-[#1B1B1B]">{PROGRESS}% Complete</p>
-            <p className="text-xs text-[#a0b8b8] mt-0.5">
-              Step {CURRENT_STEP} of {TOTAL_STEPS}
-            </p>
-          </div>
-        </div>
-
-        {/* Progress Bar */}
-        <div className="h-1 bg-[#d4d4d4] rounded-full mb-8 overflow-hidden">
-          <div
-            className="h-full bg-[#508484] rounded-full transition-all duration-500"
-            style={{ width: `${PROGRESS}%` }}
+      <div className="max-w-5xl mx-auto w-full flex flex-col flex-1">
+        {/* Header */}
+        <div className="mb-4">
+          <PixelProgress value={100} showLabel={true} step={5} totalSteps={5} />
+          <TypewriterText
+            text="Almost there"
+            speed={40}
+            delay={400}
+            className="text-5xl text-[#2d5050] leading-relaxed block"
+          />
+          <TypewriterText
+            text="We've analyzed your inputs. We'll create a personalized career roadmap tailored to your chosen role and target companies."
+            speed={20}
+            delay={1600}
+            className="text-2xl text-[#4e8888] leading-relaxed max-w-2xl block mb-4"
           />
         </div>
 
-        {/* Card */}
-        <div className="bg-white rounded-2xl shadow-sm border border-[#d4d4d4] max-w-[580px] mx-auto p-16 flex flex-col items-center text-center gap-6">
-          {/* Sparkle Icon */}
-          <div className="text-[#508484] text-5xl leading-none select-none">
-            {done ? "🎉" : "✦✦"}
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <h2 className="text-[22px] font-extrabold text-[#1B1B1B]">
-              {done ? "Roadmap ready!" : "Ready to generate?"}
-            </h2>
-            <p className="text-sm text-[#555555] max-w-[380px] leading-relaxed">
-              {done
-                ? "Your personalized career roadmap has been created. Hit Continue to start your journey."
-                : "We've analyzed your inputs. Based on your profile, we'll create a personalized career roadmap tailored to your chosen role and target companies."}
-            </p>
-          </div>
-
-          <button
-            onClick={handleGenerate}
-            disabled={generating || done}
+        {/* Central Card — fixed height, same pattern as ResumeUpload cards */}
+        <div className="mb-4" style={{ height: "260px" }}>
+          <div
             className={`
-              px-8 py-3 rounded-xl font-semibold text-sm transition-all duration-200
+              pixel-border h-full cursor-pointer flex flex-col items-center justify-center gap-4 p-6 transition-all duration-100
               ${done
-                ? "bg-[#d4d4d4] text-[#a0b8b8] cursor-default"
+                ? "border-t-[#7ab3b3] border-l-[#7ab3b3] border-r-[#4e8888] border-b-[#4e8888] bg-[#e8f4f4]"
                 : generating
-                  ? "bg-[#a0b8b8] text-white cursor-wait"
-                  : "bg-[#508484] text-white hover:bg-[#6a9e9e] hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
+                  ? "border-t-[#d4e8e8] border-l-[#d4e8e8] border-r-[#7ab3b3] border-b-[#7ab3b3] bg-white"
+                  : "border-t-[#d4e8e8] border-l-[#d4e8e8] border-r-[#7ab3b3] border-b-[#7ab3b3] bg-white hover:bg-[#f0f8f8]"
               }
             `}
           >
-            {done ? "✓ Roadmap Generated" : generating ? "Generating..." : "Generate Roadmap"}
-          </button>
-        </div>
-      </main>
+            {/* Icon */}
+            <div
+              className={`w-14 h-14 flex items-center justify-center pixel-border text-3xl select-none transition-all duration-300
+                ${done
+                  ? "border-t-[#7ab3b3] border-l-[#7ab3b3] border-r-[#4e8888] border-b-[#4e8888] bg-[#e8f4f4]"
+                  : "border-t-[#d4e8e8] border-l-[#d4e8e8] border-r-[#7ab3b3] border-b-[#7ab3b3] bg-[#f0f8f8]"
+                }
+              `}
+            >
+              {done ? "🎉" : generating ? (
+                <span className="text-[#4e8888] font-jersey text-xl animate-pulse">···</span>
+              ) : (
+                <span className="text-[#4e8888]">✦</span>
+              )}
+            </div>
 
-      {/* Footer */}
-      <footer className="max-w-[1040px] mx-auto w-full px-6 py-8">
-  <div className="border-t border-[#d4d4d4] pt-6 flex justify-between items-center">
-    <button
-      onClick={() => router.push("/OnBoarding/Resume")}
-      className="flex items-center gap-2 text-sm text-[#555555] font-medium hover:text-[#1B1B1B] transition-colors duration-200"
-    >
-      ← Back
-    </button>
-    <button
-      disabled={!done}
-      onClick={() => router.push("/dashboard")}
-      className={`
-        px-6 py-2 rounded-lg font-semibold text-sm transition-all duration-200
-        ${done
-          ? "bg-[#508484] text-white hover:bg-[#6a9e9e]"
-          : "bg-[#d4d4d4] text-[#a0b8b8] cursor-not-allowed"
+            {/* Generation progress bar */}
+            {generating && (
+              <div className="w-full max-w-xs pixel-border border-t-[#7ab3b3] border-l-[#7ab3b3] border-r-[#d4e8e8] border-b-[#d4e8e8] bg-[#f0f8f8] p-1 h-5">
+                <div
+                  className="h-full bg-[#4e8888]"
+                  style={{ width: "100%", transition: "width 2s linear" }}
+                />
+              </div>
+            )}
+
+            <span className="text-xl text-[#2d5050] font-jersey text-center">
+              {done ? "Roadmap Generated!" : generating ? "Generating..." : "Ready to generate?"}
+            </span>
+
+            <span className="text-md text-[#4e8888] font-jersey text-center">
+              {done
+                ? "Your personalized path awaits. Hit Continue below."
+                : "Based on your profile, we'll map out everything you need to land your dream role."}
+            </span>
+
+            {!done && (
+              <PixelButton
+                variant="primary"
+                onClick={handleGenerate}
+                disabled={generating}
+                size="md"
+              >
+                <span className="font-jersey">
+                  {generating ? "Generating..." : "Generate Roadmap"}
+                </span>
+              </PixelButton>
+            )}
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="mt-auto flex items-center justify-between">
+          <PixelButton variant="ghost" onClick={() => router.push("../OnBoarding/Resume")} size="md">
+            <div className="flex items-center gap-2 text-xl">
+              <ArrowLeft className="w-4 h-4" />
+              <span>Back</span>
+            </div>
+          </PixelButton>
+          <div className="flex items-center gap-4 text-xl">
+            <PixelButton
+              variant="primary"
+              onClick={() => router.push("/dashboard")}
+              size="md"
+              disabled={!done}
+            >
+              <div className="flex items-center gap-2 text-xl">
+                <span>Continue</span>
+                <ArrowRight className="w-4 h-4" />
+              </div>
+            </PixelButton>
+          </div>
+        </div>
+      </div>
+
+      <style>{`
+        .pixel-border {
+          border-width: 4px;
+          border-style: solid;
+          box-shadow: 0 4px 0 0 rgba(0,0,0,0.3), inset 0 -2px 0 0 rgba(0,0,0,0.2);
+          image-rendering: pixelated;
         }
-      `}
-    >
-      Continue →
-    </button>
-  </div>
-</footer>
+        .pixel-border:active {
+          box-shadow: 0 2px 0 0 rgba(0,0,0,0.3), inset 0 2px 0 0 rgba(0,0,0,0.2);
+        }
+        * { image-rendering: pixelated; -webkit-font-smoothing: none; }
+      `}</style>
     </div>
   );
-};
-export default GenerateRoadmap;
+}

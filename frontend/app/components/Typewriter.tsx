@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 
 interface TypewriterTextProps {
   text: string;
-  speed?: number; // milliseconds per character
-  delay?: number; // initial delay before starting
+  speed?: number;
+  delay?: number;
   className?: string;
   onComplete?: () => void;
   skipOnClick?: boolean;
@@ -60,10 +60,9 @@ export default function TypewriterText({
 
   return (
     <span
-      className={className}
+      className={`font-jersey ${className}`}
       onClick={handleClick}
       style={{
-        fontFamily: "'Press Start 2P', monospace",
         cursor: skipOnClick && !isComplete ? "pointer" : "default",
       }}
     >
