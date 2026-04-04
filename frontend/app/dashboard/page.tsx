@@ -1,15 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Navbar } from '../components/NavBar';
-
-//Icons 
-
-const FireIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-orange-400">
-    <path fillRule="evenodd" d="M12.963 2.286a.75.75 0 0 0-1.071-.136 9.742 9.742 0 0 0-3.539 6.176 7.547 7.547 0 0 1-1.705-1.715.75.75 0 0 0-1.152-.082A9 9 0 1 0 15.68 4.534a7.46 7.46 0 0 1-2.717-2.248ZM15.75 14.25a3.75 3.75 0 1 1-7.313-1.172c.628.465 1.35.81 2.133 1a5.99 5.99 0 0 1 1.925-3.546 3.75 3.75 0 0 1 3.255 3.718Z" clipRule="evenodd" />
-  </svg>
-);
+import fire from '../../icons/fire.png';
+import home from '../../icons/home.png';
 
 // Static data 
 
@@ -155,7 +150,7 @@ export default function Dashboard() {
     <div className="min-h-screen w-full bg-[#eef1f7] relative">
       <Navbar />
 
-      <div className="pt-24 px-8 pb-8">
+      <div className="pt-28 px-8 pb-8">
         <div className="max-w-7xl mx-auto">
 
           {/* Header row: title left, stats + challenge right ── */}
@@ -164,7 +159,10 @@ export default function Dashboard() {
             {/* Left: title */}
             <div>
               <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Front End Developer Path</p>
-              <h1 className="text-4xl font-bold text-slate-700 leading-tight">Dashboard</h1>
+              <div className='flex items-center '>
+ {/* <Image src={home} alt="Home icon" className='h-25 w-25'/> */}
+                <h1 className="text-4xl font-bold text-slate-700 leading-tight">Dashboard</h1>
+              </div>
               <p className="text-sm text-slate-400 mt-1">Welcome back, {userName}</p>
             </div>
 
@@ -245,7 +243,7 @@ export default function Dashboard() {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">
-                    <FireIcon />
+                    <Image src={fire} alt="Fire Icon" className="h-6 w-6  "/>
                   </div>
                   <h2 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Streak Leaderboard</h2>
                 </div>
@@ -275,7 +273,7 @@ export default function Dashboard() {
                       <span className={`text-sm font-bold ${user.isYou ? 'text-slate-700' : 'text-slate-500'}`}>
                         {user.streak}
                       </span>
-                      <FireIcon />
+                      <Image src={fire} alt="Fire Icon" className="h-6 w-6"/>
                     </div>
                   </div>
                 ))}
