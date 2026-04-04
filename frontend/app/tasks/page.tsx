@@ -1,201 +1,203 @@
 'use client';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navbar } from "../components/NavBar";
 import Image from "next/image";
 import pic3 from "../tasks/html.png";
 import pic4 from "../tasks/css.png";
 import pic5 from "../tasks/js.png";
+import pic6 from "../tasks/target.png";
 import { TaskBreakdownPanel } from "../components/TaskBreakdownTab";
+import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import quests from '../../icons/quests.png';
+import star from '../../icons/star.png';
 
 const modules = [
-  {
-    id: 'html',
-    name: 'HTML Elements',
-    icon: pic3,
-    accentColor: '#E8593C',
-    tag: 'HTML',
-  },
-  {
-    id: 'css',
-    name: 'CSS Styling',
-    icon: pic4,
-    accentColor: '#3B8BD4',
-    tag: 'CSS',
-  },
-  {
-    id: 'js',
-    name: 'Javascript Components',
-    icon: pic5,
-    accentColor: '#F0C040',
-    tag: 'JS',
-  },
+  { id: 'html', name: 'HTML Elements', icon: pic3, accentColor: '#E8593C', tag: 'HTML' },
+  { id: 'css', name: 'CSS Styling', icon: pic4, accentColor: '#3B8BD4', tag: 'CSS' },
+  { id: 'js', name: 'Javascript Components', icon: pic5, accentColor: '#F0C040', tag: 'JS' },
+  { id: 'python', name: 'Python Fundamentals', icon: pic6, accentColor: '#4B8BBE', tag: 'Python' }
 ];
 
 export default function DailyPage() {
   const [activeTask, setActiveTask] = useState<string | null>(null);
-  const [isDragOver, setIsDragOver] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [animKey, setAnimKey] = useState(0);
-
+  const [completed, setCompleted] = useState<string[]>(() => {
+    const saved = localStorage.getItem('completedTasks');
+    return saved ? JSON.parse(saved) : [];
+  });
   const activeModule = modules.find((m) => m.id === activeTask);
+
+  useEffect(() => {
+  localStorage.setItem('completedTasks', JSON.stringify(completed));
+}, [completed]);
+
+  function openTask(id: string) {
+    setActiveTask(id);
+    setAnimKey((k) => k + 1);
+    setDrawerOpen(true);
+  }
+
+  function handleMarkComplete() {
+    if (activeTask) {
+      setCompleted((prev) => [...prev, activeTask]);
+      closeDrawer();
+    }
+  }
+
+  function closeDrawer() {
+    setDrawerOpen(false);
+    setActiveTask(null);
+  }
 
   return (
     <div className="p-8 bg-[#f4f7f7] min-h-screen">
       <Navbar />
 
-      <style>{`
-        @keyframes stagger-in {
-          from { opacity: 0; transform: translateY(18px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        .stagger > * {
-          opacity: 0;
-          animation: stagger-in 0.35s ease forwards;
-        }
-        .stagger > *:nth-child(1) { animation-delay: 0.00s; }
-        .stagger > *:nth-child(2) { animation-delay: 0.08s; }
-        .stagger > *:nth-child(3) { animation-delay: 0.16s; }
-        .stagger > *:nth-child(4) { animation-delay: 0.24s; }
+      <div className="flex justify-center gap-8 mt-20">
 
-        @keyframes pulse-border {
-          0%, 100% { box-shadow: 0 0 0 0px rgba(80,132,132,0.2); }
-          50%       { box-shadow: 0 0 0 6px rgba(80,132,132,0.08); }
-        }
-        .drop-target-active {
-          animation: pulse-border 1.2s ease-in-out infinite;
-          border: 2px dashed rgba(80,132,132,0.4) !important;
-        }
-      `}</style>
-
-      {/* Main Layout */}
-      <div className="flex justify-end gap-5 mt-20">
-
-        {/* ── Left Panel (Module Cupboard) ── */}
-        <div className="flex flex-col bg-white w-[400px] min-h-screen rounded-3xl shadow-sm border border-[#e4eeee] p-6">
-          <p className="text-xs font-semibold tracking-widest text-[#508484]/60 uppercase mb-4 text-center">
-            Module Cupboard
-          </p>
-
+        {/* ── Left Panel (Daily Tasks) ── */}
+        <div className="flex flex-col bg-white w-[400px] h-[calc(100vh-7rem)] rounded-3xl shadow-sm border border-[#e4eeee] p-6">
+          <div className="flex items-center gap-4">
+            <Image src={quests} alt="Quest Icon" className="h-10 w-10"/>
+            <p className="text-sm font-bold tracking-widest text-[#508484]/60 uppercase text-center justify-center">
+              Daily Tasks
+            </p>
+          </div>
           {modules.map((mod) => (
             <div
               key={mod.id}
-              draggable
-              onDragStart={(e) => e.dataTransfer.setData('text/plain', mod.id)}
+              onClick={() => openTask(mod.id)}
               className={`
                 relative overflow-hidden
                 flex w-full h-[90px] rounded-2xl p-4 mt-4
-                cursor-grab bg-white
+                cursor-pointer bg-white
                 border border-[#e8f0f0]
                 hover:-translate-y-0.5 hover:shadow-md hover:border-[#c8dede]
                 transition-all duration-200
-                ${activeTask === mod.id ? 'border-[#508484] shadow-sm bg-[#f0f8f8]' : ''}
+                ${activeTask === mod.id && drawerOpen ? 'border-[#508484] shadow-sm bg-[#f0f8f8]' : ''}
               `}
             >
-              {/* Colored left accent bar */}
-              <div
-                className="absolute left-0 top-0 h-full w-1 rounded-l-2xl"
-                style={{ backgroundColor: mod.accentColor }}
-              />
-
               <div className="flex items-center gap-4 pl-3 w-full">
                 <div className="flex-shrink-0 h-10 w-10 rounded-xl bg-[#f0f8f8] flex items-center justify-center">
                   <Image src={mod.icon} alt={`${mod.name} icon`} className="h-6 w-6" />
                 </div>
                 <div className="flex flex-col">
-                  <span
-                    className="text-[10px] font-bold tracking-widest uppercase"
-                    style={{ color: mod.accentColor }}
-                  >
+                  <span className="text-[10px] font-bold tracking-widest uppercase" style={{ color: mod.accentColor }}>
                     {mod.tag}
                   </span>
                   <h1 className="text-base text-[#2d5c5c] font-semibold leading-tight">{mod.name}</h1>
                 </div>
-              </div>
-
-              {activeTask === mod.id && (
                 <div
-                  className="absolute top-3 right-3 h-5 w-5 rounded-full flex items-center justify-center text-white text-[10px] font-bold"
-                  style={{ backgroundColor: mod.accentColor }}
+                onClick={(e) => e.stopPropagation()}
+                className="flex-shrink-0 mr-2 ml-auto"
                 >
-                  ✓
-                </div>
-              )}
+                 <input
+                 type="checkbox"
+                 checked={completed.includes(mod.id)}
+                  onChange={() =>
+                    setCompleted((prev) =>
+                      prev.includes(mod.id) ? prev.filter((id) => id !== mod.id) : [...prev, mod.id]
+                    )
+                  }
+                 className="h-6 w-6 border-[#508484]/30 text-[#508484] accent-[#508484] cursor-pointer"></input> 
+                </div> 
+              </div>
             </div>
           ))}
 
-          {/* Global Path Status */}
-          <div className="mt-auto pt-8">
-            <p className="text-xs font-semibold tracking-widest text-[#508484]/50 uppercase mb-3">
-              Global Path Status
-            </p>
+          {/* Path Completion */}
+          <div className="pt-8">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-[#508484]/70">Path Completion</span>
               <span className="text-sm font-bold text-[#508484]">
-                {activeTask ? '33%' : '0%'}
+                {Math.round((completed.length / modules.length) * 100)}%
               </span>
             </div>
             <div className="w-full h-2 bg-[#e4eeee] rounded-full overflow-hidden">
-              <div
-                className="h-full bg-[#508484] rounded-full transition-all duration-700"
-                style={{ width: activeTask ? '33%' : '0%' }}
+              <div 
+              className="h-full bg-[#508484] rounded-full transition-all duration-700 w-0" 
+              style={{ width: `${(completed.length / modules.length) * 100}%` }}
               />
             </div>
           </div>
         </div>
 
-        {/* ── Right Panel ── */}
-        <div
-          className={`
-            w-[1100px] min-h-screen rounded-3xl relative
-            flex flex-col items-start justify-start p-10
-            transition-all duration-300
-            ${isDragOver
-              ? 'drop-target-active bg-[#eaf4f4]'
-              : 'bg-[#edf6f6] border-2 border-transparent'}
-          `}
-          onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }}
-          onDragLeave={() => setIsDragOver(false)}
-          onDrop={(e) => {
-            e.preventDefault();
-            setIsDragOver(false);
-            const id = e.dataTransfer.getData('text/plain');
-            setActiveTask(id);
-            setAnimKey((k) => k + 1);
-          }}
-        >
-
-          {/* ── Empty state ── */}
-          {!activeTask && (
-            <div className="flex flex-col items-center justify-center w-full h-full gap-4">
-              <div className={`
-                flex items-center justify-center
-                h-16 w-16 rounded-2xl
-                bg-[#508484] text-white text-4xl shadow-md
-                transition-transform duration-300
-                ${isDragOver ? 'scale-125' : 'scale-100'}
-              `}>
-                +
-              </div>
-              <p className={`
-                text-[#508484] text-base tracking-widest uppercase font-medium
-                transition-opacity duration-300
-                ${isDragOver ? 'opacity-100' : 'opacity-40'}
-              `}>
-                {isDragOver ? 'Release to open' : 'Drop a module here'}
+        {/* ── Right Panel (Badges) ── */}
+        <div className="w-[350px] h-[calc(100vh-7rem)] rounded-3xl flex flex-col items-start justify-start p-8 bg-[#ffffff] border-2 border-transparent overflow-y-auto">
+          <div className="flex flex-col w-full h-full gap-4">
+            <div className="flex gap-4 items-center">
+              <Image src={star} alt="Star Icon" className="h-10 w-10"/>
+              <p className="text-sm font-bold tracking-widest text-[#508484]/60 uppercase">
+                Monthly Badges
               </p>
             </div>
-          )}
-
-          {/* ── Filled state ── */}
-          {activeTask && activeModule && (
-            <TaskBreakdownPanel
-              animKey={animKey}
-              activeModule={activeModule}
-              onMarkComplete={() => setActiveTask(null)}
-            />
-          )}
-
+            {[
+              { name: "Zari's Movie Binge"},
+              { name: "Eddy's Wood Carving Craft"},
+              { name: "Duo's Chess Match"},
+            ].map((badge) => (
+              <div
+                key={badge.name}
+                className="flex items-center gap-4 bg-white rounded-2xl px-4 py-3 border border-[#e4eeee] hover:border-[#508484]/30 hover:shadow-sm transition-all duration-150"
+              >
+                <div className="flex-shrink-0 h-10 w-10 rounded-full bg-[#f0f8f8] border border-[#d0e8e8] flex items-center justify-center text-lg">
+                 
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm font-semibold text-[#2d5c5c]">{badge.name}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
+
       </div>
+
+      {/* ── Slide-over Drawer ── */}
+      <Dialog open={drawerOpen} onClose={closeDrawer} className="relative z-50">
+        <DialogBackdrop
+          transition
+          className="fixed inset-0 bg-[#1e4444]/30 backdrop-blur-sm transition-opacity duration-300 ease-in-out data-closed:opacity-0"
+        />
+
+        <div className="fixed inset-0 overflow-hidden">
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full">
+              <DialogPanel
+                transition
+                className="pointer-events-auto relative w-[#500px] max-w-2xl transform transition duration-500 ease-in-out data-closed:translate-x-full"
+              >
+                {/* Close button */}
+                <div className="absolute top-5 left-0 -ml-12 flex">
+                  <button
+                    onClick={closeDrawer}
+                    className="rounded-full h-9 w-9 bg-white/90 flex items-center justify-center text-[#508484] hover:bg-white hover:text-[#1e4444] shadow-sm transition-all duration-150"
+                  >
+                    <XMarkIcon className="h-5 w-5" />
+                  </button>
+                </div>
+
+                {/* Drawer content */}
+                <div className="flex w-[#500px] h-full flex-col overflow-y-auto bg-white shadow-2xl">
+                  <div className="flex-1 px-10 py-10">
+                    {activeModule && (
+                      <TaskBreakdownPanel
+                        animKey={animKey}
+                        activeModule={activeModule}
+                        onMarkComplete={handleMarkComplete}
+                      />
+                    )}
+                  </div>
+                </div>
+
+              </DialogPanel>
+            </div>
+          </div>
+        </div>
+      </Dialog>
+
     </div>
   );
 }
