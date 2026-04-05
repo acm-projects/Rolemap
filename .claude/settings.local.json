@@ -18,7 +18,10 @@
       "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('active_roadmap:', d['active_roadmap']\\)\")",
       "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(f'checkpoints: {len\\(d[\\\\\"checkpoints\\\\\"]\\)}, edges: {len\\(d[\\\\\"edges\\\\\"]\\)}'\\)\")",
       "Bash(python:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(python3 -c ':*)",
+      "Bash(npm install:*)",
+      "Bash(git ls-tree:*)"
     ]
   },
   "hooks": {
