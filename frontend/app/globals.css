@@ -53,3 +53,15 @@ body {
 .reactflow-wrapper .react-flow__attribution {
   display: none;
 }
+
+* {
+  font-family: var(--font-jersey10), sans-serif;
+}
+
+@keyframes flicker {
+  0%,
+  100% { opacity: 1; }
+  92%  { opacity: 0.98; }
+  94%  { opacity: 1; }
+  97%  { opacity: 0.96; }
+}

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Search, ArrowLeft, ArrowRight } from "lucide-react";
+import { Search, ArrowLeft, ArrowRight, X } from "lucide-react";
 import PixelButton from "../../components/PixelButton";
 import PixelCard from "../../components/PixelCard";
 import PixelInput from "../../components/PixelInput";
@@ -32,56 +32,49 @@ export default function CompanySelection() {
 
   const toggleCompany = (companyId: string) => {
     setSelectedCompanies((prev) =>
-      prev.includes(companyId)
-        ? prev.filter((id) => id !== companyId)
-        : [...prev, companyId]
+      prev.includes(companyId) ? prev.filter((id) => id !== companyId) : [...prev, companyId]
     );
   };
+
+  const canContinue = selectedCompanies.length > 0;
 
   const filteredCompanies = companies.filter((company) =>
     company.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const handleContinue = () => {
+    localStorage.setItem("ob_companies", JSON.stringify(selectedCompanies));
+    router.push("../OnBoarding/Preferences");
+  };
+
   return (
-    <div className="min-h-screen w-full bg-[#f0f8f8] p-6">
-      <div className="max-w-4xl mx-auto">
+    <div className="relative h-screen overflow-hidden w-full bg-[#f0f8f8] p-3 flex flex-col">
+      <div className="scanlines" />
+
+      <div className="max-w-5xl mx-auto w-full flex flex-col justify-between flex-1">
         {/* Header */}
-        <div className="mb-8">
-          <div className="mb-6">
-            <TypewriterText
-              text="ONBOARDING"
-              speed={30}
-              delay={100}
-              className="text-xs text-[#7ab3b3] mb-2 tracking-wider block"
-            />
+        <div className="mb-1">
+          <PixelProgress value={40} showLabel={true} step={2} totalSteps={5} />
+          <div className="min-h-[5rem]">
             <TypewriterText
               text="Where do you want to work?"
-              speed={40}
+              speed={30}
               delay={400}
-              className="text-2xl text-[#2d5050] mb-4 leading-relaxed block"
-            />
-            <TypewriterText
-              text="Select your target companies. We'll use this to customize your personalized learning path and interview preparation roadmap."
-              speed={20}
-              delay={1800}
-              className="text-xs text-[#4e8888] leading-relaxed max-w-2xl block"
+              className="text-5xl text-[#2d5050] mt-7 block"
             />
           </div>
-
-          {/* Progress */}
-          <div className="mb-6">
-            <PixelProgress value={40} showLabel={true} />
+          <div className="min-h-[7rem]">
             <TypewriterText
-              text="Step 2 of 5"
-              speed={30}
-              delay={3500}
-              className="text-xs text-[#4e8888] mt-2 block text-right"
+              text="Select your target companies. We'll use this to customize your personalized learning path and interview preparation roadmap."
+              speed={10}
+              delay={900}
+              className="text-2xl text-[#4e8888] mb-5 max-w-2xl block"
             />
           </div>
         </div>
 
         {/* Search Bar */}
-        <div className="mb-6">
+        <div className="mb-3 text-xl">
           <PixelInput
             type="text"
             value={searchQuery}
@@ -92,62 +85,69 @@ export default function CompanySelection() {
         </div>
 
         {/* Company Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          {filteredCompanies.map((company) => (
-            <PixelCard
-              key={company.id}
-              onClick={() => toggleCompany(company.id)}
-              selected={selectedCompanies.includes(company.id)}
-            >
-              <div className="p-6 flex flex-col items-center justify-center gap-3 min-h-[120px]">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3 flex-1">
+          {filteredCompanies.map((company) => {
+            const isSelected = selectedCompanies.includes(company.id);
+            return (
+              <PixelCard key={company.id} onClick={() => toggleCompany(company.id)} selected={isSelected}>
                 <div
-                  className="w-12 h-12 flex items-center justify-center text-2xl"
-                  style={{
-                    fontFamily: "'Press Start 2P', monospace",
-                    imageRendering: "pixelated",
-                  }}
+                  className={`h-full flex flex-col items-center justify-center gap-2 p-3 transition-all duration-100
+                    ${isSelected ? "bg-[#3a6666] translate-y-[4px]" : "bg-transparent translate-y-0"}
+                  `}
                 >
-                  {company.logo}
+                  <div
+                    className={`flex items-center justify-center text-3xl font-jersey transition-colors duration-100
+                      ${isSelected ? "text-white" : "text-[#4e8888]"}
+                    `}
+                  >
+                    {company.logo}
+                  </div>
+                  <span
+                    className={`text-2xl text-center font-jersey transition-colors duration-100
+                      ${isSelected ? "text-white" : "text-[#2d5050]"}
+                    `}
+                  >
+                    {company.name}
+                  </span>
                 </div>
-                <span
-                  className="text-xs text-center text-[#2d5050]"
-                  style={{ fontFamily: "'Press Start 2P', monospace" }}
-                >
-                  {company.name}
-                </span>
-              </div>
-            </PixelCard>
-          ))}
+              </PixelCard>
+            );
+          })}
         </div>
 
+        {/* Selected tags */}
+        {selectedCompanies.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-3">
+            {selectedCompanies.map((id) => {
+              const company = companies.find((c) => c.id === id);
+              if (!company) return null;
+              return (
+                <div
+                  key={id}
+                  className="flex items-center gap-1.5 bg-[#3a6666] text-white text-sm font-jersey px-3 py-1 cursor-pointer hover:bg-[#2d5050] transition-colors"
+                  style={{ borderWidth: 2, borderStyle: 'solid', borderTopColor: '#4e8888', borderLeftColor: '#4e8888', borderRightColor: '#1e3838', borderBottomColor: '#1e3838' }}
+                  onClick={() => toggleCompany(id)}
+                >
+                  {company.name}
+                  <X size={12} />
+                </div>
+              );
+            })}
+          </div>
+        )}
+
         {/* Actions */}
-        <div className="flex items-center justify-between">
-          <PixelButton
-            variant="ghost"
-            onClick={() => router.back()}
-            size="md"
-          >
-            <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between mt-2">
+          <PixelButton variant="ghost" onClick={() => router.push("../OnBoarding/Major")} size="md">
+            <div className="flex items-center gap-2 text-xl">
               <ArrowLeft className="w-4 h-4" />
               <span>Back</span>
             </div>
           </PixelButton>
 
-          <div className="flex items-center gap-4">
-            <PixelButton
-              variant="secondary"
-              onClick={() => router.push("../OnBoarding/Major")}
-              size="md"
-            >
-              Skip for now
-            </PixelButton>
-            <PixelButton
-              variant="primary"
-              onClick={() => router.push("../OnBoarding/Preferences")}
-              size="md"
-              disabled={selectedCompanies.length === 0}
-            >
-              <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4 text-xl">
+            <PixelButton variant="primary" onClick={handleContinue} size="md" disabled={!canContinue}>
+              <div className="flex items-center gap-2 text-xl">
                 <span>Continue</span>
                 <ArrowRight className="w-4 h-4" />
               </div>
@@ -156,34 +156,17 @@ export default function CompanySelection() {
         </div>
       </div>
 
-      {/* Pixel Border Global Style */}
       <style>{`
         .pixel-border {
           border-width: 4px;
           border-style: solid;
-          box-shadow: 
-            0 4px 0 0 rgba(0, 0, 0, 0.3),
-            inset 0 -2px 0 0 rgba(0, 0, 0, 0.2);
+          box-shadow: 0 4px 0 0 rgba(0,0,0,0.3), inset 0 -2px 0 0 rgba(0,0,0,0.2);
           image-rendering: pixelated;
         }
-
         .pixel-border:active {
-          box-shadow: 
-            0 2px 0 0 rgba(0, 0, 0, 0.3),
-            inset 0 2px 0 0 rgba(0, 0, 0, 0.2);
+          box-shadow: 0 2px 0 0 rgba(0,0,0,0.3), inset 0 2px 0 0 rgba(0,0,0,0.2);
         }
-
-        .image-rendering-pixelated {
-          image-rendering: pixelated;
-          image-rendering: -moz-crisp-edges;
-          image-rendering: crisp-edges;
-        }
-
-        * {
-          image-rendering: pixelated;
-          -webkit-font-smoothing: none;
-          -moz-osx-font-smoothing: grayscale;
-        }
+        * { image-rendering: pixelated; -webkit-font-smoothing: none; -moz-osx-font-smoothing: grayscale; }
       `}</style>
     </div>
   );

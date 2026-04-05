@@ -39,7 +39,7 @@ export function Navbar() {
               <Link
                 key={item}
                 href={`/${item.toLowerCase()}`}
-                className={`relative text-sm font-medium transition-colors pb-1
+                className={`relative text-base font-medium transition-colors pb-1
                   ${isActive
                     ? 'text-[#3D7A7A] font-semibold'
                     : 'text-slate-500 hover:text-slate-700'}

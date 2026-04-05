@@ -18,6 +18,42 @@ router = APIRouter()
 DB_PATH = Path(__file__).parent.parent / "data" / "mock_db.json"
 UPLOAD_DIR = Path(__file__).parent.parent / "data" / "uploads"
 
+# Quiz_Gen import
+_quiz_gen_path = str(Path(__file__).parent.parent / "Quiz_Gen")
+if _quiz_gen_path not in sys.path:
+    sys.path.insert(0, _quiz_gen_path)
+from quiz_generator import generate_quiz  # noqa: E402
+
+
+def _convert_quiz_questions(raw_questions: list) -> list:
+    """Convert Quiz_Gen output format to the frontend QuizQuestion format."""
+    result = []
+    letter_to_idx = {"A": 0, "B": 1, "C": 2, "D": 3}
+    for i, q in enumerate(raw_questions):
+        qtype = q.get("type", "multiple_choice")
+        options = q.get("options", [])
+        correct_answer = q.get("correct_answer", "")
+
+        if qtype == "multiple_choice":
+            # Strip "A. " / "B. " prefixes from options
+            clean_options = [o[3:] if len(o) > 2 and o[1] == "." else o for o in options]
+            correct_idx = letter_to_idx.get(correct_answer.strip().upper(), 0)
+        elif qtype == "true_false":
+            clean_options = options  # ["True", "False"]
+            correct_idx = 0 if correct_answer.strip().lower() == "true" else 1
+        else:
+            # short_answer / code_challenge — skip, frontend can't render them
+            continue
+
+        result.append({
+            "id": i + 1,
+            "question": q["question"],
+            "options": clean_options,
+            "correct": correct_idx,
+            "explanation": q.get("explanation", ""),
+        })
+    return result
+
 USER_ID = "u-001"
 
 
@@ -278,27 +314,34 @@ async def generate_roadmap_api(body: dict[str, Any]):
     roadmap_id = "rm-generated"
 
     # --- Pass 1: build the skeleton (labels + kinds), no Gemini yet ---
+    # Gate intervals vary so each segment has a different number of lessons,
+    # producing uneven branches in the tree layout.
+    GATE_INTERVALS = [2, 4, 3, 2, 4, 3, 3, 2, 4, 2]  # cycles through segments
     skeleton: list[dict] = []  # {"label": ..., "kind": ...}
     lesson_buffer: list[str] = []
     lesson_count = 0
     quiz_count = 0
+    batch_count = 0  # lessons accumulated since last gate
 
     for step in roadmap_steps[:25]:
         label = step.get("name", f"Step {lesson_count + 1}")
         skeleton.append({"label": label, "kind": "lesson"})
         lesson_buffer.append(label)
         lesson_count += 1
+        batch_count += 1
 
-        if lesson_count % 3 == 0:
+        gate_interval = GATE_INTERVALS[quiz_count % len(GATE_INTERVALS)]
+        if batch_count == gate_interval:
             quiz_count += 1
             if quiz_count % 3 == 0:
                 gate_kind = "project"
                 gate_label = f"{role} Project #{quiz_count // 3}"
             else:
                 gate_kind = "quiz"
-                gate_label = " + ".join(lesson_buffer[-3:]) + " Quiz"
+                gate_label = " + ".join(lesson_buffer[-batch_count:]) + " Quiz"
             skeleton.append({"label": gate_label, "kind": gate_kind})
             lesson_buffer = []
+            batch_count = 0
 
     # --- Pass 2: single Gemini call for all content ---
     print(f"[generate] Generating content for {len(skeleton)} checkpoints via Gemini...", flush=True)
@@ -356,16 +399,71 @@ async def generate_roadmap_api(body: dict[str, Any]):
 
     print(f"[generate] Built {len(checkpoints)} checkpoints ({lesson_count} lessons, {quiz_count} quizzes/projects)", flush=True)
 
-    # Sequential edges connecting every checkpoint in order
-    edges = [
-        {
-            "id": f"edge-gen-{i:03d}",
-            "roadmap_id": roadmap_id,
-            "source": checkpoints[i - 1]["id"],
-            "target": checkpoints[i]["id"],
+    def build_branching_edges(cps: list, rm_id: str) -> list:
+        """Build an uneven tree: each segment between gates is split into
+        chains of varying length, so branches have different depths."""
+        result = []
+        counter = 0
+
+        def make_edge(src: str, tgt: str) -> dict:
+            nonlocal counter
+            e = {"id": f"edge-gen-{counter:03d}", "roadmap_id": rm_id,
+                 "source": src, "target": tgt}
+            counter += 1
+            return e
+
+        # Split patterns per branch count and total lesson count.
+        # Each tuple is a sequence of chain lengths that must sum to n.
+        # Keyed by (n, pattern_index % variants).
+        SPLIT_PATTERNS: dict[int, list[tuple]] = {
+            1: [(1,)],
+            2: [(1, 1), (2,)],
+            3: [(1, 2), (2, 1), (3,), (1, 1, 1)],
+            4: [(1, 3), (2, 2), (3, 1), (1, 1, 2), (4,), (2, 1, 1)],
+            5: [(1, 4), (2, 3), (3, 2), (1, 2, 2), (2, 2, 1), (5,)],
         }
-        for i in range(1, len(checkpoints))
-    ]
+
+        gate_indices = [i for i, cp in enumerate(cps)
+                        if cp["kind"] in ("quiz", "project")]
+        seg_starts = [0] + [gi + 1 for gi in gate_indices[:-1]]
+        seg_ends = gate_indices
+
+        for seg_idx, (start, end) in enumerate(zip(seg_starts, seg_ends)):
+            lessons = cps[start:end]
+            gate = cps[end]
+
+            if seg_idx == 0:
+                # Bootstrap: linear chain before the first gate
+                for i in range(start, end):
+                    result.append(make_edge(cps[i]["id"], cps[i + 1]["id"]))
+            elif not lessons:
+                prior_gate = cps[gate_indices[seg_idx - 1]]
+                result.append(make_edge(prior_gate["id"], gate["id"]))
+            else:
+                prior_gate = cps[gate_indices[seg_idx - 1]]
+                n = len(lessons)
+                patterns = SPLIT_PATTERNS.get(n, [(n,)])
+                pattern = patterns[(seg_idx - 1) % len(patterns)]
+
+                idx = 0
+                for chain_len in pattern:
+                    chain = lessons[idx: idx + chain_len]
+                    if not chain:
+                        continue
+                    result.append(make_edge(prior_gate["id"], chain[0]["id"]))
+                    for i in range(len(chain) - 1):
+                        result.append(make_edge(chain[i]["id"], chain[i + 1]["id"]))
+                    result.append(make_edge(chain[-1]["id"], gate["id"]))
+                    idx += chain_len
+
+        # Tail: any lessons after the last gate
+        if gate_indices:
+            for i in range(gate_indices[-1], len(cps) - 1):
+                result.append(make_edge(cps[i]["id"], cps[i + 1]["id"]))
+
+        return result
+
+    edges = build_branching_edges(checkpoints, roadmap_id)
 
     db = load_db()
 
@@ -425,12 +523,43 @@ async def upload_resume(file: UploadFile = File(...)):
 @router.get("/quiz/{checkpoint_id}")
 async def get_quiz(checkpoint_id: str):
     db = load_db()
-    questions = db.get("quiz_questions", {}).get(checkpoint_id)
-    if not questions:
-        raise HTTPException(status_code=404, detail="No quiz for this checkpoint")
     cp = next((c for c in db["roadmap_checkpoints"] if c["id"] == checkpoint_id), None)
+
+    # Use cached questions if available
+    questions = db.get("quiz_questions", {}).get(checkpoint_id)
+    if questions:
+        return {
+            "checkpoint_id": checkpoint_id,
+            "label": cp["label"] if cp else "",
+            "questions": questions,
+        }
+
+    if not cp:
+        raise HTTPException(status_code=404, detail="Checkpoint not found")
+
+    # Generate on-demand via Quiz_Gen
+    topics = [cp["label"]] + cp.get("learning_goals", [])
+    loop = asyncio.get_event_loop()
+    try:
+        result = await loop.run_in_executor(
+            None,
+            lambda: generate_quiz(
+                topics=topics,
+                learned_resources=[],
+                difficulty=2,
+                learning_style="Interactive-Heavy",
+            ),
+        )
+    except Exception as e:
+        logger.error("Quiz generation failed for %s: %s", checkpoint_id, e)
+        raise HTTPException(status_code=503, detail="Quiz generation failed")
+
+    questions = _convert_quiz_questions(result["questions"])
+    if not questions:
+        raise HTTPException(status_code=503, detail="Quiz generation returned no usable questions")
+
     return {
         "checkpoint_id": checkpoint_id,
-        "label": cp["label"] if cp else "",
+        "label": cp["label"],
         "questions": questions,
     }

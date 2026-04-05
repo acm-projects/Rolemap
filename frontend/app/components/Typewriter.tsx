@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 
 interface TypewriterTextProps {
   text: string;
-  speed?: number; // milliseconds per character
-  delay?: number; // initial delay before starting
+  speed?: number;
+  delay?: number;
   className?: string;
   onComplete?: () => void;
   skipOnClick?: boolean;
+  startComplete?: boolean;
 }
 
 export default function TypewriterText({
@@ -16,13 +17,16 @@ export default function TypewriterText({
   className = "",
   onComplete,
   skipOnClick = true,
+  startComplete = false,
 }: TypewriterTextProps) {
-  const [displayedText, setDisplayedText] = useState("");
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isComplete, setIsComplete] = useState(false);
+  const [displayedText, setDisplayedText] = useState(startComplete ? text : "");
+  const [currentIndex, setCurrentIndex] = useState(startComplete ? text.length + 1 : 0);
+  const [isComplete, setIsComplete] = useState(startComplete);
   const [isSkipped, setIsSkipped] = useState(false);
 
   useEffect(() => {
+    if (startComplete) return;
+
     if (isSkipped) {
       setDisplayedText(text);
       setIsComplete(true);
@@ -50,7 +54,7 @@ export default function TypewriterText({
       setIsComplete(true);
       if (onComplete) onComplete();
     }
-  }, [currentIndex, text, speed, delay, isComplete, onComplete, isSkipped]);
+  }, [currentIndex, text, speed, delay, isComplete, onComplete, isSkipped, startComplete]);
 
   const handleClick = () => {
     if (skipOnClick && !isComplete) {
@@ -60,10 +64,9 @@ export default function TypewriterText({
 
   return (
     <span
-      className={className}
+      className={`font-jersey ${className}`}
       onClick={handleClick}
       style={{
-        fontFamily: "'Press Start 2P', monospace",
         cursor: skipOnClick && !isComplete ? "pointer" : "default",
       }}
     >

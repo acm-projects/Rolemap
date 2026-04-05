@@ -133,7 +133,7 @@
     {
       "id": "rm-generated",
       "user_id": "u-001",
-      "title": "Technical Project Manager Roadmap",
+      "title": "Cloud Infrastructure Engineer Roadmap",
       "progress_percentage": 0,
       "status": "active"
     },
@@ -326,7 +326,7 @@
     {
       "id": "cp-gen-000",
       "roadmap_id": "rm-generated",
-      "label": "Product Development Lifecycle",
+      "label": "Learn a Programming Language",
       "kind": "lesson",
       "progress": 0,
       "locked": false,
@@ -334,18 +334,18 @@
         "x": 300,
         "y": 100
       },
-      "description": "Master the sequential stages a product undergoes from initial concept to market launch and beyond. Understanding the Product Development Lifecycle is crucial for Technical Project Managers to effectively plan, execute, and deliver products that meet strategic goals and user needs.",
+      "description": "This module introduces a foundational programming language (e.g., Python, Go, or Bash) essential for scripting, automation, and interacting with APIs in cloud environments. You will learn core syntax, data structures, and program flow.",
       "learning_goals": [
-        "Describe the key phases and activities within a typical product development lifecycle (PDLC).",
-        "Identify critical inputs, outputs, and stakeholders for each stage of the PDLC.",
-        "Analyze how different project management methodologies (e.g., Agile, Waterfall) map to and influence the PDLC.",
-        "Recognize potential risks and challenges specific to different PDLC stages and propose mitigation strategies."
+        "Understand basic programming concepts like variables, loops, and conditionals.",
+        "Write simple scripts to automate common administrative tasks.",
+        "Demonstrate knowledge of functions and modular programming.",
+        "Be able to debug and troubleshoot basic code snippets."
       ]
     },
     {
       "id": "cp-gen-001",
       "roadmap_id": "rm-generated",
-      "label": "Development",
+      "label": "Ubuntu / Debian",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -353,56 +353,56 @@
         "x": 500,
         "y": 230
       },
-      "description": "This lesson focuses on understanding the core phases and practices of software development from a project management perspective. You'll learn how development teams operate, the common methodologies they employ, and how to effectively interact with and support engineering efforts without needing to code.",
+      "description": "Learn to navigate, configure, and manage servers running Ubuntu or Debian, two of the most prevalent Linux distributions in cloud infrastructure. This module covers fundamental command-line operations, package management, and user administration.",
       "learning_goals": [
-        "Identify and explain common Software Development Life Cycle (SDLC) models (e.g., Agile, Waterfall, Scrum, Kanban).",
-        "Describe the key roles and responsibilities within a typical software development team.",
-        "Understand basic development concepts like version control, build processes, and deployment pipelines.",
-        "Explain how to effectively track development progress and identify potential roadblocks or dependencies."
+        "Perform basic file system navigation and manipulation.",
+        "Manage software packages using `apt` and `dpkg`.",
+        "Understand user and group management, including permissions.",
+        "Configure basic network settings and services."
       ]
     },
     {
       "id": "cp-gen-002",
       "roadmap_id": "rm-generated",
-      "label": "Introduction",
-      "kind": "lesson",
+      "label": "Learn a Programming Language + Ubuntu / Debian Quiz",
+      "kind": "quiz",
       "progress": 0,
       "locked": true,
       "position": {
         "x": 300,
         "y": 360
       },
-      "description": "This introductory lesson defines the role of a Technical Project Manager (TPM), outlining its unique blend of technical understanding and project management principles. It distinguishes the TPM from traditional project managers and technical leads, highlighting the critical impact this role has within technology-driven organizations.",
+      "description": "This quiz assesses your understanding of fundamental programming concepts and your ability to manage Ubuntu/Debian systems. It combines theoretical knowledge with practical scenarios, ensuring you can apply learned skills.",
       "learning_goals": [
-        "Define the core responsibilities of a Technical Project Manager.",
-        "Differentiate the TPM role from traditional Project Manager and technical lead roles.",
-        "Identify the key technical and soft skills essential for a successful TPM.",
-        "Understand the value and impact a TPM brings to technology projects."
+        "Validate basic programming logic and syntax from the chosen language.",
+        "Demonstrate proficiency with core Linux commands and system navigation.",
+        "Solve common administrative problems on Ubuntu/Debian.",
+        "Reinforce key concepts from both the programming and Linux modules."
       ]
     },
     {
       "id": "cp-gen-003",
       "roadmap_id": "rm-generated",
-      "label": "Product Development Lifecycle + Development + Introduction Quiz",
-      "kind": "quiz",
+      "label": "FreeBSD",
+      "kind": "lesson",
       "progress": 0,
       "locked": true,
       "position": {
         "x": 500,
         "y": 490
       },
-      "description": "This quiz evaluates your foundational knowledge of the end-to-end product development lifecycle, from ideation and development to market introduction. It assesses your understanding of key stages, typical activities, and associated methodologies.",
+      "description": "Explore FreeBSD, a robust Unix-like operating system known for its stability, advanced networking, and ZFS file system capabilities. This module covers its distinct architecture, package management (`pkg`), and system configuration.",
       "learning_goals": [
-        "Recall the sequential stages of a typical product development lifecycle.",
-        "Identify core activities and deliverables within each development phase.",
-        "Differentiate between common product development methodologies (e.g., Agile, Waterfall, Scrum).",
-        "Understand key considerations for successful product introduction and launch."
+        "Differentiate FreeBSD from Linux in terms of architecture and philosophy.",
+        "Manage software packages using the `pkg` system.",
+        "Perform basic system configuration and service management.",
+        "Understand the fundamentals of the ZFS file system."
       ]
     },
     {
       "id": "cp-gen-004",
       "roadmap_id": "rm-generated",
-      "label": "Growth",
+      "label": "NetBSD",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -410,18 +410,18 @@
         "x": 300,
         "y": 620
       },
-      "description": "Embrace continuous learning and adapt to evolving technologies and methodologies. This checkpoint focuses on expanding your influence, developing advanced leadership skills, and proactively shaping your career trajectory beyond day-to-day project execution.",
+      "description": "Delve into NetBSD, a highly portable and secure Unix-like operating system that runs on a wide range of hardware. Learn its unique `pkgsrc` package management system and kernel configuration, emphasizing its focus on clean design and portability.",
       "learning_goals": [
-        "Develop a personalized continuous learning plan, including technical and leadership skill development.",
-        "Identify and pursue advanced leadership or strategic management training/certifications relevant to future career aspirations.",
-        "Actively mentor junior project managers or team members, contributing to team growth and knowledge sharing.",
-        "Implement a structured approach to seeking and utilizing peer and stakeholder feedback for continuous professional improvement."
+        "Understand NetBSD's emphasis on portability and security.",
+        "Manage software packages using the `pkgsrc` system.",
+        "Perform basic system and network configuration.",
+        "Identify key differences and use cases compared to other Unix-like systems."
       ]
     },
     {
       "id": "cp-gen-005",
       "roadmap_id": "rm-generated",
-      "label": "Maturity",
+      "label": "Forward Proxy",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -429,18 +429,18 @@
         "x": 500,
         "y": 750
       },
-      "description": "Cultivate the self-awareness, emotional intelligence, and strategic mindset necessary for leading complex technical initiatives and guiding teams through challenges with poise and wisdom. This checkpoint focuses on personal growth beyond technical proficiency.",
+      "description": "Understand the concept of a forward proxy, its role in network security, content filtering, and anonymity. Learn how to configure and deploy a basic forward proxy server to manage outgoing network traffic.",
       "learning_goals": [
-        "Identify and articulate your personal leadership style, strengths, and areas for development.",
-        "Develop advanced emotional intelligence to effectively manage team dynamics, stakeholder expectations, and personal stress.",
-        "Master conflict resolution and negotiation techniques to foster collaborative environments and secure desired outcomes.",
-        "Cultivate a strategic foresight to anticipate challenges, mitigate risks, and align project execution with long-term organizational goals."
+        "Define what a forward proxy is and its common use cases.",
+        "Explain the benefits and potential drawbacks of using a forward proxy.",
+        "Configure a basic forward proxy server (e.g., using Squid).",
+        "Troubleshoot common issues related to proxy server configuration and connectivity."
       ]
     },
     {
       "id": "cp-gen-006",
       "roadmap_id": "rm-generated",
-      "label": "Decline",
+      "label": "Tomcat",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -448,18 +448,18 @@
         "x": 300,
         "y": 880
       },
-      "description": "Learning to decline effectively is a critical skill for Technical Project Managers to manage scope, protect team capacity, and ensure successful project delivery. This lesson focuses on strategic refusal to prevent overcommitment, mitigate risks, and maintain focus on high-priority objectives.",
+      "description": "Learn to install, configure, and manage Apache Tomcat, a widely used open-source web server and servlet container for Java applications. This module covers deploying web applications, configuring server parameters, and basic performance tuning.",
       "learning_goals": [
-        "Recognize situations where declining is necessary for project health and team capacity.",
-        "Formulate clear, data-backed justifications for declining requests or commitments.",
-        "Communicate 'no' professionally while offering alternatives or compromises.",
-        "Understand how strategic declines contribute to long-term project success and team well-being."
+        "Install and set up Apache Tomcat on a server.",
+        "Deploy web applications (WAR files) to Tomcat.",
+        "Understand the key configuration files (e.g., `server.xml`, `web.xml`).",
+        "Monitor basic Tomcat performance and troubleshoot common issues."
       ]
     },
     {
       "id": "cp-gen-007",
       "roadmap_id": "rm-generated",
-      "label": "Growth + Maturity + Decline Quiz",
+      "label": "FreeBSD + NetBSD + Forward Proxy + Tomcat Quiz",
       "kind": "quiz",
       "progress": 0,
       "locked": true,
@@ -467,18 +467,18 @@
         "x": 500,
         "y": 1010
       },
-      "description": "This quiz assesses your understanding of the distinct characteristics and strategic implications of product, project, and even company lifecycles: growth, maturity, and decline. It evaluates your ability to recognize key indicators and challenges inherent in each phase.",
+      "description": "This comprehensive quiz evaluates your grasp of alternative Unix-like operating systems (FreeBSD, NetBSD) and foundational networking/application server concepts (Forward Proxy, Tomcat). It tests your ability to compare, contrast, and apply these technologies.",
       "learning_goals": [
-        "Accurately identify the defining characteristics of growth, maturity, and decline phases.",
-        "Formulate and adapt project and product strategies to align with the current lifecycle stage.",
-        "Make informed decisions regarding resource allocation, investment, or divestment based on lifecycle phase.",
-        "Proactively anticipate and plan for common risks and opportunities associated with each stage."
+        "Differentiate core features and use cases for FreeBSD and NetBSD.",
+        "Identify appropriate scenarios for deploying a forward proxy.",
+        "Demonstrate understanding of basic Tomcat deployments and configurations.",
+        "Integrate knowledge of operating systems, networking, and application servers."
       ]
     },
     {
       "id": "cp-gen-008",
       "roadmap_id": "rm-generated",
-      "label": "Mind Mapping",
+      "label": "IIS",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -486,18 +486,18 @@
         "x": 300,
         "y": 1140
       },
-      "description": "Learn to visually organize ideas, information, and tasks, enabling clearer thought processes and more effective planning. Mind mapping helps break down complex projects into manageable components and connect disparate concepts for comprehensive understanding.",
+      "description": "Learn to install, configure, and manage Microsoft Internet Information Services (IIS), a powerful web server for Windows environments. This covers hosting websites, managing application pools, and understanding key security features.",
       "learning_goals": [
-        "Create a comprehensive mind map for a project idea or problem statement.",
-        "Utilize mind mapping for requirements gathering and stakeholder analysis.",
-        "Organize complex technical information into a structured visual hierarchy.",
-        "Employ mind mapping to brainstorm solutions and identify potential project risks."
+        "Install and configure IIS on a Windows server.",
+        "Host and manage multiple websites using IIS.",
+        "Understand and manage IIS application pools.",
+        "Implement basic security settings and access controls within IIS."
       ]
     },
     {
       "id": "cp-gen-009",
       "roadmap_id": "rm-generated",
-      "label": "SCAMPER",
+      "label": "Caching Server",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -505,18 +505,18 @@
         "x": 500,
         "y": 1270
       },
-      "description": "SCAMPER is a powerful brainstorming technique used to spark creativity and develop new products or improve existing ones by asking a series of targeted questions. For a Technical Project Manager, it helps in systematically challenging assumptions and finding innovative solutions for project obstacles, feature improvements, or process enhancements.",
+      "description": "Understand the principles of caching and learn how to implement and manage caching servers to improve application performance, reduce database load, and enhance user experience. Explore different caching strategies and technologies.",
       "learning_goals": [
-        "Understand each element of the SCAMPER mnemonic and its application.",
-        "Apply SCAMPER to generate creative solutions for project risks, product features, or process inefficiencies.",
-        "Facilitate brainstorming sessions using the SCAMPER method with project teams or stakeholders.",
-        "Utilize SCAMPER to drive innovation and problem-solving throughout the project lifecycle."
+        "Explain the benefits and types of caching in web applications.",
+        "Deploy and configure a caching server (e.g., Varnish, Redis).",
+        "Implement effective caching policies and invalidation strategies.",
+        "Monitor cache performance and identify optimization opportunities."
       ]
     },
     {
       "id": "cp-gen-010",
       "roadmap_id": "rm-generated",
-      "label": "Selection",
+      "label": "Load Balancer",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -524,18 +524,18 @@
         "x": 300,
         "y": 1400
       },
-      "description": "This lesson explores the critical process of project and solution selection, equipping Technical Project Managers with the skills to evaluate proposals against strategic objectives and technical feasibility. Learn to identify key decision-making factors and facilitate informed choices for successful project initiation.",
+      "description": "Explore the concept of load balancing and its critical role in distributing traffic across multiple servers for high availability, scalability, and improved performance. Learn about different load balancing algorithms and deployment strategies.",
       "learning_goals": [
-        "Identify and apply various project selection criteria and methodologies.",
-        "Evaluate project proposals based on strategic alignment, technical feasibility, and resource availability.",
-        "Facilitate stakeholder discussions to achieve consensus on project selection.",
-        "Understand the impact of selected projects on the overall portfolio and business objectives."
+        "Define load balancing and explain its importance in cloud infrastructure.",
+        "Describe common load balancing algorithms (e.g., Round Robin, Least Connections).",
+        "Configure a basic software-based load balancer (e.g., Nginx, HAProxy).",
+        "Understand health checks and session persistence in load balancing."
       ]
     },
     {
       "id": "cp-gen-011",
       "roadmap_id": "rm-generated",
-      "label": "Technical Project Manager Project #1",
+      "label": "Cloud Infrastructure Engineer Project #1",
       "kind": "project",
       "progress": 0,
       "locked": true,
@@ -543,18 +543,18 @@
         "x": 500,
         "y": 1530
       },
-      "description": "Lead the setup and initial configuration of a new internal team tool (e.g., a simple CI/CD pipeline for a mock project, or a project management dashboard). Define core requirements, set up the infrastructure, and onboard a small 'team' to its basic use, focusing on foundational planning and hands-on technical execution.",
+      "description": "In this hands-on project, you will design and implement a multi-tier web application architecture. You'll integrate a web server (IIS or Tomcat), a caching layer, and a load balancer to serve a simple application, applying system administration and networking skills.",
       "learning_goals": [
-        "Elicit and document technical and functional requirements.",
-        "Execute hands-on technical system setup and configuration.",
-        "Develop a basic project plan with tasks, estimates, and timeline.",
-        "Communicate project status and facilitate user onboarding."
+        "Design a scalable and highly available application architecture.",
+        "Deploy and configure web server, caching server, and load balancer components.",
+        "Integrate components to create a functional, optimized system.",
+        "Troubleshoot complex issues across multiple infrastructure layers."
       ]
     },
     {
       "id": "cp-gen-012",
       "roadmap_id": "rm-generated",
-      "label": "Execution",
+      "label": "Google Cloud",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -562,18 +562,18 @@
         "x": 300,
         "y": 1660
       },
-      "description": "This lesson focuses on the critical phase of turning project plans into tangible outcomes. You will learn to drive progress, manage day-to-day operations, and ensure the project stays on track through proactive problem-solving and effective team coordination.",
+      "description": "Get started with Google Cloud Platform (GCP), one of the leading public cloud providers. Learn its core services like Compute Engine for virtual machines, Virtual Private Cloud (VPC) for networking, Cloud Storage, and Identity and Access Management (IAM).",
       "learning_goals": [
-        "Master task and sprint management techniques to track and drive progress effectively.",
-        "Proactively identify, escalate, and resolve technical and process blockers and impediments.",
-        "Implement real-time risk and issue management strategies to mitigate project threats.",
-        "Develop clear and consistent communication channels for project status updates to all stakeholders."
+        "Navigate the Google Cloud Console and understand its interface.",
+        "Provision and manage virtual machines using Compute Engine.",
+        "Configure basic networking within a VPC, including firewalls.",
+        "Understand and manage IAM roles and permissions for cloud resources."
       ]
     },
     {
       "id": "cp-gen-013",
       "roadmap_id": "rm-generated",
-      "label": "TRIZ (Theory of Inventive Problem Solving)",
+      "label": "Digital Ocean",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -581,56 +581,56 @@
         "x": 500,
         "y": 1790
       },
-      "description": "Learn TRIZ, a methodology for inventive problem solving that systematically identifies contradictions and applies established principles to generate innovative solutions. This enables Technical Project Managers to overcome technical challenges without compromise and to proactively envision system evolution.",
+      "description": "Explore DigitalOcean, a developer-friendly cloud provider known for its simplicity and affordability. Focus on Droplets (VMs), Spaces (object storage), Managed Databases, and basic networking to quickly deploy and manage scalable applications.",
       "learning_goals": [
-        "Understand the core principles and tools of TRIZ, including the Contradiction Matrix and 40 Inventive Principles.",
-        "Apply TRIZ methods to analyze and frame technical or project-related problems effectively.",
-        "Generate inventive, non-compromising solutions to complex technical and organizational challenges.",
-        "Utilize TRIZ to anticipate system evolution and inform strategic planning for product or project development."
+        "Create and manage virtual machines (Droplets) on DigitalOcean.",
+        "Utilize DigitalOcean Spaces for object storage.",
+        "Configure basic networking for Droplets.",
+        "Understand the DigitalOcean interface and resource management."
       ]
     },
     {
       "id": "cp-gen-014",
       "roadmap_id": "rm-generated",
-      "label": "Problem Framing",
-      "kind": "lesson",
+      "label": "Google Cloud + Digital Ocean Quiz",
+      "kind": "quiz",
       "progress": 0,
       "locked": true,
       "position": {
         "x": 300,
         "y": 1920
       },
-      "description": "Learn to identify the true underlying problems rather than just addressing symptoms. This lesson focuses on techniques to clearly define and articulate a problem statement, crucial for effective project planning and stakeholder alignment.",
+      "description": "This quiz tests your foundational knowledge of two distinct cloud providers: Google Cloud and DigitalOcean. It assesses your ability to identify core services, deployment methods, and management paradigms on each platform.",
       "learning_goals": [
-        "Identify and distinguish between symptoms and root causes of technical issues.",
-        "Formulate precise and actionable problem statements for project initiatives.",
-        "Define clear scope boundaries and success metrics derived from the problem.",
-        "Engage relevant stakeholders to gather diverse perspectives on a given problem."
+        "Compare and contrast key compute, storage, and networking services across GCP and DigitalOcean.",
+        "Identify the best use cases or scenarios for each cloud platform.",
+        "Demonstrate understanding of resource provisioning and management in both environments.",
+        "Reinforce cloud-agnostic concepts applied to specific providers."
       ]
     },
     {
       "id": "cp-gen-015",
       "roadmap_id": "rm-generated",
-      "label": "Execution + TRIZ (Theory of Inventive Problem Solving) + Problem Framing Quiz",
-      "kind": "quiz",
+      "label": "Hetzner",
+      "kind": "lesson",
       "progress": 0,
       "locked": true,
       "position": {
         "x": 500,
         "y": 2050
       },
-      "description": "This quiz assesses your ability to apply TRIZ principles to resolve technical project execution challenges and effectively frame complex problems. You'll analyze scenarios, identify contradictions, and propose innovative solutions using inventive thinking frameworks.",
+      "description": "Learn about Hetzner, a German hosting provider renowned for its robust dedicated servers and competitively priced cloud instances. Focus on provisioning cloud servers, configuring networks, and understanding their infrastructure-as-a-service model.",
       "learning_goals": [
-        "Demonstrate understanding of key TRIZ principles and tools for inventive problem-solving.",
-        "Apply TRIZ methodologies to identify and resolve contradictions in technical project execution scenarios.",
-        "Effectively frame ambiguous or complex project problems into actionable statements.",
-        "Integrate structured problem-solving techniques into decision-making for project success."
+        "Provision and manage virtual servers on Hetzner Cloud.",
+        "Understand the differences between dedicated and cloud servers at Hetzner.",
+        "Configure network settings for Hetzner instances.",
+        "Manage resources through the Hetzner Cloud Console."
       ]
     },
     {
       "id": "cp-gen-016",
       "roadmap_id": "rm-generated",
-      "label": "Target",
+      "label": "Heroku",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -638,18 +638,18 @@
         "x": 300,
         "y": 2180
       },
-      "description": "This lesson helps you define the ideal Technical Project Manager role you aspire to, including industries, company sizes, and specific responsibilities that align with your skills and interests.",
+      "description": "Discover Heroku, a platform-as-a-service (PaaS) that significantly simplifies application deployment and scaling. Learn about buildpacks, dynos, and add-ons, and how to leverage Heroku for a streamlined developer experience without managing underlying infrastructure.",
       "learning_goals": [
-        "Identify target industries and sectors for TPM roles.",
-        "Determine preferred company sizes and organizational structures.",
-        "Outline key responsibilities and challenges of an ideal TPM role.",
-        "Articulate personal strengths and interests applicable to your target TPM profile."
+        "Deploy an application to Heroku using Git.",
+        "Understand the concepts of dynos, buildpacks, and slugs.",
+        "Utilize Heroku Add-ons for services like databases.",
+        "Manage environment variables and application configurations on Heroku."
       ]
     },
     {
       "id": "cp-gen-017",
       "roadmap_id": "rm-generated",
-      "label": "Baseline",
+      "label": "Contabo",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -657,18 +657,18 @@
         "x": 500,
         "y": 2310
       },
-      "description": "This lesson introduces the fundamental role of a Technical Project Manager, outlining core responsibilities and differentiating it from general project management. It provides an overview of essential project management concepts and the typical project lifecycle. Understand the foundational knowledge required for effective technical project oversight.",
+      "description": "Explore Contabo, another European provider offering competitive pricing for VPS and dedicated servers. Learn about their infrastructure offerings, how to provision resources, and perform initial server setup for various operating systems.",
       "learning_goals": [
-        "Define the Technical Project Manager (TPM) role and its unique responsibilities in a tech environment.",
-        "Identify core project management methodologies (e.g., Agile, Waterfall) and their appropriate contexts.",
-        "Outline the standard project lifecycle phases from initiation to closure.",
-        "Recognize key skills and knowledge areas crucial for success as a TPM."
+        "Provision and manage a Virtual Private Server (VPS) on Contabo.",
+        "Understand Contabo's pricing structure and resource allocation.",
+        "Perform initial operating system setup and configuration.",
+        "Manage server resources and access through the Contabo portal."
       ]
     },
     {
       "id": "cp-gen-018",
       "roadmap_id": "rm-generated",
-      "label": "Timeframe",
+      "label": "FTP / SFTP",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -676,18 +676,18 @@
         "x": 300,
         "y": 2440
       },
-      "description": "This lesson focuses on mastering project time management, from initial estimation to final delivery. Learn to build realistic schedules, identify critical paths, and effectively manage deadlines to ensure projects stay on track and meet stakeholder expectations.",
+      "description": "Understand the File Transfer Protocol (FTP) and, more importantly, the Secure File Transfer Protocol (SFTP) for transferring files between systems. Learn to configure servers and clients for secure, efficient, and authenticated file transfers.",
       "learning_goals": [
-        "Master various project estimation techniques (e.g., Agile, PERT, Three-point).",
-        "Develop comprehensive project schedules, including critical path analysis and milestone definition.",
-        "Learn to monitor schedule progress, identify deviations, and implement corrective actions.",
-        "Effectively communicate timeline risks, changes, and progress to project stakeholders."
+        "Differentiate between FTP and SFTP, emphasizing security implications.",
+        "Configure an SFTP server for secure file access.",
+        "Use an SFTP client to transfer files securely.",
+        "Understand user authentication and permissions for file transfers."
       ]
     },
     {
       "id": "cp-gen-019",
       "roadmap_id": "rm-generated",
-      "label": "Target + Baseline + Timeframe Quiz",
+      "label": "Hetzner + Heroku + Contabo + FTP / SFTP Quiz",
       "kind": "quiz",
       "progress": 0,
       "locked": true,
@@ -695,18 +695,18 @@
         "x": 500,
         "y": 2570
       },
-      "description": "This quiz assesses your ability to clearly define project targets, establish accurate baselines, and set realistic timeframes. It ensures you understand the foundational elements required for effective project planning and tracking.",
+      "description": "This quiz covers a range of hosting solutions from Infrastructure-as-a-Service (IaaS) providers like Hetzner and Contabo, to Platform-as-a-Service (PaaS) like Heroku, along with essential file transfer protocols (FTP/SFTP). It assesses your understanding of diverse deployment environments and secure data movement.",
       "learning_goals": [
-        "Clearly define project targets and success metrics.",
-        "Establish comprehensive project baselines (scope, schedule, cost).",
-        "Set realistic and achievable project timeframes and milestones.",
-        "Understand the critical interdependencies between targets, baselines, and timeframes."
+        "Compare and contrast IaaS and PaaS models in practical scenarios.",
+        "Identify appropriate hosting solutions based on project requirements.",
+        "Demonstrate knowledge of secure and efficient file transfer methods.",
+        "Integrate understanding of different cloud and hosting platforms."
       ]
     },
     {
       "id": "cp-gen-020",
       "roadmap_id": "rm-generated",
-      "label": "Feature Creep",
+      "label": "HTTP",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -714,18 +714,18 @@
         "x": 300,
         "y": 2700
       },
-      "description": "Feature creep is the uncontrolled expansion of a project's scope by adding new features beyond initial requirements, leading to missed deadlines, budget overruns, and diminished quality. A Technical Project Manager must actively identify and manage this common challenge.",
+      "description": "Dive deep into the Hypertext Transfer Protocol (HTTP), the stateless foundation of data communication on the World Wide Web. Understand HTTP methods (GET, POST), status codes, headers, and the request/response cycle.",
       "learning_goals": [
-        "Identify early signs of feature creep in project discussions and change requests.",
-        "Implement strong scope definition and change control processes to prevent unauthorized additions.",
-        "Communicate the impact of scope changes (time, cost, resources) effectively to stakeholders.",
-        "Negotiate and prioritize feature requests against existing project goals and constraints."
+        "Explain the fundamental HTTP request and response cycle.",
+        "Identify common HTTP methods and their semantic meaning.",
+        "Interpret various HTTP status codes and their implications.",
+        "Understand the purpose and structure of common HTTP headers."
       ]
     },
     {
       "id": "cp-gen-021",
       "roadmap_id": "rm-generated",
-      "label": "Five Forces Analysis",
+      "label": "White / Grey Listing",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -733,18 +733,18 @@
         "x": 500,
         "y": 2830
       },
-      "description": "Learn Porter's Five Forces framework to analyze the competitive intensity and attractiveness of an industry. This understanding is crucial for Technical Project Managers to evaluate market conditions, identify potential risks, and strategically position projects for success within their competitive landscape.",
+      "description": "Learn about whitelisting and greylisting as effective security mechanisms, particularly for email and network access control. Understand their implementation, configuration, and effectiveness in preventing unwanted or malicious traffic.",
       "learning_goals": [
-        "Define and explain each of Porter's Five Forces.",
-        "Apply the Five Forces framework to analyze a specific tech product or industry segment.",
-        "Evaluate how competitive forces influence project risks, opportunities, and strategic positioning.",
-        "Utilize Five Forces analysis to inform project scope, feature prioritization, or market entry strategies."
+        "Define whitelisting and greylisting and explain their operational principles.",
+        "Identify use cases where whitelisting or greylisting would be beneficial.",
+        "Understand how to configure basic whitelisting for network access.",
+        "Explain the security benefits and potential drawbacks of these techniques."
       ]
     },
     {
       "id": "cp-gen-022",
       "roadmap_id": "rm-generated",
-      "label": "Identify Partners",
+      "label": "IMAP",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -752,18 +752,18 @@
         "x": 300,
         "y": 2960
       },
-      "description": "Learn to systematically identify all internal and external parties crucial for a project's success, including engineering teams, product managers, vendors, and end-users. Understand their roles, interests, and potential impact on project delivery.",
+      "description": "Understand the Internet Message Access Protocol (IMAP), used by email clients to retrieve and manage messages directly on a mail server. Learn about its features like folder management, synchronization across devices, and persistent storage on the server.",
       "learning_goals": [
-        "Categorize various internal and external stakeholders relevant to a technical project.",
-        "Apply techniques to map stakeholder influence, interest, and communication needs.",
-        "Identify critical decision-makers and subject matter experts within the partner ecosystem.",
-        "Outline initial strategies for engaging and communicating with diverse partner groups."
+        "Explain IMAP's role in email communication and client-server interaction.",
+        "Compare and contrast IMAP with other email protocols like POP3.",
+        "Understand how IMAP supports folder management and message synchronization.",
+        "Configure an email client to connect to an IMAP server."
       ]
     },
     {
       "id": "cp-gen-023",
       "roadmap_id": "rm-generated",
-      "label": "Technical Project Manager Project #2",
+      "label": "Cloud Infrastructure Engineer Project #2",
       "kind": "project",
       "progress": 0,
       "locked": true,
@@ -771,18 +771,18 @@
         "x": 500,
         "y": 3090
       },
-      "description": "Lead the development and integration of a small, internal API service or a critical system feature. This project emphasizes managing technical dependencies, coordinating a small team, and delivering a functional component while addressing potential technical risks.",
+      "description": "This project challenges you to set up a resilient web application deployed across at least two different cloud providers or hosting solutions. You'll implement network security rules, configure secure data transfer, and ensure high availability, showcasing multi-cloud infrastructure management skills.",
       "learning_goals": [
-        "Practice effective technical requirement gathering and decomposition.",
-        "Manage technical dependencies and identify potential integration challenges.",
-        "Coordinate a small development team through an agile sprint cycle.",
-        "Plan and execute a successful deployment and post-release monitoring."
+        "Deploy and manage applications across heterogeneous cloud/hosting environments.",
+        "Implement robust network security policies (firewalls, access lists).",
+        "Configure and utilize secure file transfer methods for deployment and updates.",
+        "Demonstrate ability to manage and troubleshoot a distributed application."
       ]
     },
     {
       "id": "cp-gen-024",
       "roadmap_id": "rm-generated",
-      "label": "Managing Partnerships",
+      "label": "Domain Keys",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -790,18 +790,18 @@
         "x": 300,
         "y": 3220
       },
-      "description": "This lesson equips Technical Project Managers with the essential skills to identify, engage, and sustain effective partnerships, both internal and external. You will learn to navigate the complexities of collaborative relationships, ensuring alignment with project goals and successful delivery.",
+      "description": "Learn about DomainKeys Identified Mail (DKIM) and its crucial role in email authentication to combat spoofing, phishing, and spam. Understand how DKIM works by cryptographically signing outgoing emails and how to configure and verify DKIM records for your domains.",
       "learning_goals": [
-        "Identify key internal and external stakeholders and potential partners for technical projects.",
-        "Develop effective communication and engagement strategies tailored for diverse partner types.",
-        "Negotiate and define clear scope, deliverables, and responsibilities with partnering entities.",
-        "Implement strategies for monitoring partner performance, mitigating risks, and resolving conflicts proactively."
+        "Explain the purpose of DKIM in email authentication.",
+        "Understand how DKIM signatures are generated and verified.",
+        "Configure DKIM records (TXT records) for a domain.",
+        "Verify the integrity and authenticity of DKIM-signed emails."
       ]
     },
     {
       "id": "cp-gen-025",
       "roadmap_id": "rm-generated",
-      "label": "Outcome-Based Roadmaps",
+      "label": "OSI Model",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -809,18 +809,18 @@
         "x": 500,
         "y": 3350
       },
-      "description": "Outcome-based roadmaps shift focus from delivering features to achieving measurable business results and impact. For a Technical Project Manager, mastering this approach ensures technical efforts directly align with strategic goals, facilitating better prioritization and stakeholder communication around delivered value.",
+      "description": "Master the Open Systems Interconnection (OSI) model, a conceptual framework that standardizes the functions of a telecommunication or computing system. Understand its seven layers, their distinct responsibilities, and how they interact to facilitate network communication.",
       "learning_goals": [
-        "Differentiate between outcome-driven and output-driven roadmap approaches.",
-        "Identify and articulate measurable outcomes relevant to technical projects.",
-        "Structure a roadmap that clearly links technical initiatives to desired business outcomes.",
-        "Communicate the strategic value of an outcome-based roadmap to diverse stakeholders."
+        "List and describe all seven layers of the OSI model.",
+        "Explain the function and protocols associated with each layer.",
+        "Understand how data flows through the OSI model from application to physical layer.",
+        "Apply the OSI model to troubleshoot network connectivity and application issues."
       ]
     },
     {
       "id": "cp-gen-026",
       "roadmap_id": "rm-generated",
-      "label": "Prioritization Techniques",
+      "label": "Netlify",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -828,18 +828,18 @@
         "x": 300,
         "y": 3480
       },
-      "description": "This lesson covers essential techniques for identifying critical tasks and ordering them effectively within a project. Learn to apply frameworks like MoSCoW, Eisenhower Matrix, and ICE scoring to manage project scope, allocate resources, and align with strategic objectives, ultimately enhancing project delivery and stakeholder satisfaction.",
+      "description": "Explore Netlify, a leading platform for modern web development that offers continuous deployment, serverless functions, and a global CDN. Learn to deploy static sites, Single Page Applications (SPAs), and dynamic applications with ease, leveraging Git-based workflows.",
       "learning_goals": [
-        "Identify and describe at least three common prioritization frameworks (e.g., MoSCoW, Eisenhower, RICE).",
-        "Apply selected prioritization techniques to a given project scenario to create a ranked task list.",
-        "Evaluate the suitability of different prioritization techniques based on project context and constraints.",
-        "Justify prioritization decisions to stakeholders, explaining the rationale and expected impact."
+        "Deploy a website or application using Netlify's continuous deployment.",
+        "Understand Netlify's build process and automated deployments.",
+        "Utilize Netlify Functions for serverless backend logic.",
+        "Manage custom domains, SSL certificates, and environment variables on Netlify."
       ]
     },
     {
       "id": "cp-gen-027",
       "roadmap_id": "rm-generated",
-      "label": "Managing Partnerships + Outcome-Based Roadmaps + Prioritization Techniques Quiz",
+      "label": "Domain Keys + OSI Model + Netlify Quiz",
       "kind": "quiz",
       "progress": 0,
       "locked": true,
@@ -847,18 +847,18 @@
         "x": 500,
         "y": 3610
       },
-      "description": "This quiz assesses your understanding of effective partnership management strategies, the principles behind creating outcome-based roadmaps, and various prioritization techniques. It evaluates your ability to apply these concepts to drive successful project outcomes and strategic alignment.",
+      "description": "This quiz combines email security best practices (Domain Keys), fundamental networking theory (OSI Model), and modern web deployment strategies (Netlify). It assesses your ability to connect diverse technical concepts and apply them in real-world infrastructure scenarios.",
       "learning_goals": [
-        "Understand key stages and best practices for managing technical partnerships.",
-        "Differentiate between outcome-based and output-based roadmaps and their strategic implications.",
-        "Identify and explain common prioritization techniques (e.g., MoSCoW, RICE, WSJF) and their suitable contexts.",
-        "Apply knowledge of partnerships, roadmaps, and prioritization to evaluate project scenarios and make informed decisions."
+        "Validate understanding of email authentication mechanisms like DKIM.",
+        "Apply OSI model concepts to analyze and troubleshoot network issues.",
+        "Demonstrate proficiency with modern web hosting and deployment platforms.",
+        "Integrate knowledge of network layers, security, and application delivery."
       ]
     },
     {
       "id": "cp-gen-028",
       "roadmap_id": "rm-generated",
-      "label": "Grooming Sessions",
+      "label": "Secret Management",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -866,18 +866,18 @@
         "x": 300,
         "y": 3740
       },
-      "description": "Master the art of facilitating productive grooming sessions to refine backlog items, clarify requirements, and ensure shared understanding among development teams and stakeholders. Learn techniques for effective communication and decision-making during these crucial meetings.",
+      "description": "Learn best practices for securely storing, accessing, and managing sensitive information like API keys, database credentials, and certificates in cloud and on-premises environments. Explore tools and strategies to protect secrets throughout their lifecycle.",
       "learning_goals": [
-        "Facilitate efficient grooming sessions that lead to well-defined user stories and tasks.",
-        "Effectively articulate requirements and constraints to the development team.",
-        "Identify and resolve ambiguities or conflicts in backlog items.",
-        "Ensure alignment between business objectives and technical implementation plans."
+        "Understand the principles of secure secret management.",
+        "Identify common risks associated with insecure secret handling.",
+        "Explore popular secret management tools (e.g., Vault, AWS Secrets Manager).",
+        "Implement secure practices for secret injection and rotation in applications."
       ]
     },
     {
       "id": "cp-gen-029",
       "roadmap_id": "rm-generated",
-      "label": "Agile Methodology",
+      "label": "Grafana",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -885,53 +885,56 @@
         "x": 500,
         "y": 3870
       },
-      "description": "This lesson introduces the core principles and values of Agile methodology, a highly iterative and collaborative approach essential for technical project management. Learn how Agile enables teams to adapt quickly to changes, deliver value incrementally, and foster continuous improvement within a technical context.",
+      "description": "Get proficient with Grafana, an open-source platform for data visualization and monitoring. Learn to create interactive dashboards, connect to various data sources (e.g., Prometheus, InfluxDB, CloudWatch), and configure alerts for proactive incident response.",
       "learning_goals": [
-        "Define the core principles and values of Agile methodology.",
-        "Differentiate Agile from traditional project management approaches.",
-        "Identify key Agile frameworks such as Scrum and Kanban.",
-        "Understand the common roles, ceremonies, and artifacts within an Agile team."
+        "Install and configure Grafana and connect data sources.",
+        "Build insightful dashboards with various visualization panels.",
+        "Write PromQL or other query languages to extract meaningful metrics.",
+        "Set up and manage alerting rules for critical infrastructure events."
       ]
     },
     {
       "id": "cp-gen-030",
       "roadmap_id": "rm-generated",
-      "label": "Minimum Viable Product (MVP)",
-      "kind": "lesson",
+      "label": "Secret Management + Grafana Quiz",
+      "kind": "quiz",
       "progress": 0,
       "locked": true,
       "position": {
         "x": 300,
         "y": 4000
       },
-      "description": "Learn to define, scope, and deliver a Minimum Viable Product (MVP). Understand how to identify core functionality, gather early user feedback, and iterate rapidly to validate market assumptions and reduce development risk, all while managing stakeholder expectations effectively.",
+      "description": "This quiz focuses on two critical areas for cloud infrastructure engineers: securing sensitive data through Secret Management and ensuring system health through robust Monitoring with Grafana. It tests your knowledge of both theoretical concepts and practical tool usage.",
       "learning_goals": [
-        "Define MVP and articulate its strategic importance in product development.",
-        "Identify and prioritize core features essential for an MVP, distinguishing them from later enhancements.",
-        "Collaborate with stakeholders to set realistic MVP scope and manage expectations.",
-        "Explain the benefits of an MVP approach for reducing risk and accelerating product learning."
+        "Validate understanding of best practices for secret lifecycle management.",
+        "Demonstrate proficiency in building and interpreting Grafana dashboards.",
+        "Identify secure solutions for storing and retrieving application secrets.",
+        "Apply monitoring concepts to identify and diagnose system issues."
       ]
     },
     {
       "id": "cp-gen-031",
       "roadmap_id": "rm-generated",
-      "label": "Grooming Sessions + Agile Methodology + Minimum Viable Product (MVP) Quiz",
-      "kind": "quiz",
+      "label": "Docker Swarm",
+      "kind": "lesson",
       "progress": 0,
       "locked": true,
       "position": {
         "x": 500,
         "y": 4130
       },
-      "description": "Learn Grooming Sessions + Agile Methodology + Minimum Viable Product (MVP) Quiz",
+      "description": "Learn to deploy and manage containerized applications using Docker Swarm, Docker's native orchestration tool. Understand how to initialize a swarm, deploy services, scale applications, and perform rolling updates for high availability.",
       "learning_goals": [
-        "Grooming Sessions + Agile Methodology + Minimum Viable Product (MVP) Quiz"
+        "Initialize and manage a Docker Swarm cluster.",
+        "Deploy and manage services within a Docker Swarm.",
+        "Scale containerized applications up and down.",
+        "Perform rolling updates and rollbacks for services."
       ]
     },
     {
       "id": "cp-gen-032",
       "roadmap_id": "rm-generated",
-      "label": "Go-to-Market Strategy",
+      "label": "Nexus",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -939,12 +942,12 @@
         "x": 300,
         "y": 4260
       },
-      "description": "Learn the essentials of a Go-to-Market (GTM) strategy, focusing on how technical projects align with business launch plans and market objectives. Understand the TPM's role in coordinating technical deliverables with product, marketing, and sales efforts for a successful product launch.",
+      "description": "Explore Nexus Repository Manager, a universal artifact repository that supports various formats like Maven, npm, Docker, NuGet, and more. Learn to set up and manage private repositories to store, proxy, and distribute software components efficiently.",
       "learning_goals": [
-        "Understand the core components of a GTM strategy (product, price, place, promotion).",
-        "Identify how technical project deliverables integrate into the overall GTM plan.",
-        "Learn to collaborate with marketing, sales, and product teams to define launch readiness.",
-        "Understand key performance indicators (KPIs) for launch success and post-launch analysis."
+        "Install and configure Nexus Repository Manager.",
+        "Create and manage different types of repositories (proxy, hosted, group).",
+        "Push and pull artifacts to and from Nexus repositories.",
+        "Integrate Nexus into CI/CD pipelines for artifact management."
       ]
     }
   ],
@@ -1163,27 +1166,33 @@
       "target": "cp-008"
     },
     {
-      "id": "edge-gen-001",
+      "id": "edge-gen-000",
       "roadmap_id": "rm-generated",
       "source": "cp-gen-000",
       "target": "cp-gen-001"
     },
     {
-      "id": "edge-gen-002",
+      "id": "edge-gen-001",
       "roadmap_id": "rm-generated",
       "source": "cp-gen-001",
       "target": "cp-gen-002"
     },
     {
-      "id": "edge-gen-003",
+      "id": "edge-gen-002",
       "roadmap_id": "rm-generated",
       "source": "cp-gen-002",
       "target": "cp-gen-003"
     },
     {
-      "id": "edge-gen-004",
+      "id": "edge-gen-003",
       "roadmap_id": "rm-generated",
       "source": "cp-gen-003",
+      "target": "cp-gen-007"
+    },
+    {
+      "id": "edge-gen-004",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-002",
       "target": "cp-gen-004"
     },
     {
@@ -1220,136 +1229,178 @@
       "id": "edge-gen-010",
       "roadmap_id": "rm-generated",
       "source": "cp-gen-009",
-      "target": "cp-gen-010"
+      "target": "cp-gen-011"
     },
     {
       "id": "edge-gen-011",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-007",
+      "target": "cp-gen-010"
+    },
+    {
+      "id": "edge-gen-012",
       "roadmap_id": "rm-generated",
       "source": "cp-gen-010",
       "target": "cp-gen-011"
     },
     {
-      "id": "edge-gen-012",
+      "id": "edge-gen-013",
       "roadmap_id": "rm-generated",
       "source": "cp-gen-011",
       "target": "cp-gen-012"
     },
     {
-      "id": "edge-gen-013",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-012",
-      "target": "cp-gen-013"
-    },
-    {
       "id": "edge-gen-014",
       "roadmap_id": "rm-generated",
-      "source": "cp-gen-013",
+      "source": "cp-gen-012",
       "target": "cp-gen-014"
     },
     {
       "id": "edge-gen-015",
       "roadmap_id": "rm-generated",
-      "source": "cp-gen-014",
-      "target": "cp-gen-015"
+      "source": "cp-gen-011",
+      "target": "cp-gen-013"
     },
     {
       "id": "edge-gen-016",
       "roadmap_id": "rm-generated",
-      "source": "cp-gen-015",
-      "target": "cp-gen-016"
+      "source": "cp-gen-013",
+      "target": "cp-gen-014"
     },
     {
       "id": "edge-gen-017",
       "roadmap_id": "rm-generated",
-      "source": "cp-gen-016",
-      "target": "cp-gen-017"
+      "source": "cp-gen-014",
+      "target": "cp-gen-015"
     },
     {
       "id": "edge-gen-018",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-015",
+      "target": "cp-gen-019"
+    },
+    {
+      "id": "edge-gen-019",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-014",
+      "target": "cp-gen-016"
+    },
+    {
+      "id": "edge-gen-020",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-016",
+      "target": "cp-gen-019"
+    },
+    {
+      "id": "edge-gen-021",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-014",
+      "target": "cp-gen-017"
+    },
+    {
+      "id": "edge-gen-022",
       "roadmap_id": "rm-generated",
       "source": "cp-gen-017",
       "target": "cp-gen-018"
     },
     {
-      "id": "edge-gen-019",
+      "id": "edge-gen-023",
       "roadmap_id": "rm-generated",
       "source": "cp-gen-018",
       "target": "cp-gen-019"
     },
     {
-      "id": "edge-gen-020",
+      "id": "edge-gen-024",
       "roadmap_id": "rm-generated",
       "source": "cp-gen-019",
       "target": "cp-gen-020"
     },
     {
-      "id": "edge-gen-021",
+      "id": "edge-gen-025",
       "roadmap_id": "rm-generated",
       "source": "cp-gen-020",
+      "target": "cp-gen-023"
+    },
+    {
+      "id": "edge-gen-026",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-019",
       "target": "cp-gen-021"
     },
     {
-      "id": "edge-gen-022",
+      "id": "edge-gen-027",
       "roadmap_id": "rm-generated",
       "source": "cp-gen-021",
       "target": "cp-gen-022"
     },
     {
-      "id": "edge-gen-023",
+      "id": "edge-gen-028",
       "roadmap_id": "rm-generated",
       "source": "cp-gen-022",
       "target": "cp-gen-023"
     },
     {
-      "id": "edge-gen-024",
+      "id": "edge-gen-029",
       "roadmap_id": "rm-generated",
       "source": "cp-gen-023",
       "target": "cp-gen-024"
     },
     {
-      "id": "edge-gen-025",
+      "id": "edge-gen-030",
       "roadmap_id": "rm-generated",
       "source": "cp-gen-024",
       "target": "cp-gen-025"
     },
     {
-      "id": "edge-gen-026",
+      "id": "edge-gen-031",
       "roadmap_id": "rm-generated",
       "source": "cp-gen-025",
+      "target": "cp-gen-027"
+    },
+    {
+      "id": "edge-gen-032",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-023",
       "target": "cp-gen-026"
     },
     {
-      "id": "edge-gen-027",
+      "id": "edge-gen-033",
       "roadmap_id": "rm-generated",
       "source": "cp-gen-026",
       "target": "cp-gen-027"
     },
     {
-      "id": "edge-gen-028",
+      "id": "edge-gen-034",
       "roadmap_id": "rm-generated",
       "source": "cp-gen-027",
       "target": "cp-gen-028"
     },
     {
-      "id": "edge-gen-029",
+      "id": "edge-gen-035",
       "roadmap_id": "rm-generated",
       "source": "cp-gen-028",
+      "target": "cp-gen-030"
+    },
+    {
+      "id": "edge-gen-036",
+      "roadmap_id": "rm-generated",
+      "source": "cp-gen-027",
       "target": "cp-gen-029"
     },
     {
-      "id": "edge-gen-030",
+      "id": "edge-gen-037",
       "roadmap_id": "rm-generated",
       "source": "cp-gen-029",
       "target": "cp-gen-030"
     },
     {
-      "id": "edge-gen-031",
+      "id": "edge-gen-038",
       "roadmap_id": "rm-generated",
       "source": "cp-gen-030",
       "target": "cp-gen-031"
     },
     {
-      "id": "edge-gen-032",
+      "id": "edge-gen-039",
       "roadmap_id": "rm-generated",
       "source": "cp-gen-031",
       "target": "cp-gen-032"

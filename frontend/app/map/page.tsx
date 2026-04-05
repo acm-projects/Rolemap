@@ -60,6 +60,8 @@ function RoadmapContent() {
   const [edges, setEdges, onEdgesChange] = useEdgesState<any>([]);
   const [checkpoints, setCheckpoints] = useState<Checkpoint[]>([]);
   const [activePanel, setActivePanel] = useState<NodePanelData | null>(null);
+  const [activePanelPos, setActivePanelPos] = useState<{ x: number; y: number } | null>(null);
+  const [pendingCenter, setPendingCenter] = useState<{ x: number; y: number } | null>(null);
   const [loading, setLoading] = useState(true);
   const { setCenter, fitView } = useReactFlow();
 
@@ -91,11 +93,22 @@ function RoadmapContent() {
       .finally(() => setLoading(false));
   }, []);  // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    if (!pendingCenter) return;
+    const timer = setTimeout(() => {
+      setCenter(pendingCenter.x, pendingCenter.y, { zoom: 1.1, duration: 800 });
+      setPendingCenter(null);
+    }, 50);
+    return () => clearTimeout(timer);
+  }, [pendingCenter, setCenter]);
+
   const handleNodeClick: NodeMouseHandler = useCallback((_event, node) => {
     const data = node.data as { label: string; progress: number; locked: boolean; kind?: string };
-    if (data.locked) return;
 
-    if (data.kind === 'quiz') {
+    setPendingCenter({ x: node.position.x + 300, y: node.position.y + 85 });
+    setActivePanelPos({ x: node.position.x + 300, y: node.position.y + 85 });
+
+    if (!data.locked && data.kind === 'quiz') {
       router.push(`/quiz?checkpoint=${node.id}&label=${encodeURIComponent(data.label)}`);
       return;
     }
@@ -110,9 +123,8 @@ function RoadmapContent() {
         description: cp.description,
         learningGoals: cp.learning_goals,
       });
-      setCenter(node.position.x + 300, node.position.y + 85, { zoom: 1.1, duration: 800 });
     }
-  }, [checkpoints, router, setCenter]);
+  }, [checkpoints, router]);
 
   if (loading) {
     return (
@@ -140,7 +152,17 @@ function RoadmapContent() {
           <Controls position="bottom-right" />
         </ReactFlow>
       </div>
-      {activePanel && <NodePanel data={activePanel} onClose={() => setActivePanel(null)} />}
+      {activePanel && (
+        <NodePanel
+          data={activePanel}
+          onClose={() => {
+            setActivePanel(null);
+            if (activePanelPos) {
+              setCenter(activePanelPos.x, activePanelPos.y, { zoom: 0.5, duration: 800 });
+            }
+          }}
+        />
+      )}
     </div>
   );
 }

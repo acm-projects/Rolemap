@@ -2,12 +2,16 @@ interface PixelProgressProps {
   value: number; // 0-100
   max?: number;
   showLabel?: boolean;
+  step?: number;
+  totalSteps?: number;
 }
 
 export default function PixelProgress({
   value,
   max = 100,
   showLabel = true,
+  step,
+  totalSteps,
 }: PixelProgressProps) {
   const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
   const segments = 20;
@@ -17,18 +21,19 @@ export default function PixelProgress({
     <div className="w-full">
       {showLabel && (
         <div className="flex items-center justify-between mb-2">
-          <span
-            className="text-xs text-[#4e8888]"
-            style={{ fontFamily: "'Press Start 2P', monospace" }}
-          >
+          <span className="text-xl text-[#4e8888] font-jersey">
             PROGRESS
           </span>
-          <span
-            className="text-xs text-[#2d5050]"
-            style={{ fontFamily: "'Press Start 2P', monospace" }}
-          >
-            {Math.round(percentage)}%
-          </span>
+          <div className="flex items-center gap-4">
+            {step !== undefined && totalSteps !== undefined && (
+              <span className="text-xl text-[#4e8888] font-jersey">
+                Step {step} of {totalSteps}
+              </span>
+            )}
+            <span className="text-xl text-[#4e8888] font-jersey">
+              {Math.round(percentage)}%
+            </span>
+          </div>
         </div>
       )}
       <div
@@ -54,9 +59,7 @@ export default function PixelProgress({
                     : "bg-[#d4e8e8]"
                 }
               `}
-              style={{
-                imageRendering: "pixelated",
-              }}
+              style={{ imageRendering: "pixelated" }}
             />
           ))}
         </div>
