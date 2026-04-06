@@ -27,7 +27,7 @@ export default function ResumeUpload() {
   }, []);
 
   // GitHub is verified if the session was created via GitHub OAuth
-  const githubVerified = !!(session as { provider?: string } | null)?.provider?.includes?.('github')
+  const githubVerified = !!(session?.user as { provider?: string } | undefined)?.provider?.includes?.('github')
     || !!(session?.user as { githubUsername?: string } | undefined)?.githubUsername;
 
   const canContinue = !!fileName || githubVerified;

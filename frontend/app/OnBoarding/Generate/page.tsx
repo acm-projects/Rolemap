@@ -94,7 +94,7 @@ export default function GenerateRoadmap() {
                   : "border-t-[#d4e8e8] border-l-[#d4e8e8] border-r-[#7ab3b3] border-b-[#7ab3b3] bg-[#f0f8f8]"
               }`}
             >
-              {done ? "??" : generating ? <span className="text-[#4e8888] font-jersey text-xl animate-pulse">···</span> : <span className="text-[#4e8888]">?</span>}
+              {done ? "🎉" : generating ? <span className="text-[#4e8888] font-jersey text-xl animate-pulse">···</span> : <span className="text-[#4e8888]">✦</span>}
             </div>
 
             {generating && (

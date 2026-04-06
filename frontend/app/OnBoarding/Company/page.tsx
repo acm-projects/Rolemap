@@ -44,7 +44,7 @@ export default function CompanySelection() {
 
   const handleContinue = () => {
     localStorage.setItem("ob_companies", JSON.stringify(selectedCompanies));
-    router.push("../OnBoarding/Preferences");
+    router.push("/OnBoarding/Preferences");
   };
 
   return (
