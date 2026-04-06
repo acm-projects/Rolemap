@@ -818,7 +818,7 @@ async def generate_roadmap_api(body: dict[str, Any]):
     github_username: str = body.get("github_username", "")
 
     backend_dir = Path(__file__).parent.parent
-    creation_dir = backend_dir.parent / "Creation"
+    using_dir = backend_dir
     output_dir = backend_dir / "output"
     upload_dir = UPLOAD_DIR
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -851,7 +851,7 @@ async def generate_roadmap_api(body: dict[str, Any]):
         await _run(
             "github",
             sys.executable,
-            str(creation_dir / "github" / "main.py"),
+            str(using_dir / "github" / "main.py"),
             "--username", github_username,
             "--out", str(github_json),
             "--no-llm",
@@ -866,7 +866,7 @@ async def generate_roadmap_api(body: dict[str, Any]):
         await _run(
             "resume",
             sys.executable,
-            str(creation_dir / "resume_parser" / "main.py"),
+            str(using_dir / "resume_parser" / "main.py"),
             "--pdf", str(resume_files[0]),
             "--out", str(resume_json),
         )
@@ -874,7 +874,7 @@ async def generate_roadmap_api(body: dict[str, Any]):
         print("[generate] No resume PDF found, skipping resume step", flush=True)
 
     # 3. Roadmap generation
-    gen_script = creation_dir / "graph_engine" / "04_Generate_Roadmaps" / "generator.py"
+    gen_script = using_dir / "generator.py"
     gen_args = [sys.executable, str(gen_script), role]
     if github_json.exists():
         gen_args += ["--github", str(github_json)]

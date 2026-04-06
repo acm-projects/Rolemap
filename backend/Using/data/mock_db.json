@@ -5,14 +5,13 @@
       "email": "alex.morgan@example.com",
       "name": "Alex Morgan",
       "image_url": null,
-      "github_username": "OhamjDung",
-      "xp_total": 2555,
-      "current_streak": 1,
+      "github_username": "alexmorgan",
+      "xp_total": 2450,
+      "current_streak": 24,
       "longest_streak": 31,
-      "onboarding_completed": true,
-      "onboarding_step": 5,
-      "created_at": "2025-09-01T00:00:00Z",
-      "last_active_date": "2026-04-06"
+      "onboarding_completed": false,
+      "onboarding_step": 0,
+      "created_at": "2025-09-01T00:00:00Z"
     }
   ],
   "roles": [
@@ -132,639 +131,189 @@
   ],
   "roadmaps": [
     {
-      "id": "rm-generated",
+      "id": "rm-001",
       "user_id": "u-001",
-      "title": "Cloud Infrastructure Engineer Roadmap",
-      "progress_percentage": 0,
-      "status": "active"
+      "role_id": "r-001",
+      "title": "Front End Developer",
+      "status": "active",
+      "progress_percentage": 68
+    },
+    {
+      "id": "rm-002",
+      "user_id": "u-001",
+      "role_id": "r-002",
+      "title": "Full Stack Developer",
+      "status": "not_started",
+      "progress_percentage": 12
+    },
+    {
+      "id": "rm-003",
+      "user_id": "u-001",
+      "role_id": "r-003",
+      "title": "Data Science",
+      "status": "not_started",
+      "progress_percentage": 0
+    },
+    {
+      "id": "rm-004",
+      "user_id": "u-001",
+      "role_id": "r-004",
+      "title": "UX Design",
+      "status": "not_started",
+      "progress_percentage": 45
     }
   ],
   "roadmap_checkpoints": [
     {
-      "id": "cp-gen-000",
-      "roadmap_id": "rm-generated",
-      "label": "Learn a Programming Language",
+      "id": "cp-001",
+      "roadmap_id": "rm-001",
+      "label": "HTML5 Foundations",
       "kind": "lesson",
-      "progress": 75,
+      "progress": 100,
+      "locked": false,
+      "position": {
+        "x": 0,
+        "y": 150
+      },
+      "description": "Master the building blocks of the web. You'll learn how browsers parse HTML, semantic element choices that affect SEO and accessibility, and how to structure a document that's both human-readable and machine-friendly.",
+      "learning_goals": [
+        "Understand the role of semantic HTML elements (header, main, article, section)",
+        "Build well-structured forms with proper labels and input types",
+        "Apply accessibility best practices using ARIA roles and alt text",
+        "Validate HTML using the W3C validator and fix common errors"
+      ]
+    },
+    {
+      "id": "cp-002",
+      "roadmap_id": "rm-001",
+      "label": "Advanced CSS & Grid",
+      "kind": "lesson",
+      "progress": 100,
       "locked": false,
       "position": {
         "x": 300,
-        "y": 100
+        "y": 150
       },
-      "description": "This lesson introduces you to the fundamentals of a programming language commonly used for infrastructure automation, such as Python or Go. You'll learn essential syntax, data structures, and control flow to write scripts and interact with APIs.",
+      "description": "Go beyond basic styling. This checkpoint covers CSS Grid and Flexbox layouts, responsive design with media queries, CSS custom properties (variables), and modern techniques like clamp() and container queries.",
       "learning_goals": [
-        "Understand basic programming syntax and constructs.",
-        "Write simple scripts to automate repetitive tasks.",
-        "Utilize variables, loops, and functions effectively.",
-        "Interpret and debug basic programming errors."
+        "Build complex two-dimensional layouts using CSS Grid",
+        "Create flexible, one-dimensional layouts with Flexbox",
+        "Write responsive styles using media queries and fluid units",
+        "Use CSS custom properties to build a maintainable design token system"
       ]
     },
     {
-      "id": "cp-gen-001",
-      "roadmap_id": "rm-generated",
-      "label": "Ubuntu / Debian",
-      "kind": "lesson",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 500,
-        "y": 230
-      },
-      "description": "Master the administration of Ubuntu and Debian, two widely used Linux distributions in cloud environments. This includes navigating the command line, managing packages, configuring networking, and understanding basic system services.",
-      "learning_goals": [
-        "Perform essential command-line interface (CLI) operations.",
-        "Manage software packages using APT.",
-        "Configure network interfaces and troubleshoot connectivity.",
-        "Understand user and group management, along with file permissions."
-      ]
-    },
-    {
-      "id": "cp-gen-002",
-      "roadmap_id": "rm-generated",
-      "label": "Learn a Programming Language + Ubuntu / Debian Quiz",
+      "id": "cp-003",
+      "roadmap_id": "rm-001",
+      "label": "Layouts Master Quiz",
       "kind": "quiz",
-      "progress": 0,
-      "locked": true,
+      "progress": 100,
+      "locked": false,
       "position": {
-        "x": 300,
-        "y": 360
+        "x": 600,
+        "y": 150
       },
-      "description": "This quiz assesses your foundational knowledge in both basic programming concepts and essential Ubuntu/Debian server administration. It covers scripting logic, package management, user administration, and navigating the Linux filesystem.",
+      "description": "Test your knowledge of HTML structure and CSS layouts. This quiz covers semantic markup, Flexbox, Grid, and responsive design patterns encountered in real-world projects.",
       "learning_goals": [
-        "Demonstrate basic programming syntax and problem-solving skills.",
-        "Correctly answer questions on Ubuntu/Debian package management.",
-        "Identify and apply common Linux commands for system administration.",
-        "Explain the purpose and function of user/group permissions on Linux."
+        "Recall the difference between block, inline, and inline-block elements",
+        "Identify correct Grid and Flexbox properties for given layout challenges",
+        "Diagnose and fix common layout bugs",
+        "Apply media query breakpoints to a given design spec"
       ]
     },
     {
-      "id": "cp-gen-003",
-      "roadmap_id": "rm-generated",
-      "label": "FreeBSD",
+      "id": "cp-004",
+      "roadmap_id": "rm-001",
+      "label": "JS Logic & Variables",
       "kind": "lesson",
-      "progress": 0,
-      "locked": true,
+      "progress": 100,
+      "locked": false,
       "position": {
-        "x": 500,
-        "y": 490
+        "x": 900,
+        "y": 50
       },
-      "description": "Delve into the FreeBSD operating system, understanding its unique architecture, kernel, and system management tools. This lesson highlights the differences and similarities with Linux, preparing you for diverse server environments.",
+      "description": "Learn the fundamentals of JavaScript: data types, variable scoping (var vs let vs const), operators, control flow, and functions. This is the foundation for all JS-powered interactivity.",
       "learning_goals": [
-        "Install and perform basic configuration of a FreeBSD system.",
-        "Manage system services using rc.d scripts.",
-        "Understand the FreeBSD Ports and Packages system for software installation.",
-        "Differentiate key architectural and operational aspects of FreeBSD from Linux."
+        "Distinguish between let, const, and var and when to use each",
+        "Write functions using both declaration and arrow-function syntax",
+        "Control program flow using if/else, switch, and ternary expressions",
+        "Understand truthy/falsy values and short-circuit evaluation"
       ]
     },
     {
-      "id": "cp-gen-004",
-      "roadmap_id": "rm-generated",
-      "label": "NetBSD",
+      "id": "cp-005",
+      "roadmap_id": "rm-001",
+      "label": "DOM & Events",
       "kind": "lesson",
-      "progress": 0,
-      "locked": true,
+      "progress": 100,
+      "locked": false,
       "position": {
-        "x": 300,
-        "y": 620
+        "x": 900,
+        "y": 250
       },
-      "description": "Explore NetBSD, renowned for its portability and clean design, learning its core principles and system administration. This module helps you understand its use cases, particularly in highly diverse or embedded hardware contexts.",
+      "description": "Bring web pages to life by manipulating the DOM and responding to user events. Covers querySelector, event listeners, event propagation, and the difference between innerHTML and textContent.",
       "learning_goals": [
-        "Install and configure a NetBSD system for basic operation.",
-        "Utilize pkgsrc for managing software packages.",
-        "Understand NetBSD's system layout and configuration files.",
-        "Identify the unique advantages and use cases of NetBSD."
+        "Select and modify DOM elements using querySelector and querySelectorAll",
+        "Attach and remove event listeners for user interactions",
+        "Explain event bubbling and capture, and use stopPropagation when needed",
+        "Dynamically create and remove elements from the page"
       ]
     },
     {
-      "id": "cp-gen-005",
-      "roadmap_id": "rm-generated",
-      "label": "Forward Proxy",
-      "kind": "lesson",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 500,
-        "y": 750
-      },
-      "description": "Understand the concept and implementation of a forward proxy server. Learn how it functions to route client requests, enhance security, provide anonymity, and implement caching for improved performance.",
-      "learning_goals": [
-        "Explain the role and benefits of a forward proxy in network architecture.",
-        "Configure a simple forward proxy server (e.g., Squid).",
-        "Understand how proxies contribute to network security and access control.",
-        "Troubleshoot common issues related to forward proxy configurations."
-      ]
-    },
-    {
-      "id": "cp-gen-006",
-      "roadmap_id": "rm-generated",
-      "label": "Tomcat",
-      "kind": "lesson",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 300,
-        "y": 880
-      },
-      "description": "Learn to install, configure, and manage Apache Tomcat, a popular open-source web server and servlet container used for hosting Java-based web applications. This covers deploying WAR files, configuring connectors, and basic performance tuning.",
-      "learning_goals": [
-        "Install and set up an Apache Tomcat server.",
-        "Deploy web applications (WAR files) to Tomcat.",
-        "Configure Tomcat connectors and server settings.",
-        "Monitor Tomcat logs and perform basic troubleshooting."
-      ]
-    },
-    {
-      "id": "cp-gen-007",
-      "roadmap_id": "rm-generated",
-      "label": "FreeBSD + NetBSD + Forward Proxy + Tomcat Quiz",
-      "kind": "quiz",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 500,
-        "y": 1010
-      },
-      "description": "This comprehensive quiz evaluates your proficiency in managing FreeBSD and NetBSD systems, configuring forward proxies, and administering Tomcat servers. It combines theoretical knowledge with practical application scenarios.",
-      "learning_goals": [
-        "Answer questions distinguishing features and commands of FreeBSD and NetBSD.",
-        "Identify appropriate scenarios and configurations for a forward proxy.",
-        "Demonstrate knowledge of deploying and troubleshooting applications on Tomcat.",
-        "Explain the security and performance implications of these technologies."
-      ]
-    },
-    {
-      "id": "cp-gen-008",
-      "roadmap_id": "rm-generated",
-      "label": "IIS",
-      "kind": "lesson",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 300,
-        "y": 1140
-      },
-      "description": "Gain proficiency in Microsoft Internet Information Services (IIS), learning to install, configure, and manage this robust web server platform for hosting ASP.NET and other web applications on Windows servers.",
-      "learning_goals": [
-        "Install and configure IIS on a Windows Server.",
-        "Host multiple websites and web applications on IIS.",
-        "Manage application pools and worker processes.",
-        "Understand basic IIS security features and URL rewriting."
-      ]
-    },
-    {
-      "id": "cp-gen-009",
-      "roadmap_id": "rm-generated",
-      "label": "Caching Server",
-      "kind": "lesson",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 500,
-        "y": 1270
-      },
-      "description": "Explore the crucial role of caching servers in modern infrastructure. Learn how to implement and optimize caching strategies to improve application performance, reduce database load, and enhance user experience.",
-      "learning_goals": [
-        "Explain the principles and benefits of caching.",
-        "Implement a caching server (e.g., Redis, Varnish) in a web application stack.",
-        "Monitor cache hit/miss ratios and performance metrics.",
-        "Understand cache invalidation strategies and their challenges."
-      ]
-    },
-    {
-      "id": "cp-gen-010",
-      "roadmap_id": "rm-generated",
-      "label": "Load Balancer",
-      "kind": "lesson",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 300,
-        "y": 1400
-      },
-      "description": "Understand the vital function of load balancers in distributing network traffic across multiple servers to ensure high availability, scalability, and optimal resource utilization. Learn about different load balancing algorithms and health checks.",
-      "learning_goals": [
-        "Explain the different types of load balancing and their use cases.",
-        "Configure a software or hardware load balancer (e.g., Nginx, HAProxy).",
-        "Implement health checks for backend servers.",
-        "Troubleshoot traffic distribution and server availability issues."
-      ]
-    },
-    {
-      "id": "cp-gen-011",
-      "roadmap_id": "rm-generated",
-      "label": "Cloud Infrastructure Engineer Project #1",
+      "id": "cp-006",
+      "roadmap_id": "rm-001",
+      "label": "Interactive Site Project",
       "kind": "project",
-      "progress": 0,
-      "locked": true,
+      "progress": 40,
+      "locked": false,
       "position": {
-        "x": 500,
-        "y": 1530
+        "x": 1250,
+        "y": 150
       },
-      "description": "This hands-on project challenges you to design and implement a scalable and highly available web application infrastructure. You will integrate a web server, a caching layer, and a load balancer on Linux virtual machines.",
+      "description": "Apply everything learned so far to build a small interactive website — a to-do list, a quiz app, or a weather dashboard. Focus on clean HTML structure, responsive CSS, and vanilla JS logic with no frameworks.",
       "learning_goals": [
-        "Deploy a multi-tier web application stack from scratch.",
-        "Configure a load balancer to distribute traffic efficiently.",
-        "Integrate a caching server to improve application performance.",
-        "Demonstrate basic server hardening and monitoring."
+        "Plan a small project by breaking it into HTML structure, CSS styles, and JS logic",
+        "Implement CRUD operations (add, edit, delete items) using DOM manipulation",
+        "Persist data across page reloads using localStorage",
+        "Deploy the project to GitHub Pages or Netlify"
       ]
     },
     {
-      "id": "cp-gen-012",
-      "roadmap_id": "rm-generated",
-      "label": "Google Cloud",
+      "id": "cp-007",
+      "roadmap_id": "rm-001",
+      "label": "Asynchronous JS",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
       "position": {
-        "x": 300,
-        "y": 1660
+        "x": 1550,
+        "y": 150
       },
-      "description": "Get started with Google Cloud Platform (GCP), one of the leading cloud providers. Learn to provision and manage core services like Compute Engine (VMs), VPC networks, Cloud Storage, and Identity and Access Management (IAM).",
+      "description": "Understand how JavaScript handles async operations: the event loop, callbacks, Promises, and async/await syntax. Learn to fetch data from APIs and handle loading and error states gracefully.",
       "learning_goals": [
-        "Navigate the Google Cloud Console and use gcloud CLI.",
-        "Provision and manage virtual machines (Compute Engine).",
-        "Configure basic networking resources (VPC, firewalls).",
-        "Understand and apply IAM roles for secure access control."
+        "Explain the JavaScript event loop and call stack",
+        "Chain Promises using .then()/.catch() and convert to async/await",
+        "Fetch data from a public REST API and render it in the DOM",
+        "Handle network errors and display appropriate user feedback"
       ]
     },
     {
-      "id": "cp-gen-013",
-      "roadmap_id": "rm-generated",
-      "label": "Digital Ocean",
+      "id": "cp-008",
+      "roadmap_id": "rm-001",
+      "label": "React Fundamentals",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
       "position": {
-        "x": 500,
-        "y": 1790
+        "x": 1850,
+        "y": 150
       },
-      "description": "Learn to provision and manage infrastructure on DigitalOcean, a developer-friendly cloud platform. This covers creating Droplets (VMs), managing managed databases, configuring firewalls, and utilizing object storage (Spaces).",
+      "description": "Introduction to React: JSX syntax, functional components, props, and the useState and useEffect hooks. Build a small component-driven UI and understand the virtual DOM and reconciliation.",
       "learning_goals": [
-        "Create and manage Droplets and SSH into them.",
-        "Deploy a web application or service on DigitalOcean.",
-        "Configure network firewalls and security groups.",
-        "Understand DigitalOcean's storage and managed database offerings."
-      ]
-    },
-    {
-      "id": "cp-gen-014",
-      "roadmap_id": "rm-generated",
-      "label": "Google Cloud + Digital Ocean Quiz",
-      "kind": "quiz",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 300,
-        "y": 1920
-      },
-      "description": "This quiz tests your fundamental understanding of services and concepts across both Google Cloud Platform and DigitalOcean. It covers VM instantiation, networking basics, storage options, and identity management unique to each platform.",
-      "learning_goals": [
-        "Differentiate core services and pricing models between GCP and DigitalOcean.",
-        "Answer questions regarding VM provisioning and management on both platforms.",
-        "Explain fundamental networking and firewall concepts in a multi-cloud context.",
-        "Identify best practices for identity and access management on each provider."
-      ]
-    },
-    {
-      "id": "cp-gen-015",
-      "roadmap_id": "rm-generated",
-      "label": "Hetzner",
-      "kind": "lesson",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 500,
-        "y": 2050
-      },
-      "description": "Explore Hetzner Cloud, a European cloud provider known for its powerful and cost-effective bare metal and cloud servers. Learn to provision instances, configure networking, and understand its unique service model.",
-      "learning_goals": [
-        "Provision and manage virtual servers on Hetzner Cloud.",
-        "Configure networking and firewall rules within Hetzner's ecosystem.",
-        "Understand Hetzner's pricing structure and resource allocation.",
-        "Utilize Hetzner's panel for server management and monitoring."
-      ]
-    },
-    {
-      "id": "cp-gen-016",
-      "roadmap_id": "rm-generated",
-      "label": "Heroku",
-      "kind": "lesson",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 300,
-        "y": 2180
-      },
-      "description": "Learn to deploy and manage applications on Heroku, a popular Platform-as-a-Service (PaaS). This includes understanding Git-based deployments, Dynos, buildpacks, environment variables, and the Heroku Add-ons ecosystem.",
-      "learning_goals": [
-        "Successfully deploy an application to Heroku using Git.",
-        "Understand Heroku Dynos and the execution environment.",
-        "Manage application configuration through environment variables.",
-        "Scale Heroku applications and integrate with add-on services."
-      ]
-    },
-    {
-      "id": "cp-gen-017",
-      "roadmap_id": "rm-generated",
-      "label": "Contabo",
-      "kind": "lesson",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 500,
-        "y": 2310
-      },
-      "description": "Get familiar with Contabo's infrastructure services, focusing on their robust dedicated server and VPS offerings. Learn to provision servers, navigate their control panel, and understand their resource scaling options.",
-      "learning_goals": [
-        "Provision and set up a Virtual Private Server (VPS) on Contabo.",
-        "Access and utilize the Contabo customer control panel.",
-        "Configure server resources and operating system installations.",
-        "Understand Contabo's service tiers and hardware specifications."
-      ]
-    },
-    {
-      "id": "cp-gen-018",
-      "roadmap_id": "rm-generated",
-      "label": "FTP / SFTP",
-      "kind": "lesson",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 300,
-        "y": 2440
-      },
-      "description": "Master the File Transfer Protocol (FTP) and its secure counterpart, Secure File Transfer Protocol (SFTP). Learn how to transfer files between local and remote systems securely, manage permissions, and troubleshoot connectivity.",
-      "learning_goals": [
-        "Use FTP and SFTP clients to transfer files effectively.",
-        "Configure an FTP/SFTP server for secure file sharing.",
-        "Understand the security implications and best practices for both protocols.",
-        "Troubleshoot common connection and authentication issues with FTP/SFTP."
-      ]
-    },
-    {
-      "id": "cp-gen-019",
-      "roadmap_id": "rm-generated",
-      "label": "Hetzner + Heroku + Contabo + FTP / SFTP Quiz",
-      "kind": "quiz",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 500,
-        "y": 2570
-      },
-      "description": "This quiz evaluates your knowledge of diverse cloud/hosting providers (Hetzner, Heroku, Contabo) and essential file transfer protocols (FTP/SFTP). It covers deployment models, security, and operational differences.",
-      "learning_goals": [
-        "Compare and contrast the offerings of Hetzner, Heroku, and Contabo.",
-        "Answer questions about deploying and managing applications on Heroku.",
-        "Explain the security differences and best practices for FTP vs. SFTP.",
-        "Troubleshoot common issues related to these providers and protocols."
-      ]
-    },
-    {
-      "id": "cp-gen-020",
-      "roadmap_id": "rm-generated",
-      "label": "HTTP",
-      "kind": "lesson",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 300,
-        "y": 2700
-      },
-      "description": "Deep dive into the Hypertext Transfer Protocol (HTTP), the foundation of data communication for the World Wide Web. Understand HTTP methods, status codes, headers, and the request/response cycle.",
-      "learning_goals": [
-        "Explain the fundamental concepts of HTTP requests and responses.",
-        "Identify common HTTP methods (GET, POST, PUT, DELETE) and their uses.",
-        "Interpret HTTP status codes and their meanings.",
-        "Analyze HTTP headers and their role in web communication."
-      ]
-    },
-    {
-      "id": "cp-gen-021",
-      "roadmap_id": "rm-generated",
-      "label": "White / Grey Listing",
-      "kind": "lesson",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 500,
-        "y": 2830
-      },
-      "description": "Learn about whitelisting and greylisting, two critical techniques used in network security, particularly for email spam prevention and access control. Understand how they filter unwanted traffic and enhance security posture.",
-      "learning_goals": [
-        "Define whitelisting and its application in security contexts.",
-        "Explain greylisting and its effectiveness in combating spam.",
-        "Implement whitelisting/greylisting for email servers or network access.",
-        "Identify the pros and cons of each technique in different scenarios."
-      ]
-    },
-    {
-      "id": "cp-gen-022",
-      "roadmap_id": "rm-generated",
-      "label": "IMAP",
-      "kind": "lesson",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 300,
-        "y": 2960
-      },
-      "description": "Understand the Internet Message Access Protocol (IMAP) for retrieving and managing email messages directly on a mail server. Learn its features, folder management capabilities, and how it differs from POP3.",
-      "learning_goals": [
-        "Explain the functionality and benefits of IMAP for email access.",
-        "Configure an IMAP client to connect to an email server.",
-        "Understand how IMAP supports server-side email management (folders, flags).",
-        "Differentiate between IMAP and POP3 protocols and their use cases."
-      ]
-    },
-    {
-      "id": "cp-gen-023",
-      "roadmap_id": "rm-generated",
-      "label": "Cloud Infrastructure Engineer Project #2",
-      "kind": "project",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 500,
-        "y": 3090
-      },
-      "description": "In this project, you'll apply your knowledge of networking protocols and security to design and deploy a secure and functional email service. You'll configure SMTP, IMAP, and implement spam filtering techniques like whitelisting.",
-      "learning_goals": [
-        "Set up and configure a complete email server (SMTP, IMAP).",
-        "Implement and test email authentication and spam filtering using whitelisting.",
-        "Demonstrate secure email communication practices.",
-        "Troubleshoot common issues related to email delivery and access."
-      ]
-    },
-    {
-      "id": "cp-gen-024",
-      "roadmap_id": "rm-generated",
-      "label": "Domain Keys",
-      "kind": "lesson",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 300,
-        "y": 3220
-      },
-      "description": "Learn about DomainKeys Identified Mail (DKIM), an email authentication method designed to detect email spoofing. Understand how DKIM works by cryptographically signing outgoing emails to verify their sender and integrity.",
-      "learning_goals": [
-        "Explain the purpose and mechanism of DKIM in email authentication.",
-        "Generate and configure DKIM records in DNS.",
-        "Verify DKIM signatures for incoming and outgoing emails.",
-        "Troubleshoot common DKIM configuration and validation issues."
-      ]
-    },
-    {
-      "id": "cp-gen-025",
-      "roadmap_id": "rm-generated",
-      "label": "OSI Model",
-      "kind": "lesson",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 500,
-        "y": 3350
-      },
-      "description": "Gain a foundational understanding of the Open Systems Interconnection (OSI) model, a conceptual framework used to describe the functions of a networking system. Learn about its seven layers and how data flows through them.",
-      "learning_goals": [
-        "List and describe all seven layers of the OSI model.",
-        "Explain the primary functions performed at each OSI layer.",
-        "Map common network protocols and devices to their respective OSI layers.",
-        "Use the OSI model as a framework for troubleshooting network issues."
-      ]
-    },
-    {
-      "id": "cp-gen-026",
-      "roadmap_id": "rm-generated",
-      "label": "Netlify",
-      "kind": "lesson",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 300,
-        "y": 3480
-      },
-      "description": "Explore Netlify, a modern web development platform that automates code deployment, continuous integration, and global content delivery. Learn to deploy static sites, use serverless functions, and configure custom domains.",
-      "learning_goals": [
-        "Deploy a static website or single-page application to Netlify.",
-        "Configure continuous deployment from a Git repository.",
-        "Implement Netlify Functions for serverless backend logic.",
-        "Set up custom domains and HTTPS for Netlify hosted sites."
-      ]
-    },
-    {
-      "id": "cp-gen-027",
-      "roadmap_id": "rm-generated",
-      "label": "Domain Keys + OSI Model + Netlify Quiz",
-      "kind": "quiz",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 500,
-        "y": 3610
-      },
-      "description": "This quiz assesses your understanding of critical email authentication (Domain Keys), fundamental network architecture (OSI Model), and modern web deployment practices using Netlify. It covers both theoretical and practical aspects.",
-      "learning_goals": [
-        "Answer questions about DKIM configuration and its role in email security.",
-        "Explain the functions of each layer within the OSI model.",
-        "Demonstrate knowledge of deploying and managing projects on Netlify.",
-        "Identify how these concepts contribute to secure and performant cloud infrastructure."
-      ]
-    },
-    {
-      "id": "cp-gen-028",
-      "roadmap_id": "rm-generated",
-      "label": "Secret Management",
-      "kind": "lesson",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 300,
-        "y": 3740
-      },
-      "description": "Understand the critical importance of secure secret management in cloud infrastructure. Learn best practices and tools for securely storing, accessing, rotating, and auditing sensitive credentials like API keys, passwords, and certificates.",
-      "learning_goals": [
-        "Explain the principles of secure secret management (e.g., least privilege, rotation).",
-        "Utilize a secret management solution (e.g., HashiCorp Vault, cloud-native services).",
-        "Implement secure practices for injecting secrets into applications and deployments.",
-        "Understand the lifecycle of secrets and how to manage their rotation."
-      ]
-    },
-    {
-      "id": "cp-gen-029",
-      "roadmap_id": "rm-generated",
-      "label": "Grafana",
-      "kind": "lesson",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 500,
-        "y": 3870
-      },
-      "description": "Master Grafana, a powerful open-source platform for data visualization and monitoring. Learn to create dynamic dashboards, connect to various data sources, and configure alerts to keep track of your infrastructure's health and performance.",
-      "learning_goals": [
-        "Create and customize Grafana dashboards for infrastructure monitoring.",
-        "Connect Grafana to different data sources (e.g., Prometheus, Loki, CloudWatch).",
-        "Design effective visualizations using various panel types.",
-        "Set up alerting rules and notification channels in Grafana."
-      ]
-    },
-    {
-      "id": "cp-gen-030",
-      "roadmap_id": "rm-generated",
-      "label": "Secret Management + Grafana Quiz",
-      "kind": "quiz",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 300,
-        "y": 4000
-      },
-      "description": "This quiz evaluates your understanding of secure secret management principles and your practical ability to use Grafana for monitoring and visualization. It combines security best practices with observability tools.",
-      "learning_goals": [
-        "Answer questions on secure handling and lifecycle management of sensitive data.",
-        "Explain core features and use cases of Grafana for infrastructure monitoring.",
-        "Identify best practices for designing effective Grafana dashboards.",
-        "Troubleshoot common issues in secret access or Grafana data source connectivity."
-      ]
-    },
-    {
-      "id": "cp-gen-031",
-      "roadmap_id": "rm-generated",
-      "label": "Docker Swarm",
-      "kind": "lesson",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 500,
-        "y": 4130
-      },
-      "description": "Learn to orchestrate Docker containers using Docker Swarm, Docker's native clustering solution. Understand concepts like services, tasks, nodes, and how to deploy and scale applications across a cluster of Docker hosts.",
-      "learning_goals": [
-        "Initialize and manage a Docker Swarm cluster.",
-        "Deploy and scale containerized services using Docker Swarm.",
-        "Perform rolling updates and rollbacks for Swarm services.",
-        "Understand Swarm networking and secrets management."
-      ]
-    },
-    {
-      "id": "cp-gen-032",
-      "roadmap_id": "rm-generated",
-      "label": "Nexus",
-      "kind": "lesson",
-      "progress": 0,
-      "locked": true,
-      "position": {
-        "x": 300,
-        "y": 4260
-      },
-      "description": "Explore Nexus Repository Manager, a universal artifact repository that supports various formats like Maven, npm, Docker, and PyPI. Learn to install, configure, and manage repositories for efficient software development and delivery.",
-      "learning_goals": [
-        "Install and set up Nexus Repository Manager.",
-        "Configure different types of repositories (proxy, hosted, group).",
-        "Upload and download artifacts to and from Nexus.",
-        "Integrate Nexus with build tools and CI/CD pipelines."
+        "Write functional components using JSX and pass data via props",
+        "Manage local component state with the useState hook",
+        "Trigger side effects and data fetching with useEffect",
+        "Compose a multi-component page with a clear data-flow hierarchy"
       ]
     }
   ],
@@ -844,10 +393,10 @@
     {
       "id": "ug-001",
       "user_id": "u-001",
-      "xp_total": 2555,
-      "tasks_completed": 27,
+      "xp_total": 2450,
+      "tasks_completed": 12,
       "leaderboard_rank": 2,
-      "current_streak": 1,
+      "current_streak": 24,
       "longest_streak": 31,
       "updated_at": "2026-03-29T12:00:00Z"
     }
@@ -909,7 +458,7 @@
       "rank": 2,
       "name": "Alex Morgan",
       "subtitle": "Advanced Level",
-      "streak": 1,
+      "streak": 24,
       "is_you": true,
       "avatar": "AM",
       "avatar_bg": "#10b981"
@@ -935,244 +484,52 @@
   ],
   "roadmap_edges": [
     {
-      "id": "edge-gen-000",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-000",
-      "target": "cp-gen-001"
+      "id": "e-cp001-cp002",
+      "roadmap_id": "rm-001",
+      "source": "cp-001",
+      "target": "cp-002"
     },
     {
-      "id": "edge-gen-001",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-001",
-      "target": "cp-gen-002"
+      "id": "e-cp002-cp003",
+      "roadmap_id": "rm-001",
+      "source": "cp-002",
+      "target": "cp-003"
     },
     {
-      "id": "edge-gen-002",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-002",
-      "target": "cp-gen-003"
+      "id": "e-cp003-cp004",
+      "roadmap_id": "rm-001",
+      "source": "cp-003",
+      "target": "cp-004"
     },
     {
-      "id": "edge-gen-003",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-003",
-      "target": "cp-gen-007"
+      "id": "e-cp003-cp005",
+      "roadmap_id": "rm-001",
+      "source": "cp-003",
+      "target": "cp-005"
     },
     {
-      "id": "edge-gen-004",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-002",
-      "target": "cp-gen-004"
+      "id": "e-cp004-cp006",
+      "roadmap_id": "rm-001",
+      "source": "cp-004",
+      "target": "cp-006"
     },
     {
-      "id": "edge-gen-005",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-004",
-      "target": "cp-gen-005"
+      "id": "e-cp005-cp006",
+      "roadmap_id": "rm-001",
+      "source": "cp-005",
+      "target": "cp-006"
     },
     {
-      "id": "edge-gen-006",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-005",
-      "target": "cp-gen-006"
+      "id": "e-cp006-cp007",
+      "roadmap_id": "rm-001",
+      "source": "cp-006",
+      "target": "cp-007"
     },
     {
-      "id": "edge-gen-007",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-006",
-      "target": "cp-gen-007"
-    },
-    {
-      "id": "edge-gen-008",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-007",
-      "target": "cp-gen-008"
-    },
-    {
-      "id": "edge-gen-009",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-008",
-      "target": "cp-gen-009"
-    },
-    {
-      "id": "edge-gen-010",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-009",
-      "target": "cp-gen-011"
-    },
-    {
-      "id": "edge-gen-011",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-007",
-      "target": "cp-gen-010"
-    },
-    {
-      "id": "edge-gen-012",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-010",
-      "target": "cp-gen-011"
-    },
-    {
-      "id": "edge-gen-013",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-011",
-      "target": "cp-gen-012"
-    },
-    {
-      "id": "edge-gen-014",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-012",
-      "target": "cp-gen-014"
-    },
-    {
-      "id": "edge-gen-015",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-011",
-      "target": "cp-gen-013"
-    },
-    {
-      "id": "edge-gen-016",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-013",
-      "target": "cp-gen-014"
-    },
-    {
-      "id": "edge-gen-017",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-014",
-      "target": "cp-gen-015"
-    },
-    {
-      "id": "edge-gen-018",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-015",
-      "target": "cp-gen-019"
-    },
-    {
-      "id": "edge-gen-019",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-014",
-      "target": "cp-gen-016"
-    },
-    {
-      "id": "edge-gen-020",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-016",
-      "target": "cp-gen-019"
-    },
-    {
-      "id": "edge-gen-021",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-014",
-      "target": "cp-gen-017"
-    },
-    {
-      "id": "edge-gen-022",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-017",
-      "target": "cp-gen-018"
-    },
-    {
-      "id": "edge-gen-023",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-018",
-      "target": "cp-gen-019"
-    },
-    {
-      "id": "edge-gen-024",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-019",
-      "target": "cp-gen-020"
-    },
-    {
-      "id": "edge-gen-025",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-020",
-      "target": "cp-gen-023"
-    },
-    {
-      "id": "edge-gen-026",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-019",
-      "target": "cp-gen-021"
-    },
-    {
-      "id": "edge-gen-027",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-021",
-      "target": "cp-gen-022"
-    },
-    {
-      "id": "edge-gen-028",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-022",
-      "target": "cp-gen-023"
-    },
-    {
-      "id": "edge-gen-029",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-023",
-      "target": "cp-gen-024"
-    },
-    {
-      "id": "edge-gen-030",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-024",
-      "target": "cp-gen-025"
-    },
-    {
-      "id": "edge-gen-031",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-025",
-      "target": "cp-gen-027"
-    },
-    {
-      "id": "edge-gen-032",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-023",
-      "target": "cp-gen-026"
-    },
-    {
-      "id": "edge-gen-033",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-026",
-      "target": "cp-gen-027"
-    },
-    {
-      "id": "edge-gen-034",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-027",
-      "target": "cp-gen-028"
-    },
-    {
-      "id": "edge-gen-035",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-028",
-      "target": "cp-gen-030"
-    },
-    {
-      "id": "edge-gen-036",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-027",
-      "target": "cp-gen-029"
-    },
-    {
-      "id": "edge-gen-037",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-029",
-      "target": "cp-gen-030"
-    },
-    {
-      "id": "edge-gen-038",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-030",
-      "target": "cp-gen-031"
-    },
-    {
-      "id": "edge-gen-039",
-      "roadmap_id": "rm-generated",
-      "source": "cp-gen-031",
-      "target": "cp-gen-032"
+      "id": "e-cp007-cp008",
+      "roadmap_id": "rm-001",
+      "source": "cp-007",
+      "target": "cp-008"
     }
   ],
   "quiz_questions": {
@@ -1238,1261 +595,5 @@
         "explanation": "Cascade Layers (@layers) allow you to manage style priority without relying on high-specificity selectors or !important."
       }
     ]
-  },
-  "user_subtopic_progress": [
-    {
-      "task_id": "subtopic__cp-gen-000__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-000",
-      "subtopic": "Understand basic programming syntax and constructs.",
-      "status": "completed"
-    },
-    {
-      "task_id": "subtopic__cp-gen-000__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-000",
-      "subtopic": "Write simple scripts to automate repetitive tasks.",
-      "status": "completed"
-    },
-    {
-      "task_id": "subtopic__cp-gen-000__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-000",
-      "subtopic": "Utilize variables, loops, and functions effectively.",
-      "status": "completed"
-    },
-    {
-      "task_id": "subtopic__cp-gen-000__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-000",
-      "subtopic": "Interpret and debug basic programming errors.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-001__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-001",
-      "subtopic": "Perform essential command-line interface (CLI) operations.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-001__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-001",
-      "subtopic": "Manage software packages using APT.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-001__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-001",
-      "subtopic": "Configure network interfaces and troubleshoot connectivity.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-001__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-001",
-      "subtopic": "Understand user and group management, along with file permissions.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-002__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-002",
-      "subtopic": "Demonstrate basic programming syntax and problem-solving skills.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-002__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-002",
-      "subtopic": "Correctly answer questions on Ubuntu/Debian package management.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-002__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-002",
-      "subtopic": "Identify and apply common Linux commands for system administration.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-002__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-002",
-      "subtopic": "Explain the purpose and function of user/group permissions on Linux.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-003__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-003",
-      "subtopic": "Install and perform basic configuration of a FreeBSD system.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-003__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-003",
-      "subtopic": "Manage system services using rc.d scripts.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-003__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-003",
-      "subtopic": "Understand the FreeBSD Ports and Packages system for software installation.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-003__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-003",
-      "subtopic": "Differentiate key architectural and operational aspects of FreeBSD from Linux.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-004__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-004",
-      "subtopic": "Install and configure a NetBSD system for basic operation.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-004__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-004",
-      "subtopic": "Utilize pkgsrc for managing software packages.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-004__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-004",
-      "subtopic": "Understand NetBSD's system layout and configuration files.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-004__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-004",
-      "subtopic": "Identify the unique advantages and use cases of NetBSD.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-005__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-005",
-      "subtopic": "Explain the role and benefits of a forward proxy in network architecture.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-005__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-005",
-      "subtopic": "Configure a simple forward proxy server (e.g., Squid).",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-005__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-005",
-      "subtopic": "Understand how proxies contribute to network security and access control.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-005__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-005",
-      "subtopic": "Troubleshoot common issues related to forward proxy configurations.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-006__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-006",
-      "subtopic": "Install and set up an Apache Tomcat server.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-006__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-006",
-      "subtopic": "Deploy web applications (WAR files) to Tomcat.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-006__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-006",
-      "subtopic": "Configure Tomcat connectors and server settings.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-006__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-006",
-      "subtopic": "Monitor Tomcat logs and perform basic troubleshooting.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-007__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-007",
-      "subtopic": "Answer questions distinguishing features and commands of FreeBSD and NetBSD.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-007__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-007",
-      "subtopic": "Identify appropriate scenarios and configurations for a forward proxy.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-007__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-007",
-      "subtopic": "Demonstrate knowledge of deploying and troubleshooting applications on Tomcat.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-007__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-007",
-      "subtopic": "Explain the security and performance implications of these technologies.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-008__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-008",
-      "subtopic": "Install and configure IIS on a Windows Server.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-008__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-008",
-      "subtopic": "Host multiple websites and web applications on IIS.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-008__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-008",
-      "subtopic": "Manage application pools and worker processes.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-008__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-008",
-      "subtopic": "Understand basic IIS security features and URL rewriting.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-009__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-009",
-      "subtopic": "Explain the principles and benefits of caching.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-009__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-009",
-      "subtopic": "Implement a caching server (e.g., Redis, Varnish) in a web application stack.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-009__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-009",
-      "subtopic": "Monitor cache hit/miss ratios and performance metrics.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-009__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-009",
-      "subtopic": "Understand cache invalidation strategies and their challenges.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-010__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-010",
-      "subtopic": "Explain the different types of load balancing and their use cases.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-010__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-010",
-      "subtopic": "Configure a software or hardware load balancer (e.g., Nginx, HAProxy).",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-010__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-010",
-      "subtopic": "Implement health checks for backend servers.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-010__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-010",
-      "subtopic": "Troubleshoot traffic distribution and server availability issues.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-011__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-011",
-      "subtopic": "Deploy a multi-tier web application stack from scratch.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-011__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-011",
-      "subtopic": "Configure a load balancer to distribute traffic efficiently.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-011__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-011",
-      "subtopic": "Integrate a caching server to improve application performance.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-011__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-011",
-      "subtopic": "Demonstrate basic server hardening and monitoring.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-012__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-012",
-      "subtopic": "Navigate the Google Cloud Console and use gcloud CLI.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-012__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-012",
-      "subtopic": "Provision and manage virtual machines (Compute Engine).",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-012__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-012",
-      "subtopic": "Configure basic networking resources (VPC, firewalls).",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-012__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-012",
-      "subtopic": "Understand and apply IAM roles for secure access control.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-013__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-013",
-      "subtopic": "Create and manage Droplets and SSH into them.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-013__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-013",
-      "subtopic": "Deploy a web application or service on DigitalOcean.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-013__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-013",
-      "subtopic": "Configure network firewalls and security groups.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-013__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-013",
-      "subtopic": "Understand DigitalOcean's storage and managed database offerings.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-014__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-014",
-      "subtopic": "Differentiate core services and pricing models between GCP and DigitalOcean.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-014__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-014",
-      "subtopic": "Answer questions regarding VM provisioning and management on both platforms.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-014__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-014",
-      "subtopic": "Explain fundamental networking and firewall concepts in a multi-cloud context.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-014__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-014",
-      "subtopic": "Identify best practices for identity and access management on each provider.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-015__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-015",
-      "subtopic": "Provision and manage virtual servers on Hetzner Cloud.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-015__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-015",
-      "subtopic": "Configure networking and firewall rules within Hetzner's ecosystem.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-015__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-015",
-      "subtopic": "Understand Hetzner's pricing structure and resource allocation.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-015__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-015",
-      "subtopic": "Utilize Hetzner's panel for server management and monitoring.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-016__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-016",
-      "subtopic": "Successfully deploy an application to Heroku using Git.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-016__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-016",
-      "subtopic": "Understand Heroku Dynos and the execution environment.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-016__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-016",
-      "subtopic": "Manage application configuration through environment variables.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-016__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-016",
-      "subtopic": "Scale Heroku applications and integrate with add-on services.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-017__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-017",
-      "subtopic": "Provision and set up a Virtual Private Server (VPS) on Contabo.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-017__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-017",
-      "subtopic": "Access and utilize the Contabo customer control panel.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-017__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-017",
-      "subtopic": "Configure server resources and operating system installations.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-017__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-017",
-      "subtopic": "Understand Contabo's service tiers and hardware specifications.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-018__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-018",
-      "subtopic": "Use FTP and SFTP clients to transfer files effectively.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-018__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-018",
-      "subtopic": "Configure an FTP/SFTP server for secure file sharing.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-018__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-018",
-      "subtopic": "Understand the security implications and best practices for both protocols.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-018__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-018",
-      "subtopic": "Troubleshoot common connection and authentication issues with FTP/SFTP.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-019__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-019",
-      "subtopic": "Compare and contrast the offerings of Hetzner, Heroku, and Contabo.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-019__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-019",
-      "subtopic": "Answer questions about deploying and managing applications on Heroku.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-019__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-019",
-      "subtopic": "Explain the security differences and best practices for FTP vs. SFTP.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-019__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-019",
-      "subtopic": "Troubleshoot common issues related to these providers and protocols.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-020__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-020",
-      "subtopic": "Explain the fundamental concepts of HTTP requests and responses.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-020__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-020",
-      "subtopic": "Identify common HTTP methods (GET, POST, PUT, DELETE) and their uses.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-020__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-020",
-      "subtopic": "Interpret HTTP status codes and their meanings.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-020__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-020",
-      "subtopic": "Analyze HTTP headers and their role in web communication.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-021__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-021",
-      "subtopic": "Define whitelisting and its application in security contexts.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-021__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-021",
-      "subtopic": "Explain greylisting and its effectiveness in combating spam.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-021__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-021",
-      "subtopic": "Implement whitelisting/greylisting for email servers or network access.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-021__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-021",
-      "subtopic": "Identify the pros and cons of each technique in different scenarios.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-022__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-022",
-      "subtopic": "Explain the functionality and benefits of IMAP for email access.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-022__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-022",
-      "subtopic": "Configure an IMAP client to connect to an email server.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-022__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-022",
-      "subtopic": "Understand how IMAP supports server-side email management (folders, flags).",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-022__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-022",
-      "subtopic": "Differentiate between IMAP and POP3 protocols and their use cases.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-023__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-023",
-      "subtopic": "Set up and configure a complete email server (SMTP, IMAP).",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-023__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-023",
-      "subtopic": "Implement and test email authentication and spam filtering using whitelisting.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-023__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-023",
-      "subtopic": "Demonstrate secure email communication practices.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-023__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-023",
-      "subtopic": "Troubleshoot common issues related to email delivery and access.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-024__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-024",
-      "subtopic": "Explain the purpose and mechanism of DKIM in email authentication.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-024__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-024",
-      "subtopic": "Generate and configure DKIM records in DNS.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-024__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-024",
-      "subtopic": "Verify DKIM signatures for incoming and outgoing emails.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-024__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-024",
-      "subtopic": "Troubleshoot common DKIM configuration and validation issues.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-025__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-025",
-      "subtopic": "List and describe all seven layers of the OSI model.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-025__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-025",
-      "subtopic": "Explain the primary functions performed at each OSI layer.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-025__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-025",
-      "subtopic": "Map common network protocols and devices to their respective OSI layers.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-025__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-025",
-      "subtopic": "Use the OSI model as a framework for troubleshooting network issues.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-026__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-026",
-      "subtopic": "Deploy a static website or single-page application to Netlify.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-026__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-026",
-      "subtopic": "Configure continuous deployment from a Git repository.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-026__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-026",
-      "subtopic": "Implement Netlify Functions for serverless backend logic.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-026__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-026",
-      "subtopic": "Set up custom domains and HTTPS for Netlify hosted sites.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-027__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-027",
-      "subtopic": "Answer questions about DKIM configuration and its role in email security.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-027__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-027",
-      "subtopic": "Explain the functions of each layer within the OSI model.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-027__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-027",
-      "subtopic": "Demonstrate knowledge of deploying and managing projects on Netlify.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-027__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-027",
-      "subtopic": "Identify how these concepts contribute to secure and performant cloud infrastructure.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-028__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-028",
-      "subtopic": "Explain the principles of secure secret management (e.g., least privilege, rotation).",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-028__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-028",
-      "subtopic": "Utilize a secret management solution (e.g., HashiCorp Vault, cloud-native services).",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-028__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-028",
-      "subtopic": "Implement secure practices for injecting secrets into applications and deployments.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-028__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-028",
-      "subtopic": "Understand the lifecycle of secrets and how to manage their rotation.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-029__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-029",
-      "subtopic": "Create and customize Grafana dashboards for infrastructure monitoring.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-029__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-029",
-      "subtopic": "Connect Grafana to different data sources (e.g., Prometheus, Loki, CloudWatch).",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-029__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-029",
-      "subtopic": "Design effective visualizations using various panel types.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-029__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-029",
-      "subtopic": "Set up alerting rules and notification channels in Grafana.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-030__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-030",
-      "subtopic": "Answer questions on secure handling and lifecycle management of sensitive data.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-030__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-030",
-      "subtopic": "Explain core features and use cases of Grafana for infrastructure monitoring.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-030__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-030",
-      "subtopic": "Identify best practices for designing effective Grafana dashboards.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-030__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-030",
-      "subtopic": "Troubleshoot common issues in secret access or Grafana data source connectivity.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-031__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-031",
-      "subtopic": "Initialize and manage a Docker Swarm cluster.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-031__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-031",
-      "subtopic": "Deploy and scale containerized services using Docker Swarm.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-031__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-031",
-      "subtopic": "Perform rolling updates and rollbacks for Swarm services.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-031__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-031",
-      "subtopic": "Understand Swarm networking and secrets management.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-032__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-032",
-      "subtopic": "Install and set up Nexus Repository Manager.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-032__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-032",
-      "subtopic": "Configure different types of repositories (proxy, hosted, group).",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-032__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-032",
-      "subtopic": "Upload and download artifacts to and from Nexus.",
-      "status": "not_started"
-    },
-    {
-      "task_id": "subtopic__cp-gen-032__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-032",
-      "subtopic": "Integrate Nexus with build tools and CI/CD pipelines.",
-      "status": "not_started"
-    }
-  ],
-  "task_resources_cache": [
-    {
-      "concept": "Learn a Programming Language",
-      "subtopic": "Understand basic programming syntax and constructs.",
-      "result": {
-        "metadata": {
-          "concept": "Learn a Programming Language",
-          "subtopic": "Understand basic programming syntax and constructs.",
-          "preference": "Interactive-Heavy",
-          "version": "V3-intelligent-hybrid",
-          "processing_time_seconds": 41.62,
-          "llm_enhanced": true
-        },
-        "learning_tasks": [
-          {
-            "title": "Learn To Code",
-            "description": "Learn Understand basic programming syntax and constructs.: Some resources focus onprogramming, semantics ,orcomputer science theory \u2013 in other words, how to us",
-            "url": "http://ashleymcnamara.github.io/learn_to_code/",
-            "type": "Learning",
-            "curated_by": "rule-based authority ranking"
-          },
-          {
-            "title": "Free Resources To Learn Coding",
-            "description": "Learn Understand basic programming syntax and constructs.: ... path you should goasadeveloper,andwhichprogramminglanguagetolearn, you can check StackOverflow's",
-            "url": "https://www.megaleechers.com/free-resources-to-learn-coding/",
-            "type": "Learning",
-            "curated_by": "rule-based authority ranking"
-          },
-          {
-            "title": "HTML5 Game Devs Forum - HTML5GameDevs.com",
-            "description": "Learn Understand basic programming syntax and constructs.: The advice I give to most newcomers is: DONT dive right intodevelopingacomplex game! Firstlearnhow t",
-            "url": "https://www.html5gamedevs.com/topic/368-learning-to-write-good-javascript-resources-for-beginners/",
-            "type": "Learning",
-            "curated_by": "rule-based authority ranking"
-          }
-        ],
-        "coding_tasks": [
-          {
-            "title": "codecademy.com/learn/learn-how-to-code",
-            "description": "Learn Understand basic programming syntax and constructs.: BasicsofProgrammingII -LearnHow to Code | Codecademy.",
-            "url": "https://www.codecademy.com/learn/learn-how-to-code",
-            "type": "Coding",
-            "curated_by": "LLM-intelligent (anti-hallucination)"
-          },
-          {
-            "title": "Python Exercises, Practice, Challenges [410 ... - PYnative",
-            "description": "Learn Understand basic programming syntax and constructs.: Jan 7, 2026 \u00b7410+ Pythoncodingexercises with solutions for beginners to advanced developers.Practice",
-            "url": "https://pynative.com/python-exercises-with-solutions/",
-            "type": "Coding",
-            "curated_by": "LLM-intelligent (anti-hallucination)"
-          }
-        ],
-        "total_resources_found": 17
-      },
-      "cached_at": "2026-04-06T07:40:34.279308"
-    },
-    {
-      "concept": "Learn a Programming Language",
-      "subtopic": "Write simple scripts to automate repetitive tasks.",
-      "result": {
-        "metadata": {
-          "concept": "Learn a Programming Language",
-          "subtopic": "Write simple scripts to automate repetitive tasks.",
-          "preference": "Interactive-Heavy",
-          "version": "V3-intelligent-hybrid",
-          "processing_time_seconds": 35.77,
-          "llm_enhanced": true
-        },
-        "learning_tasks": [
-          {
-            "title": "Python Automation Scripts: A Beginner's Guide to Automating Daily Tasks",
-            "description": "Learn Write simple scripts to automate repetitive tasks.: Python AutomationScripts:ABeginner's Guide to Automating DailyTasksHave you ever spent hours doing t",
-            "url": "https://dev.to/lufumeiying/python-automation-scripts-a-beginners-guide-to-automating-daily-tasks-4fdf",
-            "type": "Learning",
-            "curated_by": "LLM-intelligent (anti-hallucination)"
-          },
-          {
-            "title": "Dynamic scripting with JavaScript - Learn web development | MDN",
-            "description": "Learn Write simple scripts to automate repetitive tasks.: Dynamic scripting with JavaScript Overview: Core learning modules Next JavaScript is a huge topic, w",
-            "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting",
-            "type": "Learning",
-            "curated_by": "LLM-intelligent (anti-hallucination)"
-          },
-          {
-            "title": "Why You Should Learn Automation: A Guide to Saving Time as a Developer",
-            "description": "Learn Write simple scripts to automate repetitive tasks.: Learnthe Basics of Shell Scripting: Start by writingsimplescriptsforrepetitivetasks.Experiment with ",
-            "url": "https://dev.to/arjun98k/why-you-should-learn-automation-a-guide-to-saving-time-as-a-developer-438n",
-            "type": "Learning",
-            "curated_by": "LLM-intelligent (anti-hallucination)"
-          }
-        ],
-        "coding_tasks": [
-          {
-            "title": "How to Build a Bot and Automate your Everyday Work",
-            "description": "Learn Write simple scripts to automate repetitive tasks.: This makes automation a key skill to acquire. A small group of skilled automation engineers and doma",
-            "url": "https://www.freecodecamp.org/news/building-bots/",
-            "type": "Coding",
-            "curated_by": "rule-based authority ranking"
-          },
-          {
-            "title": "2,500+ Python Practice Challenges // Edabit",
-            "description": "Learn Write simple scripts to automate repetitive tasks.: PracticePythoncodingwith fun, bite-sized exercises. Earn XP, unlock achievements and level up. It's ",
-            "url": "https://edabit.com/challenges/python3",
-            "type": "Coding",
-            "curated_by": "rule-based authority ranking"
-          }
-        ],
-        "total_resources_found": 12
-      },
-      "cached_at": "2026-04-06T07:41:10.101981"
-    },
-    {
-      "concept": "Learn a Programming Language",
-      "subtopic": "Utilize variables, loops, and functions effectively.",
-      "result": {
-        "metadata": {
-          "concept": "Learn a Programming Language",
-          "subtopic": "Utilize variables, loops, and functions effectively.",
-          "preference": "Interactive-Heavy",
-          "version": "V3-intelligent-hybrid",
-          "processing_time_seconds": 35.23,
-          "llm_enhanced": true
-        },
-        "learning_tasks": [
-          {
-            "title": "Functional programming - Wikipedia",
-            "description": "Learn Utilize variables, loops, and functions effectively.: ...functionalprogramminglanguage, Lisp , was developed in the late 1950s for the IBM 700/7000 series",
-            "url": "https://en.wikipedia.org/wiki/Functional_programming",
-            "type": "Learning",
-            "curated_by": "rule-based authority ranking"
-          },
-          {
-            "title": "JavaScript - Wikipedia",
-            "description": "Learn Utilize variables, loops, and functions effectively.: There wasadesire in the flourishing web development scene to remove this limitation, so in 1995, Net",
-            "url": "https://en.wikipedia.org/wiki/JavaScript",
-            "type": "Learning",
-            "curated_by": "rule-based authority ranking"
-          },
-          {
-            "title": "\"Mastering Programming Efficiency: 12 Proven Tips To",
-            "description": "Learn Utilize variables, loops, and functions effectively.: Are you interested in web development, data analysis, mobile app development,orsomething else? Diffe",
-            "url": "https://dig4dirt.com/programmer/how-to-learn-programming-faster-12-tips-and-tricks/",
-            "type": "Learning",
-            "curated_by": "rule-based authority ranking"
-          }
-        ],
-        "coding_tasks": [
-          {
-            "title": "Introduction to Programming - W3Schools.com",
-            "description": "Learn Utilize variables, loops, and functions effectively.: Well organized and easy to understand Web building tutorials with lots of examples of how to use HTM",
-            "url": "https://www.w3schools.com/programming/index.php",
-            "type": "Coding",
-            "curated_by": "rule-based authority ranking"
-          },
-          {
-            "title": "What is Programming? - W3Schools.com",
-            "description": "Learn Utilize variables, loops, and functions effectively.: Aprogramminglanguageis how we write code, what keywords we use, to tell the computer what to do. Dif",
-            "url": "https://www.w3schools.com/programming/prog_programming.php",
-            "type": "Coding",
-            "curated_by": "rule-based authority ranking"
-          }
-        ],
-        "total_resources_found": 13
-      },
-      "cached_at": "2026-04-06T07:41:45.390877"
-    },
-    {
-      "concept": "Learn a Programming Language",
-      "subtopic": "Interpret and debug basic programming errors.",
-      "result": {
-        "metadata": {
-          "concept": "Learn a Programming Language",
-          "subtopic": "Interpret and debug basic programming errors.",
-          "preference": "Interactive-Heavy",
-          "version": "V3-intelligent-hybrid",
-          "processing_time_seconds": 47.2,
-          "llm_enhanced": true
-        },
-        "learning_tasks": [
-          {
-            "title": "Overview of DevTools - Microsoft Edge Developer documentation",
-            "description": "Learn Interpret and debug basic programming errors.: For example, you can use the Browser UIlanguagesetting to use the samelanguagein DevTools that is us",
-            "url": "https://learn.microsoft.com/en-us/microsoft-edge/devtools/overview",
-            "type": "Learning",
-            "curated_by": "rule-based authority ranking"
-          },
-          {
-            "title": "JavaScript - MDN Web Docs",
-            "description": "Learn Interpret and debug basic programming errors.: JavaScript (JS) is a lightweight interpreted (orjust-in-time compiled)programminglanguagewith first-",
-            "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
-            "type": "Learning",
-            "curated_by": "rule-based authority ranking"
-          },
-          {
-            "title": "Debugging 101: How to Find and Fix Programming Errors",
-            "description": "Learn Interpret and debug basic programming errors.: Debugging is the process of identifying and fixingerrorsorbugs in your code. In this blog post, we'l",
-            "url": "https://dev.to/saloman_james/debugging-101-how-to-find-and-fix-programming-errors-1d14",
-            "type": "Learning",
-            "curated_by": "rule-based authority ranking"
-          }
-        ],
-        "coding_tasks": [
-          {
-            "title": "Introduction to Programming - W3Schools.com",
-            "description": "Learn Interpret and debug basic programming errors.: To understandprogramming, we need to understand thebasicunderlying concepts. The following pages exp",
-            "url": "https://www.w3schools.com/programming/index.php",
-            "type": "Coding",
-            "curated_by": "rule-based authority ranking"
-          },
-          {
-            "title": "What is Debugging? How to Debug Your Code for Beginners",
-            "description": "Learn Interpret and debug basic programming errors.: How to Use Console.log toDebugCode Logging your code in the console is the mostbasicway of debugging",
-            "url": "https://www.freecodecamp.org/news/what-is-debugging-how-to-debug-code/",
-            "type": "Coding",
-            "curated_by": "rule-based authority ranking"
-          }
-        ],
-        "total_resources_found": 11
-      },
-      "cached_at": "2026-04-06T07:42:32.628293"
-    }
-  ],
-  "user_resource_progress": [
-    {
-      "task_id": "resource__cp-gen-000__0__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-000",
-      "subtopic_idx": 0,
-      "status": "completed"
-    },
-    {
-      "task_id": "resource__cp-gen-000__0__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-000",
-      "subtopic_idx": 0,
-      "status": "completed"
-    },
-    {
-      "task_id": "resource__cp-gen-000__0__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-000",
-      "subtopic_idx": 0,
-      "status": "completed"
-    },
-    {
-      "task_id": "resource__cp-gen-000__0__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-000",
-      "subtopic_idx": 0,
-      "status": "completed"
-    },
-    {
-      "task_id": "resource__cp-gen-000__0__4",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-000",
-      "subtopic_idx": 0,
-      "status": "completed"
-    },
-    {
-      "task_id": "resource__cp-gen-000__1__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-000",
-      "subtopic_idx": 1,
-      "status": "completed"
-    },
-    {
-      "task_id": "resource__cp-gen-000__1__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-000",
-      "subtopic_idx": 1,
-      "status": "completed"
-    },
-    {
-      "task_id": "resource__cp-gen-000__1__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-000",
-      "subtopic_idx": 1,
-      "status": "completed"
-    },
-    {
-      "task_id": "resource__cp-gen-000__1__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-000",
-      "subtopic_idx": 1,
-      "status": "completed"
-    },
-    {
-      "task_id": "resource__cp-gen-000__1__4",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-000",
-      "subtopic_idx": 1,
-      "status": "completed"
-    },
-    {
-      "task_id": "resource__cp-gen-000__2__0",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-000",
-      "subtopic_idx": 2,
-      "status": "completed"
-    },
-    {
-      "task_id": "resource__cp-gen-000__2__1",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-000",
-      "subtopic_idx": 2,
-      "status": "completed"
-    },
-    {
-      "task_id": "resource__cp-gen-000__2__2",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-000",
-      "subtopic_idx": 2,
-      "status": "completed"
-    },
-    {
-      "task_id": "resource__cp-gen-000__2__3",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-000",
-      "subtopic_idx": 2,
-      "status": "completed"
-    },
-    {
-      "task_id": "resource__cp-gen-000__2__4",
-      "user_id": "u-001",
-      "checkpoint_id": "cp-gen-000",
-      "subtopic_idx": 2,
-      "status": "completed"
-    }
-  ],
-  "daily_done": true
+  }
 }
