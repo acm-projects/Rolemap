@@ -12,50 +12,52 @@ export default function ResumeUpload() {
   const router = useRouter();
   const { data: session } = useSession();
   const [dragging, setDragging] = useState(false);
-  const [file, setFile] = useState<File | null>(null);
+  const [fileName, setFileName] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Skip typing animation if page was already visited (e.g. returning from GitHub OAuth)
-  const [animationDone] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return sessionStorage.getItem('resume_visited') === '1';
-    }
-    return false;
-  });
-  useEffect(() => { sessionStorage.setItem('resume_visited', '1'); }, []);
+  const [animationDone, setAnimationDone] = useState(false);
+  useEffect(() => {
+    if (sessionStorage.getItem('resume_visited') === '1') setAnimationDone(true);
+    sessionStorage.setItem('resume_visited', '1');
+    // Restore uploaded resume name after OAuth redirect
+    const saved = sessionStorage.getItem('resume_uploaded');
+    if (saved) setFileName(saved);
+  }, []);
 
   // GitHub is verified if the session was created via GitHub OAuth
   const githubVerified = !!(session as { provider?: string } | null)?.provider?.includes?.('github')
     || !!(session?.user as { githubUsername?: string } | undefined)?.githubUsername;
 
-  const canContinue = !!file || githubVerified;
+  const canContinue = !!fileName || githubVerified;
 
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setDragging(false);
-    const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile) setFile(droppedFile);
-  };
-
-  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) setFile(e.target.files[0]);
-  };
-
-  const uploadResumeIfPresent = async () => {
-    if (!file) return;
+  // Upload immediately when a file is selected so it survives OAuth redirects
+  const uploadFile = async (file: File) => {
+    setFileName(file.name);
     setUploading(true);
     try {
       await api.uploadResume(file);
+      sessionStorage.setItem('resume_uploaded', file.name);
     } catch {
-      // Continue flow even if resume upload fails.
+      // Still show the file name even if upload fails
     } finally {
       setUploading(false);
     }
   };
 
-  const handleContinue = async () => {
-    await uploadResumeIfPresent();
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragging(false);
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile) uploadFile(droppedFile);
+  };
+
+  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.[0]) uploadFile(e.target.files[0]);
+  };
+
+  const handleContinue = () => {
     router.push("/OnBoarding/Generate");
   };
 
@@ -97,7 +99,7 @@ export default function ResumeUpload() {
               pixel-border cursor-pointer flex flex-col items-center justify-center gap-3 p-6 transition-all duration-100
               ${dragging
                 ? "border-[#4e8888] bg-[#e8f4f4]"
-                : file
+                : fileName
                   ? "border-t-[#7ab3b3] border-l-[#7ab3b3] border-r-[#4e8888] border-b-[#4e8888] bg-[#e8f4f4]"
                   : "border-t-[#d4e8e8] border-l-[#d4e8e8] border-r-[#7ab3b3] border-b-[#7ab3b3] bg-white hover:bg-[#f0f8f8]"
               }
@@ -106,21 +108,21 @@ export default function ResumeUpload() {
             <input ref={inputRef} type="file" accept=".pdf,.docx" className="hidden" onChange={handleFile} />
             <div
               className={`w-14 h-14 flex items-center justify-center pixel-border ${
-                file
+                fileName
                   ? "border-t-[#7ab3b3] border-l-[#7ab3b3] border-r-[#4e8888] border-b-[#4e8888] bg-[#e8f4f4] text-[#2d5050]"
                   : "border-t-[#d4e8e8] border-l-[#d4e8e8] border-r-[#7ab3b3] border-b-[#7ab3b3] bg-white text-[#4e8888]"
               }`}
             >
-              {file ? (
+              {fileName ? (
                 <span className="text-2xl font-jersey text-[#4e8888]">✓</span>
               ) : (
                 <Upload size={22} className="text-[#4e8888]" />
               )}
             </div>
-            {file ? (
+            {fileName ? (
               <>
-                <span className="text-base text-[#2d5050] font-jersey text-center">{file.name}</span>
-                <span className="text-xs text-[#4e8888] font-jersey">Click to replace</span>
+                <span className="text-base text-[#2d5050] font-jersey text-center">{fileName}</span>
+                <span className="text-xs text-[#4e8888] font-jersey">{uploading ? 'Uploading...' : 'Click to replace'}</span>
               </>
             ) : (
               <>

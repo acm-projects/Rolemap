@@ -25,11 +25,18 @@ export interface DashboardUser {
   current_streak: number;
 }
 
+export interface MinimapData {
+  nodes: { x: number; y: number }[];
+  edges: { a: number; b: number; done: boolean }[];
+  done_nodes: number[];
+}
+
 export interface DashboardRoadmap {
   id: string;
   title: string;
   progress_percentage: number;
   status: string;
+  minimap?: MinimapData;
 }
 
 export interface LeaderboardEntry {
@@ -60,6 +67,7 @@ export interface Checkpoint {
   position: { x: number; y: number };
   description: string;
   learning_goals: string[];
+  subtopic_completion: boolean[];
 }
 
 export interface RoadmapEdge {
@@ -79,9 +87,12 @@ export interface Task {
   checkpoint_id: string | null;
   user_id: string;
   title: string;
-  tag: string;
+  tag: string;        // "Learning" | "Coding"
   status: string;
   description: string;
+  url: string;
+  type: string;       // "Learning" | "Coding"
+  objectives: string[];
 }
 
 export interface Achievement {
@@ -96,6 +107,25 @@ export interface Achievement {
 export interface TasksResponse {
   tasks: Task[];
   achievements: Achievement[];
+  current_subtopic: string | null;
+  current_checkpoint_label: string | null;
+  subtopic_index: number;
+  total_subtopics: number;
+}
+
+export interface TaskResource {
+  title: string;
+  description: string;
+  url: string;
+  type: string; // "Learning" | "Coding"
+  curated_by: string;
+}
+
+export interface TaskResourcesResponse {
+  metadata: Record<string, unknown>;
+  learning_tasks: TaskResource[];
+  coding_tasks: TaskResource[];
+  total_resources_found: number;
 }
 
 export interface QuizQuestion {
@@ -133,6 +163,24 @@ export const api = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status }),
     }),
+
+  advanceTasks: () =>
+    apiFetch<{ ok: boolean }>("/api/v1/tasks/advance", { method: "POST" }),
+
+  taskResources: (concept: string, subtopic: string, job?: string) =>
+    apiFetch<TaskResourcesResponse>(
+      `/api/v1/tasks/resources?concept=${encodeURIComponent(concept)}&subtopic=${encodeURIComponent(subtopic)}${job ? `&job=${encodeURIComponent(job)}` : ''}`
+    ),
+
+  submitQuiz: (checkpointId: string, score: number, total: number) =>
+    apiFetch<{ passed: boolean; score: number; total: number }>(
+      `/api/v1/quiz/${checkpointId}/submit`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ score, total }),
+      }
+    ),
 
   quiz: (checkpointId: string) =>
     apiFetch<QuizResponse>(`/api/v1/quiz/${checkpointId}`),

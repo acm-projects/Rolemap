@@ -23,6 +23,9 @@ export default function TypewriterText({
   const [currentIndex, setCurrentIndex] = useState(startComplete ? text.length + 1 : 0);
   const [isComplete, setIsComplete] = useState(startComplete);
   const [isSkipped, setIsSkipped] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
     if (startComplete) return;
@@ -66,8 +69,9 @@ export default function TypewriterText({
     <span
       className={`font-jersey ${className}`}
       onClick={handleClick}
+      suppressHydrationWarning
       style={{
-        cursor: skipOnClick && !isComplete ? "pointer" : "default",
+        cursor: mounted && skipOnClick && !isComplete ? "pointer" : "default",
       }}
     >
       {displayedText}

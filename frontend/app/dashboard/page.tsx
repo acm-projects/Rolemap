@@ -7,34 +7,6 @@ import fire from '../../icons/fire.png';
 import { useRouter } from 'next/navigation';
 import { api, type DashboardResponse, type DashboardRoadmap } from '@/lib/api';
 
-// Static minimap shape data (decorative only — progress/status come from API)
-const ROADMAP_SHAPES: Record<string, {
-  nodes: { x: number; y: number }[];
-  edges: { a: number; b: number; done: boolean }[];
-  doneNodes: number[];
-}> = {
-  'rm-001': {
-    nodes: [{ x: 15, y: 50 }, { x: 38, y: 50 }, { x: 60, y: 25 }, { x: 60, y: 72 }, { x: 83, y: 50 }],
-    edges: [{ a: 0, b: 1, done: true }, { a: 1, b: 2, done: true }, { a: 1, b: 3, done: false }, { a: 2, b: 4, done: false }, { a: 3, b: 4, done: false }],
-    doneNodes: [0, 1, 2],
-  },
-  'rm-002': {
-    nodes: [{ x: 15, y: 50 }, { x: 40, y: 25 }, { x: 40, y: 72 }, { x: 65, y: 50 }, { x: 85, y: 50 }],
-    edges: [{ a: 0, b: 1, done: true }, { a: 0, b: 2, done: false }, { a: 1, b: 3, done: false }, { a: 2, b: 3, done: false }, { a: 3, b: 4, done: false }],
-    doneNodes: [0],
-  },
-  'rm-003': {
-    nodes: [{ x: 18, y: 50 }, { x: 45, y: 25 }, { x: 45, y: 75 }, { x: 78, y: 50 }],
-    edges: [{ a: 0, b: 1, done: false }, { a: 0, b: 2, done: false }, { a: 1, b: 3, done: false }, { a: 2, b: 3, done: false }],
-    doneNodes: [],
-  },
-  'rm-004': {
-    nodes: [{ x: 12, y: 50 }, { x: 38, y: 50 }, { x: 62, y: 25 }, { x: 62, y: 72 }, { x: 86, y: 50 }],
-    edges: [{ a: 0, b: 1, done: true }, { a: 1, b: 2, done: true }, { a: 1, b: 3, done: false }, { a: 2, b: 4, done: false }, { a: 3, b: 4, done: false }],
-    doneNodes: [0, 1, 2],
-  },
-};
-
 function RoadmapMinimap({
   nodes,
   edges,
@@ -233,8 +205,15 @@ export default function Dashboard() {
               </div>
 
               <div className="grid grid-cols-2 gap-3 flex-1 min-h-0">
-                {roadmaps.map((rm: DashboardRoadmap) => {
-                  const shape = ROADMAP_SHAPES[rm.id] ?? ROADMAP_SHAPES['rm-001'];
+                {roadmaps.length === 0 ? (
+                  <div className="col-span-2 flex flex-col items-center justify-center text-center py-8">
+                    <p className="text-sm text-slate-400 mb-2">No roadmaps yet</p>
+                    <a href="/OnBoarding/Major" className="text-xs font-semibold text-[#4a7c7c] bg-[#4a7c7c]/10 hover:bg-[#4a7c7c]/20 px-4 py-1.5 rounded-xl transition-colors">
+                      Complete onboarding to generate your roadmap
+                    </a>
+                  </div>
+                ) : roadmaps.map((rm: DashboardRoadmap) => {
+                  const minimap = rm.minimap ?? { nodes: [], edges: [], done_nodes: [] };
                   const active = rm.status === 'active';
                   return (
                     <a key={rm.id} href="/map"
@@ -246,7 +225,7 @@ export default function Dashboard() {
                             Active
                           </span>
                         )}
-                        <RoadmapMinimap nodes={shape.nodes} edges={shape.edges} doneNodes={shape.doneNodes} active={active} />
+                        <RoadmapMinimap nodes={minimap.nodes} edges={minimap.edges} doneNodes={minimap.done_nodes} active={active} />
                       </div>
                       <div className="px-4 py-3 bg-white border-t border-slate-100">
                         <div className="flex items-center justify-between mb-1.5">
