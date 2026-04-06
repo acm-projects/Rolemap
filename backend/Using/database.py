@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 from neo4j import GraphDatabase, Driver, Session
 
 # Load environment variables
-load_dotenv(Path(__file__).parent / ".env")
+load_dotenv(Path(__file__).parent.parent / ".env")
 
 
 class Neo4jDriver:

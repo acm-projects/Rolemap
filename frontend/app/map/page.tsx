@@ -64,10 +64,12 @@ function RoadmapContent() {
   const [activePanelPos, setActivePanelPos] = useState<{ x: number; y: number } | null>(null);
   const [pendingCenter, setPendingCenter] = useState<{ x: number; y: number } | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const { setCenter, fitView } = useReactFlow();
 
   useEffect(() => {
-    api.roadmapMap('rm-generated')
+    api.dashboard()
+      .then(d => api.roadmapMap(d.active_roadmap.id))
       .then(data => {
         setCheckpoints(data.checkpoints);
 
@@ -90,7 +92,10 @@ function RoadmapContent() {
           setTimeout(() => fitView({ duration: 1000 }), 200);
         }
       })
-      .catch(console.error)
+      .catch(err => {
+        console.error(err);
+        setLoadError('Failed to load roadmap. Please try again.');
+      })
       .finally(() => setLoading(false));
   }, []);  // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -133,6 +138,15 @@ function RoadmapContent() {
       <div className="h-screen w-screen bg-[#eef1f7] flex items-center justify-center">
         <Navbar />
         <p className="text-slate-400">Loading roadmap...</p>
+      </div>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <div className="h-screen w-screen bg-[#eef1f7] flex items-center justify-center">
+        <Navbar />
+        <p className="text-red-400">{loadError}</p>
       </div>
     );
   }

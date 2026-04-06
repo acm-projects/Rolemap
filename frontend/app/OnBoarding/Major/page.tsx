@@ -154,7 +154,7 @@ export default function SpecialtyPage() {
                 >
                   <span className="text-[#4e8888]">{s.icon}</span>
                   <span className="text-sm text-[#2d5050] font-jersey">{s.label}</span>
-                  {selected === s.id && <span className="ml-auto text-[#4e8888] text-xs font-jersey">?</span>}
+                  {selected === s.id && <span className="ml-auto text-[#4e8888] text-xs font-jersey">✓</span>}
                 </div>
               ))}
             </div>
