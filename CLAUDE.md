@@ -18,18 +18,45 @@ Two data stores:
 - **Neo4j** — Global knowledge graph (Jobs, Domains, Concepts, Tools, Resources + edges). Populated by the graph pipeline and job scraper.
 - **PostgreSQL** — Per-user game state (roadmaps, skill state, streaks). Schema defined in `backend/structure.json`; not yet wired to code — frontend currently uses `mock_db.json`.
 
-Five core backend modules (all under `backend/`):
+Backend is split into two folders under `backend/`:
+
+### `backend/Using/` — API server (run this to serve the frontend)
 
 | Module | Path | Purpose |
 |--------|------|---------|
-| **API server** | `main.py` | FastAPI service; includes `user_state_router` + 4 graph endpoints |
-| **User state router** | `routers/user_state.py` | All frontend-facing endpoints; reads/writes `data/mock_db.json` |
-| **Graph pipeline** | `graph_engine/01_Seed_Base_Taxonomy/` | Seeds Neo4j from O*NET + roadmap.sh + LLM gap-fill |
-| **Job scraper** | `scraping/` | Scrapes LinkedIn/Jobright/Handshake/Indeed/InternList → Neo4j |
-| **GitHub analyzer** | `github/` | Extracts skills/activity from a GitHub profile |
-| **Resume parser** | `resume_parser/` | Extracts skills/experience from a PDF resume |
+| **API server** | `Using/main.py` | FastAPI service; includes `user_state_router` + 4 graph endpoints |
+| **User state router** | `Using/routers/user_state.py` | All frontend-facing endpoints; reads/writes `data/mock_db.json` |
+| **Task generator** | `Using/Task_Gen/` | Generates learning + coding tasks per concept (v3: DuckDuckGo + Gemini) |
+| **Quiz generator** | `Using/Quiz_Gen/` | Generates adaptive multiple-choice questions per checkpoint |
+| **Project generator** | `Using/Project_Gen/` | Suggests real projects aligned to skill level + job |
+
+### `backend/Creation/` — data pipelines (seed Neo4j, scrape jobs, analyze profiles)
+
+| Module | Path | Purpose |
+|--------|------|---------|
+| **Graph pipeline** | `Creation/graph_engine/01_Seed_Base_Taxonomy/` | Seeds Neo4j from O*NET + roadmap.sh + LLM gap-fill |
+| **Roadmap generator** | `Creation/graph_engine/04_Generate_Roadmaps/` | Topological sort over Neo4j → ordered learning path |
+| **Graph integrity** | `Creation/graph_engine/03_Verify_Integrity/` | Validates Neo4j graph (cycles, orphans, missing edges) |
+| **Island removal** | `Creation/graph_engine/06_Island_Removal/` | Merges disconnected graph clusters |
+| **DB tools** | `Creation/graph_engine/05_Database_Tools/` | Neo4j backup + restore |
+| **Job scraper** | `Creation/scraping/` | Scrapes LinkedIn/Jobright/Handshake/Indeed/InternList → Neo4j |
+| **GitHub analyzer** | `Creation/github/` | Extracts skills/activity from a GitHub profile |
+| **Resume parser** | `Creation/resume_parser/` | Extracts skills/experience from a PDF resume |
 
 Roadmap generation (`graph_engine/04_Generate_Roadmaps/`) combines GitHub + resume outputs and runs topological sort over the Neo4j graph to produce an ordered learning path. The onboarding endpoint (`POST /api/v1/onboarding/generate`) orchestrates this full pipeline.
+
+> **Note**: Large data caches (`data/roadmaps/`, `data/raw/`, `data/llm_prereqs/`) and generated outputs (`output/`) are stored in `backend/_archive/` and excluded from git.
+
+---
+
+## User Flow
+
+1. **Sign in** (`/`) → Google or GitHub OAuth → redirect to `/OnBoarding/Major`
+2. **Onboarding wizard** (5 steps): Major → Company → Resume upload → Preferences → `/Generate` (triggers `POST /api/v1/onboarding/generate` → runs GitHub + resume analysis + topological sort → redirect to `/dashboard`)
+3. **Dashboard** (`/dashboard`) — XP, streak, leaderboard, roadmap cards
+4. **Map** (`/map`) — ReactFlow graph of checkpoints + edges; clicking lesson opens `ConceptNodePanel`; clicking quiz goes to `/quiz`
+5. **Tasks** (`/tasks`) — Daily task list; clicking a task fetches resources live via `GET /api/v1/tasks/resources?concept=X&subtopic=Y` (DuckDuckGo + Gemini); completing a task calls `PATCH /api/v1/tasks/{id}`
+6. **Quiz** (`/quiz`) — Gemini-generated MCQ; pass (≥3/5) = confetti
 
 ---
 
@@ -70,19 +97,20 @@ DATABASE_URL=<postgres-url>   # future use
 
 ---
 
-## Backend API Server (`backend/main.py`)
+## Backend API Server (`backend/Using/main.py`)
 
 ```bash
-cd backend
+cd backend/Using
 pip install -r requirements_api.txt
 python main.py          # http://localhost:8000  |  /docs for Swagger
 ```
 
-**Frontend-facing endpoints** (in `routers/user_state.py`, all prefixed `/api/v1`):
+**Frontend-facing endpoints** (in `Using/routers/user_state.py`, all prefixed `/api/v1`):
 - `GET  /users/me` — Current user XP/streaks
 - `GET  /dashboard` — Aggregated dashboard data
 - `GET  /roadmaps/{roadmap_id}/map` — Checkpoints + edges for ReactFlow
 - `GET  /tasks` — Daily tasks + achievements
+- `GET  /tasks/resources` — Live resource fetch (DuckDuckGo + Gemini) per concept/subtopic
 - `PATCH /tasks/{task_id}` — Update task completion status
 - `GET  /quiz/{checkpoint_id}` — Quiz questions
 - `POST /onboarding/complete` — Mark onboarding done
@@ -96,7 +124,7 @@ python main.py          # http://localhost:8000  |  /docs for Swagger
 - `POST /api/v1/tasks/generate` — DuckDuckGo + Gemini-curated tasks
 - `GET  /health`
 
-Pydantic schemas are in `backend/models.py`. Neo4j session injected via `backend/database.py`. Gemini key rotation: `main.py` cycles through `GEMINI_API_KEY`, `GEMINI_API_KEY_2`, … on rate-limit errors.
+Pydantic schemas are in `Using/models.py`. Neo4j session injected via `Using/database.py`. Gemini key rotation: `main.py` cycles through `GEMINI_API_KEY`, `GEMINI_API_KEY_2`, … on rate-limit errors.
 
 ---
 
@@ -104,42 +132,38 @@ Pydantic schemas are in `backend/models.py`. Neo4j session injected via `backend
 
 **Graph pipeline (seed Neo4j):**
 ```bash
-cd backend/graph_engine/01_Seed_Base_Taxonomy
+cd backend/Creation/graph_engine/01_Seed_Base_Taxonomy
 python main.py                              # Full run (~5–10 min first time)
 python main.py --skip-onet --skip-roadmapsh --skip-llm  # Reload Neo4j from cache only
 ```
 
+> First run will re-clone `kamranahmedse/developer-roadmap` into `data/roadmaps/` (gitignored).
+> O*NET API cache goes to `data/raw/` (gitignored). LLM prereqs cache to `data/llm_prereqs/` (gitignored).
+
 **Job scraper:**
 ```bash
-cd backend/scraping
+cd backend/Creation/scraping
 python main.py --spider linkedin --limit 5  # Scrape + write to Neo4j
 python main.py --spider all --no-llm        # Skip Gemini extraction
-python import_csv.py --csv output/file.csv --dry-run  # Preview CSV import
+python import_csv.py --csv <file.csv> --dry-run  # Preview CSV import
 ```
 
 **GitHub + Resume → Roadmap:**
 ```bash
-cd backend/github && python main.py --username <user>
-cd backend/resume_parser && python main.py --pdf <path>
-cd backend/graph_engine/04_Generate_Roadmaps
+cd backend/Creation/github && python main.py --username <user>
+cd backend/Creation/resume_parser && python main.py --pdf <path>
+cd backend/Creation/graph_engine/04_Generate_Roadmaps
 python generator.py "Front-End Engineer" \
-  --github ../output/github_result.json \
-  --resume ../output/result.json \
-  --out ../output/roadmap.json
+  --github ../../output/github_result.json \
+  --resume ../../output/result.json \
+  --out ../../output/roadmap.json
 ```
 
 **Neo4j backup / restore:**
 ```bash
-cd backend
+cd backend/Creation
 python graph_engine/05_Database_Tools/backup_neo4j_json.py
-python graph_engine/05_Database_Tools/restore_neo4j_json.py --snapshot output/backups/<file>.json --yes
-```
-
-**Tests:**
-```bash
-cd backend && python test_extraction.py
-cd backend/scraping/normalization_testing && python normalize_linkedin_csv.py --in in.csv --out out.csv
-cd backend/Task_Gen && python test_runner.py
+python graph_engine/05_Database_Tools/restore_neo4j_json.py --snapshot ../output/backups/<file>.json --yes
 ```
 
 ---
@@ -173,7 +197,6 @@ All writes are `MERGE`-based (idempotent). Scraped entities carry `source`, `imp
 - `snake_case` functions/variables, `PascalCase` classes, `UPPER_SNAKE_CASE` constants
 - Use `logging` (not `print`) for flow control; catch specific exceptions
 - Before adding a new synonym map or skill normalizer, check `scraping/matcher.py`
-- Validate scraping logic changes in `scraping/normalization_testing/` before promoting
 - Snapshot Neo4j before any destructive graph operation
 
 **Frontend (TypeScript):**
@@ -185,7 +208,5 @@ All writes are `MERGE`-based (idempotent). Scraped entities carry `source`, `imp
 
 ## Further Reading
 
-- `backend/CLAUDE.md` — deep implementation notes for each pipeline
-- `AGENTS.md` — build/test commands and code-style guide
-- `backend/API_SPECIFICATION.md` — full API endpoint design
 - `backend/structure.json` — Neo4j + PostgreSQL schema definition
+- `AGENTS.md` — build/test commands and code-style guide

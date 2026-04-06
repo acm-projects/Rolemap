@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import QuizConfetti from '../../components/ui/quiz-confetti';
 import { api, type QuizQuestion } from '@/lib/api';
@@ -54,6 +54,7 @@ export default function QuizPage() {
   const [selected, setSelected] = useState<number | null>(null);
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
+  const submittedRef = useRef(false);
 
   useEffect(() => {
     if (checkpointId) {
@@ -74,7 +75,14 @@ export default function QuizPage() {
 
   function handleNext() {
     if (idx + 1 >= questions.length) {
+      // score already includes the last answer from handleSelect
+      const finalScore = score;
       setDone(true);
+      // Submit to backend once (guard against StrictMode double-fire)
+      if (checkpointId && !submittedRef.current) {
+        submittedRef.current = true;
+        api.submitQuiz(checkpointId, finalScore, questions.length).catch(console.error);
+      }
     } else {
       setIdx(i => i + 1);
       setSelected(null);

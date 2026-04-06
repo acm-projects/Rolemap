@@ -25,10 +25,11 @@ import { applyDagreLayout } from '@/lib/layout';
 const nodeTypes = { roadmap: RoadmapNode };
 
 function toFlowNodes(checkpoints: Checkpoint[]) {
+  const currentCP = checkpoints.find(cp => !cp.locked && cp.progress < 100);
   return checkpoints.map(cp => ({
     id: cp.id,
     type: 'roadmap' as const,
-    data: { label: cp.label, progress: cp.progress, locked: cp.locked, kind: cp.kind },
+    data: { label: cp.label, progress: cp.progress, locked: cp.locked, kind: cp.kind, isCurrent: cp === currentCP },
     position: cp.position,
   }));
 }
@@ -122,6 +123,7 @@ function RoadmapContent() {
         kind: cp.kind,
         description: cp.description,
         learningGoals: cp.learning_goals,
+        subtopicCompletion: cp.subtopic_completion ?? [],
       });
     }
   }, [checkpoints, router]);

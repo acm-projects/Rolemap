@@ -98,8 +98,8 @@ export default function GenerateRoadmap() {
             </div>
 
             {generating && (
-              <div className="w-full max-w-xs pixel-border border-t-[#7ab3b3] border-l-[#7ab3b3] border-r-[#d4e8e8] border-b-[#d4e8e8] bg-[#f0f8f8] p-1 h-5">
-                <div className="h-full bg-[#4e8888]" style={{ width: "100%", transition: "width 2s linear" }} />
+              <div className="w-full max-w-xs">
+                <PixelProgress value={((stepIdx + 1) / PROGRESS_STEPS.length) * 100} showLabel={false} />
               </div>
             )}
 
