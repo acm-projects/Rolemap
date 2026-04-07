@@ -124,7 +124,7 @@ export default function CompanySelection() {
         <div className="flex items-center justify-between">
           <PixelButton
             variant="ghost"
-            onClick={() => router.back()}
+            onClick={() => router.push("/OnBoarding/Major")}
             size="md"
           >
             <div className="flex items-center gap-2">
@@ -136,14 +136,14 @@ export default function CompanySelection() {
           <div className="flex items-center gap-4">
             <PixelButton
               variant="secondary"
-              onClick={() => router.push("../OnBoarding/Major")}
+              onClick={() => router.push("/OnBoarding/Preferences")}
               size="md"
             >
               Skip for now
             </PixelButton>
             <PixelButton
               variant="primary"
-              onClick={() => router.push("../OnBoarding/Preferences")}
+              onClick={() => router.push("/OnBoarding/Preferences")}
               size="md"
               disabled={selectedCompanies.length === 0}
             >
@@ -171,7 +171,7 @@ export default function CompanySelection() {
           box-shadow: 
             0 2px 0 0 rgba(0, 0, 0, 0.3),
             inset 0 2px 0 0 rgba(0, 0, 0, 0.2);
-        }
+          }
 
         .image-rendering-pixelated {
           image-rendering: pixelated;

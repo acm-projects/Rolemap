@@ -29,12 +29,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signOut: "/",
   },
   callbacks: {
-    redirect: async ({ url, baseUrl }) => {
+  redirect: async ({ url, baseUrl }) => {
     if (url.startsWith(baseUrl)) return url
     if (url.startsWith("/")) return new URL(url, baseUrl).toString()
-    return new URL("/dashboard", baseUrl).toString()
-},
+    return new URL("/", baseUrl).toString()  // ← changed from /dashboard to /
   },
+},
   events: {
     async signOut() {},
   },
