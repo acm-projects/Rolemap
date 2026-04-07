@@ -1,5 +1,0 @@
-pdfplumber
-openai
-python-dotenv
-pdf2image
-pytesseract
