@@ -12,7 +12,7 @@ sys.stderr = open(sys.stderr.fileno(), mode='w', encoding='utf-8', buffering=1)
 
 # Ensure local imports resolve when run from repo root
 sys.path.insert(0, str(Path(__file__).parent.parent))
-load_dotenv(Path(__file__).parent.parent.parent.parent / ".env")
+load_dotenv(Path(__file__).parent.parent / ".env")
 
 def get_db_driver():
     uri = os.environ.get("NEO4J_URI", "bolt://localhost:7687")
@@ -104,99 +104,179 @@ def fetch_job_requirements(driver, job_name: str) -> dict:
     with driver.session() as session:
         # Find the Job ID
         job_res = session.run("MATCH (j:Job) WHERE toLower(j.display_name) CONTAINS toLower($job) RETURN j.id AS id, j.display_name AS name", job=job_name).data()
-        
+
         if not job_res:
             print(f"[error] Job matching '{job_name}' not found.")
             return {}
-            
+
         job_id = job_res[0]['id']
         job_display = job_res[0]['name']
-        
-        # Get all required concepts and their weights
-        req_query = "MATCH (j:Job {id: $job_id})-[r:REQUIRES]->(c:Concept) RETURN c.id AS id, c.name AS name, r.weight AS weight, r.is_core AS is_core"
+
+        # Get all required concepts and their weights + roadmap.sh position
+        req_query = """
+        MATCH (j:Job {id: $job_id})-[r:REQUIRES]->(c:Concept)
+        RETURN c.id AS id, c.name AS name, r.weight AS weight,
+               r.is_core AS is_core,
+               c.position_y AS position_y, c.position_x AS position_x
+        """
         requirements = session.run(req_query, job_id=job_id).data()
-        
+
         # Get all PREREQUISITE_FOR relationships flowing INTO any requirement or prerequisite
-        # We query the full prerequisite subgraph needed for this job
+        # Also fetch position x/y so the sort can use roadmap.sh visual ordering
         edges_query = """
         MATCH (j:Job {id: $job_id})-[:REQUIRES]->(req:Concept)
         MATCH path = (prereq:Concept)-[:PREREQUISITE_FOR*1..5]->(req)
         UNWIND relationships(path) AS rel
-        RETURN startNode(rel).id AS from_id, startNode(rel).name AS from_name, 
-               endNode(rel).id AS to_id, endNode(rel).name AS to_name
+        RETURN startNode(rel).id AS from_id, startNode(rel).name AS from_name,
+               startNode(rel).position_y AS from_position_y,
+               startNode(rel).position_x AS from_position_x,
+               endNode(rel).id AS to_id, endNode(rel).name AS to_name,
+               endNode(rel).position_y AS to_position_y,
+               endNode(rel).position_x AS to_position_x
         """
         prereq_edges = session.run(edges_query, job_id=job_id).data()
 
     return {
-        "job_id": job_id, 
-        "job_name": job_display, 
+        "job_id": job_id,
+        "job_name": job_display,
         "requirements": requirements,
         "prereq_edges": prereq_edges
     }
 
 def topological_sort_path(user_nodes: list[dict], job_graph: dict) -> list[dict]:
-    """Calculate the GAP and apply Kahn's Algorithm to sort remaining skills."""
+    """Calculate the GAP and apply Kahn's Algorithm to sort remaining skills.
+
+    Ordering uses an effective_y score derived from roadmap.sh position data:
+      - Main column concepts (|x| <= 250) keep their Y as-is.
+      - Sidebar concepts (|x| > 250): certifications, practice platforms, tools —
+        penalised by +5000 so they appear after all core learning path items.
+      - Concepts with no position data: penalised by +10000 (sort last).
+
+    Within the same effective_y bucket, out_degree breaks ties: concepts that
+    unlock many other missing skills are learned first (they're foundational).
+    """
     user_ids = {n['id'] for n in user_nodes}
-    
+
     # 1. Build the graph of the skills the user DOES NOT HAVE
     in_degree = defaultdict(int)
     adj_list = defaultdict(list)
     nodes_info = {}
-    
+
+    def _make_node(nid, name, is_core, weight, position_y, position_x):
+        return {
+            "id": nid, "name": name,
+            "is_core": is_core, "weight": weight,
+            "position_y": position_y, "position_x": position_x,
+        }
+
     # Add core requirements to nodes_info
     for req in job_graph.get("requirements", []):
         if req['id'] not in user_ids:
-            nodes_info[req['id']] = {
-                "id": req['id'],
-                "name": req['name'],
-                "is_core": req['is_core'],
-                "weight": req['weight']
-            }
-            if req['id'] not in in_degree: # Ensure it exists with 0 in-degree if no prereqs
+            nodes_info[req['id']] = _make_node(
+                req['id'], req['name'], req['is_core'], req['weight'],
+                req.get('position_y'), req.get('position_x'),
+            )
+            if req['id'] not in in_degree:
                 in_degree[req['id']] = 0
-            
+
     # Add prerequisite edges, but ONLY for nodes the user doesn't know yet
     for edge in job_graph.get("prereq_edges", []):
         u, v = edge['from_id'], edge['to_id']
-        
-        # If the user knows the target (v), they don't need to learn it.
-        # If the user knows the prerequisite (u), it doesn't block (v) anymore.
-        if v in user_ids: continue
-        
-        # Add 'V' to nodes info if missing (it might be a prereq that is itself not a direct REQUIRES)
+
+        # If user knows the target they don't need to learn it;
+        # if user knows the prerequisite it no longer blocks.
+        if v in user_ids:
+            continue
+
         if v not in nodes_info:
-            nodes_info[v] = {"id": v, "name": edge['to_name'], "is_core": False, "weight": 0.5}
-            
+            nodes_info[v] = _make_node(
+                v, edge['to_name'], False, 0.5,
+                edge.get('to_position_y'), edge.get('to_position_x'),
+            )
+
         if u not in user_ids:
-            # We must learn 'u' before we learn 'v'
             if u not in nodes_info:
-                nodes_info[u] = {"id": u, "name": edge['from_name'], "is_core": False, "weight": 0.5}
-            
+                nodes_info[u] = _make_node(
+                    u, edge['from_name'], False, 0.5,
+                    edge.get('from_position_y'), edge.get('from_position_x'),
+                )
+
             adj_list[u].append(v)
             in_degree[v] += 1
             if u not in in_degree:
                 in_degree[u] = 0
 
+    # Compute out-degree: how many missing skills depend on each node.
+    # A high out-degree means this node unlocks many others → it's foundational.
+    out_degree = defaultdict(int)
+    for u, dependents in adj_list.items():
+        out_degree[u] = len(dependents)
+
+    # Detect whether this roadmap has a distinct main column vs sidebar.
+    # Use the 75th-percentile of |x| as the threshold so only the outermost
+    # 25% of positioned concepts are treated as sidebar items.  This handles
+    # narrow-trunk roadmaps (cyber-security) and wide-tree roadmaps (frontend
+    # + backend) correctly without a hard-coded pixel value.
+    _positioned = [
+        (info['position_x'], info['position_y'])
+        for info in nodes_info.values()
+        if info.get('position_x') is not None and info.get('position_y') is not None
+    ]
+    if _positioned:
+        _abs_xs = sorted(abs(x) for x, _ in _positioned)
+        _sidebar_threshold = _abs_xs[int(len(_abs_xs) * 0.75)]
+        _use_sidebar = True
+    else:
+        _sidebar_threshold = 250
+        _use_sidebar = False
+
+    def _effective_y(info: dict) -> float:
+        """Convert raw position into a sortable score (lower = learn earlier).
+
+        The sidebar threshold is the 75th percentile of |x|, so only the
+        outermost 25% of concepts (practice platforms, certifications, exotic
+        tools) are penalised.
+
+          0 – 5000 : main column concepts, ordered by actual Y.
+          5000+    : sidebar items (|x| > p75 threshold).
+          10000+   : no position data — fallback ordering.
+        """
+        pos_y = info.get('position_y')
+        pos_x = info.get('position_x')
+
+        if pos_y is None or pos_x is None:
+            return 10000.0
+
+        if _use_sidebar and abs(pos_x) > _sidebar_threshold:
+            return 5000.0 + pos_y
+
+        return float(pos_y)
+
+    def _sort_key(nid: str) -> tuple:
+        info = nodes_info[nid]
+        is_core = 1 if info.get('is_core') else 0
+        eff_y = _effective_y(info)
+        od = out_degree.get(nid, 0)
+        weight = info.get('weight') or 0.0
+        # Sort descending (reverse=True):
+        #   is_core HIGH first, eff_y LOW first (negate), out_degree HIGH first
+        return (is_core, -eff_y, od, weight)
+
     # 2. Kahn's Algorithm for Topological Sorting
-    # Queue all nodes that have 0 prerequisites blocking them right now
-    queue = deque([node_id for node_id, degree in in_degree.items() if degree == 0])
-    
+    queue = deque([nid for nid, deg in in_degree.items() if deg == 0])
+
     learning_path = []
-    
+
     while queue:
-        # Sort queue so that we tie-break nicely: Core skills and Heaviest weights bubble up
-        queue = deque(sorted(queue, key=lambda nid: (nodes_info[nid]['is_core'] or False, nodes_info[nid]['weight'] or 0.0), reverse=True))
-        
+        queue = deque(sorted(queue, key=_sort_key, reverse=True))
         current_id = queue.popleft()
         learning_path.append(nodes_info[current_id])
-        
-        # We "learned" current_id, so its dependents have one less prerequisite
+
         for dependent in adj_list[current_id]:
             in_degree[dependent] -= 1
             if in_degree[dependent] == 0:
                 queue.append(dependent)
-                
-    # If the length of the path != number of missing nodes, there's a cycle in the DB
+
     if len(learning_path) != len(nodes_info):
         print("[warn] Topological sort detected a cycle in the prerequisite graph!")
 

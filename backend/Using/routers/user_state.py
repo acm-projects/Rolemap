@@ -913,7 +913,7 @@ async def generate_roadmap_api(body: dict[str, Any]):
     quiz_count = 0
     batch_count = 0  # lessons accumulated since last gate
 
-    for step in roadmap_steps[:25]:
+    for step in roadmap_steps:
         label = step.get("name", f"Step {lesson_count + 1}")
         skeleton.append({"label": label, "kind": "lesson"})
         lesson_buffer.append(label)
