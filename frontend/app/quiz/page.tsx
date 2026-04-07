@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import QuizConfetti from '../../components/ui/quiz-confetti';
+import { api, type QuizQuestion } from '@/lib/api';
 
-const questions = [
+const FALLBACK_QUESTIONS: QuizQuestion[] = [
   {
     id: 1,
     question: "Which property allows a nested grid to align its tracks exactly with those of its parent container?",
@@ -44,12 +45,24 @@ const questions = [
 
 export default function QuizPage() {
   const router = useRouter();
-  const label = useSearchParams().get('label') ?? 'Quiz';
+  const searchParams = useSearchParams();
+  const label = searchParams.get('label') ?? 'Quiz';
+  const checkpointId = searchParams.get('checkpoint');
 
+  const [questions, setQuestions] = useState<QuizQuestion[]>(FALLBACK_QUESTIONS);
   const [idx, setIdx] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
+  const submittedRef = useRef(false);
+
+  useEffect(() => {
+    if (checkpointId) {
+      api.quiz(checkpointId)
+        .then(d => setQuestions(d.questions))
+        .catch(() => setQuestions(FALLBACK_QUESTIONS));
+    }
+  }, [checkpointId]);
 
   const q = questions[idx];
   const answered = selected !== null;
@@ -62,7 +75,14 @@ export default function QuizPage() {
 
   function handleNext() {
     if (idx + 1 >= questions.length) {
+      // score already includes the last answer from handleSelect
+      const finalScore = score;
       setDone(true);
+      // Submit to backend once (guard against StrictMode double-fire)
+      if (checkpointId && !submittedRef.current) {
+        submittedRef.current = true;
+        api.submitQuiz(checkpointId, finalScore, questions.length).catch(console.error);
+      }
     } else {
       setIdx(i => i + 1);
       setSelected(null);
