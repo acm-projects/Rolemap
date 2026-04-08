@@ -190,22 +190,29 @@ export function Navbar() {
           {/* Pixel separator */}
           <div className="w-1 h-8 bg-[#2d5050] shrink-0" />
 
-          {/* Nav links */}
-          <div className="flex items-center gap-6">
-            {navItems.map((item) => {
-              const isActive = pathname === `/${item.toLowerCase()}`;
-              return (
-                <Link
-                  key={item}
-                  href={`/${item.toLowerCase()}`}
-                  className={`pixel-nav-link text-[8px] pb-1 ${isActive ? 'active text-[#2d5050]' : 'text-[#4e8888] hover:text-[#2d5050]'}`}
-                  style={{ fontFamily: "'Press Start 2P', monospace" }}
-                >
-                  {item.toUpperCase()}
-                </Link>
-              );
-            })}
-          </div>
+        {/* Nav links */}
+        <div className="flex items-center gap-7">
+          {navItems.map((item) => {
+            const isActive = pathname === `/${item.toLowerCase()}`;
+            return (
+              <Link
+                key={item}
+                href={`/${item.toLowerCase()}`}
+                className={`relative text-base font-medium transition-colors pb-1
+                  ${isActive
+                    ? 'text-[#3D7A7A] font-semibold'
+                    : 'text-slate-500 hover:text-slate-700'}
+                `}
+              >
+                {item}
+                {isActive && (
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#3D7A7A] rounded-full" />
+                )}
+              </Link>
+            );
+          })}
+        </div>
+
 
           {/* Right side */}
           <div className="ml-auto flex items-center gap-4 shrink-0">
