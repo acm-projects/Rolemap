@@ -213,6 +213,22 @@ export function Navbar() {
           })}
         </div>
 
+          {/* Nav links */}
+          <div className="flex items-center gap-6">
+            {navItems.map((item) => {
+              const isActive = pathname === `/${item.toLowerCase()}`;
+              return (
+                <Link
+                  key={item}
+                  href={`/${item.toLowerCase()}`}
+                  className={`pixel-nav-link text-[8px] pb-1 ${isActive ? 'active text-[#2d5050]' : 'text-[#4e8888] hover:text-[#2d5050]'}`}
+                  style={{ fontFamily: "'Press Start 2P', monospace" }}
+                >
+                  {item.toUpperCase()}
+                </Link>
+              );
+            })}
+          </div>
 
           {/* Right side */}
           <div className="ml-auto flex items-center gap-4 shrink-0">
