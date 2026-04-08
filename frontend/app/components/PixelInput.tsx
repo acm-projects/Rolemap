@@ -31,6 +31,8 @@ export default function PixelInput({
           py-3
           bg-white
           text-[#2d5050]
+          text- xl
+          font-jersey
           placeholder:text-[#7ab3b3]
           border-4
           border-t-[#7ab3b3] border-l-[#7ab3b3]
@@ -40,11 +42,7 @@ export default function PixelInput({
           focus:border-r-[#7ab3b3] focus:border-b-[#7ab3b3]
           transition-all duration-100
         `}
-        style={{
-          fontFamily: "'Press Start 2P', monospace",
-          fontSize: "10px",
-          imageRendering: "pixelated",
-        }}
+        style={{ imageRendering: "pixelated" }}
       />
     </div>
   );
