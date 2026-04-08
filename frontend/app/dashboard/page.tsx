@@ -4,94 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Navbar } from '../components/NavBar';
 import fire from '../../icons/fire.png';
-import home from '../../icons/home.png';
-
-// Static data 
-
-const leaderboard = [
-  { rank: 1, name: 'Tom Wilson', subtitle: 'Master Level', streak: 28, isYou: false, crown: true,  avatar: 'TW', avatarBg: 'bg-slate-700' },
-  { rank: 2, name: 'You',        subtitle: 'Keep it up!',  streak: 24, isYou: true,  crown: false, avatar: 'AM', avatarBg: 'bg-[#4a7c7c]/20' },
-  { rank: 3, name: 'Sarah Chen', subtitle: 'Elite Rank',   streak: 19, isYou: false, crown: false, avatar: 'SC', avatarBg: 'bg-slate-500' },
-  { rank: 4, name: 'Jamie Fox',  subtitle: 'Growing Fast', streak: 12, isYou: false, crown: false, avatar: 'JF', avatarBg: 'bg-slate-600' },
-];
-
-// My Roadmaps data  
-
-const allRoadmaps = [
-  {
-    id: 'frontend',
-    title: 'Front End Developer',
-    progress: 68,
-    active: true,
-    nodes: [
-      { x: 15, y: 50 }, { x: 38, y: 50 }, { x: 60, y: 25 },
-      { x: 60, y: 72 }, { x: 83, y: 50 },
-    ],
-    edges: [
-      { a: 0, b: 1, done: true  },
-      { a: 1, b: 2, done: true  },
-      { a: 1, b: 3, done: false },
-      { a: 2, b: 4, done: false },
-      { a: 3, b: 4, done: false },
-    ],
-    doneNodes: [0, 1, 2],
-  },
-  {
-    id: 'fullstack',
-    title: 'Full Stack Developer',
-    progress: 12,
-    active: false,
-    nodes: [
-      { x: 15, y: 50 }, { x: 40, y: 25 }, { x: 40, y: 72 },
-      { x: 65, y: 50 }, { x: 85, y: 50 },
-    ],
-    edges: [
-      { a: 0, b: 1, done: true  },
-      { a: 0, b: 2, done: false },
-      { a: 1, b: 3, done: false },
-      { a: 2, b: 3, done: false },
-      { a: 3, b: 4, done: false },
-    ],
-    doneNodes: [0],
-  },
-  {
-    id: 'datascience',
-    title: 'Data Science',
-    progress: 0,
-    active: false,
-    nodes: [
-      { x: 18, y: 50 }, { x: 45, y: 25 }, { x: 45, y: 75 },
-      { x: 78, y: 50 },
-    ],
-    edges: [
-      { a: 0, b: 1, done: false },
-      { a: 0, b: 2, done: false },
-      { a: 1, b: 3, done: false },
-      { a: 2, b: 3, done: false },
-    ],
-    doneNodes: [],
-  },
-  {
-    id: 'uxdesign',
-    title: 'UX Design',
-    progress: 45,
-    active: false,
-    nodes: [
-      { x: 12, y: 50 }, { x: 38, y: 50 }, { x: 62, y: 25 },
-      { x: 62, y: 72 }, { x: 86, y: 50 },
-    ],
-    edges: [
-      { a: 0, b: 1, done: true  },
-      { a: 1, b: 2, done: true  },
-      { a: 1, b: 3, done: false },
-      { a: 2, b: 4, done: false },
-      { a: 3, b: 4, done: false },
-    ],
-    doneNodes: [0, 1, 2],
-  },
-];
-
-// Minimap component 
+import { useRouter } from 'next/navigation';
+import { api, type DashboardResponse, type DashboardRoadmap } from '@/lib/api';
 
 function RoadmapMinimap({
   nodes,
@@ -104,33 +18,19 @@ function RoadmapMinimap({
   doneNodes: number[];
   active: boolean;
 }) {
-  const autoOpacity = active ? 1 : 0.7;
-
   return (
-    <svg
-      viewBox="0 0 100 100"
-      className="w-full h-full"
-      preserveAspectRatio="xMidYMid meet"
-      style={{ opacity: autoOpacity }}
-    >
+    <svg viewBox="0 0 100 100" className="w-full h-full" preserveAspectRatio="xMidYMid meet" style={{ opacity: active ? 1 : 0.7 }}>
       {edges.map((e, i) => {
         const na = nodes[e.a], nb = nodes[e.b];
         return (
-          <line key={i}
-            x1={na.x} y1={na.y} x2={nb.x} y2={nb.y}
-            stroke={e.done ? '#4a7c7c' : '#cbd5e1'}
-            strokeWidth="2.5"
-            strokeDasharray={e.done ? 'none' : '4 3'}
-          />
+          <line key={i} x1={na.x} y1={na.y} x2={nb.x} y2={nb.y}
+            stroke={e.done ? '#4a7c7c' : '#cbd5e1'} strokeWidth="2.5"
+            strokeDasharray={e.done ? 'none' : '4 3'} />
         );
       })}
       {nodes.map((n, i) => (
-        <circle key={i}
-          cx={n.x} cy={n.y} r="6"
-          fill={doneNodes.includes(i) ? '#4a7c7c' : '#e2e8f0'}
-          stroke="white"
-          strokeWidth="2"
-        />
+        <circle key={i} cx={n.x} cy={n.y} r="6"
+          fill={doneNodes.includes(i) ? '#4a7c7c' : '#e2e8f0'} stroke="white" strokeWidth="2" />
       ))}
     </svg>
   );
@@ -138,13 +38,40 @@ function RoadmapMinimap({
 
 
 export default function Dashboard() {
+  const router = useRouter();
+  const [data, setData] = useState<DashboardResponse | null>(null);
+  const [loading, setLoading] = useState(true);
   const [displayProgress, setDisplayProgress] = useState(0);
-  const userName = 'Your Name';
 
   useEffect(() => {
-    const timer = setTimeout(() => setDisplayProgress(68), 300);
-    return () => clearTimeout(timer);
+    // Gate: redirect to onboarding if not completed
+    api.currentUser()
+      .then(user => { if (!user.onboarding_completed) router.replace("/OnBoarding/Major"); })
+      .catch(() => {});
+
+    api.dashboard()
+      .then(d => {
+        setData(d);
+        const timer = setTimeout(() => setDisplayProgress(d.active_roadmap.progress_percentage), 300);
+        return () => clearTimeout(timer);
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen w-full bg-[#eef1f7] flex items-center justify-center">
+        <p className="text-slate-400">Loading...</p>
+      </div>
+    );
+  }
+
+  const userName = data?.user.name ?? '';
+  const xpTotal = data?.user.xp_total?.toLocaleString() ?? '0';
+  const tasksCompleted = data?.gamification.tasks_completed ?? 0;
+  const roadmaps = data?.roadmaps ?? [];
+  const leaderboard = data?.leaderboard ?? [];
 
   return (
     <div className="min-h-screen w-full bg-[#eef1f7] relative">
@@ -153,22 +80,19 @@ export default function Dashboard() {
       <div className="pt-28 px-8 pb-8">
         <div className="max-w-7xl mx-auto">
 
-          {/* Header row: title left, stats + challenge right ── */}
+          {/* Header row */}
           <div className="flex items-start justify-between mb-8 gap-6">
-
-            {/* Left: title */}
             <div>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Front End Developer Path</p>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">
+                {data?.active_roadmap.title} Path
+              </p>
               <div className='flex items-center '>
- {/* <Image src={home} alt="Home icon" className='h-25 w-25'/> */}
                 <h1 className="text-4xl font-bold text-slate-700 leading-tight">Dashboard</h1>
               </div>
               <p className="text-sm text-slate-400 mt-1">Welcome back, {userName}</p>
             </div>
 
-            {/* Right: quick stats + today's challenge */}
-            <div className="flex items-center gap-3 flex-shrink-0"> 
-
+            <div className="flex items-center gap-3 flex-shrink-0">
               {/* XP block */}
               <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-2xl px-4 py-2.5 shadow-sm">
                 <div className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center">
@@ -178,7 +102,7 @@ export default function Dashboard() {
                 </div>
                 <div>
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider leading-none">Total XP</p>
-                  <p className="text-sm font-bold text-slate-700">2,450</p>
+                  <p className="text-sm font-bold text-slate-700">{xpTotal}</p>
                 </div>
               </div>
 
@@ -187,16 +111,9 @@ export default function Dashboard() {
                 <div className="relative w-7 h-7 flex-shrink-0">
                   <svg className="w-full h-full" viewBox="0 0 200 200">
                     <circle cx="100" cy="100" r="80" fill="none" stroke="#e2e8f0" strokeWidth="24" />
-                    <circle
-                      cx="100" cy="100" r="80"
-                      fill="none"
-                      stroke="#4a7c7c"
-                      strokeWidth="24"
-                      strokeDasharray={`${displayProgress * 5.03} 502`}
-                      strokeLinecap="round"
-                      style={{ transition: 'stroke-dasharray 1s ease-out' }}
-                      transform="rotate(-90 100 100)"
-                    />
+                    <circle cx="100" cy="100" r="80" fill="none" stroke="#4a7c7c" strokeWidth="24"
+                      strokeDasharray={`${displayProgress * 5.03} 502`} strokeLinecap="round"
+                      style={{ transition: 'stroke-dasharray 1s ease-out' }} transform="rotate(-90 100 100)" />
                   </svg>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <span className="text-[8px] font-bold text-slate-700">{displayProgress}%</span>
@@ -217,7 +134,7 @@ export default function Dashboard() {
                 </div>
                 <div>
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider leading-none">Challenges</p>
-                  <p className="text-sm font-bold text-slate-700">12/30</p>
+                  <p className="text-sm font-bold text-slate-700">{tasksCompleted}/30</p>
                 </div>
               </div>
 
@@ -231,7 +148,6 @@ export default function Dashboard() {
                   Start →
                 </button>
               </div>
-
             </div>
           </div>
 
@@ -243,7 +159,7 @@ export default function Dashboard() {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">
-                    <Image src={fire} alt="Fire Icon" className="h-6 w-6  "/>
+                    <Image src={fire} alt="Fire Icon" className="h-6 w-6" />
                   </div>
                   <h2 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Streak Leaderboard</h2>
                 </div>
@@ -251,29 +167,28 @@ export default function Dashboard() {
               </div>
               <div className="space-y-1.5">
                 {leaderboard.map((user) => (
-                  <div
-                    key={user.rank}
+                  <div key={user.rank}
                     className={`flex items-center gap-3 px-3 py-2 rounded-2xl transition-all
-                      ${user.isYou ? 'bg-white border border-slate-200 shadow-sm' : 'hover:bg-slate-50'}`}
-                  >
-                    <span className={`text-sm font-bold w-5 text-center ${user.isYou ? 'text-[#4a7c7c]' : 'text-slate-300'}`}>
+                      ${user.is_you ? 'bg-white border border-slate-200 shadow-sm' : 'hover:bg-slate-50'}`}>
+                    <span className={`text-sm font-bold w-5 text-center ${user.is_you ? 'text-[#4a7c7c]' : 'text-slate-300'}`}>
                       {user.rank}
                     </span>
-                    <div className={`relative w-9 h-9 rounded-xl ${user.avatarBg} flex items-center justify-center flex-shrink-0`}>
-                      <span className={`text-xs font-bold ${user.isYou ? 'text-[#4a7c7c]' : 'text-white'}`}>
+                    <div className="relative w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                      style={{ backgroundColor: user.avatar_bg + (user.is_you ? '33' : '') }}>
+                      <span className={`text-xs font-bold ${user.is_you ? 'text-[#4a7c7c]' : 'text-white'}`}>
                         {user.avatar}
                       </span>
-                      {user.crown && <span className="absolute -top-2 -right-1 text-sm">👑</span>}
+                      {user.rank === 1 && <span className="absolute -top-2 -right-1 text-sm">👑</span>}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-slate-700 truncate">{user.name}</p>
+                      <p className="text-sm font-semibold text-slate-700 truncate">{user.is_you ? 'You' : user.name}</p>
                       <p className="text-[10px] text-slate-400">{user.subtitle}</p>
                     </div>
                     <div className="flex items-center gap-1">
-                      <span className={`text-sm font-bold ${user.isYou ? 'text-slate-700' : 'text-slate-500'}`}>
+                      <span className={`text-sm font-bold ${user.is_you ? 'text-slate-700' : 'text-slate-500'}`}>
                         {user.streak}
                       </span>
-                      <Image src={fire} alt="Fire Icon" className="h-6 w-6"/>
+                      <Image src={fire} alt="Fire Icon" className="h-6 w-6" />
                     </div>
                   </div>
                 ))}
@@ -289,48 +204,42 @@ export default function Dashboard() {
                 </button>
               </div>
 
-              {/* 2x2 minimap grid */}
               <div className="grid grid-cols-2 gap-3 flex-1 min-h-0">
-                {allRoadmaps.map((rm) => (
-                  <a
-                    key={rm.id}
-                    href="/map"
-                    className={`flex flex-col rounded-2xl border-2 overflow-hidden transition-all hover:shadow-md cursor-pointer group
-                      ${rm.active ? 'border-[#4a7c7c]' : 'border-slate-200 hover:border-slate-300'}`}
-                  >
-                    {/* Minimap SVG area */}
-                    <div className="flex-1 bg-[#f7fafa] relative px-3 py-2 min-h-0">
-                      {rm.active && (
-                        <span className="absolute top-2 left-2 text-[9px] font-bold text-[#4a7c7c] bg-white border border-[#4a7c7c]/30 px-2 py-0.5 rounded-full uppercase tracking-wider z-10">
-                          Active
-                        </span>
-                      )}
-                      <RoadmapMinimap
-                        nodes={rm.nodes}
-                        edges={rm.edges}
-                        doneNodes={rm.doneNodes}
-                        active={rm.active}
-                      />
-                    </div>
-
-                    {/* Progress bar + title */}
-                    <div className="px-4 py-3 bg-white border-t border-slate-100">
-                      <div className="flex items-center justify-between mb-1.5">
-                        <p className="text-xs font-semibold text-slate-700 truncate">{rm.title}</p>
-                        <p className="text-[10px] font-bold text-slate-400 ml-2 flex-shrink-0">{rm.progress}%</p>
+                {roadmaps.length === 0 ? (
+                  <div className="col-span-2 flex flex-col items-center justify-center text-center py-8">
+                    <p className="text-sm text-slate-400 mb-2">No roadmaps yet</p>
+                    <a href="/OnBoarding/Major" className="text-xs font-semibold text-[#4a7c7c] bg-[#4a7c7c]/10 hover:bg-[#4a7c7c]/20 px-4 py-1.5 rounded-xl transition-colors">
+                      Complete onboarding to generate your roadmap
+                    </a>
+                  </div>
+                ) : roadmaps.map((rm: DashboardRoadmap) => {
+                  const minimap = rm.minimap ?? { nodes: [], edges: [], done_nodes: [] };
+                  const active = rm.status === 'active';
+                  return (
+                    <a key={rm.id} href="/map"
+                      className={`flex flex-col rounded-2xl border-2 overflow-hidden transition-all hover:shadow-md cursor-pointer group
+                        ${active ? 'border-[#4a7c7c]' : 'border-slate-200 hover:border-slate-300'}`}>
+                      <div className="flex-1 bg-[#f7fafa] relative px-3 py-2 min-h-0">
+                        {active && (
+                          <span className="absolute top-2 left-2 text-[9px] font-bold text-[#4a7c7c] bg-white border border-[#4a7c7c]/30 px-2 py-0.5 rounded-full uppercase tracking-wider z-10">
+                            Active
+                          </span>
+                        )}
+                        <RoadmapMinimap nodes={minimap.nodes} edges={minimap.edges} doneNodes={minimap.done_nodes} active={active} />
                       </div>
-                      <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                        <div
-                          className="h-full rounded-full"
-                          style={{
-                            width: `${rm.progress}%`,
-                            backgroundColor: rm.active ? '#4a7c7c' : '#94a3b8',
-                          }}
-                        />
+                      <div className="px-4 py-3 bg-white border-t border-slate-100">
+                        <div className="flex items-center justify-between mb-1.5">
+                          <p className="text-xs font-semibold text-slate-700 truncate">{rm.title}</p>
+                          <p className="text-[10px] font-bold text-slate-400 ml-2 flex-shrink-0">{rm.progress_percentage}%</p>
+                        </div>
+                        <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                          <div className="h-full rounded-full"
+                            style={{ width: `${rm.progress_percentage}%`, backgroundColor: active ? '#4a7c7c' : '#94a3b8' }} />
+                        </div>
                       </div>
-                    </div>
-                  </a>
-                ))}
+                    </a>
+                  );
+                })}
               </div>
             </div>
 
