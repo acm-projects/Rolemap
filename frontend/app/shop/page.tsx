@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Navbar } from "../components/NavBar";
 
 type Item = { id: string; name: string; file: string; cost: number; unlocked: boolean; };
-type Category = "skin" | "eyes" | "clothes" | "hair" | "accessories";
+type Category = "skin" | "eyes" | "clothes" | "pants" | "shoes" | "hair" | "accessories";
 type Tab = "gender" | Category;
 
 const SHOP_ITEMS: Record<Category, Item[]> = {
@@ -26,20 +26,32 @@ const SHOP_ITEMS: Record<Category, Item[]> = {
     { id: "suit",       name: "Suit",       file: "suit.png",       cost: 0,   unlocked: true  },
     { id: "basic",      name: "Casual",     file: "basic.png",      cost: 150, unlocked: false },
     { id: "sporty",     name: "Sporty",     file: "sporty.png",     cost: 200, unlocked: false },
+    { id: "overalls",   name: "Overalls",   file: "overalls.png",   cost: 200, unlocked: false },
     { id: "sailor",     name: "Sailor",     file: "sailor.png",     cost: 250, unlocked: false },
+    { id: "stripe",     name: "Stripe",     file: "stripe.png",     cost: 250, unlocked: false },
     { id: "dress",      name: "Dress",      file: "dress.png",      cost: 300, unlocked: false },
     { id: "floral",     name: "Floral",     file: "floral.png",     cost: 300, unlocked: false },
-    { id: "overalls",   name: "Overalls",   file: "overalls.png",   cost: 200, unlocked: false },
-    { id: "stripe",     name: "Stripe",     file: "stripe.png",     cost: 250, unlocked: false },
+  ],
+  pants: [
+    { id: "pants_default",  name: "Pants",    file: "pants.png",     cost: 0,   unlocked: true  },
+    { id: "skirt_item",     name: "Skirt",    file: "skirt.png",     cost: 100, unlocked: false },
+    { id: "witch_outfit",   name: "Witch",    file: "witch.png",     cost: 300, unlocked: false },
+  ],
+  shoes: [
+    { id: "shoes_item",     name: "Shoes",    file: "shoes.png",     cost: 0,   unlocked: true  },
   ],
   hair: [
-    { id: "buzzcut",   name: "Buzzcut",   file: "buzzcut.png",   cost: 0,   unlocked: true  },
-    { id: "bob",       name: "Bob",       file: "bob.png",       cost: 100, unlocked: false },
-    { id: "gentleman", name: "Gentleman", file: "gentleman.png", cost: 100, unlocked: false },
-    { id: "ponytail",  name: "Ponytail",  file: "ponytail.png",  cost: 150, unlocked: false },
-    { id: "curly",     name: "Curly",     file: "curly.png",     cost: 200, unlocked: false },
-    { id: "braids",    name: "Braids",    file: "braids.png",    cost: 200, unlocked: false },
-    { id: "emo",       name: "Emo",       file: "emo.png",       cost: 250, unlocked: false },
+    { id: "buzzcut",      name: "Buzzcut",      file: "buzzcut.png",          cost: 0,   unlocked: true  },
+    { id: "bob",          name: "Bob",          file: "bob.png",              cost: 100, unlocked: false },
+    { id: "gentleman",    name: "Gentleman",    file: "gentleman.png",        cost: 100, unlocked: false },
+    { id: "ponytail",     name: "Ponytail",     file: "ponytail.png",         cost: 150, unlocked: false },
+    { id: "midiwave",     name: "Midi Wave",    file: "midiwave.png",         cost: 150, unlocked: false },
+    { id: "curly",        name: "Curly",        file: "curly.png",            cost: 200, unlocked: false },
+    { id: "braids",       name: "Braids",       file: "braids.png",           cost: 200, unlocked: false },
+    { id: "extra_long",   name: "Extra Long",   file: "extra_long.png",       cost: 200, unlocked: false },
+    { id: "french_curl",  name: "French Curl",  file: "french_curl.png",      cost: 200, unlocked: false },
+    { id: "spacebuns",    name: "Space Buns",   file: "spacebuns.png",        cost: 250, unlocked: false },
+    { id: "emo",          name: "Emo",          file: "emo.png",              cost: 250, unlocked: false },
   ],
   accessories: [
     { id: "none",       name: "None",      file: "",                    cost: 0,   unlocked: true  },
@@ -53,7 +65,7 @@ const SHOP_ITEMS: Record<Category, Item[]> = {
 };
 
 const CATEGORY_LABELS: Record<Category, string> = {
-  skin: "SKIN", eyes: "FACE", clothes: "CLOTHES", hair: "HAIR", accessories: "ACCS",
+  skin: "SKIN", eyes: "FACE", clothes: "CLOTHES", pants: "LOWER", shoes: "SHOES", hair: "HAIR", accessories: "ACCS",
 };
 
 // Sampled dominant colors per variant column (256px each) from the sprite sheets
@@ -69,6 +81,11 @@ const SPRITE_COLORS: Record<string, string[]> = {
   "sailor.png":     ["#D78B20","#D78B20","#D78B20","#D78B20","#D78B20","#D78B20","#D78B20","#D78B20","#D78B20","#D78B20"],
   "sailor_bow.png": ["#D78B20","#D78B20","#D78B20","#D78B20","#D78B20","#D78B20","#D78B20","#D78B20","#D78B20","#D78B20"],
   "floral.png":     ["#C78548","#C78548","#C78548","#C78548","#C78548","#C78548","#C78548","#C78548","#C78548","#C78548"],
+  // pants / lower body
+  "pants.png":     ["#332E32","#4B6275","#6283A4","#654530","#406158","#7D945F","#C8616B","#745C96","#B35249","#615A55"],
+  "skirt.png":     ["#332E32","#435361","#637499","#583D2B","#385252","#758658","#B05B6A","#5C5178","#A14343","#62626A"],
+  "shoes.png":     ["#393940","#404C57","#424D5E","#3B2B20","#334042","#646947","#804951","#444059","#783A3B","#363438"],
+  "overalls.png":  ["#9C8D83","#4B6275","#6283A4","#654530","#406158","#7D945F","#C8616B","#745C96","#B35249","#9C8D83"],
   // hair
   "buzzcut.png":    ["#503E39","#C49362","#715148","#9E675D","#B37355","#306E55","#558A4D","#736A67","#7E638F","#535782","#D97981","#564778","#A3524D","#518587"],
   "bob.png":        ["#5E4C41","#D4A66A","#82604F","#B57869","#C9855D","#306E55","#669C56","#A4968E","#7E638F","#626C9E","#FF858B","#564778","#B56355","#599997"],
@@ -76,8 +93,12 @@ const SPRITE_COLORS: Record<string, string[]> = {
   "ponytail.png":   ["#5E4C41","#C49362","#82604F","#B57869","#C9855D","#306E55","#669C56","#A4968E","#7E638F","#626C9E","#FF858B","#564778","#B56355","#599997"],
   "wavy.png":       ["#5E4C41","#D4A66A","#82604F","#B57869","#C9855D","#306E55","#669C56","#A4968E","#7E638F","#626C9E","#FF858B","#564778","#B56355","#599997"],
   "emo.png":        ["#5E4C41","#D4A66A","#82604F","#B57869","#C9855D","#306E55","#669C56","#A4968E","#7E638F","#626C9E","#FF858B","#564778","#B56355","#599997"],
-  "gentleman.png":  ["#5E4C41","#D4A66A","#82604F","#B57869","#C9855D","#306E55","#669C56","#A4968E","#7E638F","#626C9E","#FF858B","#564778","#B56355","#599997"],
-  "beard.png":      ["#493736","#A37758","#614440","#825952","#99624E","#2D5E52","#45734A","#757464","#786187","#53496E","#BA6877","#4B4B7A","#914747","#4D757A"],
+  "gentleman.png":   ["#5E4C41","#D4A66A","#82604F","#B57869","#C9855D","#306E55","#669C56","#A4968E","#7E638F","#626C9E","#FF858B","#564778","#B56355","#599997"],
+  "extra_long.png":  ["#5E4C41","#D4A66A","#82604F","#B57869","#C9855D","#306E55","#669C56","#A4968E","#7E638F","#626C9E","#FF858B","#564778","#B56355","#599997"],
+  "french_curl.png": ["#5E4C41","#D4A66A","#82604F","#B57869","#C9855D","#306E55","#669C56","#A4968E","#7E638F","#626C9E","#FF858B","#564778","#B56355","#599997"],
+  "midiwave.png":    ["#5E4C41","#D4A66A","#82604F","#6B493D","#C9855D","#306E55","#669C56","#A4968E","#7E638F","#626C9E","#FF858B","#564778","#B56355","#599997"],
+  "spacebuns.png":   ["#5E4C41","#D4A66A","#82604F","#B57869","#C9855D","#306E55","#669C56","#A4968E","#7E638F","#626C9E","#FF858B","#564778","#B56355","#599997"],
+  "beard.png":       ["#493736","#A37758","#614440","#825952","#99624E","#2D5E52","#45734A","#757464","#786187","#53496E","#BA6877","#4B4B7A","#914747","#4D757A"],
   // eyes/face
   "eyes.png":       ["#362F2D","#354652","#546E8A","#4D3530","#2E2723","#754B44","#475C4E","#24382D","#637D64","#544B4E","#6E656A","#B04F63","#C26576","#A64444"],
   "blush_all.png":  ["#D9776A","#FA7069","#FA8C73","#C25151","#873D3C"],
@@ -90,17 +111,23 @@ const SPRITE_COLORS: Record<string, string[]> = {
 
 const MOCK_XP = 200000;
 
-function CharacterPreview({ skin, eyes, clothes, hair, accessory, size = 96, variants = {} }: {
-  skin: string; eyes: string; clothes: string; hair: string; accessory: string; size?: number;
+// These pants items cover the whole body — suppress the clothes layer when equipped
+const FULL_BODY_PANTS = new Set<string>([]);
+
+function CharacterPreview({ skin, eyes, clothes, pants = "", shoes = "", hair, accessory, size = 96, showLegs = false, variants = {} }: {
+  skin: string; eyes: string; clothes: string; pants?: string; shoes?: string; hair: string; accessory: string;
+  size?: number; showLegs?: boolean;
   variants?: Partial<Record<Category, number>>;
 }) {
   const bgH = Math.round(size / 28 * 1568);
   const scale = size / 28;
+  const containerH = showLegs ? Math.round(size * 32 / 28) : size;
+  const showClothes = !FULL_BODY_PANTS.has(pants);
   const layers: [string, Category][] = [
-    [skin, "skin"], [eyes, "eyes"], [clothes, "clothes"], [hair, "hair"], [accessory, "accessories"],
+    [skin, "skin"], [pants, "pants"], [shoes, "shoes"], [showClothes ? clothes : "", "clothes"], [eyes, "eyes"], [hair, "hair"], [accessory, "accessories"],
   ];
   return (
-    <div style={{ position: "relative", width: size, height: size, overflow: "hidden" }}>
+    <div style={{ position: "relative", width: size, height: containerH, overflow: "hidden" }}>
       {layers.filter(([f]) => f).map(([f, cat], i) => {
         const v = variants[cat] ?? 0;
         return (
@@ -118,39 +145,31 @@ function CharacterPreview({ skin, eyes, clothes, hair, accessory, size = 96, var
   );
 }
 
-type Equipped = { skin: string; eyes: string; clothes: string; hair: string; accessories: string };
+type Equipped = { skin: string; eyes: string; clothes: string; pants: string; shoes: string; hair: string; accessories: string };
 
 export default function ShopPage() {
   const [xp, setXp] = useState(MOCK_XP);
   const [activeTab, setActiveTab] = useState<Tab>("gender");
-  const [gender, setGender] = useState<"boy" | "girl">(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("character_saved");
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed.hair === "wavy.png") return "girl";
-      }
-    }
-    return "boy";
-  });
+  const defaults: Equipped = { skin: "char1.png", eyes: "eyes.png", clothes: "suit.png", pants: "pants.png", shoes: "shoes.png", hair: "buzzcut.png", accessories: "" };
+  const [gender, setGender] = useState<"boy" | "girl">("boy");
   const [items, setItems] = useState(SHOP_ITEMS);
-  const [equipped, setEquipped] = useState<Equipped>(() => {
-    const defaults: Equipped = { skin: "char1.png", eyes: "eyes.png", clothes: "suit.png", hair: "buzzcut.png", accessories: "" };
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("character_saved");
-      if (saved) return { ...defaults, ...JSON.parse(saved) };
-    }
-    return defaults;
-  });
+  const [equipped, setEquipped] = useState<Equipped>(defaults);
   const [notification, setNotification] = useState<string | null>(null);
   const [previewItem, setPreviewItem] = useState<{ item: Item; category: Category } | null>(null);
-  const [colorVariants, setColorVariants] = useState<Partial<Record<string, number>>>(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("character_saved_variants");
-      if (saved) return JSON.parse(saved);
+  const [colorVariants, setColorVariants] = useState<Partial<Record<string, number>>>({});
+
+  useEffect(() => {
+    const savedChar = localStorage.getItem("character_saved");
+    if (savedChar) {
+      const parsed = JSON.parse(savedChar);
+      setEquipped(prev => ({ ...prev, ...parsed }));
+      if (parsed.hair === "wavy.png") setGender("girl");
     }
-    return {};
-  });
+    const savedVariants = localStorage.getItem("character_saved_variants");
+    if (savedVariants) {
+      setColorVariants(JSON.parse(savedVariants));
+    }
+  }, []);
 
   const showNotification = (msg: string) => {
     setNotification(msg);
@@ -183,6 +202,8 @@ export default function ShopPage() {
     skin:        colorVariants[equipped.skin]        ?? 0,
     eyes:        colorVariants[equipped.eyes]        ?? 0,
     clothes:     colorVariants[equipped.clothes]     ?? 0,
+    pants:       colorVariants[equipped.pants]       ?? 0,
+    shoes:       colorVariants[equipped.shoes]       ?? 0,
     hair:        colorVariants[equipped.hair]        ?? 0,
     accessories: colorVariants[equipped.accessories] ?? 0,
   };
@@ -225,13 +246,16 @@ export default function ShopPage() {
                 skin:        colorVariants[pw.skin]        ?? 0,
                 eyes:        colorVariants[pw.eyes]        ?? 0,
                 clothes:     colorVariants[pw.clothes]     ?? 0,
+                pants:       colorVariants[pw.pants]       ?? 0,
+                shoes:       colorVariants[pw.shoes]       ?? 0,
                 hair:        colorVariants[pw.hair]        ?? 0,
                 accessories: colorVariants[pw.accessories] ?? 0,
               };
               return (
                 <CharacterPreview
                   size={160}
-                  skin={pw.skin} eyes={pw.eyes} clothes={pw.clothes} hair={pw.hair} accessory={pw.accessories}
+                  showLegs={previewItem.category === "pants" || previewItem.category === "shoes"}
+                  skin={pw.skin} eyes={pw.eyes} clothes={pw.clothes} pants={pw.pants} shoes={pw.shoes} hair={pw.hair} accessory={pw.accessories}
                   variants={modalVariants}
                 />
               );
@@ -268,12 +292,15 @@ export default function ShopPage() {
           {/* LEFT — Preview */}
           <div className="col-span-1 flex flex-col gap-4">
             <div className="px-box bg-[#e8f5f5] p-4 flex flex-col items-center gap-4">
-              <p className="text-[7px] text-[#2d5050]">YOUR CHARACTER</p>
+              <p className="text-[10px] text-[#2d5050]">YOUR CHARACTER</p>
               <CharacterPreview
                 size={160}
+                showLegs
                 skin={equipped.skin}
                 eyes={equipped.eyes}
                 clothes={equipped.clothes}
+                pants={equipped.pants}
+                shoes={equipped.shoes}
                 hair={equipped.hair}
                 accessory={equipped.accessories}
                 variants={equippedVariants}
@@ -283,8 +310,8 @@ export default function ShopPage() {
                   const item = items[cat].find(i => i.file === equipped[cat] || (i.file === "" && equipped[cat] === ""));
                   return (
                     <div key={cat} className="flex justify-between">
-                      <span className="text-[5px] text-[#4e8888]">{CATEGORY_LABELS[cat]}</span>
-                      <span className="text-[5px] text-[#2d5050]">{item?.name.toUpperCase() ?? "—"}</span>
+                      <span className="text-[7px] text-[#4e8888]">{CATEGORY_LABELS[cat]}</span>
+                      <span className="text-[7px] text-[#2d5050]">{item?.name.toUpperCase() ?? "—"}</span>
                     </div>
                   );
                 })}
@@ -364,7 +391,7 @@ export default function ShopPage() {
                     }}
                     className={`px-card bg-[#e8f5f5] p-4 flex flex-col items-center gap-3 ${gender === label.toLowerCase() ? "on" : ""}`}
                   >
-                    <CharacterPreview size={128} skin={equipped.skin} eyes={equipped.eyes} clothes={equipped.clothes} hair={hair} accessory={equipped.accessories} variants={{ ...equippedVariants, hair: colorVariants[hair] ?? 0 }} />
+                    <CharacterPreview size={128} skin={equipped.skin} eyes={equipped.eyes} clothes={equipped.clothes} pants={equipped.pants} shoes={equipped.shoes} hair={hair} accessory={equipped.accessories} variants={{ ...equippedVariants, hair: colorVariants[hair] ?? 0 }} />
                     <p className="text-[7px] text-[#2d5050]">{label}</p>
                     {gender === label.toLowerCase() && (
                       <div className="px-box bg-[#7ab3b3] text-[#f0f8f8] px-3 py-1 text-[5px]">✓ SELECTED</div>
@@ -385,6 +412,8 @@ export default function ShopPage() {
                   skin:        colorVariants[pw.skin]        ?? 0,
                   eyes:        colorVariants[pw.eyes]        ?? 0,
                   clothes:     colorVariants[pw.clothes]     ?? 0,
+                  pants:       colorVariants[pw.pants]       ?? 0,
+                  shoes:       colorVariants[pw.shoes]       ?? 0,
                   hair:        colorVariants[pw.hair]        ?? 0,
                   accessories: colorVariants[pw.accessories] ?? 0,
                 };
@@ -396,10 +425,11 @@ export default function ShopPage() {
                     className={`px-card bg-[#e8f5f5] p-2 flex flex-col items-center gap-1.5 ${isEquipped ? "on" : ""} ${isLocked ? "locked" : ""}`}
                   >
                     {/* Thumbnail — full character with this item */}
-                    <div style={{ position: "relative", width: 120, height: 120, filter: isLocked ? "grayscale(1)" : undefined }}>
+                    <div style={{ position: "relative", width: 120, height: (activeTab === "pants" || activeTab === "shoes") ? Math.round(120 * 32 / 28) : 120, filter: isLocked ? "grayscale(1)" : undefined }}>
                       <CharacterPreview
                         size={120}
-                        skin={pw.skin} eyes={pw.eyes} clothes={pw.clothes} hair={pw.hair} accessory={pw.accessories}
+                        showLegs={activeTab === "pants" || activeTab === "shoes"}
+                        skin={pw.skin} eyes={pw.eyes} clothes={pw.clothes} pants={pw.pants} shoes={pw.shoes} hair={pw.hair} accessory={pw.accessories}
                         variants={pwVariants}
                       />
                       {isLocked && (
@@ -409,17 +439,17 @@ export default function ShopPage() {
                       )}
                     </div>
 
-                    <p className="text-[5px] text-[#2d5050] text-center">{item.name.toUpperCase()}</p>
+                    <p className="text-[7px] text-[#2d5050] text-center">{item.name.toUpperCase()}</p>
                     {item.cost > 0
-                      ? <p className="text-[5px] text-[#7ab3b3]">⭐{item.cost}</p>
-                      : <p className="text-[5px] text-[#4e8888]">FREE</p>
+                      ? <p className="text-[7px] text-[#7ab3b3]">⭐{item.cost}</p>
+                      : <p className="text-[7px] text-[#4e8888]">FREE</p>
                     }
 
                     {isEquipped ? (
-                      <div className="px-box bg-[#7ab3b3] text-[#f0f8f8] px-2 py-0.5 text-[5px] w-full text-center">✓ ON</div>
+                      <div className="px-box bg-[#7ab3b3] text-[#f0f8f8] px-2 py-0.5 text-[7px] w-full text-center">✓ ON</div>
                     ) : isLocked ? (
                       <button
-                        className="px-btn bg-[#2d5050] text-[#f0f8f8] px-2 py-0.5 text-[5px] w-full"
+                        className="px-btn bg-[#2d5050] text-[#f0f8f8] px-2 py-0.5 text-[7px] w-full"
                         disabled={!canAfford}
                         onClick={e => { e.stopPropagation(); handleBuy(activeTab as Category, item); }}
                       >
@@ -427,7 +457,7 @@ export default function ShopPage() {
                       </button>
                     ) : (
                       <button
-                        className="px-btn bg-[#4e8888] text-[#f0f8f8] px-2 py-0.5 text-[5px] w-full"
+                        className="px-btn bg-[#4e8888] text-[#f0f8f8] px-2 py-0.5 text-[7px] w-full"
                         onClick={e => { e.stopPropagation(); handleEquip(activeTab as Category, item); }}
                       >
                         EQUIP
