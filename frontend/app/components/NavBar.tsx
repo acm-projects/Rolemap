@@ -5,48 +5,53 @@ import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 
 // Renders the user's custom character from shop localStorage data
-const DEFAULT_EQUIPPED = { skin: "char1.png", eyes: "eyes.png", clothes: "suit.png", hair: "buzzcut.png", accessories: "" };
+const DEFAULT_EQUIPPED = { skin: "char1.png", eyes: "eyes.png", clothes: "suit.png", pants: "pants.png", shoes: "shoes.png", hair: "buzzcut.png", accessories: "" };
 
-function ShopCharacter({ size }: { size: number }) {
+function ShopCharacter({ size, zoom = 1 }: { size: number; zoom?: number }) {
   const [equipped, setEquipped] = useState<Record<string, string>>(DEFAULT_EQUIPPED);
   const [colorVariants, setColorVariants] = useState<Record<string, number>>({});
 
   useEffect(() => {
-    // Only load if the user explicitly saved via the shop's SAVE button
     const eq = localStorage.getItem("character_saved");
     const cv = localStorage.getItem("character_saved_variants");
-    if (eq) setEquipped(JSON.parse(eq));
+    if (eq) setEquipped(prev => ({ ...prev, ...JSON.parse(eq) }));
     if (cv) setColorVariants(JSON.parse(cv));
   }, []);
 
-  const bgH = Math.round(size / 28 * 1568);
-  const scale = size / 28;
+  // Render at zoom*size so each pixel is bigger; crop center-horizontally, top-aligned
+  const renderSize = Math.round(size * zoom);
+  const bgH = Math.round(renderSize / 28 * 1568);
+  const scale = renderSize / 28;
+  const xOffset = (32 * scale - renderSize) / 2;
+  const clipLeft = (renderSize - size) / 2 + 4;
+  // Idle frame starts at sprite row 12 — shift background up so head aligns to top
+  const yOffset = Math.round(12 * scale);
 
   const layers: [string, string][] = [
     [equipped.skin, "skin"],
-    [equipped.eyes, "eyes"],
+    [equipped.pants, "pants"],
+    [equipped.shoes, "shoes"],
     [equipped.clothes, "clothes"],
+    [equipped.eyes, "eyes"],
     [equipped.hair, "hair"],
     [equipped.accessories, "accessories"],
   ];
 
   return (
     <div style={{ position: "relative", width: size, height: size, overflow: "hidden", imageRendering: "pixelated" }}>
-      <div style={{ position: "absolute", inset: 0, transform: "scale(1.4)", transformOrigin: "100% 100%" }}>
-        {layers.filter(([f]) => f).map(([f], i) => {
-          const v = colorVariants[f] ?? 0;
-          return (
-            <div key={i} style={{
-              position: "absolute", top: 0, left: 0, width: "100%", height: "100%",
-              backgroundImage: `url(/characters/${f})`,
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: `${-(v * 256 * scale)}px 0`,
-              backgroundSize: `auto ${bgH}px`,
-              imageRendering: "pixelated",
-            }} />
-          );
-        })}
-      </div>
+      {layers.filter(([f]) => f).map(([f], i) => {
+        const v = colorVariants[f] ?? 0;
+        return (
+          <div key={i} style={{
+            position: "absolute", top: 0, left: -clipLeft, width: renderSize, height: renderSize,
+            backgroundImage: `url(/characters/${f})`,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: `${-(v * 256 * scale) - xOffset}px ${-yOffset}px`,
+            backgroundSize: `auto ${bgH}px`,
+            imageRendering: "pixelated",
+          }} />
+        );
+      })}
     </div>
   );
 }
@@ -222,20 +227,7 @@ export function Navbar() {
                 className="pixel-avatar w-10 h-10 flex items-center justify-center overflow-hidden"
                 style={{ backgroundColor: '#c8e6c9' }}
               >
-                {session?.user?.image ? (
-                  <img
-                    src={session.user.image}
-                    alt="avatar"
-                    style={{
-                      imageRendering: 'pixelated',
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                    }}
-                  />
-                ) : (
-                  <ShopCharacter size={40} />
-                )}
+                <ShopCharacter size={40} zoom={1.5} />
               </button>
 
               {/* Dropdown */}
@@ -254,44 +246,17 @@ export function Navbar() {
                     className="px-3 py-2 flex items-start gap-2"
                     style={{ borderBottom: '4px solid #2d5050' }}
                   >
-                    {/* Avatar in dropdown */}
-                    <div
-                      className="w-8 h-8 shrink-0 overflow-hidden"
-                      style={{
-                        borderWidth: 3,
-                        borderStyle: 'solid',
-                        borderColor: '#2d5050',
-                        imageRendering: 'pixelated',
-                        backgroundColor: '#c8e6c9',
-                      }}
-                    >
-                      {session?.user?.image ? (
-                        <img
-                          src={session.user.image}
-                          alt="avatar"
-                          style={{
-                            imageRendering: 'pixelated',
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'cover',
-                          }}
-                        />
-                      ) : (
-                        <ShopCharacter size={32} />
-                      )}
-                    </div>
-
                     {/* Name and email */}
                     <div className="flex-1 min-w-0">
                       <p
                         className="text-[#2d5050] break-words"
-                        style={{ fontFamily: "'Press Start 2P', monospace", fontSize: '6px', lineHeight: '1.2', wordBreak: 'break-word' }}
+                        style={{ fontFamily: "'Press Start 2P', monospace", fontSize: '8px', lineHeight: '1.2', wordBreak: 'break-word' }}
                       >
                         {session?.user?.name ?? "GUEST"}
                       </p>
                       <p
                         className="text-[#4e8888] break-words"
-                        style={{ fontFamily: "'Press Start 2P', monospace", fontSize: '5px', lineHeight: '1.2', wordBreak: 'break-word' }}
+                        style={{ fontFamily: "'Press Start 2P', monospace", fontSize: '7px', lineHeight: '1.2', wordBreak: 'break-word' }}
                       >
                         {session?.user?.email ?? ""}
                       </p>
