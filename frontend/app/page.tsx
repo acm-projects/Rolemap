@@ -1,7 +1,7 @@
 'use client';
 import { Smooch } from "next/font/google";
-import Link from "next/link";
 import { useRef, useEffect, useState } from "react";
+import { signIn } from "next-auth/react";
 
 // ─── Icon paths (only those used in this file) ───────────────────────────────
 const PATHS = {
@@ -97,15 +97,12 @@ function RoadmapCanvas() {
           <svg className="absolute inset-0 w-full h-full" fill="none">
             <path d="M 155 160 C 200 160, 200 120, 250 120" stroke="#4e8888" strokeWidth="1.5" strokeDasharray="4 3" opacity="0.5" />
             <path d="M 155 160 C 200 160, 200 220, 250 220" stroke="#4e8888" strokeWidth="1.5" opacity="0.7" />
-            <path d="M 360 120 C 390 120, 390 80, 420 80"   stroke="#cbd5e1" strokeWidth="1.5" strokeDasharray="4 3" opacity="0.6" />
-            <path d="M 360 120 C 390 120, 390 145, 420 145" stroke="#cbd5e1" strokeWidth="1.5" strokeDasharray="4 3" opacity="0.6" />
-            <path d="M 360 220 C 390 220, 390 210, 420 210" stroke="#cbd5e1" strokeWidth="1.5" strokeDasharray="4 3" opacity="0.6" />
           </svg>
-          <div className="absolute" style={{ left: 20, top: 130 }}><CompletedNode label="HTML" pct={100} /></div>
-          <div className="absolute" style={{ left: 250, top: 92 }}><CompletedNode label="Javascript" pct={100} /></div>
+          <div className="absolute tracking-wide" style={{ left: 20, top: 130 }}><CompletedNode label="HTML" pct={100} /></div>
+          <div className="absolute tracking-wide" style={{ left: 250, top: 92 }}><CompletedNode label="Javascript" pct={100} /></div>
           <div className="absolute bg-[#4e8888] rounded-xl p-3 w-32 shadow-lg" style={{ left: 245, top: 190 }}>
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-xs font-bold text-white">CSS</span>
+              <span className="text-sm font-bold text-white tracking-wide">CSS</span>
               <div className="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center">
                 <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3" stroke="white" strokeWidth="1.2" fill="none"/><circle cx="4" cy="4" r="1" fill="white"/></svg>
               </div>
@@ -114,9 +111,6 @@ function RoadmapCanvas() {
             <ProgressBar pct={45} dark />
             <p className="text-[9px] text-white/90 font-bold mt-1 text-right">IN PROGRESS</p>
           </div>
-          <div className="absolute" style={{ right: 18, top: 55 }}><LockedNode label="React" /></div>
-          <div className="absolute" style={{ right: 18, top: 120 }}><LockedNode label="React Native" /></div>
-          <div className="absolute" style={{ right: 18, top: 185 }}><LockedNode label="Tailwind CSS" /></div>
           {/* Legend */}
           <div className="absolute bottom-3 left-3 bg-white border border-slate-200 rounded-lg p-2.5 flex flex-col gap-1">
             <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mb-1">Map Legend</p>
@@ -293,7 +287,7 @@ export default function LandingPage() {
         <div className="grid grid-cols-2 gap-12 items-center">
           <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-4">
-              <h1 className="text-6xl font-black leading-none tracking-tight text-slate-900">
+              <h1 className="text-6xl font-black leading-none tracking-wider text-slate-900">
                 Rolemap: Your<br />
                 <span>Career, </span>
                 <span className="text-[#4e8888]">Gamified.</span>
@@ -303,14 +297,12 @@ export default function LandingPage() {
               </p>
             </div>
             <div className="flex gap-4">
-              <Link href="/OnBoarding/Major">
-                <button className="bg-[#4e8888] text-white rounded-lg h-12 px-7 text-base font-bold cursor-pointer hover:bg-[#3d7070] transition-colors">
-                  Get Started
-                </button>
-              </Link>
+              <button onClick={() => signIn("google", { callbackUrl: "/OnBoarding/Major" })} className="bg-[#4e8888] text-white rounded-lg h-12 px-7 text-base font-bold cursor-pointer hover:bg-[#3d7070] transition-colors">
+                Get Started
+              </button>
               <button
-              onClick={() => document.getElementById('how-it-works')?.scrollIntoView({behavior: 'smooth'})}
-              className="bg-transparent text-[#4e8888] border-2 border-[#4e8888]/25 rounded-lg h-12 px-7 text-base font-bold cursor-pointer hover:border-[#4e8888]/50 transition-colors">
+                onClick={() => document.getElementById('how-it-works')?.scrollIntoView({behavior: 'smooth'})}
+                className="bg-transparent text-[#4e8888] border-2 border-[#4e8888]/25 rounded-lg h-12 px-7 text-base font-bold cursor-pointer hover:border-[#4e8888]/50 transition-colors">
                 Learn More
               </button>
             </div>
@@ -323,21 +315,21 @@ export default function LandingPage() {
       <div id="how-it-works" className="bg-slate-50 py-20">
         <div className="px-20 flex flex-col items-center gap-12">
           <div className="flex flex-col items-center gap-4 text-center">
-            <h2 className="text-5xl font-bold text-slate-900 tracking-tight">How Your Path is Built</h2>
+            <h2 className="text-5xl font-bold text-slate-900 tracking-wider">How Your Path is Built</h2>
             <p className="text-xl text-slate-500 leading-relaxed max-w-2xl">
               We analyze your professional footprint to craft an optimized journey specifically for your ambitions.
             </p>  
           </div>
-          <div className="w-full">
+          <div className="w-full tracking-wider">
             <PathRoadmap />
           </div>
         </div>
       </div>
 
       {/* ROADMAP TO SUCCESS */}
-      <div className="px-20 py-20 flex flex-col items-center gap-12">
+      <div className="px-20 py-20 flex flex-col items-center gap-12 tracking-wide">
         <div className="flex flex-col items-center gap-4 text-center">
-          <h2 className="text-5xl font-bold text-slate-900 tracking-tight">The Roadmap to Success</h2>
+          <h2 className="text-5xl font-bold text-slate-900 tracking-wider">The Roadmap to Success</h2>
           <p className="text-xl text-slate-500 max-w-xl">
             Everything you need to go from where you are to where you want to be.
           </p>
@@ -362,12 +354,13 @@ export default function LandingPage() {
       {/* CTA */}
       <div className="px-20 pb-20">
         <div className="bg-[#4e8888] rounded-3xl p-12 flex flex-col items-center gap-8 shadow-2xl text-center">
-          <h2 className="text-5xl font-black text-white">Ready to level up your career?</h2>
-          <Link href="/OnBoarding/Major" className="inline-block">
-            <button className="bg-white text-[#4e8888] rounded-xl h-14 px-8 text-lg font-bold cursor-pointer hover:bg-slate-50 transition-colors">
-              Start My Journey Now
-            </button>
-          </Link>
+          <h2 className="text-5xl font-black text-white tracking-wider">Ready to level up your career?</h2>
+          <button
+            onClick={() => signIn("google", { callbackUrl: "/OnBoarding/Major" })}
+            className="tracking-wide bg-white text-[#4e8888] rounded-xl h-14 px-8 text-lg font-bold cursor-pointer hover:bg-slate-50 transition-colors"
+          >
+            Start My Journey Now
+          </button>
         </div>
       </div>
     </div>
