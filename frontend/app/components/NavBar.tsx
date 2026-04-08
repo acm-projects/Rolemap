@@ -10,7 +10,7 @@ export function Navbar() {
 
 
   return (
-    <nav className="absolute top-4 left-1/2 -translate-x-1/2 z-10 w-[95%] max-w-6xl">
+    <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-10 w-[95%]">
       <div className="bg-white border border-slate-200 h-16 rounded-xl flex items-center px-5 shadow-sm gap-6">
 
         {/* Logo */}

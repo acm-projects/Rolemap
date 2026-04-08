@@ -6,6 +6,7 @@ import { Navbar } from '../components/NavBar';
 import fire from '../../icons/fire.png';
 import home from '../../icons/home.png';
 import PixelProgress from '../components/PixelProgress';
+import Heart from '../../app/dashboard/Heart.svg';
 
 // ─── Pixel primitives (inlined) ───────────────────────────────────────────────
 
@@ -173,24 +174,6 @@ const allRoadmaps = [
     ],
     doneNodes: [],
   },
-  {
-    id: 'uxdesign',
-    title: 'UX Design',
-    progress: 45,
-    active: false,
-    nodes: [
-      { x: 12, y: 50 }, { x: 38, y: 50 }, { x: 62, y: 25 },
-      { x: 62, y: 72 }, { x: 86, y: 50 },
-    ],
-    edges: [
-      { a: 0, b: 1, done: true  },
-      { a: 1, b: 2, done: true  },
-      { a: 1, b: 3, done: false },
-      { a: 2, b: 4, done: false },
-      { a: 3, b: 4, done: false },
-    ],
-    doneNodes: [0, 1, 2],
-  },
 ];
 
 // ─── Minimap ──────────────────────────────────────────────────────────────────
@@ -253,9 +236,7 @@ export default function Dashboard() {
     <div className="min-h-screen w-full bg-[#f0f8f8] relative">
       <Navbar />
 
-      <div className="pt-25 px-8 pb-5 ml-8 mr-7">
-        <div className="max-w-7xl mx-auto">
-
+        <div className="pt-25 pb-5 w-[95%] mx-auto">
           {/* Header row */}
           <div className="flex items-start justify-between mb-6 gap-4">
 
@@ -273,13 +254,11 @@ export default function Dashboard() {
               {/* XP block — PixelCard */}
               <PixelCard className="flex items-center gap-2 px-4 py-2.5">
                 <div className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-blue-400">
-                    <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
-                  </svg>
+                  <Image src={Heart} alt='Heart Image' className='h-4 w-4'/>
                 </div>
                 <div>
-                  <p className="text-[10px] text-slate-400 uppercase tracking-wider leading-none">Total XP</p>
-                  <p className="text-sm text-slate-700">2,450</p>
+                  <p className="text-md text-slate-400 uppercase tracking-wider leading-none">Total XP</p>
+                  <p className="text-md text-slate-700">2,450</p>
                 </div>
               </PixelCard>
 
@@ -301,27 +280,29 @@ export default function Dashboard() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-[10px] text-slate-400 uppercase tracking-wider leading-none">Progress</p>
-                  <p className="text-sm text-slate-700">{displayProgress}%</p>
+                  <p className="text-md text-slate-400 uppercase tracking-wider leading-none">Progress</p>
+                  <p className="text-md text-slate-700">{displayProgress}%</p>
                 </div>
               </PixelCard>
 
               {/* Today's Challenge — PixelCard with gradient + PixelButton */}
               <PixelCard className="bg-gradient-to-r from-[#4a7c7c] to-[#6fa8a8] px-5 py-2.5 flex items-center gap-4 text-white !border-t-[#6fa8a8] !border-l-[#6fa8a8] !border-r-[#2d5050] !border-b-[#2d5050]">
                 <div>
-                  <p className="text-[10px] uppercase tracking-widest opacity-75 leading-none mb-0.5">Today&apos;s Challenge</p>
+                  <p className="text-md uppercase tracking-widest opacity-75 leading-none mb-0.5">Today&apos;s Challenge</p>
                   <p className="text-sm leading-tight">Build a useState counter</p>
                 </div>
-                <PixelButton variant="secondary" size="sm">
-                  Start →
-                </PixelButton>
+                <a href='../../tasks' className='block h-full'>
+                  <PixelButton variant="secondary" size="sm">
+                      Start →
+                  </PixelButton>
+                </a>
               </PixelCard>
 
             </div>
           </div>
 
           {/* Main content: 2 columns */}
-          <div className="grid grid-cols-12 gap-6">
+          <div className="grid grid-cols-12 gap-6 w-full">
 
             {/* LEFT col: Leaderboard — PixelCard */}
             <PixelCard className="col-span-4 p-6 h-[360px] overflow-hidden">
@@ -330,37 +311,54 @@ export default function Dashboard() {
                   <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">
                     <Image src={fire} alt="Fire Icon" className="h-6 w-6"/>
                   </div>
-                  <h2 className="text-md text-slate-700 uppercase tracking-wider">Streak Leaderboard</h2>
+                  <h2 className="text-2xl text-slate-700 uppercase tracking-wider">Streak Leaderboard</h2>
                 </div>
                 <span className="text-[10px] font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-full uppercase tracking-wide">Today</span>
               </div>
               <div className="space-y-1.5">
                 {leaderboard.map((user) => (
-                  <div
-                    key={user.rank}
-                    className={`flex items-center gap-3 px-3 py-2 rounded-2xl transition-all
-                      ${user.isYou ? 'bg-white border border-slate-200 shadow-sm' : 'hover:bg-slate-50'}`}
-                  >
-                    <span className={`text-sm font-bold w-5 text-center ${user.isYou ? 'text-[#4a7c7c]' : 'text-slate-300'}`}>
-                      {user.rank}
-                    </span>
-                    <div className={`relative w-9 h-9 rounded-xl ${user.avatarBg} flex items-center justify-center flex-shrink-0`}>
-                      <span className={`text-xs font-bold ${user.isYou ? 'text-[#4a7c7c]' : 'text-white'}`}>
-                        {user.avatar}
-                      </span>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-md text-slate-700 truncate tracking-wide">{user.name}</p>
-                      <p className="text-[10px] text-slate-400">{user.subtitle}</p>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <span className={`text-sm font-bold ${user.isYou ? 'text-slate-700' : 'text-slate-500'}`}>
-                        {user.streak}
-                      </span>
-                      <Image src={fire} alt="Fire Icon" className="h-6 w-6"/>
-                    </div>
-                  </div>
-                ))}
+                    user.isYou ? (
+                      <PixelCard
+                        key={user.rank}
+                        selected={true}      // triggers pixelated style
+                        hover={false}        // no hover for “You”
+                        className="flex items-center gap-3 px-2 py-1"
+                      >
+                        <span className="text-sm font-bold w-5 text-center text-[#4a7c7c]">
+                          {user.rank}
+                        </span>
+                        <div className={`relative w-9 h-9 rounded-xl ${user.avatarBg} flex items-center justify-center flex-shrink-0`}>
+                          <span className="text-xs font-bold text-[#4a7c7c]">{user.avatar}</span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xl text-slate-700 truncate tracking-wide">{user.name}</p>
+                          <p className="text-[13px] text-slate-400">{user.subtitle}</p>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <span className="text-sm font-bold text-slate-700">{user.streak}</span>
+                          <Image src={fire} alt="Fire Icon" className="h-6 w-6"/>
+                        </div>
+                      </PixelCard>
+                    ) : (
+                      <div
+                        key={user.rank}
+                        className="flex items-center gap-3 px-2 py-1 rounded-2xl transition-all hover:bg-slate-50"
+                      >
+                        <span className="text-sm font-bold w-5 text-center text-slate-300">{user.rank}</span>
+                        <div className={`relative w-9 h-9 rounded-xl ${user.avatarBg} flex items-center justify-center flex-shrink-0`}>
+                          <span className="text-xs font-bold text-white">{user.avatar}</span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xl text-slate-700 truncate tracking-wide">{user.name}</p>
+                          <p className="text-[13px] text-slate-400">{user.subtitle}</p>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <span className="text-sm font-bold text-slate-500">{user.streak}</span>
+                          <Image src={fire} alt="Fire Icon" className="h-6 w-6"/>
+                        </div>
+                      </div>
+                    )
+                  ))}
               </div>
             </PixelCard>
 
@@ -368,9 +366,6 @@ export default function Dashboard() {
             <PixelCard className="col-span-8 p-5 flex flex-col h-[360px]">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-3xl text-slate-700 tracking-wider">My Roadmaps</h2>
-                <PixelButton variant="ghost" size="sm">
-                  + Add Roadmap
-                </PixelButton>
               </div>
 
               {/* 2x2 minimap grid */}
@@ -405,16 +400,28 @@ export default function Dashboard() {
                       </div>
 
                       {/* Progress bar + title */}
-                      <div className="px-4 py-3 bg-white border-t border-slate-100">
-                        <div className="flex items-center justify-between mb-1.5">
-                          <p className="text-xl text-slate-700 truncate tracking-wide">{rm.title}</p>
-                          <p className="text-xl text-slate-400 ml-2 flex-shrink-0">{rm.progress}%</p>
-                        </div>
-                        <div className="h-1.5 bg-slate-100 overflow-hidden">
-                        <PixelProgress value={40} showLabel={true}/>
+                      <div
+                      /*value={40} showLabel={true} step={2}*/
+                      >
+                        <div className="px-4 py-3 bg-white border-t border-slate-100">
+                          <div className="flex items-center justify-between mb-1.5">
+                            <p className="text-xl text-slate-700 truncate tracking-wide">{rm.title}</p>
+                            <p className="text-xl text-slate-400 ml-2 flex-shrink-0">{rm.progress}%</p>
+                          </div>
+                          <div className="h-1.5 bg-slate-100 overflow-hidden">
+                          <PixelProgress value={40} showLabel={true}/>
+                          </div>
                         </div>
                       </div>
                     </div>
+                    <a href='../../OnBoarding/Major' className='block h-full'>
+                    <PixelCard className="h-full mt-3 transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-1.5 cursor-pointer">
+                      <button 
+                      className="flex items-center justify-center w-full h-full hover:bg-slate-50 transition-colors">
+                        <div className="text-5xl text-slate-400">+</div>
+                      </button>
+                    </PixelCard>
+                    </a>
                   </a>
                 ))}
               </div>
@@ -423,6 +430,5 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-    </div>
   );
 }
