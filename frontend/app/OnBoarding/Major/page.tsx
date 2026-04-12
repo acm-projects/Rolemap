@@ -1,7 +1,18 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Code2, BarChart2, Server, Cloud, Shield, GitBranch, Search, ArrowLeft, ArrowRight } from "lucide-react";
+import { api } from "@/lib/api";
+import {
+  Code2,
+  BarChart2,
+  Server,
+  Cloud,
+  Shield,
+  GitBranch,
+  Search,
+  ArrowLeft,
+  ArrowRight,
+} from "lucide-react";
 import PixelButton from "../../components/PixelButton";
 import PixelCard from "../../components/PixelCard";
 import PixelInput from "../../components/PixelInput";
@@ -12,37 +23,36 @@ type Specialty = {
   id: string;
   label: string;
   image: React.ReactNode;
-  imageSelected: React.ReactNode;
 };
 
 const specialties: Specialty[] = [
-  { id: "software engineer",        label: "Software Engineer", image: <Code2 size={100} />,    imageSelected: <Code2 size={100} className="text-white" /> },
-  { id: "Cybersecurity Specialist", label: "Cybersecurity",     image: <Shield size={100} />,   imageSelected: <Shield size={100} className="text-white" /> },
-  { id: "ML/ Data Scientist",       label: "ML / Data Sci",     image: <BarChart2 size={100} />,imageSelected: <BarChart2 size={100} className="text-white" /> },
-  { id: "Cloud Engineer",           label: "Cloud Engineer",    image: <Cloud size={100} />,    imageSelected: <Cloud size={100} className="text-white" /> },
-  { id: "Product Manager",          label: "Product Manager",   image: <GitBranch size={100} />,imageSelected: <GitBranch size={100} className="text-white" /> },
-  { id: "Dev Ops",                  label: "Dev Ops",           image: <Server size={100} />,   imageSelected: <Server size={100} className="text-white" /> },
+  { id: "software engineer", label: "Software Engineer", image: <Code2 size={100} /> },
+  { id: "Cybersecurity Specialist", label: "Cybersecurity", image: <Shield size={100} /> },
+  { id: "ML/ Data Scientist", label: "ML / Data Sci", image: <BarChart2 size={100} /> },
+  { id: "Cloud Engineer", label: "Cloud Engineer", image: <Cloud size={100} /> },
+  { id: "Product Manager", label: "Product Manager", image: <GitBranch size={100} /> },
+  { id: "Dev Ops", label: "Dev Ops", image: <Server size={100} /> },
 ];
 
 const allSpecialties = [
-  { id: "software-engineer",  label: "Software Engineer",              icon: <Code2 size={14} /> },
-  { id: "frontend-engineer",  label: "Frontend Engineer",              icon: <Code2 size={14} /> },
-  { id: "backend-engineer",   label: "Backend Engineer",               icon: <Code2 size={14} /> },
-  { id: "fullstack-engineer", label: "Fullstack Engineer",             icon: <Code2 size={14} /> },
-  { id: "mobile-engineer",    label: "Mobile Engineer",                icon: <Code2 size={14} /> },
-  { id: "game-developer",     label: "Game Developer",                 icon: <Code2 size={14} /> },
-  { id: "cybersecurity-analyst", label: "Cybersecurity Analyst",       icon: <Shield size={14} /> },
-  { id: "penetration-tester", label: "Penetration Tester",             icon: <Shield size={14} /> },
-  { id: "security-engineer",  label: "Security Engineer",              icon: <Shield size={14} /> },
-  { id: "ml-engineer",        label: "Machine Learning Engineer",      icon: <BarChart2 size={14} /> },
-  { id: "data-scientist",     label: "Data Scientist",                 icon: <BarChart2 size={14} /> },
-  { id: "ai-engineer",        label: "AI Engineer",                    icon: <BarChart2 size={14} /> },
-  { id: "cloud-infra",        label: "Cloud Infrastructure Engineer",  icon: <Cloud size={14} /> },
-  { id: "cloud-architect",    label: "Cloud Architect",                icon: <Cloud size={14} /> },
-  { id: "sre",                label: "Site Reliability Engineer (SRE)",icon: <Cloud size={14} /> },
-  { id: "tpm",                label: "Technical Project Manager",      icon: <GitBranch size={14} /> },
-  { id: "devops-engineer",    label: "DevOps Engineer",                icon: <Server size={14} /> },
-  { id: "cicd-engineer",      label: "CI/CD Engineer",                 icon: <Server size={14} /> },
+  { id: "software-engineer", label: "Software Engineer", icon: <Code2 size={14} /> },
+  { id: "frontend-engineer", label: "Frontend Engineer", icon: <Code2 size={14} /> },
+  { id: "backend-engineer", label: "Backend Engineer", icon: <Code2 size={14} /> },
+  { id: "fullstack-engineer", label: "Fullstack Engineer", icon: <Code2 size={14} /> },
+  { id: "mobile-engineer", label: "Mobile Engineer", icon: <Code2 size={14} /> },
+  { id: "game-developer", label: "Game Developer", icon: <Code2 size={14} /> },
+  { id: "cybersecurity-analyst", label: "Cybersecurity Analyst", icon: <Shield size={14} /> },
+  { id: "penetration-tester", label: "Penetration Tester", icon: <Shield size={14} /> },
+  { id: "security-engineer", label: "Security Engineer", icon: <Shield size={14} /> },
+  { id: "ml-engineer", label: "Machine Learning Engineer", icon: <BarChart2 size={14} /> },
+  { id: "data-scientist", label: "Data Scientist", icon: <BarChart2 size={14} /> },
+  { id: "ai-engineer", label: "AI Engineer", icon: <BarChart2 size={14} /> },
+  { id: "cloud-infra", label: "Cloud Infrastructure Engineer", icon: <Cloud size={14} /> },
+  { id: "cloud-architect", label: "Cloud Architect", icon: <Cloud size={14} /> },
+  { id: "sre", label: "Site Reliability Engineer (SRE)", icon: <Cloud size={14} /> },
+  { id: "tpm", label: "Technical Project Manager", icon: <GitBranch size={14} /> },
+  { id: "devops-engineer", label: "DevOps Engineer", icon: <Server size={14} /> },
+  { id: "cicd-engineer", label: "CI/CD Engineer", icon: <Server size={14} /> },
 ];
 
 export default function SpecialtyPage() {
@@ -53,9 +63,21 @@ export default function SpecialtyPage() {
   const [selectedLabel, setSelectedLabel] = useState<string>("");
   const searchRef = useRef<HTMLDivElement>(null);
 
-  const suggestions = query.trim().length > 0
-    ? allSpecialties.filter(s => s.label.toLowerCase().includes(query.toLowerCase())).slice(0, 5)
-    : [];
+  useEffect(() => {
+    api
+      .currentUser()
+      .then((user) => {
+        if (user.onboarding_completed) router.replace("/dashboard");
+      })
+      .catch(() => {
+        // Ignore transient API failures and allow onboarding flow.
+      });
+  }, [router]);
+
+  const suggestions =
+    query.trim().length > 0
+      ? allSpecialties.filter((s) => s.label.toLowerCase().includes(query.toLowerCase())).slice(0, 5)
+      : [];
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -79,34 +101,46 @@ export default function SpecialtyPage() {
     setSelectedLabel(label);
   };
 
+  const handleContinue = () => {
+    if (selected) {
+      localStorage.setItem("ob_role", selected);
+    }
+    router.push("/OnBoarding/Company");
+  };
+
   return (
     <div className="relative h-screen overflow-hidden w-full bg-[#f0f8f8] p-3 flex flex-col">
       <div className="scanlines" />
 
       <div className="max-w-5xl mx-auto w-full flex flex-col justify-between flex-1">
-        {/* Header */}
         <div className="mb-3">
           <PixelProgress value={20} showLabel={true} step={1} totalSteps={5} />
-          <TypewriterText
-            text="What is your specialty?"
-            speed={40}
-            delay={400}
-            className="text-5xl text-[#2d5050] block mt-7"
-          />
-          <TypewriterText
-            text="Pick your primary focus area. You can search for a specific role or choose from the categories below."
-            speed={20}
-            delay={1600}
-            className="text-2xl text-[#4e8888] max-w-2xl block mb-5"
-          />
+          <div className="min-h-[5rem]">
+            <TypewriterText
+              text="What is your specialty?"
+              speed={20}
+              delay={400}
+              className="text-5xl text-[#2d5050] block mt-7"
+            />
+          </div>
+          <div className="min-h-[7rem]">
+            <TypewriterText
+              text="Pick your primary focus area. You can search for a specific role or choose from the categories below."
+              speed={10}
+              delay={800}
+              className="text-2xl text-[#4e8888] max-w-2xl block mb-5"
+            />
+          </div>
         </div>
 
-        {/* Search */}
         <div ref={searchRef} className="relative mb-5 text-xl">
           <PixelInput
             type="text"
             value={query}
-            onChange={(e) => { setQuery(e.target.value); setShowDropdown(true); }}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setShowDropdown(true);
+            }}
             placeholder="Search for a specialty..."
             icon={<Search className="w-4 h-4" />}
           />
@@ -127,34 +161,28 @@ export default function SpecialtyPage() {
           )}
         </div>
 
-        {/* Specialty Grid */}
         <div className="grid grid-cols-3 md:grid-cols-6 gap-2 mb-2 flex-1">
           {specialties.map((s) => {
             const isSelected = selected === s.id;
             return (
-              <PixelCard
-                key={s.id}
-                onClick={() => handleCardSelect(s.id, s.label)}
-                selected={isSelected}
-              >
-                {/* Full card bg swap when selected */}
+              <PixelCard key={s.id} onClick={() => handleCardSelect(s.id, s.label)} selected={isSelected}>
                 <div
-                  className={`h-full flex flex-col items-center justify-center gap-3 transition-all duration-100 relative
-                    ${isSelected ? "bg-[#3a6666] translate-y-[4px]" : "bg-transparent translate-y-0"}
-                  `}
+                  className={`h-full flex flex-col items-center justify-center gap-3 transition-all duration-100 relative ${
+                    isSelected ? "bg-[#3a6666] translate-y-[4px]" : "bg-transparent translate-y-0"
+                  }`}
                 >
-
-                  {/* Icon */}
-                  <div className={`w-12 h-12 flex items-center justify-center transition-colors duration-100
-                    ${isSelected ? "text-white" : "text-[#4e8888]"}
-                  `}>
+                  <div
+                    className={`w-12 h-12 flex items-center justify-center transition-colors duration-100 ${
+                      isSelected ? "text-white" : "text-[#4e8888]"
+                    }`}
+                  >
                     {s.image}
                   </div>
-
-                  {/* Label */}
-                  <span className={`text-xl text-center font-jersey leading-tight transition-colors duration-100 px-1
-                    ${isSelected ? "text-white" : "text-[#2d5050]"}
-                  `}>
+                  <span
+                    className={`text-xl text-center font-jersey leading-tight transition-colors duration-100 px-1 ${
+                      isSelected ? "text-white" : "text-[#2d5050]"
+                    }`}
+                  >
                     {s.label}
                   </span>
                 </div>
@@ -163,21 +191,17 @@ export default function SpecialtyPage() {
           })}
         </div>
 
-        {/* Actions */}
+        {selectedLabel && <div className="text-sm text-[#4e8888] font-jersey">Selected: {selectedLabel}</div>}
+
         <div className="flex items-center justify-between mt-3">
-          <PixelButton variant="ghost" onClick={() => router.push("../")} size="md">
+          <PixelButton variant="ghost" onClick={() => router.push("/")} size="md">
             <div className="flex items-center gap-2 text-xl">
               <ArrowLeft className="w-4 h-4" />
               <span>Back</span>
             </div>
           </PixelButton>
           <div className="flex items-center gap-4 text-xl">
-            <PixelButton
-              variant="primary"
-              onClick={() => router.push("../OnBoarding/Company")}
-              size="md"
-              disabled={!selected}
-            >
+            <PixelButton variant="primary" onClick={handleContinue} size="md" disabled={!selected}>
               <div className="flex items-center gap-2 text-xl">
                 <span>Continue</span>
                 <ArrowRight className="w-4 h-4" />

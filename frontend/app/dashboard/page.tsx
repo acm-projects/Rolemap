@@ -189,33 +189,19 @@ function RoadmapMinimap({
   doneNodes: number[];
   active: boolean;
 }) {
-  const autoOpacity = active ? 1 : 0.7;
-
   return (
-    <svg
-      viewBox="0 0 100 100"
-      className="w-full h-full"
-      preserveAspectRatio="xMidYMid meet"
-      style={{ opacity: autoOpacity }}
-    >
+    <svg viewBox="0 0 100 100" className="w-full h-full" preserveAspectRatio="xMidYMid meet" style={{ opacity: active ? 1 : 0.7 }}>
       {edges.map((e, i) => {
         const na = nodes[e.a], nb = nodes[e.b];
         return (
-          <line key={i}
-            x1={na.x} y1={na.y} x2={nb.x} y2={nb.y}
-            stroke={e.done ? '#4a7c7c' : '#cbd5e1'}
-            strokeWidth="2.5"
-            strokeDasharray={e.done ? 'none' : '4 3'}
-          />
+          <line key={i} x1={na.x} y1={na.y} x2={nb.x} y2={nb.y}
+            stroke={e.done ? '#4a7c7c' : '#cbd5e1'} strokeWidth="2.5"
+            strokeDasharray={e.done ? 'none' : '4 3'} />
         );
       })}
       {nodes.map((n, i) => (
-        <circle key={i}
-          cx={n.x} cy={n.y} r="6"
-          fill={doneNodes.includes(i) ? '#4a7c7c' : '#e2e8f0'}
-          stroke="white"
-          strokeWidth="2"
-        />
+        <circle key={i} cx={n.x} cy={n.y} r="6"
+          fill={doneNodes.includes(i) ? '#4a7c7c' : '#e2e8f0'} stroke="white" strokeWidth="2" />
       ))}
     </svg>
   );
@@ -224,13 +210,40 @@ function RoadmapMinimap({
 // ─── Dashboard ────────────────────────────────────────────────────────────────
 
 export default function Dashboard() {
+  const router = useRouter();
+  const [data, setData] = useState<DashboardResponse | null>(null);
+  const [loading, setLoading] = useState(true);
   const [displayProgress, setDisplayProgress] = useState(0);
-  const userName = 'Your Name';
 
   useEffect(() => {
-    const timer = setTimeout(() => setDisplayProgress(68), 300);
-    return () => clearTimeout(timer);
+    // Gate: redirect to onboarding if not completed
+    api.currentUser()
+      .then(user => { if (!user.onboarding_completed) router.replace("/OnBoarding/Major"); })
+      .catch(() => {});
+
+    api.dashboard()
+      .then(d => {
+        setData(d);
+        const timer = setTimeout(() => setDisplayProgress(d.active_roadmap.progress_percentage), 300);
+        return () => clearTimeout(timer);
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen w-full bg-[#eef1f7] flex items-center justify-center">
+        <p className="text-slate-400">Loading...</p>
+      </div>
+    );
+  }
+
+  const userName = data?.user.name ?? '';
+  const xpTotal = data?.user.xp_total?.toLocaleString() ?? '0';
+  const tasksCompleted = data?.gamification.tasks_completed ?? 0;
+  const roadmaps = data?.roadmaps ?? [];
+  const leaderboard = data?.leaderboard ?? [];
 
   return (
     <div className="min-h-screen w-full bg-[#f0f8f8] relative">
@@ -242,6 +255,9 @@ export default function Dashboard() {
 
             {/* Left: title */}
             <div>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">
+                {data?.active_roadmap.title} Path
+              </p>
               <div className='flex items-center '>
                 <h1 className="text-5xl text-slate-700 leading-tight tracking-wider">Dashboard</h1>
               </div>
@@ -267,16 +283,9 @@ export default function Dashboard() {
                 <div className="relative w-7 h-7 flex-shrink-0">
                   <svg className="w-full h-full" viewBox="0 0 200 200">
                     <circle cx="100" cy="100" r="80" fill="none" stroke="#e2e8f0" strokeWidth="24" />
-                    <circle
-                      cx="100" cy="100" r="80"
-                      fill="none"
-                      stroke="#4a7c7c"
-                      strokeWidth="24"
-                      strokeDasharray={`${displayProgress * 5.03} 502`}
-                      strokeLinecap="round"
-                      style={{ transition: 'stroke-dasharray 1s ease-out' }}
-                      transform="rotate(-90 100 100)"
-                    />
+                    <circle cx="100" cy="100" r="80" fill="none" stroke="#4a7c7c" strokeWidth="24"
+                      strokeDasharray={`${displayProgress * 5.03} 502`} strokeLinecap="round"
+                      style={{ transition: 'stroke-dasharray 1s ease-out' }} transform="rotate(-90 100 100)" />
                   </svg>
                 </div>
                 <div>
@@ -297,7 +306,6 @@ export default function Dashboard() {
                   </PixelButton>
                 </a>
               </PixelCard>
-
             </div>
           </div>
 
@@ -309,7 +317,7 @@ export default function Dashboard() {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">
-                    <Image src={fire} alt="Fire Icon" className="h-6 w-6"/>
+                    <Image src={fire} alt="Fire Icon" className="h-6 w-6" />
                   </div>
                   <h2 className="text-2xl text-slate-700 uppercase tracking-wider">Streak Leaderboard</h2>
                 </div>
@@ -368,36 +376,40 @@ export default function Dashboard() {
                 <h2 className="text-3xl text-slate-700 tracking-wider">My Roadmaps</h2>
               </div>
 
-              {/* 2x2 minimap grid */}
-              <div className="grid grid-cols-2 grid-rows-2 gap-3 flex-1 min-h-0 overflow-hidden">
-                {allRoadmaps.map((rm) => (
-                  <a
-                    key={rm.id}
-                    href="/map"
-                    className="block min-h-0"
-                  >
-                    <div
-                      className={`flex flex-col overflow-hidden h-full transition-all hover:shadow-md hover:translate-y-[-2px] cursor-pointer
-                        border-4
-                        ${rm.active
-                          ? 'border-t-[#7ab3b3] border-l-[#7ab3b3] border-r-[#2d5050] border-b-[#2d5050]'
-                          : 'border-t-[#d4e8e8] border-l-[#d4e8e8] border-r-[#7ab3b3] border-b-[#7ab3b3]'
-                        }`}
+              <div className="grid grid-cols-2 gap-3 flex-1 min-h-0">
+                {roadmaps.length === 0 ? (
+                  <div className="col-span-2 flex flex-col items-center justify-center text-center py-8">
+                    <p className="text-sm text-slate-400 mb-2">No roadmaps yet</p>
+                    <a href="/OnBoarding/Major" className="text-xs font-semibold text-[#4a7c7c] bg-[#4a7c7c]/10 hover:bg-[#4a7c7c]/20 px-4 py-1.5 rounded-xl transition-colors">
+                      Complete onboarding to generate your roadmap
+                    </a>
+                  </div>
+                ) : roadmaps.map((rm: DashboardRoadmap) => {
+                  const minimap = rm.minimap ?? { nodes: [], edges: [], done_nodes: [] };
+                  const active = rm.status === 'active';
+                  return (
+                    <a
+                      key={rm.id}
+                      href="/map"
+                      className="block min-h-0"
                     >
-                      {/* Minimap SVG area */}
-                      <div className="flex-1 bg-[#f7fafa] relative px-3 py-2 min-h-0">
-                        {rm.active && (
-                          <span className="absolute top-2 left-2 text-[9px] font-bold text-[#4a7c7c] bg-white border border-[#4a7c7c]/30 px-2 py-0.5 rounded-full uppercase tracking-wider z-10">
-                            Active
-                          </span>
-                        )}
-                        <RoadmapMinimap
-                          nodes={rm.nodes}
-                          edges={rm.edges}
-                          doneNodes={rm.doneNodes}
-                          active={rm.active}
-                        />
-                      </div>
+                      <div
+                        className={`flex flex-col overflow-hidden h-full transition-all hover:shadow-md hover:translate-y-[-2px] cursor-pointer
+                          border-4
+                          ${active
+                            ? 'border-t-[#7ab3b3] border-l-[#7ab3b3] border-r-[#2d5050] border-b-[#2d5050]'
+                            : 'border-t-[#d4e8e8] border-l-[#d4e8e8] border-r-[#7ab3b3] border-b-[#7ab3b3]'
+                          }`}
+                      >
+                        {/* Minimap SVG area */}
+                        <div className="flex-1 bg-[#f7fafa] relative px-3 py-2 min-h-0">
+                          {active && (
+                            <span className="absolute top-2 left-2 text-[9px] font-bold text-[#4a7c7c] bg-white border border-[#4a7c7c]/30 px-2 py-0.5 rounded-full uppercase tracking-wider z-10">
+                              Active
+                            </span>
+                          )}
+                          <RoadmapMinimap nodes={minimap.nodes} edges={minimap.edges} doneNodes={minimap.done_nodes} active={active} />
+                        </div>
 
                       {/* Progress bar + title */}
                       <div
