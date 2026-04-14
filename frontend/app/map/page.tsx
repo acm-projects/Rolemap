@@ -42,12 +42,14 @@ function toFlowEdges(edges: RoadmapEdge[], checkpoints: Checkpoint[]) {
       id: e.id,
       source: e.source,
       target: e.target,
-      type: 'smoothstep' as const,
+      type: 'step' as const,
       animated: false,
       style: {
-        stroke: unlocked ? '#4a7c7c' : '#c8d0dc',
-        strokeWidth: 1.5,
-        strokeDasharray: '6 4',
+        stroke: unlocked ? '#548080' : '#c8d0dc',
+        strokeWidth: 7,
+        strokeDasharray: '8 14',
+        strokeLinecap: 'square',
+        animation: unlocked ? 'stones-fwd 2.4s linear infinite' : 'none',
       },
     };
   });
@@ -86,7 +88,7 @@ function RoadmapContent() {
           const laidOutNode = laidOutNodes.find(n => n.id === activeCP.id);
           const pos = laidOutNode?.position ?? activeCP.position;
           setTimeout(() => {
-            setCenter(pos.x + 128, pos.y + 70, { zoom: 1.2, duration: 1000 });
+            setCenter(pos.x + 128, pos.y + 70, { zoom: 1.5, duration: 1000 });
           }, 200);
         } else {
           setTimeout(() => fitView({ duration: 1000 }), 200);
@@ -102,7 +104,7 @@ function RoadmapContent() {
   useEffect(() => {
     if (!pendingCenter) return;
     const timer = setTimeout(() => {
-      setCenter(pendingCenter.x, pendingCenter.y, { zoom: 1.1, duration: 800 });
+      setCenter(pendingCenter.x, pendingCenter.y, { zoom: 1.5, duration: 800 });
       setPendingCenter(null);
     }, 50);
     return () => clearTimeout(timer);

@@ -209,7 +209,7 @@ export default function DailyPage() {
 
                 {/* Title */}
                 <div className="mb-8">
-                  <h1 className="text-3xl md:text-4xl text-[#2d5050] tracking-tight leading-tight mb-4">
+                  <h1 className="text-3xl md:text-4xl text-[#2d5050] tracking-normal font-normal leading-tight mb-4">
                     {activeTaskObj.title}
                   </h1>
                   <div className="w-16 h-1 bg-[#4e8888]" />

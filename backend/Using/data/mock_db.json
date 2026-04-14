@@ -6,22 +6,25 @@
       "name": "Alex Morgan",
       "image_url": null,
       "github_username": "OhamjDung",
-      "xp_total": 2485,
-      "current_streak": 1,
-      "longest_streak": 31,
+      "xp_total": 0,
+      "current_streak": 0,
+      "longest_streak": 0,
       "onboarding_completed": true,
       "onboarding_step": 5,
       "created_at": "2025-09-01T00:00:00Z",
       "last_active_date": "2026-04-08",
       "character": {
-        "skin": "char1.png",
+        "skin": "char2.png",
         "eyes": "eyes.png",
-        "clothes": "suit.png",
-        "pants": "pants.png",
+        "clothes": "basic.png",
+        "pants": "skirt.png",
         "shoes": "shoes.png",
-        "hair": "buzzcut.png",
+        "hair": "wavy.png",
         "accessories": "",
-        "color_variants": {}
+        "color_variants": {
+          "pants.png": 6,
+          "skirt.png": 6
+        }
       }
     }
   ],
@@ -339,7 +342,7 @@
       "roadmap_id": "rm-generated",
       "label": "Programming Fundamentals",
       "kind": "lesson",
-      "progress": 25,
+      "progress": 50,
       "locked": false,
       "position": {
         "x": 300,
@@ -7840,11 +7843,11 @@
     {
       "id": "ug-001",
       "user_id": "u-001",
-      "xp_total": 2485,
-      "tasks_completed": 17,
+      "xp_total": 0,
+      "tasks_completed": 0,
       "leaderboard_rank": 2,
-      "current_streak": 1,
-      "longest_streak": 31,
+      "current_streak": 0,
+      "longest_streak": 0,
       "updated_at": "2026-03-29T12:00:00Z"
     }
   ],
@@ -7871,26 +7874,7 @@
       "xp_reward": 150
     }
   ],
-  "user_achievements": [
-    {
-      "id": "ua-001",
-      "user_id": "u-001",
-      "achievement_id": "ach-001",
-      "earned_at": "2026-02-10T09:00:00Z"
-    },
-    {
-      "id": "ua-002",
-      "user_id": "u-001",
-      "achievement_id": "ach-002",
-      "earned_at": "2026-03-01T14:30:00Z"
-    },
-    {
-      "id": "ua-003",
-      "user_id": "u-001",
-      "achievement_id": "ach-003",
-      "earned_at": "2026-03-15T08:00:00Z"
-    }
-  ],
+  "user_achievements": [],
   "leaderboard": [
     {
       "rank": 1,
@@ -11019,7 +11003,7 @@
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic": "Understand basic programming constructs like loops and conditionals.",
-      "status": "completed"
+      "status": "not_started"
     },
     {
       "task_id": "subtopic__cp-gen-000__1",
@@ -22167,35 +22151,70 @@
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic_idx": 0,
-      "status": "completed"
+      "status": "not_started"
     },
     {
       "task_id": "resource__cp-gen-000__0__1",
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic_idx": 0,
-      "status": "completed"
+      "status": "not_started"
     },
     {
       "task_id": "resource__cp-gen-000__0__2",
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic_idx": 0,
-      "status": "completed"
+      "status": "not_started"
     },
     {
       "task_id": "resource__cp-gen-000__0__3",
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic_idx": 0,
-      "status": "completed"
+      "status": "not_started"
     },
     {
       "task_id": "resource__cp-gen-000__0__4",
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic_idx": 0,
-      "status": "completed"
+      "status": "not_started"
+    },
+    {
+      "task_id": "resource__cp-gen-000__1__2",
+      "user_id": "u-001",
+      "checkpoint_id": "cp-gen-000",
+      "subtopic_idx": 1,
+      "status": "not_started"
+    },
+    {
+      "task_id": "resource__cp-gen-000__1__1",
+      "user_id": "u-001",
+      "checkpoint_id": "cp-gen-000",
+      "subtopic_idx": 1,
+      "status": "not_started"
+    },
+    {
+      "task_id": "resource__cp-gen-000__1__0",
+      "user_id": "u-001",
+      "checkpoint_id": "cp-gen-000",
+      "subtopic_idx": 1,
+      "status": "not_started"
+    },
+    {
+      "task_id": "resource__cp-gen-000__1__4",
+      "user_id": "u-001",
+      "checkpoint_id": "cp-gen-000",
+      "subtopic_idx": 1,
+      "status": "not_started"
+    },
+    {
+      "task_id": "resource__cp-gen-000__1__3",
+      "user_id": "u-001",
+      "checkpoint_id": "cp-gen-000",
+      "subtopic_idx": 1,
+      "status": "not_started"
     }
   ],
   "daily_done": false
