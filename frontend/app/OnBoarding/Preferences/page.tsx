@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Eye, Headphones, BookOpen, Wrench, ArrowLeft, ArrowRight, X } from "lucide-react";
 import PixelButton from "../../components/PixelButton";
@@ -31,6 +31,16 @@ export default function LearningPreferences() {
     localStorage.setItem("ob_preferences", JSON.stringify({ preferences: selected, other: otherText }));
     router.push("/OnBoarding/Resume");
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== "Enter" || !canContinue) return;
+      if ((e.target as HTMLElement).tagName === "TEXTAREA") return;
+      handleContinue();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [canContinue]);
 
   return (
     <div className="relative h-screen overflow-hidden w-full bg-[#f0f8f8] p-3 flex flex-col">

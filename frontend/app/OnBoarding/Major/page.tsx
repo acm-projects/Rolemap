@@ -108,6 +108,14 @@ export default function SpecialtyPage() {
     router.push("/OnBoarding/Company");
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Enter" && selected) handleContinue();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [selected]);
+
   return (
     <div className="relative h-screen overflow-hidden w-full bg-[#f0f8f8] p-3 flex flex-col">
       <div className="scanlines" />
