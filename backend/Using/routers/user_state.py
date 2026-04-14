@@ -891,6 +891,10 @@ async def generate_roadmap_api(body: dict[str, Any]):
         with open(roadmap_json, encoding="utf-8") as f:
             roadmap_steps = json.load(f)
         print(f"[generate] Loaded {len(roadmap_steps)} steps from roadmap.json", flush=True)
+        MAX_LESSONS = 75  # yields ~100 total checkpoints after gates are inserted
+        if len(roadmap_steps) > MAX_LESSONS:
+            roadmap_steps = roadmap_steps[:MAX_LESSONS]
+            print(f"[generate] Capped roadmap at {MAX_LESSONS} lessons", flush=True)
     else:
         print("[generate] ERROR: roadmap.json was not created — generator likely failed", flush=True)
 
@@ -928,7 +932,7 @@ async def generate_roadmap_api(body: dict[str, Any]):
                 gate_label = f"{role} Project #{quiz_count // 3}"
             else:
                 gate_kind = "quiz"
-                gate_label = " + ".join(lesson_buffer[-batch_count:]) + " Quiz"
+                gate_label = lesson_buffer[-1] + " Quiz"
             skeleton.append({"label": gate_label, "kind": gate_kind})
             lesson_buffer = []
             batch_count = 0
@@ -967,7 +971,15 @@ async def generate_roadmap_api(body: dict[str, Any]):
             print(f"[generate] Gemini batch failed ({e}), using fallback", flush=True)
 
     def _fallback(label: str) -> dict:
-        return {"description": f"Learn {label}", "learning_goals": [label]}
+        return {
+            "description": f"Learn the key concepts of {label}.",
+            "learning_goals": [
+                f"Understand the core principles of {label}",
+                f"Apply {label} in practical scenarios",
+                f"Explore advanced patterns in {label}",
+                f"Build something real using {label}",
+            ],
+        }
 
     # --- Pass 3: assemble final checkpoints ---
     checkpoints = []
