@@ -392,3 +392,26 @@ class ProjectEvaluateResponse(BaseModel):
     concept_mastery: ConceptMasterySection
     overall_feedback: str = Field(..., description="2-3 paragraph constructive summary")
     recommendations: List[str] = Field(..., description="3-5 specific actionable next steps")
+
+
+# ============================================================================
+# Shop & skill decay (mock_db / user_state)
+# ============================================================================
+
+class ShopPurchaseRequest(BaseModel):
+    """Buy a cosmetic shop item with XP."""
+    category: str = Field(..., description="skin | eyes | clothes | pants | shoes | hair | accessories")
+    item_id: str = Field(..., description="Catalog item id")
+
+
+class ShopAppearancePatch(BaseModel):
+    """Persist equipped layers and palette choices."""
+    equipped: Dict[str, str]
+    gender: Optional[str] = Field(default=None, description="boy | girl")
+    color_variants: Optional[Dict[str, int]] = None
+
+
+class SkillDecayReviewRequest(BaseModel):
+    """Record an SM-2 review for a roadmap checkpoint."""
+    id: str = Field(..., description="Checkpoint id")
+    quality: int = Field(..., ge=0, le=5, description="SM-2 quality (0=forgot … 5=perfect)")

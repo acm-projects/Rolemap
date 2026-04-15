@@ -6,7 +6,7 @@
       "name": "Alex Morgan",
       "image_url": null,
       "github_username": "OhamjDung",
-      "xp_total": 2450,
+      "xp_total": 2350,
       "current_streak": 24,
       "longest_streak": 31,
       "onboarding_completed": true,
@@ -7829,7 +7829,7 @@
     {
       "id": "ug-001",
       "user_id": "u-001",
-      "xp_total": 2450,
+      "xp_total": 2350,
       "tasks_completed": 12,
       "leaderboard_rank": 2,
       "current_streak": 24,
@@ -22149,5 +22149,22 @@
       },
       "cached_at": "2026-04-07T19:16:29.944471"
     }
-  ]
+  ],
+  "user_shop": {
+    "user_id": "u-001",
+    "purchased_item_ids": [
+      "eyes_lipstick"
+    ],
+    "equipped": {
+      "skin": "char1.png",
+      "eyes": "eyes.png",
+      "clothes": "suit.png",
+      "pants": "pants.png",
+      "shoes": "shoes.png",
+      "hair": "buzzcut.png",
+      "accessories": ""
+    },
+    "gender": "boy",
+    "color_variants": {}
+  }
 }

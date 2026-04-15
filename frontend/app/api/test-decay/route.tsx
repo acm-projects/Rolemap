@@ -1,6 +1,19 @@
 "use client";
 import { useEffect, useState } from "react";
-import { api, type SkillDecayEntry } from "@/lib/api";
+
+type Entry = {
+  id: string;
+  skill: string;
+  health: number;
+  times_practiced: number;
+  sm2_interval: number;
+  sm2_easiness: string;
+  sm2_repetitions: number;
+  days_until_review: number;
+  next_review: string;
+  last_reviewed_at: string;
+  decay_level: string;
+};
 
 const DECAY_COLORS: Record<string, string> = {
   fresh:       "#508484",
@@ -10,18 +23,14 @@ const DECAY_COLORS: Record<string, string> = {
 };
 
 export default function TestDecayPage() {
-  const [data, setData] = useState<SkillDecayEntry[]>([]);
+  const [data, setData] = useState<Entry[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<string | null>(null);
 
   const fetchData = async () => {
-    try {
-      const json = await api.skillDecay();
-      setData(json);
-    } catch (e) {
-      console.error(e);
-      setData([]);
-    }
+    const res = await fetch("/api/test-decay");
+    const json = await res.json();
+    setData(json);
     setLoading(false);
   };
 
@@ -29,12 +38,12 @@ export default function TestDecayPage() {
 
   const handleReview = async (id: string, quality: number) => {
     setUpdating(id);
-    try {
-      await api.reviewSkillDecay(id, quality);
-      await fetchData();
-    } catch (e) {
-      console.error(e);
-    }
+    await fetch("/api/test-decay", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, quality }),
+    });
+    await fetchData();
     setUpdating(null);
   };
 
@@ -77,20 +86,14 @@ export default function TestDecayPage() {
                     {entry.decay_level.replace("_", " ")}
                   </span>
                 </div>
-                <span className="text-xs text-[#a0b8b8] font-mono">
-                  {entry.id.slice(0, 8)}...
-                </span>
+                <span className="text-xs text-[#a0b8b8] font-mono">{entry.id.slice(0, 8)}...</span>
               </div>
 
               {/* Health Bar */}
               <div className="mb-4">
                 <div className="flex justify-between mb-1">
-                  <span className="text-[11px] text-[#a0b8b8] font-bold uppercase tracking-widest">
-                    Health
-                  </span>
-                  <span className="text-[11px] font-bold" style={{ color }}>
-                    {entry.health}%
-                  </span>
+                  <span className="text-[11px] text-[#a0b8b8] font-bold uppercase tracking-widest">Health</span>
+                  <span className="text-[11px] font-bold" style={{ color }}>{entry.health}%</span>
                 </div>
                 <div className="h-2.5 bg-[#E4E4E4] rounded-full overflow-hidden">
                   <div

@@ -232,14 +232,14 @@ export default function ShopPage() {
 
       {/* Notification */}
       {notification && (
-        <div className="notif bg-[#2d5050] text-[#f0f8f8] px-6 py-3 text-[8px]">▶ {notification}</div>
+        <div className="notif bg-[#2d5050] text-[#f0f8f8] px-6 py-3 text-[12px]">▶ {notification}</div>
       )}
 
       {/* Preview Modal */}
       {previewItem && (
         <div className="modal-bg" onClick={() => setPreviewItem(null)}>
           <div className="modal-box bg-[#f0f8f8] p-6 flex flex-col items-center gap-4" onClick={e => e.stopPropagation()}>
-            <p className="text-[7px] text-[#2d5050]">PREVIEW — {previewItem.item.name.toUpperCase()}</p>
+            <p className="text-[12px] text-[#2d5050]">PREVIEW — {previewItem.item.name.toUpperCase()}</p>
             {(() => {
               const pw = previewWith(previewItem.category, previewItem.item.file);
               const modalVariants: Partial<Record<Category, number>> = {
@@ -260,15 +260,15 @@ export default function ShopPage() {
                 />
               );
             })()}
-            <p className="text-[6px] text-[#4e8888]">
+            <p className="text-[10px] text-[#4e8888]">
               {previewItem.item.cost === 0 ? "FREE" : `⭐ ${previewItem.item.cost} XP`}
             </p>
             <div className="flex gap-3">
-              <button className="px-btn bg-[#f0f8f8] text-[#2d5050] px-3 py-2 text-[6px]" onClick={() => setPreviewItem(null)}>CLOSE</button>
+              <button className="px-btn bg-[#f0f8f8] text-[#2d5050] px-3 py-2 text-[10px]" onClick={() => setPreviewItem(null)}>CLOSE</button>
               {previewItem.item.unlocked ? (
-                <button className="px-btn bg-[#4e8888] text-[#f0f8f8] px-3 py-2 text-[6px]" onClick={() => handleEquip(previewItem.category, previewItem.item)}>EQUIP</button>
+                <button className="px-btn bg-[#4e8888] text-[#f0f8f8] px-3 py-2 text-[10px]" onClick={() => handleEquip(previewItem.category, previewItem.item)}>EQUIP</button>
               ) : (
-                <button className="px-btn bg-[#2d5050] text-[#f0f8f8] px-3 py-2 text-[6px]" disabled={xp < previewItem.item.cost} onClick={() => handleBuy(previewItem.category, previewItem.item)}>
+                <button className="px-btn bg-[#2d5050] text-[#f0f8f8] px-3 py-2 text-[10px]" disabled={xp < previewItem.item.cost} onClick={() => handleBuy(previewItem.category, previewItem.item)}>
                   {xp >= previewItem.item.cost ? `BUY ${previewItem.item.cost}XP` : "NEED MORE XP"}
                 </button>
               )}
@@ -280,10 +280,10 @@ export default function ShopPage() {
       <div className="max-w-5xl mx-auto pt-24 px-6 pb-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-[14px] text-[#2d5050]">CHARACTER SHOP</h1>
+          <h1 className="text-[16px] text-[#2d5050]">CHARACTER SHOP</h1>
           <div className="px-box bg-[#2d5050] text-[#f0f8f8] px-4 py-2 flex items-center gap-2">
-            <span className="text-[7px]">⭐ XP:</span>
-            <span className="text-[10px] text-[#7ab3b3]">{xp}</span>
+            <span className="text-[12px]">⭐ XP:</span>
+            <span className="text-[12px] text-[#7ab3b3]">{xp}</span>
           </div>
         </div>
 
@@ -292,7 +292,7 @@ export default function ShopPage() {
           {/* LEFT — Preview */}
           <div className="col-span-1 flex flex-col gap-4">
             <div className="px-box bg-[#e8f5f5] p-4 flex flex-col items-center gap-4">
-              <p className="text-[10px] text-[#2d5050]">YOUR CHARACTER</p>
+              <p className="text-[12px] text-[#2d5050]">YOUR CHARACTER</p>
               <CharacterPreview
                 size={160}
                 showLegs
@@ -310,8 +310,8 @@ export default function ShopPage() {
                   const item = items[cat].find(i => i.file === equipped[cat] || (i.file === "" && equipped[cat] === ""));
                   return (
                     <div key={cat} className="flex justify-between">
-                      <span className="text-[7px] text-[#4e8888]">{CATEGORY_LABELS[cat]}</span>
-                      <span className="text-[7px] text-[#2d5050]">{item?.name.toUpperCase() ?? "—"}</span>
+                      <span className="text-[12px] text-[#4e8888]">{CATEGORY_LABELS[cat]}</span>
+                      <span className="text-[12px] text-[#2d5050]">{item?.name.toUpperCase() ?? "—"}</span>
                     </div>
                   );
                 })}
@@ -327,7 +327,7 @@ export default function ShopPage() {
               const currentV = colorVariants[activeFile] ?? 0;
               return (
                 <div className="px-box bg-[#e8f5f5] p-3 flex flex-col gap-2">
-                  <p className="text-[5px] text-[#4e8888]">{CATEGORY_LABELS[cat]} COLOR</p>
+                  <p className="text-[8px] text-[#4e8888]">{CATEGORY_LABELS[cat]} COLOR</p>
                   <div className="flex flex-wrap gap-1.5">
                     {colors.map((hex, idx) => (
                       <button
@@ -349,10 +349,10 @@ export default function ShopPage() {
               );
             })()}
             <div className="px-box bg-[#2d5050] text-[#7ab3b3] p-3">
-              <p className="text-[6px] leading-relaxed">CLICK ANY ITEM TO PREVIEW IT ON YOUR CHARACTER.</p>
+              <p className="text-[10px] leading-relaxed">CLICK ANY ITEM TO PREVIEW IT ON YOUR CHARACTER.</p>
             </div>
             <button
-              className="px-btn bg-[#4e8888] text-[#f0f8f8] w-full py-2 text-[7px]"
+              className="px-btn bg-[#4e8888] text-[#f0f8f8] w-full py-2 text-[12px]"
               onClick={() => {
                 localStorage.setItem("character_saved", JSON.stringify(equipped));
                 localStorage.setItem("character_saved_variants", JSON.stringify(colorVariants));
@@ -371,7 +371,7 @@ export default function ShopPage() {
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`px-tab px-2 py-2 text-[6px] text-[#2d5050] flex-1 ${activeTab === tab ? "active" : "bg-[#f0f8f8]"}`}
+                  className={`px-tab px-2 py-2 text-[10px] text-[#2d5050] flex-1 ${activeTab === tab ? "active" : "bg-[#f0f8f8]"}`}
                 >
                   {tab === "gender" ? "GENDER" : CATEGORY_LABELS[tab as Category]}
                 </button>
@@ -392,9 +392,9 @@ export default function ShopPage() {
                     className={`px-card bg-[#e8f5f5] p-4 flex flex-col items-center gap-3 ${gender === label.toLowerCase() ? "on" : ""}`}
                   >
                     <CharacterPreview size={128} skin={equipped.skin} eyes={equipped.eyes} clothes={equipped.clothes} pants={equipped.pants} shoes={equipped.shoes} hair={hair} accessory={equipped.accessories} variants={{ ...equippedVariants, hair: colorVariants[hair] ?? 0 }} />
-                    <p className="text-[7px] text-[#2d5050]">{label}</p>
+                    <p className="text-[12px] text-[#2d5050]">{label}</p>
                     {gender === label.toLowerCase() && (
-                      <div className="px-box bg-[#7ab3b3] text-[#f0f8f8] px-3 py-1 text-[5px]">✓ SELECTED</div>
+                      <div className="px-box bg-[#7ab3b3] text-[#f0f8f8] px-3 py-1 text-[9px]">✓ SELECTED</div>
                     )}
                   </div>
                 ))}
@@ -439,17 +439,17 @@ export default function ShopPage() {
                       )}
                     </div>
 
-                    <p className="text-[7px] text-[#2d5050] text-center">{item.name.toUpperCase()}</p>
+                    <p className="text-[12px] text-[#2d5050] text-center">{item.name.toUpperCase()}</p>
                     {item.cost > 0
-                      ? <p className="text-[7px] text-[#7ab3b3]">⭐{item.cost}</p>
-                      : <p className="text-[7px] text-[#4e8888]">FREE</p>
+                      ? <p className="text-[12px] text-[#7ab3b3]">⭐{item.cost}</p>
+                      : <p className="text-[12px] text-[#4e8888]">FREE</p>
                     }
 
                     {isEquipped ? (
-                      <div className="px-box bg-[#7ab3b3] text-[#f0f8f8] px-2 py-0.5 text-[7px] w-full text-center">✓ ON</div>
+                      <div className="px-box bg-[#7ab3b3] text-[#f0f8f8] px-2 py-0.5 text-[12px] w-full text-center">✓ ON</div>
                     ) : isLocked ? (
                       <button
-                        className="px-btn bg-[#2d5050] text-[#f0f8f8] px-2 py-0.5 text-[7px] w-full"
+                        className="px-btn bg-[#2d5050] text-[#f0f8f8] px-2 py-0.5 text-[12px] w-full"
                         disabled={!canAfford}
                         onClick={e => { e.stopPropagation(); handleBuy(activeTab as Category, item); }}
                       >
@@ -457,7 +457,7 @@ export default function ShopPage() {
                       </button>
                     ) : (
                       <button
-                        className="px-btn bg-[#4e8888] text-[#f0f8f8] px-2 py-0.5 text-[7px] w-full"
+                        className="px-btn bg-[#4e8888] text-[#f0f8f8] px-2 py-0.5 text-[12px] w-full"
                         onClick={e => { e.stopPropagation(); handleEquip(activeTab as Category, item); }}
                       >
                         EQUIP

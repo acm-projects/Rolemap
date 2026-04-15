@@ -142,6 +142,36 @@ export interface QuizResponse {
   questions: QuizQuestion[];
 }
 
+export interface SkillDecayEntry {
+  id: string;
+  skill: string;
+  health: number;
+  times_practiced: number;
+  sm2_interval: number;
+  sm2_easiness: string;
+  sm2_repetitions: number;
+  days_until_review: number;
+  next_review: string;
+  last_reviewed_at: string;
+  decay_level: string;
+}
+
+export interface ShopItem {
+  id: string;
+  name: string;
+  file: string;
+  cost: number;
+  unlocked: boolean;
+}
+
+export interface ShopResponse {
+  items: Record<string, ShopItem[]>;
+  equipped: Record<string, string>;
+  gender: string;
+  color_variants: Record<string, number>;
+  xp_total: number;
+}
+
 // ── API calls ────────────────────────────────────────────────────────────────
 
 export const api = {
@@ -211,4 +241,48 @@ export const api = {
       { method: "POST", body: fd }
     );
   },
+
+  /** SM-2 decay rows for roadmap checkpoints (mock_db). Default roadmap: rm-generated, else first active. */
+  skillDecay: (roadmapId?: string) =>
+    apiFetch<SkillDecayEntry[]>(
+      roadmapId
+        ? `/api/v1/skills/decay?roadmap_id=${encodeURIComponent(roadmapId)}`
+        : "/api/v1/skills/decay"
+    ),
+
+  reviewSkillDecay: (id: string, quality: number) =>
+    apiFetch<{ success: boolean; new_interval: number; next_review: string }>(
+      "/api/v1/skills/decay/review",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, quality }),
+      }
+    ),
+
+  shop: () => apiFetch<ShopResponse>("/api/v1/shop"),
+
+  shopPurchase: (category: string, item_id: string) =>
+    apiFetch<{ ok: boolean; xp_total: number; items: Record<string, ShopItem[]> }>(
+      "/api/v1/shop/purchase",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ category, item_id }),
+      }
+    ),
+
+  shopAppearance: (body: {
+    equipped: Record<string, string>;
+    gender?: string;
+    color_variants?: Record<string, number>;
+  }) =>
+    apiFetch<{ ok: boolean; equipped: Record<string, string>; gender: string; color_variants: Record<string, number> }>(
+      "/api/v1/shop/appearance",
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      }
+    ),
 };
