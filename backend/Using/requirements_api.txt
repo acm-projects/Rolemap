@@ -1,19 +1,9 @@
-# See backend/requirements.txt for the full dependency list.
-# Install from the root backend/ directory:
-#   pip install -r requirements.txt
-#
-# After installing playwright, run:
-#   playwright install chromium
-
-fastapi==0.110.0
-uvicorn==0.27.1
-python-multipart==0.0.9
-pydantic==2.6.3
-python-dotenv==1.0.1
-neo4j==5.17.0
-google-genai==1.10.0
-ddgs==6.2.1
-pdfplumber==0.11.0
-playwright==1.44.0
-requests==2.31.0
-thefuzz==0.22.1
+fastapi>=0.115.0
+uvicorn>=0.30.0
+neo4j>=5.17.0
+pydantic>=2.10.0
+python-dotenv>=1.0.1
+google-genai
+ddgs
+httpx
+python-multipart

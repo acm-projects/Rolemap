@@ -118,13 +118,6 @@ const LAYER_COLORS = [
   'rgba(45, 110, 110, 0.75)',
 ];
 
-// Lighter shadow layers for locked nodes — matches the subtlety of the rectangle's box-shadow
-const LAYER_COLORS_LOCKED = [
-  'rgba(122, 184, 184, 0.08)',
-  'rgba(122, 184, 184, 0.12)',
-  'rgba(122, 184, 184, 0.18)',
-];
-
 /**
  * Character image that sits above the node, peeking out from the top edge.
  * Only rendered when the node is active (in progress).
@@ -155,17 +148,14 @@ function OctagonPixelBorder({
   height,
   borderColor,
   bgColor,
-  isLocked = false,
 }: {
   width: number;
   height: number;
   borderColor: string;
   bgColor: string;
-  isLocked?: boolean;
 }) {
   const cut = 24;
   const pad = LAYER_STEP * LAYER_COUNT + BORDER_WIDTH;
-  const layerColors = isLocked ? LAYER_COLORS_LOCKED : LAYER_COLORS;
 
   // Octagon path offset by (dx, dy)
   const octPath = (dx: number, dy: number) =>
@@ -199,7 +189,7 @@ function OctagonPixelBorder({
           <path
             key={i}
             d={octPath(ox + offset, oy + offset)}
-            fill={layerColors[layerIdx]}
+            fill={LAYER_COLORS[layerIdx]}
           />
         );
       })}
@@ -222,19 +212,16 @@ function CirclePixelBorder({
   size,
   borderColor,
   bgColor,
-  isLocked = false,
 }: {
   size: number;
   borderColor: string;
   bgColor: string;
-  isLocked?: boolean;
 }) {
   const r = size / 2;
   const pad = LAYER_STEP * LAYER_COUNT + BORDER_WIDTH;
   const totalSize = size + pad * 2;
   const cx = pad + r;
   const cy = pad + r;
-  const layerColors = isLocked ? LAYER_COLORS_LOCKED : LAYER_COLORS;
 
   return (
     <svg
@@ -261,7 +248,7 @@ function CirclePixelBorder({
             cx={cx + offset}
             cy={cy + offset}
             r={r}
-            fill={layerColors[layerIdx]}
+            fill={LAYER_COLORS[layerIdx]}
           />
         );
       })}
@@ -295,7 +282,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
   const kind = data.kind || 'lesson';
 
   const bgColor = isCurrent ? '#3d7a7a' : isActive ? '#eaf4f4' : isLocked ? 'rgba(255,255,255,0.7)' : '#ffffff';
-  const borderColor = selected ? '#FFBC42' : isCurrent ? '#2e6666' : isActive ? '#4a9696' : '#7ab8b8';
+  const borderColor = selected ? '#f7d22e' : isCurrent ? '#2e6666' : isActive ? '#4a9696' : '#7ab8b8';
 
   // ── QUIZ (circle) ──────────────────────────────────────────────
   if (kind === 'quiz') {
@@ -310,12 +297,12 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
           justifyContent: 'center',
         }}
       >
-        <CirclePixelBorder size={QUIZ_SIZE} borderColor={borderColor} bgColor={bgColor} isLocked={isLocked} />
+        <CirclePixelBorder size={QUIZ_SIZE} borderColor={borderColor} bgColor={bgColor} />
         {isCurrent && <Mascot />}
         <Handle type="target" position={Position.Left} className="opacity-0!" />
         <span
           style={{ position: 'relative', zIndex: 1 }}
-          className={`text-xs leading-tight uppercase tracking-normal font-normal text-center px-2 ${isCurrent ? 'text-white' : isLocked ? 'text-slate-400' : 'text-slate-700'}`}
+          className={`text-xs leading-tight uppercase tracking-tight text-center px-2 ${isCurrent ? 'text-white' : isLocked ? 'text-slate-400' : 'text-slate-700'}`}
         >
           {data.label}
         </span>
@@ -343,7 +330,6 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
           height={OCT_H}
           borderColor={borderColor}
           bgColor={bgColor}
-          isLocked={isLocked}
         />
         {isCurrent && <Mascot />}
         <Handle type="target" position={Position.Left} className="opacity-0!" />
@@ -361,7 +347,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
             ) : (
               <ProjectIcon />
             )}
-            <span className="text-sm leading-tight uppercase tracking-normal font-normal">
+            <span className="text-sm leading-tight uppercase tracking-tight">
               {data.label}
             </span>
           </div>
@@ -409,7 +395,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
           ) : (
             <ProgressIcon />
           )}
-          <span className="text-sm leading-tight uppercase tracking-normal font-normal">
+          <span className="text-sm leading-tight uppercase tracking-tight">
             {data.label}
           </span>
         </div>

@@ -3,62 +3,55 @@ import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import { api, DEFAULT_CHARACTER } from "@/lib/api";
 
-function ShopCharacter({ size }: { size: number }) {
-  const [equipped, setEquipped] = useState(DEFAULT_CHARACTER);
+// Renders the user's custom character from shop localStorage data
+const DEFAULT_EQUIPPED = { skin: "char1.png", eyes: "eyes.png", clothes: "suit.png", pants: "pants.png", shoes: "shoes.png", hair: "buzzcut.png", accessories: "" };
+
+function ShopCharacter({ size, zoom = 1 }: { size: number; zoom?: number }) {
+  const [equipped, setEquipped] = useState<Record<string, string>>(DEFAULT_EQUIPPED);
   const [colorVariants, setColorVariants] = useState<Record<string, number>>({});
 
   useEffect(() => {
-    api.getCharacter()
-      .then(c => {
-        setEquipped(c);
-        setColorVariants(c.color_variants ?? {});
-      })
-      .catch(() => {
-        const eq = localStorage.getItem("character_saved");
-        const cv = localStorage.getItem("character_saved_variants");
-        if (eq) setEquipped({ ...DEFAULT_CHARACTER, ...JSON.parse(eq) });
-        if (cv) setColorVariants(JSON.parse(cv));
-      });
-
-    const onSave = (e: Event) => {
-      const detail = (e as CustomEvent).detail;
-      setEquipped(detail);
-      setColorVariants(detail.color_variants ?? {});
-    };
-    window.addEventListener("character-saved", onSave);
-    return () => window.removeEventListener("character-saved", onSave);
+    const eq = localStorage.getItem("character_saved");
+    const cv = localStorage.getItem("character_saved_variants");
+    if (eq) setEquipped(prev => ({ ...prev, ...JSON.parse(eq) }));
+    if (cv) setColorVariants(JSON.parse(cv));
   }, []);
 
-  const bgH = Math.round(size / 28 * 1568);
-  const scale = size / 28;
+  // Render at zoom*size so each pixel is bigger; crop center-horizontally, top-aligned
+  const renderSize = Math.round(size * zoom);
+  const bgH = Math.round(renderSize / 28 * 1568);
+  const scale = renderSize / 28;
+  const xOffset = (32 * scale - renderSize) / 2;
+  const clipLeft = (renderSize - size) / 2 + 4;
+  // Idle frame starts at sprite row 12 — shift background up so head aligns to top
+  const yOffset = Math.round(12 * scale);
 
   const layers: [string, string][] = [
     [equipped.skin, "skin"],
-    [equipped.eyes, "eyes"],
+    [equipped.pants, "pants"],
+    [equipped.shoes, "shoes"],
     [equipped.clothes, "clothes"],
+    [equipped.eyes, "eyes"],
     [equipped.hair, "hair"],
     [equipped.accessories, "accessories"],
   ];
 
   return (
     <div style={{ position: "relative", width: size, height: size, overflow: "hidden", imageRendering: "pixelated" }}>
-      <div style={{ position: "absolute", inset: 0, transform: "translateX(-9px) scale(1.4)", transformOrigin: "50% 100%" }}>
-        {layers.filter(([f]) => f).map(([f], i) => {
-          const v = colorVariants[f] ?? 0;
-          return (
-            <div key={i} style={{
-              position: "absolute", top: 0, left: 0, width: "100%", height: "100%",
-              backgroundImage: `url(/characters/${f})`,
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: `${-(v * 256 * scale)}px 0`,
-              backgroundSize: `auto ${bgH}px`,
-              imageRendering: "pixelated",
-            }} />
-          );
-        })}
-      </div>
+      {layers.filter(([f]) => f).map(([f], i) => {
+        const v = colorVariants[f] ?? 0;
+        return (
+          <div key={i} style={{
+            position: "absolute", top: 0, left: -clipLeft, width: renderSize, height: renderSize,
+            backgroundImage: `url(/characters/${f})`,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: `${-(v * 256 * scale) - xOffset}px ${-yOffset}px`,
+            backgroundSize: `auto ${bgH}px`,
+            imageRendering: "pixelated",
+          }} />
+        );
+      })}
     </div>
   );
 }
@@ -192,10 +185,10 @@ export function Navbar() {
               />
             </div>
             <span
-              className="text-[#2d5050] text-[11px] whitespace-nowrap"
+              className="text-[#2d5050] text-[10px] leading-tight"
               style={{ fontFamily: "'Press Start 2P', monospace" }}
             >
-              ROLEMAP
+              ROLE<br />MAP
             </span>
           </div>
 
@@ -210,7 +203,7 @@ export function Navbar() {
                 <Link
                   key={item}
                   href={`/${item.toLowerCase()}`}
-                  className={`pixel-nav-link text-[9px] pb-1 ${isActive ? 'active text-[#2d5050]' : 'text-[#4e8888] hover:text-[#2d5050]'}`}
+                  className={`pixel-nav-link text-[8px] pb-1 ${isActive ? 'active text-[#2d5050]' : 'text-[#4e8888] hover:text-[#2d5050]'}`}
                   style={{ fontFamily: "'Press Start 2P', monospace" }}
                 >
                   {item.toUpperCase()}
@@ -228,13 +221,13 @@ export function Navbar() {
             {/* Avatar + Dropdown */}
             <div ref={dropdownRef} className="relative">
 
-              {/* Avatar Button */}
+              {/* Avatar Button — uses Google profile image if available */}
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 className="pixel-avatar w-10 h-10 flex items-center justify-center overflow-hidden"
                 style={{ backgroundColor: '#c8e6c9' }}
               >
-                <ShopCharacter size={40} />
+                <ShopCharacter size={40} zoom={1.5} />
               </button>
 
               {/* Dropdown */}
@@ -244,47 +237,33 @@ export function Navbar() {
                   style={{
                     right: '-1.4rem',
                     top: '3.5rem',
-                    width: '300px',
+                    width: '220px',
                     backgroundColor: '#f0f8f8',
                   }}
                 >
                   {/* User info */}
                   <div
-                    className="px-4 py-3 flex items-center gap-3"
+                    className="px-3 py-2 flex items-start gap-2"
                     style={{ borderBottom: '4px solid #2d5050' }}
                   >
-                    {/* Avatar in dropdown */}
-                    <div
-                      className="w-14 h-14 shrink-0 overflow-hidden"
-                      style={{
-                        borderWidth: 3,
-                        borderStyle: 'solid',
-                        borderColor: '#2d5050',
-                        imageRendering: 'pixelated',
-                        backgroundColor: '#c8e6c9',
-                      }}
-                    >
-                      <ShopCharacter size={56} />
-                    </div>
-
                     {/* Name and email */}
                     <div className="flex-1 min-w-0">
                       <p
                         className="text-[#2d5050] break-words"
-                        style={{ fontFamily: "'Press Start 2P', monospace", fontSize: '9px', lineHeight: '1.4', wordBreak: 'break-word' }}
+                        style={{ fontFamily: "'Press Start 2P', monospace", fontSize: '8px', lineHeight: '1.2', wordBreak: 'break-word' }}
                       >
                         {session?.user?.name ?? "GUEST"}
                       </p>
                       <p
-                        className="text-[#4e8888] break-words mt-1"
-                        style={{ fontFamily: "'Press Start 2P', monospace", fontSize: '7px', lineHeight: '1.4', wordBreak: 'break-word' }}
+                        className="text-[#4e8888] break-words"
+                        style={{ fontFamily: "'Press Start 2P', monospace", fontSize: '7px', lineHeight: '1.2', wordBreak: 'break-word' }}
                       >
                         {session?.user?.email ?? ""}
                       </p>
                     </div>
                   </div>
 
-                  {/* Menu items */}
+                  {/* Menu items — no icons */}
                   {[
                     { label: "PROFILE",  href: "/profile"  },
                     { label: "SETTINGS", href: "/settings" },
@@ -294,11 +273,11 @@ export function Navbar() {
                       key={item.label}
                       href={item.href}
                       onClick={() => setDropdownOpen(false)}
-                      className="pixel-dropdown-item flex items-center px-4 py-3 text-[#2d5050] transition-colors"
+                      className="pixel-dropdown-item flex items-center px-3 py-2 text-[#2d5050] transition-colors"
                       style={{
                         borderBottom: '2px solid #c8e6c9',
                         fontFamily: "'Press Start 2P', monospace",
-                        fontSize: '9px',
+                        fontSize: '7px',
                       }}
                     >
                       {item.label}
@@ -306,7 +285,7 @@ export function Navbar() {
                   ))}
 
                   {/* Sign out */}
-                  <div className="p-3">
+                  <div className="p-2">
                     <button
                       onClick={async () => {
                         const response = await fetch("/api/auth/signout", { method: "POST" });
@@ -314,13 +293,13 @@ export function Navbar() {
                           window.location.href = "/";
                         }
                       }}
-                      className="pixel-signout w-full flex items-center justify-center gap-2 px-3 py-3 text-white bg-red-700"
+                      className="pixel-signout w-full flex items-center justify-center gap-2 px-2 py-2 text-white bg-red-700"
                       style={{
                         fontFamily: "'Press Start 2P', monospace",
-                        fontSize: '9px',
+                        fontSize: '7px',
                       }}
                     >
-                      <svg viewBox="0 0 16 16" className="w-5 h-5 shrink-0" style={{ imageRendering: "pixelated" }}>
+                      <svg viewBox="0 0 16 16" className="w-4 h-4 shrink-0" style={{ imageRendering: "pixelated" }}>
                         <rect x="2" y="1" width="8" height="14" fill="#7f0000" />
                         <rect x="9" y="7" width="5" height="2" fill="white" />
                         <rect x="11" y="5" width="2" height="2" fill="white" />
