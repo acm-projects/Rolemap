@@ -6,8 +6,6 @@ import { Navbar } from '../components/NavBar';
 import fire from '../../icons/fire.png';
 import { useRouter } from 'next/navigation';
 import { api, type DashboardResponse, type DashboardRoadmap } from '@/lib/api';
-import PixelProgress from '../components/PixelProgress';
-import Heart from './Heart.svg';
 
 // ─── Pixel primitives (inlined) ───────────────────────────────────────────────
 
@@ -150,6 +148,7 @@ export default function Dashboard() {
   const [data, setData] = useState<DashboardResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [displayProgress, setDisplayProgress] = useState(0);
+  const [selectedRoadmap, setSelectedRoadmap] = useState<DashboardRoadmap | null>(null);
 
   useEffect(() => {
     api.currentUser()
@@ -184,188 +183,184 @@ export default function Dashboard() {
     <div className="min-h-screen w-full bg-[#f0f8f8] relative">
       <Navbar />
 
-      <div className="pt-25 pb-5 w-[95%] mx-auto">
-        {/* Header row */}
-        <div className="flex items-start justify-between mb-6 gap-4">
+      <div className="pt-25 px-8 pb-5 ml-8 mr-7">
+        <div className="max-w-7xl mx-auto">
 
-          {/* Left: title */}
-          <div>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">
-              {data?.active_roadmap.title} Path
-            </p>
-            <div className='flex items-center '>
-              <h1 className="text-5xl text-slate-700 leading-tight tracking-wider">Dashboard</h1>
+          {/* Header row */}
+          <div className="flex items-start justify-between mb-6 gap-4">
+
+            {/* Left: title */}
+            <div>
+              <p className="text-lg font-normal text-slate-400 uppercase tracking-normal mb-1">
+                {data?.active_roadmap.title} Path
+              </p>
+              <div className='flex items-center '>
+                <h1 className="text-5xl text-slate-700 leading-tight tracking-wider">Dashboard</h1>
+              </div>
+              <p className="text-xl text-[#508484] mt-1">Welcome back, {userName}</p>
             </div>
-            <p className="text-xl text-[#508484] mt-1">Welcome back, {userName}</p>
-          </div>
 
-          {/* Right: quick stats */}
-          <div className="flex items-stretch gap-3 flex-shrink-0">
+            {/* Right: quick stats + today's challenge */}
+            <div className="flex items-stretch gap-3 shrink-0">
 
-            {/* XP block */}
-            <PixelCard className="flex items-center gap-2 px-4 py-2.5">
-              <div className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center">
-                <Image src={Heart} alt='Heart Image' className='h-4 w-4'/>
-              </div>
-              <div>
-                <p className="text-md text-slate-400 uppercase tracking-wider leading-none">Total XP</p>
-                <p className="text-md text-slate-700">{xpTotal}</p>
-              </div>
-            </PixelCard>
+              {/* XP block */}
+              <PixelCard className="flex items-center gap-2 px-4 py-2.5">
+                <div className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-blue-400">
+                    <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-xs text-slate-400 uppercase tracking-normal leading-none">Total XP</p>
+                  <p className="text-base text-slate-700">{xpTotal}</p>
+                </div>
+              </PixelCard>
 
-            {/* Progress block */}
-            <PixelCard className="flex items-center gap-2 px-4 py-2.5">
-              <div className="relative w-7 h-7 flex-shrink-0">
-                <svg className="w-full h-full" viewBox="0 0 200 200">
-                  <circle cx="100" cy="100" r="80" fill="none" stroke="#e2e8f0" strokeWidth="24" />
-                  <circle cx="100" cy="100" r="80" fill="none" stroke="#4a7c7c" strokeWidth="24"
-                    strokeDasharray={`${displayProgress * 5.03} 502`} strokeLinecap="round"
-                    style={{ transition: 'stroke-dasharray 1s ease-out' }} transform="rotate(-90 100 100)" />
-                </svg>
-              </div>
-              <div>
-                <p className="text-md text-slate-400 uppercase tracking-wider leading-none">Progress</p>
-                <p className="text-md text-slate-700">{displayProgress}%</p>
-              </div>
-            </PixelCard>
+              {/* Progress block */}
+              <PixelCard className="flex items-center gap-2 px-4 py-2.5">
+                <div className="relative w-7 h-7 shrink-0">
+                  <svg className="w-full h-full" viewBox="0 0 200 200">
+                    <circle cx="100" cy="100" r="80" fill="none" stroke="#e2e8f0" strokeWidth="24" />
+                    <circle cx="100" cy="100" r="80" fill="none" stroke="#4a7c7c" strokeWidth="24"
+                      strokeDasharray={`${displayProgress * 5.03} 502`} strokeLinecap="round"
+                      style={{ transition: 'stroke-dasharray 1s ease-out' }} transform="rotate(-90 100 100)" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-xs text-slate-400 uppercase tracking-normal leading-none">Progress</p>
+                  <p className="text-base text-slate-700">{displayProgress}%</p>
+                </div>
+              </PixelCard>
 
-            {/* Today's Challenge */}
-            <PixelCard className="bg-gradient-to-r from-[#4a7c7c] to-[#6fa8a8] px-5 py-2.5 flex items-center gap-4 text-white !border-t-[#6fa8a8] !border-l-[#6fa8a8] !border-r-[#2d5050] !border-b-[#2d5050]">
-              <div>
-                <p className="text-md uppercase tracking-widest opacity-75 leading-none mb-0.5">Today&apos;s Challenge</p>
-                <p className="text-sm leading-tight">Build a useState counter</p>
-              </div>
-              <a href='../../tasks' className='block h-full'>
+              {/* Today's Challenge */}
+              <PixelCard className="bg-gradient-to-r from-[#4a7c7c] to-[#6fa8a8] px-5 py-2.5 flex items-center gap-4 text-white !border-t-[#6fa8a8] !border-l-[#6fa8a8] !border-r-[#2d5050] !border-b-[#2d5050]">
+                <div>
+                  <p className="text-xs uppercase tracking-normal opacity-75 leading-none mb-0.5">Today&apos;s Challenge</p>
+                  <p className="text-base tracking-normal leading-tight">Build a useState counter</p>
+                </div>
                 <PixelButton variant="secondary" size="sm">
                   Start →
                 </PixelButton>
-              </a>
-            </PixelCard>
-          </div>
-        </div>
-
-        {/* Main content: 2 columns */}
-        <div className="grid grid-cols-12 gap-6 w-full">
-
-          {/* LEFT col: Leaderboard */}
-          <PixelCard className="col-span-4 p-6 h-[360px] overflow-hidden">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">
-                  <Image src={fire} alt="Fire Icon" className="h-6 w-6" />
-                </div>
-                <h2 className="text-2xl text-slate-700 uppercase tracking-wider">Streak Leaderboard</h2>
-              </div>
-              <span className="text-[10px] font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-full uppercase tracking-wide">Today</span>
+              </PixelCard>
             </div>
-            <div className="space-y-1.5">
-              {leaderboard.map((user) => (
-                user.is_you ? (
-                  <PixelCard
-                    key={user.rank}
-                    selected={true}
-                    hover={false}
-                    className="flex items-center gap-3 px-2 py-1"
-                  >
-                    <span className="text-sm font-bold w-5 text-center text-[#4a7c7c]">
+          </div>
+
+          {/* Main content: 2 columns */}
+          <div className="grid grid-cols-12 gap-6 w-full">
+
+            {/* LEFT col: Leaderboard */}
+            <PixelCard className="col-span-4 p-6 h-[360px] overflow-hidden">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">
+                    <Image src={fire} alt="Fire Icon" className="h-6 w-6" />
+                  </div>
+                  <h2 className="text-md text-slate-700 uppercase tracking-wider">Streak Leaderboard</h2>
+                </div>
+                <span className="text-xs font-normal text-slate-500 bg-slate-100 px-3 py-1 rounded-full uppercase tracking-normal">Today</span>
+              </div>
+              <div className="space-y-1.5">
+                {leaderboard.map((user) => (
+                  <div key={user.rank}
+                    className={`flex items-center gap-3 px-3 py-2 rounded-2xl transition-all
+                      ${user.is_you ? 'bg-white border border-slate-200 shadow-sm' : 'hover:bg-slate-50'}`}>
+                    <span className={`text-base font-normal w-5 text-center ${user.is_you ? 'text-[#4a7c7c]' : 'text-slate-300'}`}>
                       {user.rank}
                     </span>
-                    <div
-                      className="relative w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                      style={{ backgroundColor: user.avatar_bg }}
-                    >
-                      <span className="text-xs font-bold text-[#4a7c7c]">{user.avatar}</span>
+                    <div className="relative w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                      style={{ backgroundColor: user.avatar_bg + (user.is_you ? '33' : '') }}>
+                      <span className={`text-sm font-normal ${user.is_you ? 'text-[#4a7c7c]' : 'text-white'}`}>
+                        {user.avatar}
+                      </span>
+                      {user.rank === 1 && <span className="absolute -top-2 -right-1 text-sm">👑</span>}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xl text-slate-700 truncate tracking-wide">You</p>
-                      <p className="text-[13px] text-slate-400">{user.subtitle}</p>
+                      <p className="text-base font-normal text-slate-700 truncate">{user.is_you ? 'You' : user.name}</p>
+                      <p className="text-sm text-slate-400 tracking-normal">{user.subtitle}</p>
                     </div>
                     <div className="flex items-center gap-1">
-                      <span className="text-sm font-bold text-slate-700">{user.streak}</span>
-                      <Image src={fire} alt="Fire Icon" className="h-6 w-6"/>
-                    </div>
-                  </PixelCard>
-                ) : (
-                  <div
-                    key={user.rank}
-                    className="flex items-center gap-3 px-2 py-1 rounded-2xl transition-all hover:bg-slate-50"
-                  >
-                    <span className="text-sm font-bold w-5 text-center text-slate-300">{user.rank}</span>
-                    <div
-                      className="relative w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                      style={{ backgroundColor: user.avatar_bg }}
-                    >
-                      <span className="text-xs font-bold text-white">{user.avatar}</span>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xl text-slate-700 truncate tracking-wide">{user.name}</p>
-                      <p className="text-[13px] text-slate-400">{user.subtitle}</p>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <span className="text-sm font-bold text-slate-500">{user.streak}</span>
-                      <Image src={fire} alt="Fire Icon" className="h-6 w-6"/>
+                      <span className={`text-base font-normal ${user.is_you ? 'text-slate-700' : 'text-slate-500'}`}>
+                        {user.streak}
+                      </span>
+                      <Image src={fire} alt="Fire Icon" className="h-6 w-6" />
                     </div>
                   </div>
-                )
-              ))}
-            </div>
-          </PixelCard>
+                ))}
+              </div>
+            </PixelCard>
 
-          {/* RIGHT col: My Roadmaps */}
-          <PixelCard className="col-span-8 p-5 flex flex-col h-[360px]">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-3xl text-slate-700 tracking-wider">My Roadmaps</h2>
-            </div>
+            {/* MIDDLE col: My Roadmaps — shrinks when a roadmap is selected */}
+            <PixelCard className={`${selectedRoadmap ? 'col-span-4' : 'col-span-8'} p-5 flex flex-col h-90 transition-all duration-300`}>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-3xl text-slate-700 tracking-wider">My Roadmaps</h2>
+                <PixelButton variant="secondary" size="sm">
+                  + Add Roadmap
+                </PixelButton>
+              </div>
 
-            <div className="grid grid-cols-2 gap-3 flex-1 min-h-0">
-              {roadmaps.length === 0 ? (
-                <div className="col-span-2 flex flex-col items-center justify-center text-center py-8">
-                  <p className="text-sm text-slate-400 mb-2">No roadmaps yet</p>
-                  <a href="/OnBoarding/Major" className="text-xs font-semibold text-[#4a7c7c] bg-[#4a7c7c]/10 hover:bg-[#4a7c7c]/20 px-4 py-1.5 rounded-xl transition-colors">
-                    Complete onboarding to generate your roadmap
-                  </a>
-                </div>
-              ) : roadmaps.map((rm: DashboardRoadmap) => {
-                const minimap = rm.minimap ?? { nodes: [], edges: [], done_nodes: [] };
-                const active = rm.status === 'active';
-                return (
-                  <a
-                    key={rm.id}
-                    href="/map"
-                    className="block min-h-0"
-                  >
+              <div className="flex flex-col gap-2 flex-1 overflow-y-auto">
+                {roadmaps.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center text-center py-8">
+                    <p className="text-sm text-slate-400 mb-2">No roadmaps yet</p>
+                    <a href="/OnBoarding/Major" className="text-xs font-semibold text-[#4a7c7c] bg-[#4a7c7c]/10 hover:bg-[#4a7c7c]/20 px-4 py-1.5 rounded-xl transition-colors">
+                      Complete onboarding to generate your roadmap
+                    </a>
+                  </div>
+                ) : roadmaps.map((rm: DashboardRoadmap) => {
+                  const active = rm.status === 'active';
+                  const isSelected = selectedRoadmap?.id === rm.id;
+                  return (
                     <div
-                      className={`flex flex-col overflow-hidden h-full transition-all hover:shadow-md hover:translate-y-[-2px] cursor-pointer
-                        border-4
-                        ${active
-                          ? 'border-t-[#7ab3b3] border-l-[#7ab3b3] border-r-[#2d5050] border-b-[#2d5050]'
-                          : 'border-t-[#d4e8e8] border-l-[#d4e8e8] border-r-[#7ab3b3] border-b-[#7ab3b3]'
+                      key={rm.id}
+                      onClick={() => setSelectedRoadmap(isSelected ? null : rm)}
+                      className={`flex items-center justify-between px-4 py-3 cursor-pointer transition-all hover:-translate-y-px border-4
+                        ${isSelected
+                          ? 'bg-[#e8f4f4] border-t-[#7ab3b3] border-l-[#7ab3b3] border-r-[#2d5050] border-b-[#2d5050]'
+                          : active
+                            ? 'bg-white border-t-[#7ab3b3] border-l-[#7ab3b3] border-r-[#2d5050] border-b-[#2d5050]'
+                            : 'bg-white border-t-[#d4e8e8] border-l-[#d4e8e8] border-r-[#7ab3b3] border-b-[#7ab3b3]'
                         }`}
                     >
-                      <div className="flex-1 bg-[#f7fafa] relative px-3 py-2 min-h-0">
-                        {active && (
-                          <span className="absolute top-2 left-2 text-[9px] font-bold text-[#4a7c7c] bg-white border border-[#4a7c7c]/30 px-2 py-0.5 rounded-full uppercase tracking-wider z-10">
-                            Active
-                          </span>
-                        )}
-                        <RoadmapMinimap nodes={minimap.nodes} edges={minimap.edges} doneNodes={minimap.done_nodes} active={active} />
-                      </div>
-                      <div className="px-4 py-3 bg-white border-t border-slate-100">
-                        <div className="flex items-center justify-between mb-1.5">
-                          <p className="text-xl text-slate-700 truncate tracking-wide">{rm.title}</p>
-                          <p className="text-xl text-slate-400 ml-2 flex-shrink-0">{rm.progress_percentage}%</p>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1.5">
+                          {active && (
+                            <span className="text-xs font-normal text-[#4a7c7c] bg-[#4a7c7c]/10 px-2 py-0.5 rounded-full uppercase tracking-normal shrink-0">
+                              Active
+                            </span>
+                          )}
+                          <p className="text-base text-slate-700 truncate tracking-normal">{rm.title}</p>
                         </div>
                         <div className="h-1.5 bg-slate-100 overflow-hidden">
-                          <PixelProgress value={rm.progress_percentage} showLabel={false}/>
+                          <div className="h-full" style={{ width: `${rm.progress_percentage}%`, backgroundColor: active ? '#4a7c7c' : '#94a3b8' }} />
                         </div>
                       </div>
+                      <p className="text-base text-slate-400 ml-4 shrink-0">{rm.progress_percentage}%</p>
                     </div>
-                  </a>
-                );
-              })}
-            </div>
-          </PixelCard>
+                  );
+                })}
+              </div>
+            </PixelCard>
 
+            {/* RIGHT col: Roadmap detail — only renders when a roadmap is selected */}
+            {selectedRoadmap && (
+              <PixelCard className="col-span-4 p-5 flex flex-col h-90">
+                <div className="mb-3">
+                  <p className="text-sm text-slate-400 uppercase tracking-normal mb-1">{selectedRoadmap.status === 'active' ? 'Active Roadmap' : 'Roadmap'}</p>
+                  <h3 className="text-3xl text-slate-700 tracking-normal">{selectedRoadmap.title}</h3>
+                </div>
+                <div className="flex-1 flex items-center justify-center text-slate-400 text-2xl tracking-normal">
+                  Minimap
+                </div>
+                <div className="mt-3 flex items-center justify-between">
+                  <p className="text-lg text-slate-400 tracking-normal">{selectedRoadmap.progress_percentage}% complete</p>
+                  <PixelButton variant="secondary" size="sm" onClick={() => router.push('/map')}>
+                    Go to Map →
+                  </PixelButton>
+                </div>
+              </PixelCard>
+            )}
+
+          </div>
         </div>
       </div>
     </div>

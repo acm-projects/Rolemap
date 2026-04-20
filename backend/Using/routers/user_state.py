@@ -271,6 +271,33 @@ async def get_current_user():
     return db["users"][0]
 
 
+DEFAULT_CHARACTER = {
+    "skin": "char1.png",
+    "eyes": "eyes.png",
+    "clothes": "suit.png",
+    "pants": "pants.png",
+    "shoes": "shoes.png",
+    "hair": "buzzcut.png",
+    "accessories": "",
+    "color_variants": {},
+}
+
+
+@router.get("/users/me/character")
+async def get_character():
+    db = load_db()
+    character = db["users"][0].get("character", DEFAULT_CHARACTER)
+    return character
+
+
+@router.patch("/users/me/character")
+async def save_character(body: dict):
+    db = load_db()
+    db["users"][0]["character"] = {**DEFAULT_CHARACTER, **body}
+    save_db(db)
+    return db["users"][0]["character"]
+
+
 # ---------------------------------------------------------------------------
 # GET /api/v1/dashboard
 # ---------------------------------------------------------------------------
