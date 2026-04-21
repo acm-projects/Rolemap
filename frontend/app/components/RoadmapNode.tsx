@@ -1,8 +1,74 @@
 'use client';
 
-import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import { CharacterPreview, Category } from './CharacterPreview';
+//import Image from 'next/image';
 import { Handle, Position } from '@xyflow/react';
 
+type SavedChar = { skin: string; eyes: string; clothes: string; pants: string; shoes: string; hair: string; accessories: string };
+type SavedVariants = Partial<Record<string, number>>;
+
+const DEFAULTS: SavedChar = {
+  skin: 'char1.png', eyes: 'eyes.png', clothes: 'suit.png',
+  pants: 'pants.png', shoes: 'shoes.png', hair: 'buzzcut.png', accessories: '',
+};
+
+
+function CharacterMascot({ isJumping }: { isJumping: boolean }) {
+  const [char, setChar] = useState<SavedChar>(DEFAULTS);
+  const [variants, setVariants] = useState<SavedVariants>({});
+
+  const load = () => {
+    try {
+      const saved = localStorage.getItem('character_saved');
+      if (saved) setChar({ ...DEFAULTS, ...JSON.parse(saved) });
+      const savedV = localStorage.getItem('character_saved_variants');
+      if (savedV) setVariants(JSON.parse(savedV));
+    } catch {}
+  };
+
+  useEffect(() => {
+    load();
+    window.addEventListener('storage', load);
+    return () => window.removeEventListener('storage', load);
+  }, []);
+
+  useEffect(() => {
+    const el = document.querySelector('[data-id="current-node"]');
+    if (el) console.log('node rect:', el.getBoundingClientRect());
+  }, []);
+
+  const v: Partial<Record<Category, number>> = {
+    skin:        variants[char.skin]        ?? 0,
+    eyes:        variants[char.eyes]        ?? 0,
+    clothes:     variants[char.clothes]     ?? 0,
+    pants:       variants[char.pants]       ?? 0,
+    shoes:       variants[char.shoes]       ?? 0,
+    hair:        variants[char.hair]        ?? 0,
+    accessories: variants[char.accessories] ?? 0,
+  };
+
+   return (
+    <div style={{
+      position: 'absolute',
+      top: -120,
+      left: '50%',
+      transform: 'translateX(-50%)',
+      zIndex: 10,
+      pointerEvents: 'none',
+    }}>
+      <CharacterPreview
+        size={104}
+        showLegs={!isJumping}
+        jump={isJumping}
+        skin={char.skin} eyes={char.eyes} clothes={char.clothes}
+        pants={char.pants} shoes={char.shoes} hair={char.hair}
+        accessory={char.accessories}
+        variants={isJumping ? {} : v}
+      />
+    </div>
+  );
+}
 const CheckIcon = () => (
   <svg id="check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
     <polygon points="22 4 22 6 21 6 21 7 20 7 20 8 19 8 19 9 18 9 18 10 17 10 17 11 16 11 16 12 15 12 15 13 14 13 14 14 13 14 13 15 12 15 12 16 11 16 11 17 10 17 10 18 8 18 8 17 7 17 7 16 6 16 6 15 5 15 5 14 4 14 4 13 3 13 3 12 2 12 2 10 4 10 4 11 5 11 5 12 6 12 6 13 7 13 7 14 8 14 8 15 10 15 10 14 11 14 11 13 12 13 12 12 13 12 13 11 14 11 14 10 15 10 15 9 16 9 16 8 17 8 17 7 18 7 18 6 19 6 19 5 20 5 20 4 22 4"/>
@@ -39,8 +105,8 @@ interface RoadmapNodeData {
   kind?: string;
   label: string;
   isCurrent?: boolean;
+  isJumping?: boolean;
 }
-
 const BAR_COLOR = '#3d7a7a';
 
 function pixelRing(s: number, color: string, bgColor: string, dx = 0, dy = 0): string[] {
@@ -122,26 +188,26 @@ const LAYER_COLORS = [
  * Character image that sits above the node, peeking out from the top edge.
  * Only rendered when the node is active (in progress).
  */
-function Mascot() {
-  return (
-    <Image
-      src="/snoopy.png"
-      alt="Character"
-      width={104}
-      height={104}
-      style={{
-        position: 'absolute',
-        objectFit: 'contain',
-        top: -73,
-        left: '50%',
-        transform: 'translateX(-50%)',
-        zIndex: 10,
-        pointerEvents: 'none',
-        //imageRendering: 'pixelated',
-      }}
-    />
-  );
-}
+// function Mascot() {
+//   return (
+//     <Image
+//       src="/snoopy.png"
+//       alt="Character"
+//       width={104}
+//       height={104}
+//       style={{
+//         position: 'absolute',
+//         objectFit: 'contain',
+//         top: -73,
+//         left: '50%',
+//         transform: 'translateX(-50%)',
+//         zIndex: 10,
+//         pointerEvents: 'none',
+//         //imageRendering: 'pixelated',
+//       }}
+//     />
+//   );
+// }
 
 function OctagonPixelBorder({
   width,
@@ -280,7 +346,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
   const isActive = data.progress > 0 && data.progress < 100;
   const isCurrent = !!data.isCurrent;
   const kind = data.kind || 'lesson';
-
+  const isJumping = !!data.isJumping;
   const bgColor = isCurrent ? '#3d7a7a' : isActive ? '#eaf4f4' : isLocked ? 'rgba(255,255,255,0.7)' : '#ffffff';
   const borderColor = selected ? '#f7d22e' : isCurrent ? '#2e6666' : isActive ? '#4a9696' : '#7ab8b8';
 
@@ -298,7 +364,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
         }}
       >
         <CirclePixelBorder size={QUIZ_SIZE} borderColor={borderColor} bgColor={bgColor} />
-        {isCurrent && <Mascot />}
+        {isCurrent && !data.isJumping && <CharacterMascot isJumping={false} />}
         <Handle type="target" position={Position.Left} className="opacity-0!" />
         <span
           style={{ position: 'relative', zIndex: 1 }}
@@ -331,7 +397,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
           borderColor={borderColor}
           bgColor={bgColor}
         />
-        {isCurrent && <Mascot />}
+        {isCurrent && !data.isJumping && <CharacterMascot isJumping={false} />}
         <Handle type="target" position={Position.Left} className="opacity-0!" />
         <div
           style={{ position: 'relative', zIndex: 1, width: '100%' }}
@@ -383,7 +449,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
         ${selected ? 'shadow-lg' : ''}`}
     >
       <Handle type="target" position={Position.Left} className="opacity-0!" />
-      {isCurrent && <Mascot />}
+      {isCurrent && !data.isJumping && <CharacterMascot isJumping={false} />}
       <div className="flex flex-col gap-2 w-full">
         <div className="flex items-center gap-2">
           {isLocked ? (

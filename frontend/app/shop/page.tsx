@@ -354,10 +354,15 @@ export default function ShopPage() {
             <button
               className="px-btn bg-[#4e8888] text-[#f0f8f8] w-full py-2 text-[12px]"
               onClick={() => {
-                localStorage.setItem("character_saved", JSON.stringify(equipped));
-                localStorage.setItem("character_saved_variants", JSON.stringify(colorVariants));
-                showNotification("CHARACTER SAVED!");
-              }}
+              localStorage.setItem('character_saved', JSON.stringify(equipped));
+              localStorage.setItem('character_saved_variants', JSON.stringify(colorVariants));
+              // Notify same-tab listeners (RoadmapNode)
+              window.dispatchEvent(new StorageEvent('storage', {
+                key: 'character_saved',
+                newValue: JSON.stringify(equipped),
+              }));
+              showNotification('CHARACTER SAVED!');
+            }}
             >
               💾 SAVE CHARACTER
             </button>
