@@ -8,6 +8,28 @@ async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
+export interface Character {
+  skin: string;
+  eyes: string;
+  clothes: string;
+  pants: string;
+  shoes: string;
+  hair: string;
+  accessories: string;
+  color_variants: Record<string, number>;
+}
+
+export const DEFAULT_CHARACTER: Character = {
+  skin: "char1.png",
+  eyes: "eyes.png",
+  clothes: "suit.png",
+  pants: "pants.png",
+  shoes: "shoes.png",
+  hair: "buzzcut.png",
+  accessories: "",
+  color_variants: {},
+};
+
 export interface User {
   id: string;
   name: string;
@@ -202,6 +224,16 @@ export const api = {
         signal: AbortSignal.timeout(300_000), // 5 min timeout
       }
     ),
+
+  getCharacter: () =>
+    apiFetch<Character>("/api/v1/users/me/character"),
+
+  saveCharacter: (character: Partial<Character>) =>
+    apiFetch<Character>("/api/v1/users/me/character", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(character),
+    }),
 
   uploadResume: (file: File) => {
     const fd = new FormData();

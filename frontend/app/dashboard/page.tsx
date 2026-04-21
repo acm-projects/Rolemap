@@ -4,9 +4,129 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Navbar } from '../components/NavBar';
 import fire from '../../icons/fire.png';
-import home from '../../icons/home.png';
-import PixelProgress from '../components/PixelProgress';
-import Heart from '../../app/dashboard/Heart.svg';
+import { useRouter } from 'next/navigation';
+import { api, type DashboardResponse, type DashboardRoadmap, type Checkpoint, type RoadmapEdge } from '@/lib/api';
+import {
+  ReactFlow,
+  Background,
+  BackgroundVariant,
+  useNodesState,
+  useEdgesState,
+  ReactFlowProvider,
+  useReactFlow,
+  useNodesInitialized,
+} from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
+import { RoadmapNode } from '@/app/components/RoadmapNode';
+import { applyDagreLayout } from '@/lib/layout';
+import PixelProgress from '@/app/components/PixelProgress';
+
+// ─── Minimap helpers (mirrors map/page.tsx) ───────────────────────────────────
+const miniNodeTypes = { roadmap: RoadmapNode };
+
+function toMiniFlowNodes(checkpoints: Checkpoint[]) {
+  const currentCP = checkpoints.find(cp => !cp.locked && cp.progress < 100);
+  return checkpoints.map(cp => ({
+    id: cp.id,
+    type: 'roadmap' as const,
+    data: { label: cp.label, progress: cp.progress, locked: cp.locked, kind: cp.kind, isCurrent: cp === currentCP },
+    position: cp.position,
+  }));
+}
+
+function toMiniFlowEdges(edges: RoadmapEdge[], checkpoints: Checkpoint[]) {
+  return edges.map(e => {
+    const sourceCP = checkpoints.find(cp => cp.id === e.source);
+    const unlocked = sourceCP && !sourceCP.locked;
+    return {
+      id: e.id,
+      source: e.source,
+      target: e.target,
+      type: 'step' as const,
+      animated: false,
+      style: {
+        stroke: unlocked ? '#548080' : '#c8d0dc',
+        strokeWidth: 7,
+        strokeDasharray: '8 14',
+        strokeLinecap: 'square' as const,
+        animation: unlocked ? 'stones-fwd 2.4s linear infinite' : 'none',
+      },
+    };
+  });
+}
+
+// ─── Mini roadmap canvas ──────────────────────────────────────────────────────
+function MiniRoadmapContent({ roadmapId }: { roadmapId: string }) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [nodes, setNodes, onNodesChange] = useNodesState<any>([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [edges, setEdges, onEdgesChange] = useEdgesState<any>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const { fitView } = useReactFlow();
+  const nodesInitialized = useNodesInitialized();
+
+  useEffect(() => {
+    api.roadmapMap(roadmapId)
+      .then(data => {
+        const flowNodes = toMiniFlowNodes(data.checkpoints);
+        const flowEdges = toMiniFlowEdges(data.edges, data.checkpoints);
+        const laidOut = applyDagreLayout(flowNodes, flowEdges);
+        setNodes(laidOut);
+        setEdges(flowEdges);
+      })
+      .catch(() => setError(true))
+      .finally(() => setLoading(false));
+  }, [roadmapId]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Fit once ReactFlow has actually measured all nodes
+  useEffect(() => {
+    if (nodesInitialized && nodes.length > 0) {
+      fitView({ duration: 0, padding: 0.15 });
+    }
+  }, [nodesInitialized]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (loading) {
+    return <div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading map...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full gap-2">
+        <p className="text-slate-400 text-sm">No map data available</p>
+        <p className="text-slate-300 text-xs">This roadmap hasn&apos;t been generated yet</p>
+      </div>
+    );
+  }
+
+  return (
+    <ReactFlow
+      nodes={nodes}
+      edges={edges}
+      onNodesChange={onNodesChange}
+      onEdgesChange={onEdgesChange}
+      nodeTypes={miniNodeTypes}
+      nodesDraggable={false}
+      nodesConnectable={false}
+      elementsSelectable={false}
+      zoomOnScroll={false}
+      panOnScroll={false}
+      panOnDrag={false}
+    >
+      <Background variant={BackgroundVariant.Dots} color="#d1d5db" gap={24} size={1.5} />
+    </ReactFlow>
+  );
+}
+
+function MiniRoadmap({ roadmapId }: { roadmapId: string }) {
+  return (
+    <div className="w-full h-full bg-[#eef1f7]">
+      <ReactFlowProvider>
+        <MiniRoadmapContent roadmapId={roadmapId} />
+      </ReactFlowProvider>
+    </div>
+  );
+}
 
 // ─── Pixel primitives (inlined) ───────────────────────────────────────────────
 
@@ -14,7 +134,7 @@ interface PixelButtonProps {
   children: React.ReactNode;
   onClick?: () => void;
   variant?: 'primary' | 'secondary' | 'ghost';
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   disabled?: boolean;
   type?: 'button' | 'submit';
 }
@@ -40,6 +160,8 @@ function PixelButton({
 
   const getSizeClasses = () => {
     switch (size) {
+      case 'xs':
+        return 'px-2.5 py-1 text-xs';
       case 'sm':
         return 'px-4 py-2 text-xs';
       case 'md':
@@ -111,101 +233,6 @@ function PixelCard({
   );
 }
 
-// ─── Static data ──────────────────────────────────────────────────────────────
-
-const leaderboard = [
-  { rank: 1, name: 'Tom Wilson', subtitle: 'Master Level', streak: 28, isYou: false, crown: true,  avatar: 'TW', avatarBg: 'bg-slate-700' },
-  { rank: 2, name: 'You',        subtitle: 'Keep it up!',  streak: 24, isYou: true,  crown: false, avatar: 'AM', avatarBg: 'bg-[#4a7c7c]/20' },
-  { rank: 3, name: 'Sarah Chen', subtitle: 'Elite Rank',   streak: 19, isYou: false, crown: false, avatar: 'SC', avatarBg: 'bg-slate-500' },
-  { rank: 4, name: 'Jamie Fox',  subtitle: 'Growing Fast', streak: 12, isYou: false, crown: false, avatar: 'JF', avatarBg: 'bg-slate-600' },
-];
-
-const allRoadmaps = [
-  {
-    id: 'frontend',
-    title: 'Front End Developer',
-    progress: 68,
-    active: true,
-    nodes: [
-      { x: 15, y: 50 }, { x: 38, y: 50 }, { x: 60, y: 25 },
-      { x: 60, y: 72 }, { x: 83, y: 50 },
-    ],
-    edges: [
-      { a: 0, b: 1, done: true  },
-      { a: 1, b: 2, done: true  },
-      { a: 1, b: 3, done: false },
-      { a: 2, b: 4, done: false },
-      { a: 3, b: 4, done: false },
-    ],
-    doneNodes: [0, 1, 2],
-  },
-  {
-    id: 'fullstack',
-    title: 'Full Stack Developer',
-    progress: 12,
-    active: false,
-    nodes: [
-      { x: 15, y: 50 }, { x: 40, y: 25 }, { x: 40, y: 72 },
-      { x: 65, y: 50 }, { x: 85, y: 50 },
-    ],
-    edges: [
-      { a: 0, b: 1, done: true  },
-      { a: 0, b: 2, done: false },
-      { a: 1, b: 3, done: false },
-      { a: 2, b: 3, done: false },
-      { a: 3, b: 4, done: false },
-    ],
-    doneNodes: [0],
-  },
-  {
-    id: 'datascience',
-    title: 'Data Science',
-    progress: 0,
-    active: false,
-    nodes: [
-      { x: 18, y: 50 }, { x: 45, y: 25 }, { x: 45, y: 75 },
-      { x: 78, y: 50 },
-    ],
-    edges: [
-      { a: 0, b: 1, done: false },
-      { a: 0, b: 2, done: false },
-      { a: 1, b: 3, done: false },
-      { a: 2, b: 3, done: false },
-    ],
-    doneNodes: [],
-  },
-];
-
-// ─── Minimap ──────────────────────────────────────────────────────────────────
-
-function RoadmapMinimap({
-  nodes,
-  edges,
-  doneNodes,
-  active,
-}: {
-  nodes: { x: number; y: number }[];
-  edges: { a: number; b: number; done: boolean }[];
-  doneNodes: number[];
-  active: boolean;
-}) {
-  return (
-    <svg viewBox="0 0 100 100" className="w-full h-full" preserveAspectRatio="xMidYMid meet" style={{ opacity: active ? 1 : 0.7 }}>
-      {edges.map((e, i) => {
-        const na = nodes[e.a], nb = nodes[e.b];
-        return (
-          <line key={i} x1={na.x} y1={na.y} x2={nb.x} y2={nb.y}
-            stroke={e.done ? '#4a7c7c' : '#cbd5e1'} strokeWidth="2.5"
-            strokeDasharray={e.done ? 'none' : '4 3'} />
-        );
-      })}
-      {nodes.map((n, i) => (
-        <circle key={i} cx={n.x} cy={n.y} r="6"
-          fill={doneNodes.includes(i) ? '#4a7c7c' : '#e2e8f0'} stroke="white" strokeWidth="2" />
-      ))}
-    </svg>
-  );
-}
 
 // ─── Dashboard ────────────────────────────────────────────────────────────────
 
@@ -214,6 +241,7 @@ export default function Dashboard() {
   const [data, setData] = useState<DashboardResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [displayProgress, setDisplayProgress] = useState(0);
+  const [selectedRoadmap, setSelectedRoadmap] = useState<DashboardRoadmap | null>(null);
 
   useEffect(() => {
     // Gate: redirect to onboarding if not completed
@@ -224,6 +252,9 @@ export default function Dashboard() {
     api.dashboard()
       .then(d => {
         setData(d);
+        // Default minimap to whichever roadmap matches the map page (active_roadmap)
+        const active = d.roadmaps.find(r => r.id === d.active_roadmap.id) ?? d.roadmaps[0] ?? null;
+        setSelectedRoadmap(active);
         const timer = setTimeout(() => setDisplayProgress(d.active_roadmap.progress_percentage), 300);
         return () => clearTimeout(timer);
       })
@@ -249,15 +280,14 @@ export default function Dashboard() {
     <div className="min-h-screen w-full bg-[#f0f8f8] relative">
       <Navbar />
 
-        <div className="pt-25 pb-5 w-[95%] mx-auto">
+      <div className="pt-25 px-8 pb-5 ml-8 mr-7">
+        <div className="max-w-7xl mx-auto">
+
           {/* Header row */}
           <div className="flex items-start justify-between mb-6 gap-4">
 
             {/* Left: title */}
             <div>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">
-                {data?.active_roadmap.title} Path
-              </p>
               <div className='flex items-center '>
                 <h1 className="text-5xl text-slate-700 leading-tight tracking-wider">Dashboard</h1>
               </div>
@@ -265,182 +295,138 @@ export default function Dashboard() {
             </div>
 
             {/* Right: quick stats + today's challenge */}
-            <div className="flex items-stretch gap-3 flex-shrink-0">
+            <div className="flex items-stretch gap-3 shrink-0">
 
-              {/* XP block — PixelCard */}
-              <PixelCard className="flex items-center gap-2 px-4 py-2.5">
-                <div className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center">
-                  <Image src={Heart} alt='Heart Image' className='h-4 w-4'/>
-                </div>
-                <div>
-                  <p className="text-md text-slate-400 uppercase tracking-wider leading-none">Total XP</p>
-                  <p className="text-md text-slate-700">2,450</p>
-                </div>
-              </PixelCard>
+              {/* XP — no box */}
+              <div className="flex items-center gap-3 px-2">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10 text-yellow-400 shrink-0">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+                <p className="text-4xl text-slate-700 whitespace-nowrap">XP: {xpTotal}</p>
+              </div>
 
-              {/* Progress block — PixelCard */}
-              <PixelCard className="flex items-center gap-2 px-4 py-2.5">
-                <div className="relative w-7 h-7 flex-shrink-0">
+              {/* Progress — no box */}
+              <div className="flex items-center gap-3 px-2">
+                <div className="relative w-10 h-10 shrink-0">
                   <svg className="w-full h-full" viewBox="0 0 200 200">
-                    <circle cx="100" cy="100" r="80" fill="none" stroke="#e2e8f0" strokeWidth="24" />
-                    <circle cx="100" cy="100" r="80" fill="none" stroke="#4a7c7c" strokeWidth="24"
+                    <circle cx="100" cy="100" r="80" fill="none" stroke="#e2e8f0" strokeWidth="28" />
+                    <circle cx="100" cy="100" r="80" fill="none" stroke="#4a7c7c" strokeWidth="28"
                       strokeDasharray={`${displayProgress * 5.03} 502`} strokeLinecap="round"
                       style={{ transition: 'stroke-dasharray 1s ease-out' }} transform="rotate(-90 100 100)" />
                   </svg>
                 </div>
-                <div>
-                  <p className="text-md text-slate-400 uppercase tracking-wider leading-none">Progress</p>
-                  <p className="text-md text-slate-700">{displayProgress}%</p>
-                </div>
-              </PixelCard>
+                <p className="text-4xl text-slate-700 whitespace-nowrap">{displayProgress}%</p>
+              </div>
 
               {/* Today's Challenge — PixelCard with gradient + PixelButton */}
               <PixelCard className="bg-gradient-to-r from-[#4a7c7c] to-[#6fa8a8] px-5 py-2.5 flex items-center gap-4 text-white !border-t-[#6fa8a8] !border-l-[#6fa8a8] !border-r-[#2d5050] !border-b-[#2d5050]">
                 <div>
-                  <p className="text-md uppercase tracking-widest opacity-75 leading-none mb-0.5">Today&apos;s Challenge</p>
-                  <p className="text-sm leading-tight">Build a useState counter</p>
+                  <p className="text-lg uppercase tracking-normal opacity-75 leading-none mb-0.5">Today&apos;s Challenge</p>
+                  <p className="text-lg tracking-normal leading-tight">Build a useState counter</p>
                 </div>
-                <a href='../../tasks' className='block h-full'>
-                  <PixelButton variant="secondary" size="sm">
-                      Start →
-                  </PixelButton>
-                </a>
+                <PixelButton variant="secondary" size="sm">
+                  Start →
+                </PixelButton>
               </PixelCard>
             </div>
           </div>
 
-          {/* Main content: 2 columns */}
-          <div className="grid grid-cols-12 gap-6 w-full">
+          {/* Main content: 3 columns */}
+          <div className="grid grid-cols-12 gap-6">
 
-            {/* LEFT col: Leaderboard — PixelCard */}
-            <PixelCard className="col-span-4 p-6 h-[360px] overflow-hidden">
+            {/* LEFT col: Streak Leaderboard */}
+            <PixelCard className="col-span-3 p-6 h-100 flex flex-col">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">
                     <Image src={fire} alt="Fire Icon" className="h-6 w-6" />
                   </div>
-                  <h2 className="text-2xl text-slate-700 uppercase tracking-wider">Streak Leaderboard</h2>
+                  <h2 className="text-2xl text-slate-700 uppercase tracking-wider">Leaderboard</h2>
                 </div>
-                <span className="text-[10px] font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-full uppercase tracking-wide">Today</span>
               </div>
-              <div className="space-y-1.5">
-                {leaderboard.map((user) => (
-                    user.isYou ? (
-                      <PixelCard
-                        key={user.rank}
-                        selected={true}      // triggers pixelated style
-                        hover={false}        // no hover for “You”
-                        className="flex items-center gap-3 px-2 py-1"
-                      >
-                        <span className="text-sm font-bold w-5 text-center text-[#4a7c7c]">
-                          {user.rank}
-                        </span>
-                        <div className={`relative w-9 h-9 rounded-xl ${user.avatarBg} flex items-center justify-center flex-shrink-0`}>
-                          <span className="text-xs font-bold text-[#4a7c7c]">{user.avatar}</span>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xl text-slate-700 truncate tracking-wide">{user.name}</p>
-                          <p className="text-[13px] text-slate-400">{user.subtitle}</p>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <span className="text-sm font-bold text-slate-700">{user.streak}</span>
-                          <Image src={fire} alt="Fire Icon" className="h-6 w-6"/>
-                        </div>
-                      </PixelCard>
-                    ) : (
-                      <div
-                        key={user.rank}
-                        className="flex items-center gap-3 px-2 py-1 rounded-2xl transition-all hover:bg-slate-50"
-                      >
-                        <span className="text-sm font-bold w-5 text-center text-slate-300">{user.rank}</span>
-                        <div className={`relative w-9 h-9 rounded-xl ${user.avatarBg} flex items-center justify-center flex-shrink-0`}>
-                          <span className="text-xs font-bold text-white">{user.avatar}</span>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xl text-slate-700 truncate tracking-wide">{user.name}</p>
-                          <p className="text-[13px] text-slate-400">{user.subtitle}</p>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <span className="text-sm font-bold text-slate-500">{user.streak}</span>
-                          <Image src={fire} alt="Fire Icon" className="h-6 w-6"/>
-                        </div>
-                      </div>
-                    )
-                  ))}
+              <div className="flex flex-col gap-2 flex-1 overflow-y-auto">
+                {leaderboard.slice(0, 4).map((user) => (
+                  <div key={user.rank}
+                    className={`flex items-center gap-3 px-4 py-3 transition-all border-2
+                      ${user.is_you
+                        ? 'bg-[#d4eaea] border-t-[#4a7c7c] border-l-[#4a7c7c] border-r-[#2d5050] border-b-[#2d5050]'
+                        : 'bg-white border-t-[#d4e8e8] border-l-[#d4e8e8] border-r-[#7ab3b3] border-b-[#7ab3b3]'}`}>
+                    <span className={`text-base font-normal w-6 text-center shrink-0 ${user.is_you ? 'text-[#4a7c7c]' : 'text-slate-500'}`}>
+                      {user.rank}
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-base font-normal text-slate-700">{user.is_you ? 'You' : user.name}</p>
+                      <p className="text-lg text-slate-400">{user.subtitle}</p>
+                    </div>
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <span className={`text-base font-normal ${user.is_you ? 'text-slate-700' : 'text-slate-500'}`}>
+                        {user.streak}
+                      </span>
+                      <Image src={fire} alt="Fire Icon" className="h-5 w-5" />
+                    </div>
+                  </div>
+                ))}
               </div>
             </PixelCard>
 
-            {/* RIGHT col: My Roadmaps — PixelCard */}
-            <PixelCard className="col-span-8 p-5 flex flex-col h-[360px]">
+            {/* MIDDLE col: My Roadmaps */}
+            <PixelCard className="col-span-3 p-5 flex flex-col h-100">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-3xl text-slate-700 tracking-wider">My Roadmaps</h2>
+                <h2 className="text-2xl text-slate-700 tracking-wider">MY ROADMAPS</h2>
+                <span className="text-2xl text-slate-400 cursor-pointer hover:text-slate-600 leading-none select-none">+</span>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 flex-1 min-h-0">
+              <div className="flex flex-col gap-2 flex-1 overflow-y-auto">
                 {roadmaps.length === 0 ? (
-                  <div className="col-span-2 flex flex-col items-center justify-center text-center py-8">
+                  <div className="flex flex-col items-center justify-center text-center py-8">
                     <p className="text-sm text-slate-400 mb-2">No roadmaps yet</p>
-                    <a href="/OnBoarding/Major" className="text-xs font-semibold text-[#4a7c7c] bg-[#4a7c7c]/10 hover:bg-[#4a7c7c]/20 px-4 py-1.5 rounded-xl transition-colors">
+                    <a href="/OnBoarding/Major" className="text-xs text-[#4a7c7c] bg-[#4a7c7c]/10 hover:bg-[#4a7c7c]/20 px-4 py-1.5 rounded-xl transition-colors">
                       Complete onboarding to generate your roadmap
                     </a>
                   </div>
                 ) : roadmaps.map((rm: DashboardRoadmap) => {
-                  const minimap = rm.minimap ?? { nodes: [], edges: [], done_nodes: [] };
-                  const active = rm.status === 'active';
                   return (
-                    <a
+                    <div
                       key={rm.id}
-                      href="/map"
-                      className="block min-h-0"
+                      onClick={() => setSelectedRoadmap(rm)}
+                      className={`flex items-center justify-between px-4 py-3 cursor-pointer transition-all hover:-translate-y-px border-2
+                        ${rm.progress_percentage > 0
+                          ? 'bg-[#d4eaea] border-t-[#4a7c7c] border-l-[#4a7c7c] border-r-[#2d5050] border-b-[#2d5050]'
+                          : 'bg-white border-t-[#d4e8e8] border-l-[#d4e8e8] border-r-[#7ab3b3] border-b-[#7ab3b3]'
+                        }`}
                     >
-                      <div
-                        className={`flex flex-col overflow-hidden h-full transition-all hover:shadow-md hover:translate-y-[-2px] cursor-pointer
-                          border-4
-                          ${active
-                            ? 'border-t-[#7ab3b3] border-l-[#7ab3b3] border-r-[#2d5050] border-b-[#2d5050]'
-                            : 'border-t-[#d4e8e8] border-l-[#d4e8e8] border-r-[#7ab3b3] border-b-[#7ab3b3]'
-                          }`}
-                      >
-                        {/* Minimap SVG area */}
-                        <div className="flex-1 bg-[#f7fafa] relative px-3 py-2 min-h-0">
-                          {active && (
-                            <span className="absolute top-2 left-2 text-[9px] font-bold text-[#4a7c7c] bg-white border border-[#4a7c7c]/30 px-2 py-0.5 rounded-full uppercase tracking-wider z-10">
-                              Active
-                            </span>
-                          )}
-                          <RoadmapMinimap nodes={minimap.nodes} edges={minimap.edges} doneNodes={minimap.done_nodes} active={active} />
-                        </div>
-
-                      {/* Progress bar + title */}
-                      <div
-                      /*value={40} showLabel={true} step={2}*/
-                      >
-                        <div className="px-4 py-3 bg-white border-t border-slate-100">
-                          <div className="flex items-center justify-between mb-1.5">
-                            <p className="text-xl text-slate-700 truncate tracking-wide">{rm.title}</p>
-                            <p className="text-xl text-slate-400 ml-2 flex-shrink-0">{rm.progress}%</p>
-                          </div>
-                          <div className="h-1.5 bg-slate-100 overflow-hidden">
-                          <PixelProgress value={40} showLabel={true}/>
-                          </div>
-                        </div>
+                      <div className="flex-1">
+                        <p className="text-base text-slate-700 tracking-normal mb-1.5">{rm.title}</p>
+                        <PixelProgress value={rm.progress_percentage} showLabel={false} />
                       </div>
                     </div>
-                    <a href='../../OnBoarding/Major' className='block h-full'>
-                    <PixelCard className="h-full mt-3 transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-1.5 cursor-pointer">
-                      <button 
-                      className="flex items-center justify-center w-full h-full hover:bg-slate-50 transition-colors">
-                        <div className="text-5xl text-slate-400">+</div>
-                      </button>
-                    </PixelCard>
-                    </a>
-                  </a>
-                ))}
+                  );
+                })}
+              </div>
+            </PixelCard>
+
+            {/* RIGHT col: Minimap — always visible, widest panel */}
+            <PixelCard className="col-span-6 p-5 flex flex-col h-100">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl text-slate-700 tracking-wider">MAP</h2>
+                <PixelButton variant="secondary" size="xs" onClick={() => router.push('/map')}>
+                  Open Full Map →
+                </PixelButton>
+              </div>
+              <div className="flex-1 relative">
+                {selectedRoadmap ? (
+                  <MiniRoadmap key={selectedRoadmap.id} roadmapId={selectedRoadmap.id} />
+                ) : (
+                  <div className="flex items-center justify-center h-full text-sm text-slate-300 tracking-normal">
+                    Select a roadmap to preview
+                  </div>
+                )}
               </div>
             </PixelCard>
 
           </div>
         </div>
       </div>
+    </div>
   );
 }

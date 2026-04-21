@@ -1,0 +1,33 @@
+{
+  "username": "SiriKishoreDola",
+  "profile": {
+    "name": "Siri Kishore Dola",
+    "bio": "",
+    "location": "",
+    "public_repos": 1,
+    "followers": 0,
+    "account_age_days": 219
+  },
+  "languages": {},
+  "activity": {
+    "commits_last_90_days": 0,
+    "active_weeks": 3,
+    "last_pushed": "2026-04-14"
+  },
+  "top_repos": [],
+  "skill_assessment": {
+    "primary_languages": [],
+    "bio_skills": [],
+    "detected_frameworks": [],
+    "estimated_level": "junior",
+    "level_reasons": [
+      "1 public repositories",
+      "0 language(s) used",
+      "Account age: 219 days",
+      "0 commits in the last 90 days across 3 active weeks",
+      "Top repo stars: 0"
+    ],
+    "assessment_summary": "",
+    "strengths": []
+  }
+}

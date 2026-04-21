@@ -1,0 +1,56 @@
+domain,category,description
+youtube.com,Video,General video tutorials and explanations
+developer.mozilla.org,Web,MDN Web Docs (HTML/CSS/JS)
+dev.to,Articles,Community driven developer articles
+medium.com,Articles,Developer articles (some paywalls but good for niche)
+towardsdatascience.com,Data Science,Data Science and Machine Learning articles
+kubernetes.io,DevOps,Official Kubernetes documentation
+docs.docker.com,DevOps,Official Docker documentation
+docs.aws.amazon.com,Cloud,Official AWS documentation
+learn.microsoft.com,Cloud,Official Azure documentation
+cloud.google.com/docs,Cloud,Official GCP documentation
+react.dev,Frontend,Official React documentation
+angular.io,Frontend,Official Angular documentation
+vuejs.org,Frontend,Official Vue.js documentation
+python.org,Backend,Official Python documentation
+java.com,Backend,Official Java documentation
+docs.oracle.com/en/java,Backend,Oracle Java documentation
+golang.org,Backend,Official Go documentation
+rust-lang.org,Backend,Official Rust documentation
+ruby-lang.org,Backend,Official Ruby documentation
+php.net,Backend,Official PHP documentation
+postgresqltutorial.com,Database,PostgreSQL tutorials
+mysqltutorial.org,Database,MySQL tutorials
+mongodb.com/docs,Database,Official MongoDB documentation
+redis.io/docs,Database,Official Redis documentation
+elasticsearch.io,Database,Official Elasticsearch documentation
+geeksforgeeks.org,General,General computer science and programming articles
+realpython.com,Python,Python specific tutorials and articles
+freecodecamp.org/news,Articles,freeCodeCamp news and articles
+css-tricks.com,Frontend,CSS and Frontend specific articles
+smashingmagazine.com,Frontend,Web design and development articles
+kentcdodds.com,Frontend,Frontend and React specific articles
+martinfowler.com,Architecture,Software architecture and design patterns
+refactoring.guru,Architecture,Design patterns and refactoring
+owasp.org,Security,Cybersecurity and web application security
+portswigger.net,Security,Web security academy and articles
+tryhackme.com,Security,Cybersecurity learning paths (some articles)
+hackthebox.com,Security,Cybersecurity learning (some articles)
+cisco.com,Networking,Networking documentation and articles
+cloudflare.com/learning,Networking,Web performance and security learning center
+nginx.com/resources,DevOps,NGINX and web server resources
+hashicorp.com/resources,DevOps,Terraform and Vault resources
+ansible.com/resources,DevOps,Ansible resources
+pytorch.org/tutorials,Machine Learning,Official PyTorch tutorials
+tensorflow.org/tutorials,Machine Learning,Official TensorFlow tutorials
+huggingface.co/docs,Machine Learning,Hugging Face documentation
+scikit-learn.org,Machine Learning,Official Scikit-Learn documentation
+kaggle.com/learn,Machine Learning,Kaggle learning courses
+atlassian.com/agile,Project Management,Agile and Scrum methodologies
+scrum.org,Project Management,Official Scrum resources
+pmi.org,Project Management,Project Management Institute resources
+developer.hashicorp.com,DevOps,Official HashiCorp developer docs (Terraform/Vault)
+terraform.io,DevOps,Official Terraform documentation
+docs.ansible.com,DevOps,Official Ansible documentation
+vaultproject.io,Security,Official Vault documentation
+docs.python.org,Python,Official Python documentation

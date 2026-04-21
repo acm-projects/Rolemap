@@ -61,7 +61,7 @@ export function NodePanel({ data, onClose }: { data: NodePanelData; onClose: () 
               <CloseIcon />
             </button>
           </div>
-          <p className="text-sm text-slate-400 uppercase tracking-wider mb-4">
+          <p className="text-lg text-slate-400 uppercase tracking-wider mb-4">
             Progress: {data.progress}% — <span className="text-[#4a7c7c]">{statusText}</span>
           </p>
           <PixelProgress value={data.progress} showLabel={false} />
@@ -70,16 +70,16 @@ export function NodePanel({ data, onClose }: { data: NodePanelData; onClose: () 
         {/* Content: Added custom-scrollbar class */}
         <div className="px-6 py-6 flex-1 overflow-y-auto space-y-8 custom-scrollbar">
           <section>
-            <h3 className="text-lg text-slate-400 uppercase tracking-[0.15em] mb-3">
+            <h3 className="text-2xl text-slate-500 uppercase tracking-[0.15em] mb-3">
               About this Module
             </h3>
-            <p className="text-lg text-slate-600 leading-relaxed">
+            <p className="text-xl text-slate-400 leading-relaxed">
               {data.description}
             </p>
           </section>
 
           <section>
-            <h3 className="text-lg text-slate-400 uppercase tracking-[0.15em] mb-4">
+            <h3 className="text-2xl text-slate-500 uppercase tracking-[0.15em] mb-4">
               Subtopics
             </h3>
             <ul className="space-y-4">
@@ -90,7 +90,7 @@ export function NodePanel({ data, onClose }: { data: NodePanelData; onClose: () 
                     <div className={`flex-shrink-0 mt-0.5 ${done ? 'text-[#4a7c7c]' : 'text-slate-300'}`}>
                       {done ? <CheckCircleSolid /> : <CheckCircleOutline />}
                     </div>
-                    <span className={`text-lg leading-tight ${done ? 'text-slate-600' : 'text-slate-400'}`}>
+                    <span className={`text-xl leading-tight ${done ? 'text-slate-600' : 'text-slate-400'}`}>
                       {goal}
                     </span>
                   </li>

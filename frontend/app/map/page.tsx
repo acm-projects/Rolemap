@@ -4,11 +4,8 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   ReactFlow,
-  Background,
-  BackgroundVariant,
   useNodesState,
   useEdgesState,
-  MiniMap,
   Controls,
   NodeMouseHandler,
   ReactFlowProvider,
@@ -23,6 +20,78 @@ import { api, type Checkpoint, type RoadmapEdge } from '@/lib/api';
 import { applyDagreLayout } from '@/lib/layout';
 
 const nodeTypes = { roadmap: RoadmapNode };
+
+// Confirmed asset dimensions (read from file headers):
+//   sky.png         256×240  → 2× = 512×480
+//   clouds-back.png 256×240  → 2× = 512×480
+//   clouds-front.png 256×240 → 2× = 512×480
+//   ground.png      898×106  → 2× = 1796×212
+const PIXEL: React.CSSProperties = { imageRendering: 'pixelated' };
+
+function ParallaxLayers() {
+  return (
+    <>
+      {/* Sky — stretched to full viewport height, tiles only horizontally — no vertical seam */}
+      <div
+        aria-hidden="true"
+        className="fixed inset-0 z-0 pointer-events-none"
+        style={{
+          ...PIXEL,
+          backgroundImage: "url('/assets/sky.png')",
+          backgroundSize: '512px 100vh',
+          backgroundRepeat: 'repeat-x',
+          backgroundPosition: 'top left',
+        }}
+      />
+      {/* Back clouds — fills exactly the sky area above the ground (100vh - 20vh = 80vh) */}
+      <div
+        aria-hidden="true"
+        className="fixed top-0 z-1 pointer-events-none"
+        style={{
+          ...PIXEL,
+          width: '200%',
+          height: '80vh',
+          backgroundImage: "url('/assets/clouds-back.png')",
+          backgroundSize: '512px 80vh',
+          backgroundRepeat: 'repeat-x',
+          backgroundPosition: 'top left',
+          opacity: 0.85,
+          animation: 'driftClouds 120s linear infinite',
+        }}
+      />
+      {/* Front clouds — same sky area */}
+      <div
+        aria-hidden="true"
+        className="fixed top-0 z-2 pointer-events-none"
+        style={{
+          ...PIXEL,
+          width: '200%',
+          height: '80vh',
+          backgroundImage: "url('/assets/clouds-front.png')",
+          backgroundSize: '512px 80vh',
+          backgroundRepeat: 'repeat-x',
+          backgroundPosition: 'top left',
+          animation: 'driftClouds 60s linear infinite',
+        }}
+      />
+      {/* Ground — 20vh, top of ground tile meets bottom of cloud layers */}
+      <div
+        aria-hidden="true"
+        className="fixed bottom-0 z-3 pointer-events-none"
+        style={{
+          ...PIXEL,
+          left: '-2px',
+          width: 'calc(100% + 4px)',
+          height: '20vh',
+          backgroundImage: "url('/assets/ground.png')",
+          backgroundSize: '1796px 20vh',
+          backgroundRepeat: 'repeat-x',
+          backgroundPosition: 'top left',
+        }}
+      />
+    </>
+  );
+}
 
 function toFlowNodes(checkpoints: Checkpoint[]) {
   const currentCP = checkpoints.find(cp => !cp.locked && cp.progress < 100);
@@ -42,12 +111,14 @@ function toFlowEdges(edges: RoadmapEdge[], checkpoints: Checkpoint[]) {
       id: e.id,
       source: e.source,
       target: e.target,
-      type: 'smoothstep' as const,
+      type: 'step' as const,
       animated: false,
       style: {
-        stroke: unlocked ? '#4a7c7c' : '#c8d0dc',
-        strokeWidth: 1.5,
-        strokeDasharray: '6 4',
+        stroke: unlocked ? '#548080' : '#c8d0dc',
+        strokeWidth: 7,
+        strokeDasharray: '8 14',
+        strokeLinecap: 'square',
+        animation: unlocked ? 'stones-fwd 2.4s linear infinite' : 'none',
       },
     };
   });
@@ -86,7 +157,7 @@ function RoadmapContent() {
           const laidOutNode = laidOutNodes.find(n => n.id === activeCP.id);
           const pos = laidOutNode?.position ?? activeCP.position;
           setTimeout(() => {
-            setCenter(pos.x + 128, pos.y + 70, { zoom: 1.2, duration: 1000 });
+            setCenter(pos.x + 128, pos.y + 70, { zoom: 1.5, duration: 1000 });
           }, 200);
         } else {
           setTimeout(() => fitView({ duration: 1000 }), 200);
@@ -102,7 +173,7 @@ function RoadmapContent() {
   useEffect(() => {
     if (!pendingCenter) return;
     const timer = setTimeout(() => {
-      setCenter(pendingCenter.x, pendingCenter.y, { zoom: 1.1, duration: 800 });
+      setCenter(pendingCenter.x, pendingCenter.y, { zoom: 1.5, duration: 800 });
       setPendingCenter(null);
     }, 50);
     return () => clearTimeout(timer);
@@ -152,9 +223,11 @@ function RoadmapContent() {
   }
 
   return (
-    <div className="h-screen w-screen relative bg-[#eef1f7]">
+    <div className="h-screen w-screen relative overflow-hidden">
       <Navbar />
-      <div style={{ position: 'absolute', top: 72, left: 0, right: 0, bottom: 0 }}>
+      <ParallaxLayers />
+      {/* z-index 5: above ground (z-3) and clouds (z-1/2), below navbar (z-10) */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 5 }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -162,22 +235,25 @@ function RoadmapContent() {
           onEdgesChange={onEdgesChange}
           nodeTypes={nodeTypes}
           onNodeClick={handleNodeClick}
+          className="map-flow"
+          style={{ background: 'transparent' }}
         >
-          <Background variant={BackgroundVariant.Dots} color="#d1d5db" gap={24} size={1.5} />
-          <MiniMap position="bottom-left" style={{ width: 150, height: 100 }} />
           <Controls position="bottom-right" />
         </ReactFlow>
       </div>
+      {/* z-index 20: above ReactFlow and navbar */}
       {activePanel && (
-        <NodePanel
-          data={activePanel}
-          onClose={() => {
-            setActivePanel(null);
-            if (activePanelPos) {
-              setCenter(activePanelPos.x, activePanelPos.y, { zoom: 0.5, duration: 800 });
-            }
-          }}
-        />
+        <div style={{ position: 'relative', zIndex: 20 }}>
+          <NodePanel
+            data={activePanel}
+            onClose={() => {
+              setActivePanel(null);
+              if (activePanelPos) {
+                setCenter(activePanelPos.x, activePanelPos.y, { zoom: 0.5, duration: 800 });
+              }
+            }}
+          />
+        </div>
       )}
     </div>
   );
