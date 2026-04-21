@@ -210,7 +210,7 @@ export function Navbar() {
                 <Link
                   key={item}
                   href={`/${item.toLowerCase()}`}
-                  className={`pixel-nav-link text-[9px] pb-1 ${isActive ? 'active text-[#2d5050]' : 'text-[#4e8888] hover:text-[#2d5050]'}`}
+                  className={`pixel-nav-link text-[11px] pb-1 ${isActive ? 'active text-[#2d5050]' : 'text-[#4e8888] hover:text-[#2d5050]'}`}
                   style={{ fontFamily: "'Press Start 2P', monospace" }}
                 >
                   {item.toUpperCase()}

@@ -6,15 +6,15 @@
       "name": "Alex Morgan",
       "image_url": null,
       "github_username": "SiriKishoreDola",
-      "xp_total": 55,
+      "xp_total": 75,
       "current_streak": 1,
-      "longest_streak": 1,
+      "longest_streak": 2,
       "onboarding_completed": true,
       "onboarding_step": 5,
       "created_at": "2025-09-01T00:00:00Z",
-      "last_active_date": "2026-04-14",
+      "last_active_date": "2026-04-20",
       "character": {
-        "skin": "char1.png",
+        "skin": "char2.png",
         "eyes": "blush_all.png",
         "clothes": "suit.png",
         "pants": "pants.png",
@@ -3486,11 +3486,11 @@
     {
       "id": "ug-001",
       "user_id": "u-001",
-      "xp_total": 55,
-      "tasks_completed": 9,
+      "xp_total": 75,
+      "tasks_completed": 11,
       "leaderboard_rank": 2,
       "current_streak": 1,
-      "longest_streak": 1,
+      "longest_streak": 2,
       "updated_at": "2026-03-29T12:00:00Z"
     }
   ],
@@ -3522,7 +3522,6 @@
     {
       "rank": 1,
       "name": "Tom Wilson",
-      "subtitle": "Master Level",
       "streak": 28,
       "is_you": false,
       "avatar": "TW",
@@ -3531,7 +3530,6 @@
     {
       "rank": 2,
       "name": "Alex Morgan",
-      "subtitle": "Advanced Level",
       "streak": 1,
       "is_you": true,
       "avatar": "AM",
@@ -3540,7 +3538,6 @@
     {
       "rank": 3,
       "name": "Sarah Chen",
-      "subtitle": "Intermediate Level",
       "streak": 18,
       "is_you": false,
       "avatar": "SC",
@@ -3548,8 +3545,7 @@
     },
     {
       "rank": 4,
-      "name": "Marcus Johnson",
-      "subtitle": "Intermediate Level",
+      "name": "John Doe",
       "streak": 15,
       "is_you": false,
       "avatar": "MJ",
@@ -5122,7 +5118,7 @@
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic": "Understand basic programming constructs like loops and conditionals.",
-      "status": "pending"
+      "status": "not_started"
     },
     {
       "task_id": "subtopic__cp-gen-000__1",
@@ -16357,28 +16353,28 @@
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic_idx": 0,
-      "status": "completed"
+      "status": "not_started"
     },
     {
       "task_id": "resource__cp-gen-000__0__2",
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic_idx": 0,
-      "status": "completed"
+      "status": "not_started"
     },
     {
       "task_id": "resource__cp-gen-000__0__3",
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic_idx": 0,
-      "status": "completed"
+      "status": "not_started"
     },
     {
       "task_id": "resource__cp-gen-000__0__4",
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic_idx": 0,
-      "status": "pending"
+      "status": "not_started"
     },
     {
       "task_id": "resource__cp-gen-000__1__2",
