@@ -1,14 +1,11 @@
 'use client';
-import QuizConfetti from '../../components/ui/quiz-confetti';
-import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+
+import React, { useState, useCallback, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   ReactFlow,
-  Background,
-  BackgroundVariant,
   useNodesState,
   useEdgesState,
-  MiniMap,
   Controls,
   NodeMouseHandler,
   ReactFlowProvider,
@@ -21,33 +18,87 @@ import { NodePanel, NodePanelData } from '@/app/components/ConceptNodePanel';
 import { Navbar } from '@/app/components/NavBar';
 import { api, type Checkpoint, type RoadmapEdge } from '@/lib/api';
 import { applyDagreLayout } from '@/lib/layout';
-import { CharacterPreview } from '@/app/components/CharacterPreview';
-
-interface SavedChar {
-  skin: string; eyes: string; clothes: string;
-  pants: string; shoes: string; hair: string; accessories: string;
-}
-
-interface JumpPath {
-  from: { x: number; y: number };
-  to: { x: number; y: number };
-}
 
 const nodeTypes = { roadmap: RoadmapNode };
 
-function toFlowNodes(checkpoints: Checkpoint[], jumpingLabel: string | null = null, manualCurrentOverride: string | null = null) {
+// Confirmed asset dimensions (read from file headers):
+//   sky.png         256×240  → 2× = 512×480
+//   clouds-back.png 256×240  → 2× = 512×480
+//   clouds-front.png 256×240 → 2× = 512×480
+//   ground.png      898×106  → 2× = 1796×212
+const PIXEL: React.CSSProperties = { imageRendering: 'pixelated' };
+
+function ParallaxLayers() {
+  return (
+    <>
+      {/* Sky — stretched to full viewport height, tiles only horizontally — no vertical seam */}
+      <div
+        aria-hidden="true"
+        className="fixed inset-0 z-0 pointer-events-none"
+        style={{
+          ...PIXEL,
+          backgroundImage: "url('/assets/sky.png')",
+          backgroundSize: '512px 100vh',
+          backgroundRepeat: 'repeat-x',
+          backgroundPosition: 'top left',
+        }}
+      />
+      {/* Back clouds — fills exactly the sky area above the ground (100vh - 20vh = 80vh) */}
+      <div
+        aria-hidden="true"
+        className="fixed top-0 z-1 pointer-events-none"
+        style={{
+          ...PIXEL,
+          width: '200%',
+          height: '80vh',
+          backgroundImage: "url('/assets/clouds-back.png')",
+          backgroundSize: '512px 80vh',
+          backgroundRepeat: 'repeat-x',
+          backgroundPosition: 'top left',
+          opacity: 0.85,
+          animation: 'driftClouds 120s linear infinite',
+        }}
+      />
+      {/* Front clouds — same sky area */}
+      <div
+        aria-hidden="true"
+        className="fixed top-0 z-2 pointer-events-none"
+        style={{
+          ...PIXEL,
+          width: '200%',
+          height: '80vh',
+          backgroundImage: "url('/assets/clouds-front.png')",
+          backgroundSize: '512px 80vh',
+          backgroundRepeat: 'repeat-x',
+          backgroundPosition: 'top left',
+          animation: 'driftClouds 60s linear infinite',
+        }}
+      />
+      {/* Ground — 20vh, top of ground tile meets bottom of cloud layers */}
+      <div
+        aria-hidden="true"
+        className="fixed bottom-0 z-3 pointer-events-none"
+        style={{
+          ...PIXEL,
+          left: '-2px',
+          width: 'calc(100% + 4px)',
+          height: '20vh',
+          backgroundImage: "url('/assets/ground.png')",
+          backgroundSize: '1796px 20vh',
+          backgroundRepeat: 'repeat-x',
+          backgroundPosition: 'top left',
+        }}
+      />
+    </>
+  );
+}
+
+function toFlowNodes(checkpoints: Checkpoint[]) {
   const currentCP = checkpoints.find(cp => !cp.locked && cp.progress < 100);
   return checkpoints.map(cp => ({
     id: cp.id,
     type: 'roadmap' as const,
-    data: {
-      label: cp.label,
-      progress: cp.progress,
-      locked: cp.locked,
-      kind: cp.kind,
-      isCurrent: manualCurrentOverride ? cp.label === manualCurrentOverride : cp === currentCP,
-      isJumping: cp.label === jumpingLabel,
-    },
+    data: { label: cp.label, progress: cp.progress, locked: cp.locked, kind: cp.kind, isCurrent: cp === currentCP },
     position: cp.position,
   }));
 }
@@ -60,129 +111,23 @@ function toFlowEdges(edges: RoadmapEdge[], checkpoints: Checkpoint[]) {
       id: e.id,
       source: e.source,
       target: e.target,
-      type: 'smoothstep' as const,
+      type: 'step' as const,
       animated: false,
       style: {
-        stroke: unlocked ? '#4a7c7c' : '#c8d0dc',
-        strokeWidth: 1.5,
-        strokeDasharray: '6 4',
+        stroke: unlocked ? '#548080' : '#c8d0dc',
+        strokeWidth: 7,
+        strokeDasharray: '8 14',
+        strokeLinecap: 'square',
+        animation: unlocked ? 'stones-fwd 2.4s linear infinite' : 'none',
       },
     };
   });
 }
 
-// ─── Jumping Character Overlay ────────────────────────────────────────────────
-function JumpingCharacterOverlay({ jumpPath, char }: { jumpPath: JumpPath; char: SavedChar }) {
-  const { flowToScreenPosition } = useReactFlow();
-  const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
-  const [opacity, setOpacity] = useState(1);
-  const startTimeRef = useRef<number | null>(null);
-  const DURATION = 1750;
-  const FADE_DURATION = 200; // ms fade at the end
-
-  useEffect(() => {
-    // Debug: Get exact coordinates for comparison
-    const from = flowToScreenPosition(jumpPath.from);
-    const to = flowToScreenPosition(jumpPath.to);
-    console.log('jump from (screen):', from);
-    console.log('jump to (screen):', to);
-    
-    // Also find the actual node DOM element to compare
-    const nodeEls = document.querySelectorAll('.react-flow__node');
-    nodeEls.forEach(el => {
-      const rect = el.getBoundingClientRect();
-      console.log('node DOM rect:', rect, el.textContent?.slice(0, 20));
-    });
-
-    let rafId: number;
-    startTimeRef.current = null;
-    setOpacity(1);
-
-    const animate = (timestamp: number) => {
-      if (startTimeRef.current === null) startTimeRef.current = timestamp;
-      const elapsed = timestamp - startTimeRef.current;
-      const t = Math.min(elapsed / DURATION, 1);
-      const eased = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-
-      const from = flowToScreenPosition(jumpPath.from);
-      const to = flowToScreenPosition(jumpPath.to);
-      
-      // Debug: log flowToScreenPosition output for comparison
-      console.log('Jumping character flow positions:', { from, to });
-
-      const fx = from.x + 128, fy = from.y - 120; // node x center (256/2=128), character top (matches CharacterMascot)
-      const tx = to.x + 128,   ty = to.y - 120;
-
-      const arcHeight = 160;
-      const cx1x = fx + (tx - fx) * 0.25, cx1y = Math.min(fy, ty) - arcHeight;
-      const cx2x = fx + (tx - fx) * 0.5,  cx2y = Math.min(fy, ty) - arcHeight * 1.2;
-      const cx3x = fx + (tx - fx) * 0.75, cx3y = Math.min(fy, ty) - arcHeight * 0.5;
-
-      let x: number, y: number;
-      if (eased < 0.25) {
-        const s = eased / 0.25;
-        x = fx + (cx1x - fx) * s; y = fy + (cx1y - fy) * s;
-      } else if (eased < 0.5) {
-        const s = (eased - 0.25) / 0.25;
-        x = cx1x + (cx2x - cx1x) * s; y = cx1y + (cx2y - cx1y) * s;
-      } else if (eased < 0.75) {
-        const s = (eased - 0.5) / 0.25;
-        x = cx2x + (cx3x - cx2x) * s; y = cx2y + (cx3y - cx2y) * s;
-      } else {
-        const s = (eased - 0.75) / 0.25;
-        x = cx3x + (tx - cx3x) * s; y = cx3y + (ty - cx3y) * s;
-      }
-
-      setPos({ x, y });
-
-      if (t < 1) {
-        rafId = requestAnimationFrame(animate);
-      } else {
-        // Snap to destination, then fade out
-        const finalTo = flowToScreenPosition(jumpPath.to);
-        setPos({ x: finalTo.x + 128, y: finalTo.y - 120 });
-        setOpacity(0); // triggers CSS transition fade
-      }
-    };
-
-    rafId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(rafId);
-  }, [jumpPath, flowToScreenPosition]);
-
-  if (!pos) return null;
-
-  const fromScreen = flowToScreenPosition(jumpPath.from);
-  const toScreen = flowToScreenPosition(jumpPath.to);
-  const facingRight = toScreen.x >= fromScreen.x;
-
-  return (
-    <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 50 }}>
-      <div style={{
-        position: 'absolute',
-        left: pos.x,
-        top: pos.y,
-        opacity,
-        transition: `opacity ${FADE_DURATION}ms ease-out`,
-        transform: `translateX(-50%) scaleX(${facingRight ? 1 : -1})`,
-        willChange: 'left, top, opacity',
-      }}>
-        <CharacterPreview
-          size={104}
-          showLegs
-          jump
-          skin={char.skin} eyes={char.eyes} clothes={char.clothes}
-          pants={char.pants} shoes={char.shoes} hair={char.hair}
-          accessory={char.accessories}
-          variants={{}}
-        />
-      </div>
-    </div>
-  );
-}
-
-// ─── Main Roadmap Content ─────────────────────────────────────────────────────
 function RoadmapContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const roadmapParam = searchParams.get('roadmap');
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [nodes, setNodes, onNodesChange] = useNodesState<any>([]);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -194,113 +139,29 @@ function RoadmapContent() {
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
   const { setCenter, fitView } = useReactFlow();
-  const [showConfetti, setShowConfetti] = useState(false);
-  const [jumpingNodeLabel, setJumpingNodeLabel] = useState<string | null>(null);
-  const [jumpPath, setJumpPath] = useState<JumpPath | null>(null);
-  const [savedChar, setSavedChar] = useState<SavedChar | null>(null);
-  const [manualCurrentNode, setManualCurrentNode] = useState<string | null>(null);
 
   useEffect(() => {
-    (window as any).triggerConfetti = (nodeLabel?: string) => {
-      const targetNode = nodes.find(n => n.data.label === nodeLabel);
-      if (targetNode) {
-        console.log(`Triggering confetti for ${nodeLabel} at position:`, targetNode.position);
-        console.log('Node position for confetti calculation:', {
-          x: targetNode.position.x + 64,
-          y: targetNode.position.y + 35
-        });
-        setJumpingNodeLabel(nodeLabel);
-        setShowConfetti(true);
-        setTimeout(() => setShowConfetti(false), 3000);
-      }
-    };
-  }, [nodes]);
+    const load = roadmapParam
+      ? api.roadmapMap(roadmapParam)
+      : api.dashboard().then(d => api.roadmapMap(d.active_roadmap.id));
 
-  // Load saved character
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem('character_saved');
-      if (raw) setSavedChar(JSON.parse(raw));
-    } catch {}
-  }, []);
-
-  // Reusable fetch function — called on mount and again after jump animation ends
-  const fetchRoadmap = useCallback((jumpLabel: string | null = null) => {
-    api.dashboard()
-      .then(d => api.roadmapMap(d.active_roadmap.id))
-      .then(data => {
+    load.then(data => {
         setCheckpoints(data.checkpoints);
 
-        const flowNodes = toFlowNodes(data.checkpoints, jumpLabel, manualCurrentNode);
+        const flowNodes = toFlowNodes(data.checkpoints);
         const flowEdges = toFlowEdges(data.edges, data.checkpoints);
         const laidOutNodes = applyDagreLayout(flowNodes, flowEdges);
 
         setNodes(laidOutNodes);
         setEdges(flowEdges);
 
-        // If a node just completed, set up the jump animation
-        if (jumpLabel) {
-          const completedIndex = laidOutNodes.findIndex(n => n.data.label === jumpLabel);
-          const completedNode = laidOutNodes[completedIndex];
-          const nextNode = laidOutNodes[completedIndex + 1];
-
-          if (completedNode && nextNode) {
-            // Small delay so ReactFlow viewport is ready
-            setTimeout(() => {
-              setJumpPath({ from: completedNode.position, to: nextNode.position });
-
-              // After animation ends, immediately clear jumping state and set next node as current
-              const jumpLabelClosure = jumpLabel; // Preserve jumpLabel in closure
-              setTimeout(() => {
-                // Clear jumping state immediately
-                setJumpPath(null);
-                setJumpingNodeLabel(null);
-                
-                // Update nodes to make next node current immediately
-                setNodes(prevNodes => {
-                  const completedIndex = prevNodes.findIndex(n => n.data.label === jumpLabelClosure);
-                  const nextNode = prevNodes[completedIndex + 1];
-                  
-                  if (nextNode) {
-                    // Set manual override to prevent backend from changing current node
-                    setManualCurrentNode(nextNode.data.label);
-                    
-                    return prevNodes.map((node, index) => ({
-                      ...node,
-                      data: {
-                        ...node.data,
-                        isCurrent: index === completedIndex + 1
-                      }
-                    }));
-                  }
-                  return prevNodes;
-                });
-                
-                // Clear daily_done on backend and refresh data after a delay to allow backend to update
-                api.advanceTasks()
-                  .catch(console.error)
-                  .finally(() => {
-                    // Wait a bit for backend to update before refreshing
-                    setTimeout(() => {
-                      fetchRoadmap(null);
-                      // Clear manual override after a short delay to let backend sync complete
-                      setTimeout(() => {
-                        setManualCurrentNode(null);
-                      }, 1000);
-                    }, 500);
-                  });
-              }, 2000); // 1750ms animation + 200ms fade + ~50ms buffer
-            }, 200); // down from 500 - start sooner after data loads
-          }
-        }
-
-        // Auto-center on current node
+        // Auto-center on first in-progress node using dagre-computed position
         const activeCP = data.checkpoints.find(cp => !cp.locked && cp.progress < 100);
         if (activeCP) {
           const laidOutNode = laidOutNodes.find(n => n.id === activeCP.id);
           const pos = laidOutNode?.position ?? activeCP.position;
           setTimeout(() => {
-            setCenter(pos.x + 128, pos.y + 70, { zoom: 1.2, duration: 1000 });
+            setCenter(pos.x + 128, pos.y + 70, { zoom: 1.5, duration: 1000 });
           }, 200);
         } else {
           setTimeout(() => fitView({ duration: 1000 }), 200);
@@ -311,27 +172,12 @@ function RoadmapContent() {
         setLoadError('Failed to load roadmap. Please try again.');
       })
       .finally(() => setLoading(false));
-  }, [setCenter, fitView, setNodes, setEdges]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // On mount — check for completed node flag and kick off fetch
-  useEffect(() => {
-    const justCompleted = localStorage.getItem('node_just_completed');
-    if (justCompleted) {
-      localStorage.removeItem('node_just_completed');
-      setJumpingNodeLabel(justCompleted);
-      
-      // Trigger confetti immediately when node is marked as completed
-      console.log('Node just completed, triggering confetti!');
-      setShowConfetti(true);
-      setTimeout(() => setShowConfetti(false), 3000);
-    }
-    fetchRoadmap(justCompleted);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [roadmapParam]);  // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!pendingCenter) return;
     const timer = setTimeout(() => {
-      setCenter(pendingCenter.x, pendingCenter.y, { zoom: 1.1, duration: 800 });
+      setCenter(pendingCenter.x, pendingCenter.y, { zoom: 1.5, duration: 800 });
       setPendingCenter(null);
     }, 50);
     return () => clearTimeout(timer);
@@ -381,9 +227,11 @@ function RoadmapContent() {
   }
 
   return (
-    <div className="h-screen w-screen relative bg-[#eef1f7]">
+    <div className="h-screen w-screen relative overflow-hidden">
       <Navbar />
-      <div style={{ position: 'absolute', top: 72, left: 0, right: 0, bottom: 0 }}>
+      <ParallaxLayers />
+      {/* z-index 5: above ground (z-3) and clouds (z-1/2), below navbar (z-10) */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 5 }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -391,35 +239,25 @@ function RoadmapContent() {
           onEdgesChange={onEdgesChange}
           nodeTypes={nodeTypes}
           onNodeClick={handleNodeClick}
+          className="map-flow"
+          style={{ background: 'transparent' }}
         >
-          <Background variant={BackgroundVariant.Dots} color="#d1d5db" gap={24} size={1.5} />
-          <MiniMap position="bottom-left" style={{ width: 150, height: 100 }} />
           <Controls position="bottom-right" />
         </ReactFlow>
-
-        {jumpPath && savedChar && (
-          <JumpingCharacterOverlay jumpPath={jumpPath} char={savedChar} />
-        )}
       </div>
-
+      {/* z-index 20: above ReactFlow and navbar */}
       {activePanel && (
-        <NodePanel
-          data={activePanel}
-          onClose={() => {
-            setActivePanel(null);
-            if (activePanelPos) {
-              setCenter(activePanelPos.x, activePanelPos.y, { zoom: 0.5, duration: 800 });
-            }
-          }}
-        />
-      )}
-
-      {showConfetti && (
-        <QuizConfetti 
-          key={jumpingNodeLabel} // Force re-render when node changes
-          x={jumpingNodeLabel ? nodes.find(n => n.data.label === jumpingNodeLabel)?.position?.x : 0}
-          y={jumpingNodeLabel ? nodes.find(n => n.data.label === jumpingNodeLabel)?.position?.y : 0}
-        />
+        <div style={{ position: 'relative', zIndex: 20 }}>
+          <NodePanel
+            data={activePanel}
+            onClose={() => {
+              setActivePanel(null);
+              if (activePanelPos) {
+                setCenter(activePanelPos.x, activePanelPos.y, { zoom: 0.5, duration: 800 });
+              }
+            }}
+          />
+        </div>
       )}
     </div>
   );
