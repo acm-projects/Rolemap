@@ -6,8 +6,15 @@ import pic6 from "../tasks/target.png";
 import PixelCard from "../components/PixelCard";
 import PixelButton from "../components/PixelButton";
 import PixelProgress from "../components/PixelProgress";
-import { api, type Task } from "@/lib/api";
-import { BookOpen, CheckCircle, ExternalLink, Code2, Trophy } from 'lucide-react';
+import { useRouter } from "next/navigation";
+import { api, type Task, type SkillDecayEntry } from "@/lib/api";
+import { BookOpen, CheckCircle, ExternalLink, Code2, Trophy, Zap } from 'lucide-react';
+
+const DECAY_STYLE: Record<string, { borderColor: string; badgeBg: string; badgeText: string; label: string; headerBg: string }> = {
+  review_soon: { borderColor: '#f59e0b', badgeBg: '#fef3c7', badgeText: '#92400e', label: 'Review Soon',  headerBg: '#fffbeb' },
+  decaying:    { borderColor: '#f97316', badgeBg: '#ffedd5', badgeText: '#9a3412', label: 'Needs Review', headerBg: '#fff7ed' },
+  forgotten:   { borderColor: '#ef4444', badgeBg: '#fee2e2', badgeText: '#991b1b', label: 'Decayed',      headerBg: '#fef2f2' },
+};
 
 function CheckCircleOutline({ size = 14 }: { size?: number }) {
   return (
@@ -51,6 +58,7 @@ function PixelPanel({ children, className }: { children: React.ReactNode; classN
 
 
 export default function DailyPage() {
+  const router = useRouter();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [activeTask, setActiveTask] = useState<string | null>(null);
   const [completed, setCompleted] = useState<string[]>([]);
@@ -58,6 +66,8 @@ export default function DailyPage() {
   const [checkpointLabel, setCheckpointLabel] = useState<string | null>(null);
   const [subtopicIndex, setSubtopicIndex] = useState(0);
   const [totalSubtopics, setTotalSubtopics] = useState(0);
+  const [decayTasks, setDecayTasks] = useState<SkillDecayEntry[]>([]);
+  const [activeDecayTask, setActiveDecayTask] = useState<SkillDecayEntry | null>(null);
 
   function loadTasks() {
     api.tasks().then(d => {
@@ -72,6 +82,12 @@ export default function DailyPage() {
   }
 
   useEffect(() => { loadTasks(); }, []);
+
+  useEffect(() => {
+    api.skillDecay()
+      .then(entries => setDecayTasks(entries.filter(e => e.days_until_review <= 0)))
+      .catch(console.error);
+  }, []);
 
   const activeTaskObj = tasks.find(t => t.id === activeTask) ?? null;
   const allDone = tasks.length > 0 && completed.length >= tasks.length;
@@ -129,6 +145,44 @@ export default function DailyPage() {
 
             {/* Resource cards */}
             <div className="flex flex-col gap-2 flex-1 overflow-y-auto">
+
+              {/* Decay review tasks */}
+              {decayTasks.map((entry) => {
+                const style = DECAY_STYLE[entry.decay_level] ?? DECAY_STYLE.decaying;
+                const isSelected = activeDecayTask?.id === entry.id;
+                return (
+                  <div
+                    key={`decay-${entry.id}`}
+                    onClick={() => { setActiveDecayTask(entry); setActiveTask(null); }}
+                    style={{
+                      borderWidth: 4,
+                      borderStyle: 'solid',
+                      borderColor: isSelected ? style.borderColor : '#e5c97a',
+                      backgroundColor: isSelected ? style.headerBg : '#fffdf5',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <div className="flex items-center gap-3 p-3">
+                      <div className="flex-shrink-0 w-9 h-9 flex items-center justify-center border-2" style={{ backgroundColor: style.badgeBg, borderColor: style.borderColor }}>
+                        <Zap size={14} style={{ color: style.borderColor }} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[10px] uppercase truncate leading-tight mb-0.5 font-medium" style={{ color: style.borderColor }}>⚡ REVIEW</p>
+                        <h3 className="text-xs truncate text-[#2d5050] leading-tight">{entry.skill}</h3>
+                        <div className="mt-1 h-1 w-full bg-gray-200" style={{ borderRadius: 0 }}>
+                          <div className="h-full" style={{ width: `${entry.health}%`, backgroundColor: style.borderColor, borderRadius: 0 }} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* Separator if both decay and regular tasks exist */}
+              {decayTasks.length > 0 && tasks.length > 0 && (
+                <div className="h-[4px] bg-[#d4e8e8] -mx-0 my-1" />
+              )}
+
               {tasks.map((task) => {
                 const isActive = activeTask === task.id;
                 const isDoneItem = completed.includes(task.id);
@@ -136,7 +190,7 @@ export default function DailyPage() {
                 return (
                   <PixelCard
                     key={task.id}
-                    onClick={() => setActiveTask(task.id)}
+                    onClick={() => { setActiveTask(task.id); setActiveDecayTask(null); }}
                     selected={isActive}
                     hover
                   >
@@ -174,8 +228,63 @@ export default function DailyPage() {
         <div className="flex-1 flex flex-col min-w-0">
           <PixelPanel className="flex-1 bg-[#e8f4f4] p-10 flex flex-col h-full overflow-y-auto">
 
-            {/* All resources done — "Done for the day" */}
-            {allDone ? (
+            {/* Decay task detail */}
+            {activeDecayTask ? (() => {
+              const entry = activeDecayTask;
+              const style = DECAY_STYLE[entry.decay_level] ?? DECAY_STYLE.decaying;
+              return (
+                <div className="flex flex-col h-full">
+                  <div className="flex items-center gap-3 mb-6">
+                    <span
+                      className="text-xs text-white uppercase tracking-widest px-2.5 py-1 font-medium"
+                      style={{ backgroundColor: style.borderColor, borderWidth: 2, borderStyle: 'solid', borderColor: style.borderColor }}
+                    >
+                      ⚡ SKILL REVIEW
+                    </span>
+                    <span
+                      className="text-xs uppercase tracking-widest px-2 py-1"
+                      style={{ backgroundColor: style.badgeBg, color: style.badgeText, borderWidth: 2, borderStyle: 'solid', borderColor: style.borderColor }}
+                    >
+                      {style.label}
+                    </span>
+                  </div>
+
+                  <div className="mb-8">
+                    <h1 className="text-3xl md:text-4xl text-[#2d5050] leading-tight mb-4">{entry.skill}</h1>
+                    <div className="w-full h-3 bg-gray-200 mb-2" style={{ borderRadius: 0 }}>
+                      <div className="h-full" style={{ width: `${entry.health}%`, backgroundColor: style.borderColor, borderRadius: 0 }} />
+                    </div>
+                    <p className="text-xs text-[#4e8888] uppercase tracking-widest">{entry.health}% health · {entry.times_practiced} practice{entry.times_practiced !== 1 ? 's' : ''}</p>
+                    <div className="w-16 h-1 mt-4" style={{ backgroundColor: style.borderColor }} />
+                  </div>
+
+                  <div className="space-y-4 text-[#3a6666] flex-1">
+                    <p className="text-base leading-relaxed">
+                      Your knowledge of <strong>{entry.skill}</strong> is {entry.decay_level === 'forgotten' ? 'fading fast' : entry.decay_level === 'decaying' ? 'starting to decay' : 'due for a refresh'}.
+                      Take a quick quiz to reinforce it and reset the review clock.
+                    </p>
+                    {entry.days_until_review < 0 && (
+                      <p className="text-sm" style={{ color: style.borderColor }}>
+                        {Math.abs(Math.round(entry.days_until_review))} day{Math.abs(Math.round(entry.days_until_review)) !== 1 ? 's' : ''} overdue
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="mt-8">
+                    <PixelButton
+                      variant="primary"
+                      size="md"
+                      onClick={() => router.push(`/quiz?checkpoint=${entry.id}&label=${encodeURIComponent(entry.skill)}&review=true`)}
+                    >
+                      <span className="text-sm">⚡ Take Quiz</span>
+                    </PixelButton>
+                  </div>
+                </div>
+              );
+            })()
+
+            /* All resources done — "Done for the day" */
+            : allDone ? (
               <div className="flex flex-col items-center justify-center h-full gap-6">
                 <div
                   className="w-20 h-20 flex items-center justify-center bg-[#4e8888]"

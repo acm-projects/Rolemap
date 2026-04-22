@@ -683,6 +683,7 @@ async def update_task(task_id: str, body: dict[str, Any]):
                             old_progress = cp.get("progress", 0)
                             cp["progress"] = new_progress
                             if new_progress == 100 and old_progress < 100:
+                                _init_decay(cp)
                                 cp_kind = cp.get("kind", "lesson")
                                 bonus = XP_CHECKPOINT_PROJECT if cp_kind == "project" else XP_CHECKPOINT_LESSON
                                 _award_xp(db, bonus)
@@ -748,6 +749,7 @@ async def update_task(task_id: str, body: dict[str, Any]):
                     old_progress = cp.get("progress", 0)
                     cp["progress"] = new_progress
                     if new_progress == 100 and old_progress < 100:
+                        _init_decay(cp)
                         cp_kind = cp.get("kind", "lesson")
                         bonus = XP_CHECKPOINT_PROJECT if cp_kind == "project" else XP_CHECKPOINT_LESSON
                         _award_xp(db, bonus)
@@ -1422,6 +1424,21 @@ def _iso_utc(dt: datetime.datetime) -> str:
     return dt.astimezone(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.000Z")
 
 
+def _init_decay(cp: dict) -> None:
+    """Set initial SM-2 state when a checkpoint is first completed. No-op if already set."""
+    if cp.get("decay"):
+        return
+    now = datetime.datetime.now(datetime.timezone.utc)
+    cp["decay"] = {
+        "times_practiced": 0,
+        "sm2_interval": 1,
+        "sm2_easiness": 2.5,
+        "sm2_repetitions": 0,
+        "next_review": _iso_utc(now + datetime.timedelta(days=1)),
+        "last_reviewed_at": _iso_utc(now),
+    }
+
+
 def _parse_utc(value: Any) -> datetime.datetime:
     if isinstance(value, datetime.datetime):
         if value.tzinfo is None:
@@ -1545,12 +1562,13 @@ def _apply_sm2(state: dict, quality: int) -> dict:
 
 @router.get("/skills/decay")
 async def get_skills_decay(roadmap_id: str | None = Query(default=None)):
-    """List SM-2 decay rows for checkpoints on a roadmap (default: generated, else first active)."""
+    """List SM-2 decay rows for completed checkpoints. Scans all roadmaps when no specific id given."""
     db = load_db()
-    rid = _resolve_decay_roadmap_id(db, roadmap_id)
     rows = []
     for cp in db.get("roadmap_checkpoints", []):
-        if cp.get("roadmap_id") != rid:
+        if roadmap_id and cp.get("roadmap_id") != roadmap_id:
+            continue
+        if cp.get("progress", 0) < 100:
             continue
         st = _checkpoint_decay_state(cp)
         next_r = st["next_review"]

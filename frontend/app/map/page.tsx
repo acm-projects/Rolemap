@@ -24,12 +24,19 @@ import { applyDagreLayout } from '@/lib/layout';
 
 const nodeTypes = { roadmap: RoadmapNode };
 
-function toFlowNodes(checkpoints: Checkpoint[]) {
+function toFlowNodes(checkpoints: Checkpoint[], decayMap: Record<string, number> = {}) {
   const currentCP = checkpoints.find(cp => !cp.locked && cp.progress < 100);
   return checkpoints.map(cp => ({
     id: cp.id,
     type: 'roadmap' as const,
-    data: { label: cp.label, progress: cp.progress, locked: cp.locked, kind: cp.kind, isCurrent: cp === currentCP },
+    data: {
+      label: cp.label,
+      progress: cp.progress,
+      locked: cp.locked,
+      kind: cp.kind,
+      isCurrent: cp === currentCP,
+      decayHealth: decayMap[cp.id],
+    },
     position: cp.position,
   }));
 }
@@ -71,11 +78,16 @@ function RoadmapContent() {
 
   useEffect(() => {
     api.dashboard()
-      .then(d => api.roadmapMap(d.active_roadmap.id))
-      .then(data => {
+      .then(d => Promise.all([api.roadmapMap(d.active_roadmap.id), api.skillDecay()]))
+      .then(([data, decayEntries]) => {
+        const decayMap: Record<string, number> = {};
+        for (const e of decayEntries) {
+          if (e.decay_level !== 'fresh') decayMap[e.id] = e.health;
+        }
+
         setCheckpoints(data.checkpoints);
 
-        const flowNodes = toFlowNodes(data.checkpoints);
+        const flowNodes = toFlowNodes(data.checkpoints, decayMap);
         const flowEdges = toFlowEdges(data.edges, data.checkpoints);
         const laidOutNodes = applyDagreLayout(flowNodes, flowEdges);
 

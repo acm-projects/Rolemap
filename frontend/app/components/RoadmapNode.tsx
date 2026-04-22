@@ -39,9 +39,16 @@ interface RoadmapNodeData {
   kind?: string;
   label: string;
   isCurrent?: boolean;
+  decayHealth?: number;
 }
 
 const BAR_COLOR = '#3d7a7a';
+
+function blendHex(hex1: string, hex2: string, t: number): string {
+  const p = (h: string) => [parseInt(h.slice(1,3),16), parseInt(h.slice(3,5),16), parseInt(h.slice(5,7),16)];
+  const [r1,g1,b1] = p(hex1), [r2,g2,b2] = p(hex2);
+  return `#${[r1+(r2-r1)*t, g1+(g2-g1)*t, b1+(b2-b1)*t].map(v => Math.round(v).toString(16).padStart(2,'0')).join('')}`;
+}
 
 function pixelRing(s: number, color: string, bgColor: string, dx = 0, dy = 0): string[] {
   return [
@@ -284,6 +291,13 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
   const bgColor = isCurrent ? '#3d7a7a' : isActive ? '#eaf4f4' : isLocked ? 'rgba(255,255,255,0.7)' : '#ffffff';
   const borderColor = selected ? '#f7d22e' : isCurrent ? '#2e6666' : isActive ? '#4a9696' : '#7ab8b8';
 
+  const decayFactor = (data.decayHealth !== undefined && !isLocked)
+    ? (100 - data.decayHealth) / 100 * 0.55
+    : 0;
+  const effectiveBgColor = (decayFactor > 0 && bgColor.startsWith('#'))
+    ? blendHex(bgColor, '#7c3aed', decayFactor)
+    : bgColor;
+
   // ── QUIZ (circle) ──────────────────────────────────────────────
   if (kind === 'quiz') {
     return (
@@ -297,7 +311,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
           justifyContent: 'center',
         }}
       >
-        <CirclePixelBorder size={QUIZ_SIZE} borderColor={borderColor} bgColor={bgColor} />
+        <CirclePixelBorder size={QUIZ_SIZE} borderColor={borderColor} bgColor={effectiveBgColor} />
         {isCurrent && <Mascot />}
         <Handle type="target" position={Position.Left} className="opacity-0!" />
         <span
@@ -329,7 +343,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
           width={OCT_W}
           height={OCT_H}
           borderColor={borderColor}
-          bgColor={bgColor}
+          bgColor={effectiveBgColor}
         />
         {isCurrent && <Mascot />}
         <Handle type="target" position={Position.Left} className="opacity-0!" />
@@ -375,11 +389,12 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
       style={{
         borderRadius: 0,
         border: 'none',
-        boxShadow: getPixelBoxShadow(borderColor, bgColor),
+        boxShadow: getPixelBoxShadow(borderColor, effectiveBgColor),
         margin: '16px',
+        backgroundColor: effectiveBgColor,
       }}
       className={`shadow-sm transition-all flex flex-col items-center justify-center relative px-5 py-4 w-56 min-h-25
-        ${isCurrent ? 'bg-[#3d7a7a] text-white' : isActive ? 'bg-[#eaf4f4] text-[#2e6666]' : isLocked ? 'bg-white/70 text-slate-400' : 'bg-white text-slate-700'}
+        ${isCurrent ? 'text-white' : isActive ? 'text-[#2e6666]' : isLocked ? 'bg-white/70 text-slate-400' : 'text-slate-700'}
         ${selected ? 'shadow-lg' : ''}`}
     >
       <Handle type="target" position={Position.Left} className="opacity-0!" />

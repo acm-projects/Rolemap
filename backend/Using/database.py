@@ -28,10 +28,10 @@ class Neo4jDriver:
     @classmethod
     def _create_driver(cls) -> Driver:
         """Create Neo4j driver with environment configuration"""
-        uri = os.getenv("NEO4J_URI", "neo4j://localhost:7687")
+        uri = os.getenv("NEO4J_URI", "neo4j://localhost:7687").replace("neo4j+s://", "neo4j+ssc://")
         user = os.getenv("NEO4J_USER", "neo4j")
         password = os.getenv("NEO4J_PASSWORD", "password")
-        
+
         return GraphDatabase.driver(uri, auth=(user, password))
     
     @classmethod

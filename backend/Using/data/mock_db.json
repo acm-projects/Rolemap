@@ -188,7 +188,15 @@
         "Build well-structured forms with proper labels and input types",
         "Apply accessibility best practices using ARIA roles and alt text",
         "Validate HTML using the W3C validator and fix common errors"
-      ]
+      ],
+      "decay": {
+        "times_practiced": 2,
+        "sm2_interval": 7,
+        "sm2_easiness": 2.5,
+        "sm2_repetitions": 2,
+        "next_review": "2026-04-30T23:21:50.000Z",
+        "last_reviewed_at": "2026-04-05T23:21:50.000Z"
+      }
     },
     {
       "id": "cp-002",
@@ -207,7 +215,15 @@
         "Create flexible, one-dimensional layouts with Flexbox",
         "Write responsive styles using media queries and fluid units",
         "Use CSS custom properties to build a maintainable design token system"
-      ]
+      ],
+      "decay": {
+        "times_practiced": 2,
+        "sm2_interval": 7,
+        "sm2_easiness": 2.5,
+        "sm2_repetitions": 2,
+        "next_review": "2026-04-27T23:21:50.000Z",
+        "last_reviewed_at": "2026-04-05T23:21:50.000Z"
+      }
     },
     {
       "id": "cp-003",
@@ -226,7 +242,15 @@
         "Identify correct Grid and Flexbox properties for given layout challenges",
         "Diagnose and fix common layout bugs",
         "Apply media query breakpoints to a given design spec"
-      ]
+      ],
+      "decay": {
+        "times_practiced": 2,
+        "sm2_interval": 7,
+        "sm2_easiness": 2.5,
+        "sm2_repetitions": 2,
+        "next_review": "2026-04-22T23:21:50.000Z",
+        "last_reviewed_at": "2026-04-05T23:21:50.000Z"
+      }
     },
     {
       "id": "cp-004",
@@ -245,7 +269,15 @@
         "Write functions using both declaration and arrow-function syntax",
         "Control program flow using if/else, switch, and ternary expressions",
         "Understand truthy/falsy values and short-circuit evaluation"
-      ]
+      ],
+      "decay": {
+        "times_practiced": 2,
+        "sm2_interval": 7,
+        "sm2_easiness": 2.5,
+        "sm2_repetitions": 2,
+        "next_review": "2026-04-17T23:21:50.000Z",
+        "last_reviewed_at": "2026-04-05T23:21:50.000Z"
+      }
     },
     {
       "id": "cp-005",
@@ -264,7 +296,15 @@
         "Attach and remove event listeners for user interactions",
         "Explain event bubbling and capture, and use stopPropagation when needed",
         "Dynamically create and remove elements from the page"
-      ]
+      ],
+      "decay": {
+        "times_practiced": 2,
+        "sm2_interval": 7,
+        "sm2_easiness": 2.5,
+        "sm2_repetitions": 2,
+        "next_review": "2026-04-08T23:21:50.000Z",
+        "last_reviewed_at": "2026-04-05T23:21:50.000Z"
+      }
     },
     {
       "id": "cp-006",
