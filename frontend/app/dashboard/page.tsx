@@ -55,6 +55,50 @@ function toMiniFlowEdges(edges: RoadmapEdge[], checkpoints: Checkpoint[]) {
   });
 }
 
+// ─── Static fallback shown when a roadmap has no generated data ───────────────
+const EDGE_STYLE = { stroke: '#c8d0dc', strokeWidth: 7, strokeDasharray: '8 14', strokeLinecap: 'square' as const };
+const FALLBACK_NODES = [
+  { id: 'f1', type: 'roadmap' as const, position: { x: 0,    y: 60 }, data: { label: 'Concept 1', progress: 0, locked: false, kind: 'lesson', isCurrent: true  } },
+  { id: 'f2', type: 'roadmap' as const, position: { x: 320,  y: 60 }, data: { label: 'Concept 2', progress: 0, locked: true,  kind: 'lesson', isCurrent: false } },
+  { id: 'f3', type: 'roadmap' as const, position: { x: 640,  y: 60 }, data: { label: 'Concept 3', progress: 0, locked: true,  kind: 'lesson', isCurrent: false } },
+  // Ghost node off-screen right — makes the edge trail off the viewport edge
+  { id: 'f4', type: 'roadmap' as const, position: { x: 1100, y: 60 }, data: { label: 'Concept 4', progress: 0, locked: true,  kind: 'lesson', isCurrent: false }, style: { opacity: 0, pointerEvents: 'none' as const } },
+];
+const FALLBACK_EDGES = [
+  { id: 'fe1', source: 'f1', target: 'f2', type: 'step' as const, animated: false, style: EDGE_STYLE },
+  { id: 'fe2', source: 'f2', target: 'f3', type: 'step' as const, animated: false, style: EDGE_STYLE },
+  { id: 'fe3', source: 'f3', target: 'f4', type: 'step' as const, animated: false, style: EDGE_STYLE },
+];
+
+// f1 center in world coords: x=128, y=130
+const FALLBACK_CENTER = { x: 128 + 220, y: 130 };
+
+function FallbackMiniMap() {
+  const { setCenter } = useReactFlow();
+  const nodesInitialized = useNodesInitialized();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [nodes, , onNodesChange] = useNodesState<any>(FALLBACK_NODES);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [edges, , onEdgesChange] = useEdgesState<any>(FALLBACK_EDGES);
+
+  useEffect(() => {
+    if (nodesInitialized) setCenter(FALLBACK_CENTER.x, FALLBACK_CENTER.y, { zoom: 0.65, duration: 0 });
+  }, [nodesInitialized]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return (
+    <ReactFlow
+      nodes={nodes} edges={edges}
+      onNodesChange={onNodesChange} onEdgesChange={onEdgesChange}
+      nodeTypes={miniNodeTypes}
+      nodesDraggable={false} nodesConnectable={false}
+      elementsSelectable={false} zoomOnScroll={false}
+      panOnScroll={false} panOnDrag={false}
+    >
+      <Background variant={BackgroundVariant.Dots} color="#d1d5db" gap={24} size={1.5} />
+    </ReactFlow>
+  );
+}
+
 // ─── Mini roadmap canvas ──────────────────────────────────────────────────────
 function MiniRoadmapContent({ roadmapId }: { roadmapId: string }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -63,7 +107,8 @@ function MiniRoadmapContent({ roadmapId }: { roadmapId: string }) {
   const [edges, setEdges, onEdgesChange] = useEdgesState<any>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const { fitView } = useReactFlow();
+  const [anchorCenter, setAnchorCenter] = useState<{ x: number; y: number } | null>(null);
+  const { setCenter } = useReactFlow();
   const nodesInitialized = useNodesInitialized();
 
   useEffect(() => {
@@ -72,18 +117,41 @@ function MiniRoadmapContent({ roadmapId }: { roadmapId: string }) {
         const flowNodes = toMiniFlowNodes(data.checkpoints);
         const flowEdges = toMiniFlowEdges(data.edges, data.checkpoints);
         const laidOut = applyDagreLayout(flowNodes, flowEdges);
-        setNodes(laidOut);
-        setEdges(flowEdges);
+
+        // Find anchor: first in-progress node → first unlocked node → leftmost node
+        const activeCP =
+          data.checkpoints.find(cp => !cp.locked && cp.progress < 100) ??
+          data.checkpoints.find(cp => !cp.locked) ??
+          null;
+        const anchorNode = activeCP
+          ? laidOut.find(n => n.id === activeCP.id)
+          : laidOut.reduce((min, n) => (n.position.x < min.position.x ? n : min), laidOut[0]);
+
+        // Show anchor + next 3 nodes to its right (sorted by x, then y for tie-breaking)
+        const cutoff = anchorNode?.position.x ?? 0;
+        const fromAnchor = laidOut
+          .filter(n => n.position.x >= cutoff)
+          .sort((a, b) => a.position.x - b.position.x || a.position.y - b.position.y);
+        const visibleNodes = fromAnchor.slice(0, 4);
+        const visibleIds = new Set(visibleNodes.map(n => n.id));
+        const visibleEdges = flowEdges.filter(e => visibleIds.has(e.source) && visibleIds.has(e.target));
+        setNodes(visibleNodes);
+        setEdges(visibleEdges);
+
+        // Store anchor center so we can position the viewport consistently
+        if (anchorNode) {
+          setAnchorCenter({ x: anchorNode.position.x + 128, y: anchorNode.position.y + 70 });
+        }
       })
       .catch(() => setError(true))
       .finally(() => setLoading(false));
   }, [roadmapId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Fit once ReactFlow has actually measured all nodes
+  // Position viewport so the anchor node sits in the left portion of the minimap
   useEffect(() => {
-    if (nodesInitialized && nodes.length > 0) {
-      fitView({ duration: 0, padding: 0.15 });
-    }
+    if (!nodesInitialized || nodes.length === 0 || !anchorCenter) return;
+    // Shift center 180 units right of anchor so anchor appears near the left edge with padding
+    setCenter(anchorCenter.x + 220, anchorCenter.y, { zoom: 0.65, duration: 0 });
   }, [nodesInitialized]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (loading) {
@@ -92,9 +160,10 @@ function MiniRoadmapContent({ roadmapId }: { roadmapId: string }) {
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center h-full gap-2">
-        <p className="text-slate-400 text-sm">No map data available</p>
-        <p className="text-slate-300 text-xs">This roadmap hasn&apos;t been generated yet</p>
+      <div className="w-full h-full bg-[#eef1f7]">
+        <ReactFlowProvider>
+          <FallbackMiniMap />
+        </ReactFlowProvider>
       </div>
     );
   }
@@ -253,7 +322,10 @@ export default function Dashboard() {
       .then(d => {
         setData(d);
         // Default minimap to whichever roadmap matches the map page (active_roadmap)
-        const active = d.roadmaps.find(r => r.id === d.active_roadmap.id) ?? d.roadmaps[0] ?? null;
+        const preferred = d.roadmaps.find(r => r.id === d.active_roadmap.id);
+        const active = (preferred && preferred.progress_percentage > 0)
+          ? preferred
+          : (d.roadmaps.find(r => r.progress_percentage > 0) ?? preferred ?? d.roadmaps[0] ?? null);
         setSelectedRoadmap(active);
         const timer = setTimeout(() => setDisplayProgress(d.active_roadmap.progress_percentage), 300);
         return () => clearTimeout(timer);
@@ -341,7 +413,7 @@ export default function Dashboard() {
                   <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">
                     <Image src={fire} alt="Fire Icon" className="h-6 w-6" />
                   </div>
-                  <h2 className="text-2xl text-slate-700 uppercase tracking-wider">Leaderboard</h2>
+                  <h2 className="text-2xl text-slate-800 uppercase tracking-wider">Leaderboard</h2>
                 </div>
               </div>
               <div className="flex flex-col gap-2 flex-1 overflow-y-auto">
@@ -372,7 +444,7 @@ export default function Dashboard() {
             {/* MIDDLE col: My Roadmaps */}
             <PixelCard className="col-span-3 p-5 flex flex-col h-100">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-2xl text-slate-700 tracking-wider">MY ROADMAPS</h2>
+                <h2 className="text-2xl text-slate-800 tracking-wider">MY ROADMAPS</h2>
                 <span className="text-2xl text-slate-400 cursor-pointer hover:text-slate-600 leading-none select-none">+</span>
               </div>
 
@@ -408,8 +480,8 @@ export default function Dashboard() {
             {/* RIGHT col: Minimap — always visible, widest panel */}
             <PixelCard className="col-span-6 p-5 flex flex-col h-100">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-2xl text-slate-700 tracking-wider">MAP</h2>
-                <PixelButton variant="secondary" size="xs" onClick={() => router.push('/map')}>
+                <h2 className="text-2xl text-slate-800 tracking-wider">MAP</h2>
+                <PixelButton variant="secondary" size="xs" onClick={() => router.push(selectedRoadmap ? `/map?roadmap=${selectedRoadmap.id}` : '/map')}>
                   Open Full Map →
                 </PixelButton>
               </div>

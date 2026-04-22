@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   ReactFlow,
   useNodesState,
@@ -126,6 +126,8 @@ function toFlowEdges(edges: RoadmapEdge[], checkpoints: Checkpoint[]) {
 
 function RoadmapContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const roadmapParam = searchParams.get('roadmap');
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [nodes, setNodes, onNodesChange] = useNodesState<any>([]);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -139,9 +141,11 @@ function RoadmapContent() {
   const { setCenter, fitView } = useReactFlow();
 
   useEffect(() => {
-    api.dashboard()
-      .then(d => api.roadmapMap(d.active_roadmap.id))
-      .then(data => {
+    const load = roadmapParam
+      ? api.roadmapMap(roadmapParam)
+      : api.dashboard().then(d => api.roadmapMap(d.active_roadmap.id));
+
+    load.then(data => {
         setCheckpoints(data.checkpoints);
 
         const flowNodes = toFlowNodes(data.checkpoints);
@@ -168,7 +172,7 @@ function RoadmapContent() {
         setLoadError('Failed to load roadmap. Please try again.');
       })
       .finally(() => setLoading(false));
-  }, []);  // eslint-disable-line react-hooks/exhaustive-deps
+  }, [roadmapParam]);  // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!pendingCenter) return;
