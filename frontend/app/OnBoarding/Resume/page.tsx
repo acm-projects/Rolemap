@@ -61,6 +61,14 @@ export default function ResumeUpload() {
     router.push("/OnBoarding/Generate");
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Enter" && canContinue && !uploading) handleContinue();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [canContinue, uploading]);
+
   return (
     <div className="relative h-screen overflow-hidden w-full bg-[#f0f8f8] p-3 flex flex-col">
       <div className="scanlines" />

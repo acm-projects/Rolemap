@@ -34,6 +34,19 @@ export default function GenerateRoadmap() {
     return () => clearInterval(timer);
   }, [generating]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== "Enter") return;
+      if (done) {
+        router.push("/map");
+      } else if (!generating) {
+        handleGenerate();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [done, generating]);
+
   const handleGenerate = async () => {
     setGenerating(true);
     setError(null);
@@ -135,7 +148,7 @@ export default function GenerateRoadmap() {
             </div>
           </PixelButton>
           <div className="flex items-center gap-4 text-xl">
-            <PixelButton variant="primary" onClick={() => router.push("/dashboard")} size="md" disabled={!done}>
+            <PixelButton variant="primary" onClick={() => router.push("/map")} size="md" disabled={!done}>
               <div className="flex items-center gap-2 text-xl">
                 <span>Continue</span>
                 <ArrowRight className="w-4 h-4" />

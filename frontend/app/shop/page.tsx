@@ -1,6 +1,7 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Navbar } from "../components/NavBar";
+import { api } from "@/lib/api";
 
 type Item = { id: string; name: string; file: string; cost: number; unlocked: boolean; };
 type Category = "skin" | "eyes" | "clothes" | "pants" | "shoes" | "hair" | "accessories";
@@ -147,29 +148,39 @@ function CharacterPreview({ skin, eyes, clothes, pants = "", shoes = "", hair, a
 
 type Equipped = { skin: string; eyes: string; clothes: string; pants: string; shoes: string; hair: string; accessories: string };
 
+const DEFAULTS: Equipped = { skin: "char1.png", eyes: "eyes.png", clothes: "suit.png", pants: "pants.png", shoes: "shoes.png", hair: "buzzcut.png", accessories: "" };
+
+function loadSavedCharacter(): Equipped {
+  try {
+    const raw = localStorage.getItem("character_saved");
+    if (raw) return { ...DEFAULTS, ...JSON.parse(raw) };
+  } catch {}
+  return DEFAULTS;
+}
+
+function loadSavedVariants(): Partial<Record<string, number>> {
+  try {
+    const raw = localStorage.getItem("character_saved_variants");
+    if (raw) return JSON.parse(raw);
+  } catch {}
+  return {};
+}
+
 export default function ShopPage() {
   const [xp, setXp] = useState(MOCK_XP);
   const [activeTab, setActiveTab] = useState<Tab>("gender");
-  const defaults: Equipped = { skin: "char1.png", eyes: "eyes.png", clothes: "suit.png", pants: "pants.png", shoes: "shoes.png", hair: "buzzcut.png", accessories: "" };
-  const [gender, setGender] = useState<"boy" | "girl">("boy");
+  const [gender, setGender] = useState<"boy" | "girl">(() => {
+    try {
+      const raw = localStorage.getItem("character_saved");
+      if (raw && JSON.parse(raw).hair === "wavy.png") return "girl";
+    } catch {}
+    return "boy";
+  });
   const [items, setItems] = useState(SHOP_ITEMS);
-  const [equipped, setEquipped] = useState<Equipped>(defaults);
+  const [equipped, setEquipped] = useState<Equipped>(loadSavedCharacter);
   const [notification, setNotification] = useState<string | null>(null);
   const [previewItem, setPreviewItem] = useState<{ item: Item; category: Category } | null>(null);
-  const [colorVariants, setColorVariants] = useState<Partial<Record<string, number>>>({});
-
-  useEffect(() => {
-    const savedChar = localStorage.getItem("character_saved");
-    if (savedChar) {
-      const parsed = JSON.parse(savedChar);
-      setEquipped(prev => ({ ...prev, ...parsed }));
-      if (parsed.hair === "wavy.png") setGender("girl");
-    }
-    const savedVariants = localStorage.getItem("character_saved_variants");
-    if (savedVariants) {
-      setColorVariants(JSON.parse(savedVariants));
-    }
-  }, []);
+  const [colorVariants, setColorVariants] = useState<Partial<Record<string, number>>>(loadSavedVariants);
 
   const showNotification = (msg: string) => {
     setNotification(msg);
@@ -232,14 +243,14 @@ export default function ShopPage() {
 
       {/* Notification */}
       {notification && (
-        <div className="notif bg-[#2d5050] text-[#f0f8f8] px-6 py-3 text-[12px]">▶ {notification}</div>
+        <div className="notif bg-[#2d5050] text-[#f0f8f8] px-6 py-3 text-[22px]">▶ {notification}</div>
       )}
 
       {/* Preview Modal */}
       {previewItem && (
         <div className="modal-bg" onClick={() => setPreviewItem(null)}>
           <div className="modal-box bg-[#f0f8f8] p-6 flex flex-col items-center gap-4" onClick={e => e.stopPropagation()}>
-            <p className="text-[12px] text-[#2d5050]">PREVIEW — {previewItem.item.name.toUpperCase()}</p>
+            <p className="text-[20px] text-[#2d5050]">PREVIEW — {previewItem.item.name.toUpperCase()}</p>
             {(() => {
               const pw = previewWith(previewItem.category, previewItem.item.file);
               const modalVariants: Partial<Record<Category, number>> = {
@@ -260,15 +271,15 @@ export default function ShopPage() {
                 />
               );
             })()}
-            <p className="text-[10px] text-[#4e8888]">
+            <p className="text-[17px] text-[#4e8888]">
               {previewItem.item.cost === 0 ? "FREE" : `⭐ ${previewItem.item.cost} XP`}
             </p>
             <div className="flex gap-3">
-              <button className="px-btn bg-[#f0f8f8] text-[#2d5050] px-3 py-2 text-[10px]" onClick={() => setPreviewItem(null)}>CLOSE</button>
+              <button className="px-btn bg-[#f0f8f8] text-[#2d5050] px-3 py-2 text-[17px]" onClick={() => setPreviewItem(null)}>CLOSE</button>
               {previewItem.item.unlocked ? (
-                <button className="px-btn bg-[#4e8888] text-[#f0f8f8] px-3 py-2 text-[10px]" onClick={() => handleEquip(previewItem.category, previewItem.item)}>EQUIP</button>
+                <button className="px-btn bg-[#4e8888] text-[#f0f8f8] px-3 py-2 text-[17px]" onClick={() => handleEquip(previewItem.category, previewItem.item)}>EQUIP</button>
               ) : (
-                <button className="px-btn bg-[#2d5050] text-[#f0f8f8] px-3 py-2 text-[10px]" disabled={xp < previewItem.item.cost} onClick={() => handleBuy(previewItem.category, previewItem.item)}>
+                <button className="px-btn bg-[#2d5050] text-[#f0f8f8] px-3 py-2 text-[17px]" disabled={xp < previewItem.item.cost} onClick={() => handleBuy(previewItem.category, previewItem.item)}>
                   {xp >= previewItem.item.cost ? `BUY ${previewItem.item.cost}XP` : "NEED MORE XP"}
                 </button>
               )}
@@ -280,10 +291,10 @@ export default function ShopPage() {
       <div className="max-w-5xl mx-auto pt-24 px-6 pb-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-[16px] text-[#2d5050]">CHARACTER SHOP</h1>
+          <h1 className="text-[39px] text-[#2d5050]">CHARACTER SHOP</h1>
           <div className="px-box bg-[#2d5050] text-[#f0f8f8] px-4 py-2 flex items-center gap-2">
-            <span className="text-[12px]">⭐ XP:</span>
-            <span className="text-[12px] text-[#7ab3b3]">{xp}</span>
+            <span className="text-[20px]">⭐ XP:</span>
+            <span className="text-[28px] text-[#7ab3b3]">{xp}</span>
           </div>
         </div>
 
@@ -292,7 +303,7 @@ export default function ShopPage() {
           {/* LEFT — Preview */}
           <div className="col-span-1 flex flex-col gap-4">
             <div className="px-box bg-[#e8f5f5] p-4 flex flex-col items-center gap-4">
-              <p className="text-[12px] text-[#2d5050]">YOUR CHARACTER</p>
+              <p className="text-[28px] text-[#2d5050]">YOUR CHARACTER</p>
               <CharacterPreview
                 size={160}
                 showLegs
@@ -305,17 +316,16 @@ export default function ShopPage() {
                 accessory={equipped.accessories}
                 variants={equippedVariants}
               />
-              <div className="w-full flex flex-col gap-1.5 mt-1">
-                {(Object.keys(CATEGORY_LABELS) as Category[]).map(cat => {
-                  const item = items[cat].find(i => i.file === equipped[cat] || (i.file === "" && equipped[cat] === ""));
-                  return (
-                    <div key={cat} className="flex justify-between">
-                      <span className="text-[12px] text-[#4e8888]">{CATEGORY_LABELS[cat]}</span>
-                      <span className="text-[12px] text-[#2d5050]">{item?.name.toUpperCase() ?? "—"}</span>
-                    </div>
-                  );
-                })}
-              </div>
+              {activeTab !== "gender" && (() => {
+                const cat = activeTab as Category;
+                const item = items[cat].find(i => i.file === equipped[cat] || (i.file === "" && equipped[cat] === ""));
+                return item ? (
+                  <div className="flex flex-col items-center gap-1">
+                    <span className="text-[14px] text-[#4e8888]">{CATEGORY_LABELS[cat]}</span>
+                    <span className="text-[20px] text-[#2d5050]">{item.name.toUpperCase()}</span>
+                  </div>
+                ) : null;
+              })()}
             </div>
             {/* Color swatch panel — shows swatches for the active tab's equipped item */}
             {(() => {
@@ -327,7 +337,7 @@ export default function ShopPage() {
               const currentV = colorVariants[activeFile] ?? 0;
               return (
                 <div className="px-box bg-[#e8f5f5] p-3 flex flex-col gap-2">
-                  <p className="text-[8px] text-[#4e8888]">{CATEGORY_LABELS[cat]} COLOR</p>
+                  <p className="text-[14px] text-[#4e8888]">{CATEGORY_LABELS[cat]} COLOR</p>
                   <div className="flex flex-wrap gap-1.5">
                     {colors.map((hex, idx) => (
                       <button
@@ -349,20 +359,19 @@ export default function ShopPage() {
               );
             })()}
             <div className="px-box bg-[#2d5050] text-[#7ab3b3] p-3">
-              <p className="text-[10px] leading-relaxed">CLICK ANY ITEM TO PREVIEW IT ON YOUR CHARACTER.</p>
+              <p className="text-[17px] leading-relaxed">CLICK ANY ITEM TO PREVIEW IT ON YOUR CHARACTER.</p>
             </div>
             <button
-              className="px-btn bg-[#4e8888] text-[#f0f8f8] w-full py-2 text-[12px]"
-              onClick={() => {
-              localStorage.setItem('character_saved', JSON.stringify(equipped));
-              localStorage.setItem('character_saved_variants', JSON.stringify(colorVariants));
-              // Notify same-tab listeners (RoadmapNode)
-              window.dispatchEvent(new StorageEvent('storage', {
-                key: 'character_saved',
-                newValue: JSON.stringify(equipped),
-              }));
-              showNotification('CHARACTER SAVED!');
-            }}
+              className="px-btn bg-[#4e8888] text-[#f0f8f8] w-full py-2 text-[20px]"
+              onClick={async () => {
+                localStorage.setItem("character_saved", JSON.stringify(equipped));
+                localStorage.setItem("character_saved_variants", JSON.stringify(colorVariants));
+                try {
+                  await api.saveCharacter({ ...equipped, color_variants: colorVariants as Record<string, number> });
+                } catch {}
+                window.dispatchEvent(new CustomEvent("character-saved", { detail: { ...equipped, color_variants: colorVariants } }));
+                showNotification("CHARACTER SAVED!");
+              }}
             >
               💾 SAVE CHARACTER
             </button>
@@ -376,7 +385,7 @@ export default function ShopPage() {
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`px-tab px-2 py-2 text-[10px] text-[#2d5050] flex-1 ${activeTab === tab ? "active" : "bg-[#f0f8f8]"}`}
+                  className={`px-tab px-2 py-2 text-[17px] text-[#2d5050] flex-1 ${activeTab === tab ? "active" : "bg-[#f0f8f8]"}`}
                 >
                   {tab === "gender" ? "GENDER" : CATEGORY_LABELS[tab as Category]}
                 </button>
@@ -397,9 +406,9 @@ export default function ShopPage() {
                     className={`px-card bg-[#e8f5f5] p-4 flex flex-col items-center gap-3 ${gender === label.toLowerCase() ? "on" : ""}`}
                   >
                     <CharacterPreview size={128} skin={equipped.skin} eyes={equipped.eyes} clothes={equipped.clothes} pants={equipped.pants} shoes={equipped.shoes} hair={hair} accessory={equipped.accessories} variants={{ ...equippedVariants, hair: colorVariants[hair] ?? 0 }} />
-                    <p className="text-[12px] text-[#2d5050]">{label}</p>
+                    <p className="text-[20px] text-[#2d5050]">{label}</p>
                     {gender === label.toLowerCase() && (
-                      <div className="px-box bg-[#7ab3b3] text-[#f0f8f8] px-3 py-1 text-[9px]">✓ SELECTED</div>
+                      <div className="px-box bg-[#7ab3b3] text-[#f0f8f8] px-3 py-1 text-[14px]">✓ SELECTED</div>
                     )}
                   </div>
                 ))}
@@ -439,22 +448,22 @@ export default function ShopPage() {
                       />
                       {isLocked && (
                         <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.4)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                          <span style={{ fontSize: 18 }}>🔒</span>
+                          <span style={{ fontSize: 50 }}>🔒</span>
                         </div>
                       )}
                     </div>
 
-                    <p className="text-[12px] text-[#2d5050] text-center">{item.name.toUpperCase()}</p>
+                    <p className="text-[20px] text-[#2d5050] text-center">{item.name.toUpperCase()}</p>
                     {item.cost > 0
-                      ? <p className="text-[12px] text-[#7ab3b3]">⭐{item.cost}</p>
-                      : <p className="text-[12px] text-[#4e8888]">FREE</p>
+                      ? <p className="text-[20px] text-[#7ab3b3]">⭐{item.cost}</p>
+                      : <p className="text-[20px] text-[#4e8888]">FREE</p>
                     }
 
                     {isEquipped ? (
-                      <div className="px-box bg-[#7ab3b3] text-[#f0f8f8] px-2 py-0.5 text-[12px] w-full text-center">✓ ON</div>
+                      <div className="px-box bg-[#7ab3b3] text-[#f0f8f8] px-2 py-0.5 text-[20px] w-full text-center">✓ ON</div>
                     ) : isLocked ? (
                       <button
-                        className="px-btn bg-[#2d5050] text-[#f0f8f8] px-2 py-0.5 text-[12px] w-full"
+                        className="px-btn bg-[#2d5050] text-[#f0f8f8] px-2 py-0.5 text-[20px] w-full"
                         disabled={!canAfford}
                         onClick={e => { e.stopPropagation(); handleBuy(activeTab as Category, item); }}
                       >
@@ -462,7 +471,7 @@ export default function ShopPage() {
                       </button>
                     ) : (
                       <button
-                        className="px-btn bg-[#4e8888] text-[#f0f8f8] px-2 py-0.5 text-[12px] w-full"
+                        className="px-btn bg-[#4e8888] text-[#f0f8f8] px-2 py-0.5 text-[20px] w-full"
                         onClick={e => { e.stopPropagation(); handleEquip(activeTab as Category, item); }}
                       >
                         EQUIP
