@@ -58,7 +58,7 @@ function ShopCharacter({ size, zoom = 1 }: { size: number; zoom?: number }) {
 
 export function Navbar() {
   const pathname = usePathname();
-  const navItems = ['Map', 'Dashboard', 'Tasks', 'Shop'];
+  const navItems = ['Dashboard', 'Map', 'Tasks', 'Shop'];
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { data: session } = useSession();

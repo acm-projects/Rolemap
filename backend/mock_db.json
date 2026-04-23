@@ -9,7 +9,7 @@
       "xp_total": 2450,
       "current_streak": 24,
       "longest_streak": 31,
-      "onboarding_completed": false,
+      "onboarding_completed": true,
       "onboarding_step": 5,
       "created_at": "2025-09-01T00:00:00Z"
     }

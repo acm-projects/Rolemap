@@ -81,16 +81,17 @@ export default function DailyPage() {
     }).catch(console.error);
   }
 
-  useEffect(() => { loadTasks(); }, []);
-
-  useEffect(() => {
-    api.skillDecay()
-      .then(entries => setDecayTasks(entries.filter(e => e.days_until_review <= 0)))
-      .catch(console.error);
-  }, []);
-
   const activeTaskObj = tasks.find(t => t.id === activeTask) ?? null;
   const allDone = tasks.length > 0 && completed.length >= tasks.length;
+  useEffect(() => { loadTasks(); 
+    if (allDone && checkpointLabel) {
+    localStorage.setItem('node_just_completed', checkpointLabel);
+  }
+
+  }, [allDone, checkpointLabel]);
+
+  // const activeTaskObj = tasks.find(t => t.id === activeTask) ?? null;
+  // const allDone = tasks.length > 0 && completed.length >= tasks.length;
 
   function handleMarkComplete() {
     if (activeTask && !completed.includes(activeTask)) {
