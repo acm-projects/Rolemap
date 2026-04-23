@@ -58,7 +58,7 @@ function ShopCharacter({ size, zoom = 1 }: { size: number; zoom?: number }) {
 
 export function Navbar() {
   const pathname = usePathname();
-  const navItems = ['Dashboard', 'Map', 'Tasks', 'Shop'];
+  const navItems = ['Map', 'Dashboard', 'Tasks', 'Shop'];
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { data: session } = useSession();
@@ -203,7 +203,7 @@ export function Navbar() {
                 <Link
                   key={item}
                   href={`/${item.toLowerCase()}`}
-                  className={`pixel-nav-link text-[8px] pb-1 ${isActive ? 'active text-[#2d5050]' : 'text-[#4e8888] hover:text-[#2d5050]'}`}
+                  className={`pixel-nav-link text-[11px] pb-1 ${isActive ? 'active text-[#2d5050]' : 'text-[#4e8888] hover:text-[#2d5050]'}`}
                   style={{ fontFamily: "'Press Start 2P', monospace" }}
                 >
                   {item.toUpperCase()}

@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/* Make ReactFlow canvas transparent so the map background shows through */
+.map-flow,
+.map-flow .react-flow__renderer,
+.map-flow .react-flow__viewport {
+  background-color: transparent !important;
+}
+
 
 :root {
   --background: #eef1f7;
@@ -54,6 +61,17 @@ body {
   display: none;
 }
 
+/* Remove borders/shadows and attribution on the map page */
+.map-flow .react-flow__controls,
+.map-flow .react-flow__panel,
+.map-flow .react-flow__attribution {
+  box-shadow: none;
+  border: none;
+}
+.map-flow .react-flow__attribution {
+  display: none;
+}
+
 * {
   font-family: var(--font-jersey10), sans-serif;
 }
@@ -74,4 +92,25 @@ body {
   92%  { opacity: 0.98; }
   94%  { opacity: 1; }
   97%  { opacity: 0.96; }
+}
+
+/* animating the stones on the map page */
+@keyframes stones-fwd {
+  to { stroke-dashoffset: 22; }
+}
+
+/* Hide scrollbar on the map page */
+html.map-no-scroll,
+html.map-no-scroll body {
+  overflow: hidden !important;
+  scrollbar-width: none; /* Firefox */
+}
+html.map-no-scroll ::-webkit-scrollbar {
+  display: none; /* Chrome / Safari / Edge */
+}
+
+/* Parallax background — cloud drift */
+@keyframes driftClouds {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-512px); }
 }
