@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
+import { useCharacter } from "../context/CharacterContext";
 
 // Renders the user's custom character from shop localStorage data
 const DEFAULT_EQUIPPED = { skin: "char1.png", eyes: "eyes.png", clothes: "suit.png", pants: "pants.png", shoes: "shoes.png", hair: "buzzcut.png", accessories: "" };
@@ -62,6 +63,7 @@ export function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { data: session } = useSession();
+  const { triggerTransition } = useCharacter();
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -198,16 +200,33 @@ export function Navbar() {
           {/* Nav links */}
           <div className="flex items-center gap-6">
             {navItems.map((item) => {
-              const isActive = pathname === `/${item.toLowerCase()}`;
+              const href = `/${item.toLowerCase()}`;
+              const isActive = pathname === href;
               return (
-                <Link
+                <button
                   key={item}
-                  href={`/${item.toLowerCase()}`}
+                  onClick={() => {
+                    // Walking character on non-map pages: getBoundingClientRect captures mid-animation X
+                    const walker = document.querySelector('[data-global-char]');
+                    if (walker) {
+                      const r = walker.getBoundingClientRect();
+                      triggerTransition(href, r.left + r.width / 2, r.bottom, r.width);
+                      return;
+                    }
+                    // Map page: use on-node mascot position (includes ReactFlow zoom)
+                    const mascot = document.querySelector('[data-char-mascot]');
+                    if (mascot) {
+                      const r = mascot.getBoundingClientRect();
+                      triggerTransition(href, r.left + r.width / 2, r.bottom, r.width);
+                      return;
+                    }
+                    triggerTransition(href);
+                  }}
                   className={`pixel-nav-link text-[11px] pb-1 ${isActive ? 'active text-[#2d5050]' : 'text-[#4e8888] hover:text-[#2d5050]'}`}
-                  style={{ fontFamily: "'Press Start 2P', monospace" }}
+                  style={{ fontFamily: "'Press Start 2P', monospace", background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
                 >
                   {item.toUpperCase()}
-                </Link>
+                </button>
               );
             })}
           </div>

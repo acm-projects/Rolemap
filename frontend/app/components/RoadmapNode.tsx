@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { CharacterPreview, Category } from './CharacterPreview';
 //import Image from 'next/image';
 import { Handle, Position } from '@xyflow/react';
+import { useCharacter } from '../context/CharacterContext';
 
 type SavedChar = { skin: string; eyes: string; clothes: string; pants: string; shoes: string; hair: string; accessories: string };
 type SavedVariants = Partial<Record<string, number>>;
@@ -15,8 +16,11 @@ const DEFAULTS: SavedChar = {
 
 
 function CharacterMascot({ isJumping }: { isJumping: boolean }) {
+  const { charState } = useCharacter();
   const [char, setChar] = useState<SavedChar>(DEFAULTS);
   const [variants, setVariants] = useState<SavedVariants>({});
+  const [fallingIn, setFallingIn] = useState(false);
+  const prevFallInKey = useRef(0);
 
   const load = () => {
     try {
@@ -34,9 +38,13 @@ function CharacterMascot({ isJumping }: { isJumping: boolean }) {
   }, []);
 
   useEffect(() => {
-    const el = document.querySelector('[data-id="current-node"]');
-    if (el) console.log('node rect:', el.getBoundingClientRect());
-  }, []);
+    const key = charState.mascotFallInKey;
+    if (key === 0 || key === prevFallInKey.current) return;
+    prevFallInKey.current = key;
+    setFallingIn(true);
+    const t = setTimeout(() => setFallingIn(false), 800);
+    return () => clearTimeout(t);
+  }, [charState.mascotFallInKey]);
 
   const v: Partial<Record<Category, number>> = {
     skin:        variants[char.skin]        ?? 0,
@@ -48,6 +56,9 @@ function CharacterMascot({ isJumping }: { isJumping: boolean }) {
     accessories: variants[char.accessories] ?? 0,
   };
 
+  // Hide during global tab transitions so GlobalCharacter doesn't double-show
+  if (charState.phase !== 'idle') return null;
+
   return (
     <>
       <style>{`
@@ -57,15 +68,25 @@ function CharacterMascot({ isJumping }: { isJumping: boolean }) {
           65%  { transform: translateX(-50%) translateY(-6px); }
           100% { transform: translateX(-50%) translateY(0px); }
         }
+        @keyframes mascot-fall-in {
+          0%   { transform: translateX(-50%) translateY(-600px); }
+          72%  { transform: translateX(-50%) translateY(14px); }
+          86%  { transform: translateX(-50%) translateY(-6px); }
+          100% { transform: translateX(-50%) translateY(0px); }
+        }
       `}</style>
-      <div style={{
+      <div data-char-mascot style={{
         position: 'absolute',
         top: -120,
         left: '50%',
         transform: 'translateX(-50%)',
         zIndex: 10,
         pointerEvents: 'none',
-        animation: isJumping ? 'mascot-bounce 0.35s ease-out 0.8s forwards' : 'none',
+        animation: fallingIn
+          ? 'mascot-fall-in 0.7s ease-in forwards'
+          : isJumping
+          ? 'mascot-bounce 0.35s ease-out 0.8s forwards'
+          : 'none',
       }}>
         <CharacterPreview
           size={104}
