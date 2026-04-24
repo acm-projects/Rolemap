@@ -1,6 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Navbar } from "../components/NavBar";
+import { useCharacter } from "../context/CharacterContext";
 import { api } from "@/lib/api";
 
 type Item = { id: string; name: string; file: string; cost: number; unlocked: boolean; };
@@ -181,6 +182,21 @@ export default function ShopPage() {
   const [notification, setNotification] = useState<string | null>(null);
   const [previewItem, setPreviewItem] = useState<{ item: Item; category: Category } | null>(null);
   const [colorVariants, setColorVariants] = useState<Partial<Record<string, number>>>(loadSavedVariants);
+  const { charState } = useCharacter();
+
+  // Fall-in animation phase for the character preview
+  const [charPhase, setCharPhase] = useState<'hidden' | 'falling-in' | 'visible'>('hidden');
+  const mountTime = useRef(Date.now());
+
+  useEffect(() => {
+    const elapsed = Date.now() - mountTime.current;
+    const delay = Math.max(50, 450 - elapsed);
+    const t = setTimeout(() => {
+      setCharPhase('falling-in');
+      setTimeout(() => setCharPhase('visible'), 700);
+    }, delay);
+    return () => clearTimeout(t);
+  }, []);
 
   const showNotification = (msg: string) => {
     setNotification(msg);
@@ -235,6 +251,7 @@ export default function ShopPage() {
         .px-card.locked{ opacity:.65; }
         .notif { position:fixed; top:2rem; left:50%; transform:translateX(-50%); z-index:200; border:4px solid #2d5050; box-shadow:4px 4px 0 0 rgba(0,0,0,.3); animation:ni .15s ease; }
         @keyframes ni { from{transform:translateX(-50%) translateY(-20px);opacity:0} to{transform:translateX(-50%) translateY(0);opacity:1} }
+        @keyframes shopCharFall { 0%{transform:translateY(-700px)} 72%{transform:translateY(10px)} 87%{transform:translateY(-5px)} 100%{transform:translateY(0)} }
         .modal-bg  { position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:150; display:flex; align-items:center; justify-content:center; }
         .modal-box { border:4px solid #2d5050; box-shadow:8px 8px 0 0 rgba(0,0,0,.4); }
       `}</style>
@@ -304,18 +321,25 @@ export default function ShopPage() {
           <div className="col-span-1 flex flex-col gap-4">
             <div className="px-box bg-[#e8f5f5] p-4 flex flex-col items-center gap-4">
               <p className="text-[28px] text-[#2d5050]">YOUR CHARACTER</p>
-              <CharacterPreview
-                size={160}
-                showLegs
-                skin={equipped.skin}
-                eyes={equipped.eyes}
-                clothes={equipped.clothes}
-                pants={equipped.pants}
-                shoes={equipped.shoes}
-                hair={equipped.hair}
-                accessory={equipped.accessories}
-                variants={equippedVariants}
-              />
+              {charPhase !== 'hidden' && charState.phase !== 'departing' && (
+                <div
+                  {...(charPhase === 'visible' ? { 'data-shop-char': '' } : {})}
+                  style={charPhase === 'falling-in' ? { animation: 'shopCharFall 0.65s linear forwards' } : {}}
+                >
+                  <CharacterPreview
+                    size={160}
+                    showLegs
+                    skin={equipped.skin}
+                    eyes={equipped.eyes}
+                    clothes={equipped.clothes}
+                    pants={equipped.pants}
+                    shoes={equipped.shoes}
+                    hair={equipped.hair}
+                    accessory={equipped.accessories}
+                    variants={equippedVariants}
+                  />
+                </div>
+              )}
               {activeTab !== "gender" && (() => {
                 const cat = activeTab as Category;
                 const item = items[cat].find(i => i.file === equipped[cat] || (i.file === "" && equipped[cat] === ""));

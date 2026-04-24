@@ -213,6 +213,13 @@ export function Navbar() {
                       triggerTransition(href, r.left + r.width / 2, r.bottom, r.width);
                       return;
                     }
+                    // Shop character preview
+                    const shopChar = document.querySelector('[data-shop-char]');
+                    if (shopChar) {
+                      const r = shopChar.getBoundingClientRect();
+                      triggerTransition(href, r.left + r.width / 2, r.bottom, r.width);
+                      return;
+                    }
                     // Sleeping character on tasks page
                     const dieChar = document.querySelector('[data-die-char]');
                     if (dieChar) {
