@@ -213,6 +213,13 @@ export function Navbar() {
                       triggerTransition(href, r.left + r.width / 2, r.bottom, r.width);
                       return;
                     }
+                    // Sleeping character on tasks page
+                    const dieChar = document.querySelector('[data-die-char]');
+                    if (dieChar) {
+                      const r = dieChar.getBoundingClientRect();
+                      triggerTransition(href, r.left + r.width / 2, r.bottom, r.width);
+                      return;
+                    }
                     // Map page: use on-node mascot position (includes ReactFlow zoom)
                     const mascot = document.querySelector('[data-char-mascot]');
                     if (mascot) {

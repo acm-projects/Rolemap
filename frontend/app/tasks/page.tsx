@@ -1,6 +1,7 @@
 'use client';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Navbar } from "../components/NavBar";
+import { useCharacter } from "../context/CharacterContext";
 import Image from "next/image";
 import pic6 from "../tasks/target.png";
 import PixelCard from "../components/PixelCard";
@@ -56,6 +57,199 @@ function PixelPanel({ children, className }: { children: React.ReactNode; classN
   );
 }
 
+// ── Sleeping character on task card ──────────────────────────────────────────
+
+const DIE_SIZE = 44;
+
+const DEFAULT_EQUIPPED_DIE = {
+  skin: 'char1.png', eyes: 'eyes.png', clothes: 'suit.png',
+  pants: 'pants.png', shoes: 'shoes.png', hair: 'buzzcut.png', accessories: '',
+};
+
+function getDiePath(cat: string, file: string): string | null {
+  if (!file) return null;
+  const base = file.replace('.png', '_die.png');
+  switch (cat) {
+    case 'skin':         return `die/${base}`;
+    case 'clothes':      return `die/clothes/${base}`;
+    case 'pants':        return `die/clothes/${base}`;
+    case 'shoes':        return `die/clothes/${base}`;
+    case 'hair':         return `die/hair/${base}`;
+    case 'eyes':         return `die/eyes/${file === 'blush_all.png' ? 'blush_die.png' : base}`;
+    case 'accessories':  return `die/acc/${base}`;
+    default:             return null;
+  }
+}
+
+// Tune these to adjust sleeping character position on the card
+const CHAR_TOP_OFFSET = -40;   // px from card top (increase = lower)
+const CHAR_RIGHT_OFFSET = 4; // px from card right edge (increase = further left)
+
+function DieCharacter({ taskId, falling, fallDelta }: {
+  taskId: string | null;
+  falling: boolean;
+  fallDelta: number;
+}) {
+  const { charState } = useCharacter();
+  const [equipped, setEquipped] = useState(DEFAULT_EQUIPPED_DIE);
+  const [colorVariants, setColorVariants] = useState<Record<string, number>>({});
+  // 'hidden' → 'falling-in' → 'sleeping' ; on complete: 'sleeping' → 'falling-to-next' → 'sleeping'
+  const [phase, setPhase] = useState<'hidden' | 'falling-in' | 'sleeping' | 'falling-to-next'>('hidden');
+  const [fixedPos, setFixedPos] = useState<{ top: number; left: number } | null>(null);
+  const [animKey, setAnimKey] = useState(0);
+  const prevTaskId = useRef<string | null>(null);
+  const mountTime = useRef(Date.now());
+
+  useEffect(() => {
+    try {
+      const eq = localStorage.getItem('character_saved');
+      const cv = localStorage.getItem('character_saved_variants');
+      if (eq) setEquipped(p => ({ ...p, ...JSON.parse(eq) }));
+      if (cv) setColorVariants(JSON.parse(cv));
+    } catch {}
+  }, []);
+
+  const getCardFixed = (id: string) => {
+    const el = document.querySelector(`[data-task-id="${id}"]`) as HTMLElement | null;
+    if (!el) return null;
+    const rect = el.getBoundingClientRect();
+    return {
+      top: rect.top + CHAR_TOP_OFFSET,
+      left: rect.left + rect.width - DIE_SIZE - CHAR_RIGHT_OFFSET,
+    };
+  };
+
+  useEffect(() => {
+    if (!taskId) {
+      prevTaskId.current = null;
+      setPhase('hidden');
+      setFixedPos(null);
+      return;
+    }
+
+    const isFirst = prevTaskId.current === null;
+    prevTaskId.current = taskId;
+
+    if (isFirst) {
+      // Delay start to let GlobalCharacter departure finish (~450ms after mount)
+      const elapsed = Date.now() - mountTime.current;
+      const delay = Math.max(0, 450 - elapsed);
+      const t = setTimeout(() => {
+        const pos = getCardFixed(taskId);
+        if (!pos) return;
+        setFixedPos(pos);
+        setAnimKey(k => k + 1);
+        setPhase('falling-in');
+        setTimeout(() => setPhase('sleeping'), 700);
+      }, delay);
+      return () => clearTimeout(t);
+    } else {
+      // Arrived at new card after falling-to-next
+      const pos = getCardFixed(taskId);
+      if (pos) setFixedPos(pos);
+      setPhase('sleeping');
+    }
+  }, [taskId]);
+
+  // falling prop triggers fall-to-next
+  useEffect(() => {
+    if (falling && phase === 'sleeping') {
+      setAnimKey(k => k + 1);
+      setPhase('falling-to-next');
+    }
+  }, [falling]);
+
+  // Keep fixed position in sync with card (handles scroll + resize)
+  useEffect(() => {
+    if (phase !== 'sleeping' || !taskId) return;
+    const update = () => {
+      const pos = getCardFixed(taskId);
+      if (pos) setFixedPos(pos);
+    };
+    document.getElementById('task-scroll')?.addEventListener('scroll', update);
+    window.addEventListener('resize', update);
+    return () => {
+      document.getElementById('task-scroll')?.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+    };
+  }, [phase, taskId]);
+
+  // Hide during tab departure so GlobalCharacter's jump-away plays cleanly
+  if (charState.phase === 'departing') return null;
+  if (phase === 'hidden' || !fixedPos) return null;
+
+  const S = DIE_SIZE;
+  const layers: [string, string, string][] = [
+    [equipped.skin, 'skin', equipped.skin],
+    [equipped.pants, 'pants', equipped.pants],
+    [equipped.shoes, 'shoes', equipped.shoes],
+    [equipped.clothes, 'clothes', equipped.clothes],
+    [equipped.eyes, 'eyes', equipped.eyes],
+    [equipped.hair, 'hair', equipped.hair],
+    [equipped.accessories, 'accessories', equipped.accessories],
+  ];
+  const layerData = layers
+    .filter(([f]) => f)
+    .map(([f, cat]) => { const path = getDiePath(cat, f); return path ? { path, v: colorVariants[f] ?? 0, cat } : null; })
+    .filter(Boolean) as { path: string; v: number; cat: string }[];
+
+  // Only animate non-eyes layers; eyes are locked to frame 1 (closed)
+  const animatedV = [...new Set(layerData.filter(d => d.cat !== 'eyes' && d.cat !== 'skin').map(d => d.v))];
+  const sleepKf = (v: number) => `ds${v}s${S}`;
+  const makeSleepKf = (v: number) =>
+    `@keyframes ${sleepKf(v)}{0%{background-position:${-v*2*S}px 0px;}50%{background-position:${-(v*2+1)*S}px 0px;}100%{background-position:${-v*2*S}px 0px;}}`;
+
+  const k = animKey;
+  let containerAnim: string | undefined;
+  let kfStr = '';
+
+  if (phase === 'falling-in') {
+    const up = fixedPos.top + S;
+    kfStr = `@keyframes dfi${k}{0%{transform:translateY(${-up}px);}72%{transform:translateY(10px);}87%{transform:translateY(-5px);}100%{transform:translateY(0);}}`;
+    containerAnim = `dfi${k} 0.65s linear forwards`;
+  } else if (phase === 'falling-to-next') {
+    const d = fallDelta;
+    kfStr = `@keyframes dfn${k}{0%{transform:translateY(0);}25%{transform:translateY(${Math.round(d*0.1)}px);}55%{transform:translateY(${Math.round(d*0.4)}px);}80%{transform:translateY(${d+10}px);}90%{transform:translateY(${d-4}px);}100%{transform:translateY(${d}px);}}`;
+    containerAnim = `dfn${k} 0.5s linear forwards`;
+  }
+
+  return (
+    <>
+      <style>{animatedV.map(makeSleepKf).join('') + kfStr}</style>
+      <div
+        {...(phase === 'sleeping' ? { 'data-die-char': '' } : {})}
+        style={{
+          position: 'fixed',
+          top: fixedPos.top,
+          left: fixedPos.left,
+          width: S,
+          height: S,
+          imageRendering: 'pixelated',
+          zIndex: 9990,
+          pointerEvents: 'none',
+          ...(containerAnim ? { animation: containerAnim } : {}),
+        }}
+      >
+        {layerData.map(({ path, v, cat }, i) => {
+          // skin + eyes locked to frame 0 (keeps face/eyes static closed)
+          const isStatic = cat === 'eyes' || cat === 'skin';
+          return (
+            <div key={i} style={{
+              position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+              backgroundImage: `url(/characters/${path})`,
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: `auto ${S}px`,
+              backgroundPosition: isStatic ? `${-(v * 2 + 1) * S}px 0px` : `${-v * 2 * S}px 0px`,
+              animation: isStatic ? 'none' : `${sleepKf(v)} 1.8s steps(1) infinite`,
+              imageRendering: 'pixelated',
+            }} />
+          );
+        })}
+      </div>
+    </>
+  );
+}
+
 
 export default function DailyPage() {
   const router = useRouter();
@@ -68,6 +262,13 @@ export default function DailyPage() {
   const [totalSubtopics, setTotalSubtopics] = useState(0);
   const [decayTasks, setDecayTasks] = useState<SkillDecayEntry[]>([]);
   const [activeDecayTask, setActiveDecayTask] = useState<SkillDecayEntry | null>(null);
+
+  // Sleeping character state
+  const [charTaskId, setCharTaskId] = useState<string | null>(null);
+  const [charFalling, setCharFalling] = useState(false);
+  const [charFallDelta, setCharFallDelta] = useState(0);
+  const charInitialized = useRef(false);
+  const fallTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   function loadTasks() {
     api.tasks().then(d => {
@@ -83,20 +284,46 @@ export default function DailyPage() {
 
   const activeTaskObj = tasks.find(t => t.id === activeTask) ?? null;
   const allDone = tasks.length > 0 && completed.length >= tasks.length;
-  useEffect(() => { loadTasks(); 
+  useEffect(() => { loadTasks();
     if (allDone && checkpointLabel) {
     localStorage.setItem('node_just_completed', checkpointLabel);
   }
 
   }, [allDone, checkpointLabel]);
 
-  // const activeTaskObj = tasks.find(t => t.id === activeTask) ?? null;
-  // const allDone = tasks.length > 0 && completed.length >= tasks.length;
+  // Initialize charTaskId on first tasks load
+  useEffect(() => {
+    if (tasks.length > 0 && !charInitialized.current) {
+      charInitialized.current = true;
+      const first = tasks.find(t => !completed.includes(t.id));
+      setCharTaskId(first?.id ?? null);
+    }
+  }, [tasks]);
 
   function handleMarkComplete() {
-    if (activeTask && !completed.includes(activeTask)) {
-      setCompleted(prev => [...prev, activeTask]);
-      api.updateTask(activeTask, 'completed').catch(console.error);
+    if (!activeTask || completed.includes(activeTask)) return;
+
+    const newCompleted = [...completed, activeTask];
+    setCompleted(newCompleted);
+    api.updateTask(activeTask, 'completed').catch(console.error);
+
+    // Trigger fall if character is on this task
+    if (charTaskId === activeTask) {
+      const nextTask = tasks.find(t => !newCompleted.includes(t.id));
+      if (nextTask) {
+        const curEl = document.querySelector(`[data-task-id="${activeTask}"]`) as HTMLElement | null;
+        const nextEl = document.querySelector(`[data-task-id="${nextTask.id}"]`) as HTMLElement | null;
+        if (curEl && nextEl) {
+          const d = nextEl.getBoundingClientRect().top - curEl.getBoundingClientRect().top;
+          setCharFallDelta(d);
+        }
+      }
+      setCharFalling(true);
+      if (fallTimerRef.current) clearTimeout(fallTimerRef.current);
+      fallTimerRef.current = setTimeout(() => {
+        setCharFalling(false);
+        setCharTaskId(nextTask?.id ?? null);
+      }, 550);
     }
   }
 
@@ -112,6 +339,7 @@ export default function DailyPage() {
 
   return (
     <div className="min-h-screen bg-[#f0f8f8]" style={{ imageRendering: 'pixelated' }}>
+      <DieCharacter taskId={charTaskId} falling={charFalling} fallDelta={charFallDelta} />
       <Navbar />
 
       <div className="w-[95%] max-w-6xl mx-auto pt-[104px] pb-8 flex gap-8 h-screen">
@@ -145,7 +373,7 @@ export default function DailyPage() {
             )}
 
             {/* Resource cards */}
-            <div className="flex flex-col gap-2 flex-1 overflow-y-auto">
+            <div id="task-scroll" className="flex flex-col gap-2 flex-1 overflow-y-auto">
 
               {/* Decay review tasks */}
               {decayTasks.map((entry) => {
@@ -189,32 +417,33 @@ export default function DailyPage() {
                 const isDoneItem = completed.includes(task.id);
 
                 return (
-                  <PixelCard
-                    key={task.id}
-                    onClick={() => { setActiveTask(task.id); setActiveDecayTask(null); }}
-                    selected={isActive}
-                    hover
-                  >
-                    <div className="flex items-center gap-3 p-3">
-                      <div className="flex-shrink-0 w-9 h-9 bg-[#f0f8f8] flex items-center justify-center border-2 border-[#d4e8e8]">
-                        {isDoneItem
-                          ? <CheckCircle size={14} className="text-[#10B981]" />
-                          : task.type === 'Coding'
-                            ? <Code2 size={14} className="text-[#4e8888]" />
-                            : <BookOpen size={14} className="text-[#4e8888]" />
-                        }
+                  <div key={task.id} data-task-id={task.id}>
+                    <PixelCard
+                      onClick={() => { setActiveTask(task.id); setActiveDecayTask(null); }}
+                      selected={isActive}
+                      hover
+                    >
+                      <div className="flex items-center gap-3 p-3">
+                        <div className="flex-shrink-0 w-9 h-9 bg-[#f0f8f8] flex items-center justify-center border-2 border-[#d4e8e8]">
+                          {isDoneItem
+                            ? <CheckCircle size={14} className="text-[#10B981]" />
+                            : task.type === 'Coding'
+                              ? <Code2 size={14} className="text-[#4e8888]" />
+                              : <BookOpen size={14} className="text-[#4e8888]" />
+                          }
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[10px] text-[#7ab3b3] uppercase truncate leading-tight mb-0.5">{task.type}</p>
+                          <h3 className="text-xs truncate text-[#2d5050] leading-tight">
+                            {task.title}
+                          </h3>
+                          {isDoneItem && (
+                            <p className="text-xs text-[#10B981] uppercase mt-0.5">Done</p>
+                          )}
+                        </div>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[10px] text-[#7ab3b3] uppercase truncate leading-tight mb-0.5">{task.type}</p>
-                        <h3 className="text-xs truncate text-[#2d5050] leading-tight">
-                          {task.title}
-                        </h3>
-                        {isDoneItem && (
-                          <p className="text-xs text-[#10B981] uppercase mt-0.5">Done</p>
-                        )}
-                      </div>
-                    </div>
-                  </PixelCard>
+                    </PixelCard>
+                  </div>
                 );
               })}
             </div>

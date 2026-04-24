@@ -28,6 +28,8 @@ export function GlobalCharacter() {
 
   if (!mounted || phase === 'idle') return null;
   if (HIDDEN_PATHS.some(p => pathname === p || pathname.startsWith(p + '/'))) return null;
+  // On tasks page, DieCharacter handles arrival/walk — only show during departure
+  if (pathname === '/tasks' && phase !== 'departing') return null;
 
   // showLegs height formula matches CharacterPreview: Math.round(size * 32 / 28)
   const charHeight = Math.round(charSize * 32 / 28);
