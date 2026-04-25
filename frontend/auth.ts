@@ -29,27 +29,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signOut: "/",
   },
   callbacks: {
-    async jwt({ token, account, profile }) {
-      if (account) {
-        token.provider = account.provider;
-        if (account.provider === "github" && profile) {
-          token.githubUsername = (profile as { login?: string }).login ?? null;
-        }
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      if (session.user) {
-        (session.user as Record<string, unknown>).provider = token.provider;
-        (session.user as Record<string, unknown>).githubUsername = token.githubUsername ?? null;
-      }
-      return session;
-    },
     redirect: async ({ url, baseUrl }) => {
-      if (url.startsWith(baseUrl)) return url;
-      if (url.startsWith("/")) return new URL(url, baseUrl).toString();
-      return new URL("/OnBoarding/Major", baseUrl).toString();
-    },
+    if (url.startsWith(baseUrl)) return url
+    if (url.startsWith("/")) return new URL(url, baseUrl).toString()
+    return new URL("/dashboard", baseUrl).toString()
+},
   },
   events: {
     async signOut() {},

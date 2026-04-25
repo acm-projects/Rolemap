@@ -7,7 +7,6 @@ interface TypewriterTextProps {
   className?: string;
   onComplete?: () => void;
   skipOnClick?: boolean;
-  startComplete?: boolean;
 }
 
 export default function TypewriterText({
@@ -17,19 +16,13 @@ export default function TypewriterText({
   className = "",
   onComplete,
   skipOnClick = true,
-  startComplete = false,
 }: TypewriterTextProps) {
-  const [displayedText, setDisplayedText] = useState(startComplete ? text : "");
-  const [currentIndex, setCurrentIndex] = useState(startComplete ? text.length + 1 : 0);
-  const [isComplete, setIsComplete] = useState(startComplete);
+  const [displayedText, setDisplayedText] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isComplete, setIsComplete] = useState(false);
   const [isSkipped, setIsSkipped] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
-    if (startComplete) return;
-
     if (isSkipped) {
       setDisplayedText(text);
       setIsComplete(true);
@@ -57,7 +50,7 @@ export default function TypewriterText({
       setIsComplete(true);
       if (onComplete) onComplete();
     }
-  }, [currentIndex, text, speed, delay, isComplete, onComplete, isSkipped, startComplete]);
+  }, [currentIndex, text, speed, delay, isComplete, onComplete, isSkipped]);
 
   const handleClick = () => {
     if (skipOnClick && !isComplete) {
@@ -69,9 +62,8 @@ export default function TypewriterText({
     <span
       className={`font-jersey ${className}`}
       onClick={handleClick}
-      suppressHydrationWarning
       style={{
-        cursor: mounted && skipOnClick && !isComplete ? "pointer" : "default",
+        cursor: skipOnClick && !isComplete ? "pointer" : "default",
       }}
     >
       {displayedText}

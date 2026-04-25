@@ -1,15 +1,17 @@
-'use client';
+import { Navbar } from "@/app/components/NavBar"
+import { auth } from "@/auth"
 
-import { useEffect } from 'react';
-
-export default function MapLayout({ children }: { children: React.ReactNode }) {
-  useEffect(() => {
-    const html = document.documentElement;
-    html.classList.add('map-no-scroll');
-    return () => {
-      html.classList.remove('map-no-scroll');
-    };
-  }, []);
-
-  return <>{children}</>;
+export default async function MapLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  const session = await auth()
+  
+  return (
+    <>
+      <Navbar user={session?.user} />
+      {children}
+    </>
+  )
 }

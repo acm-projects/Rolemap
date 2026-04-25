@@ -1,7 +1,7 @@
 'use client';
 import { Smooch } from "next/font/google";
+import Link from "next/link";
 import { useRef, useEffect, useState } from "react";
-import { signIn } from "next-auth/react";
 
 // ─── Icon paths (only those used in this file) ───────────────────────────────
 const PATHS = {
@@ -48,10 +48,10 @@ function CompletedNode({ label, pct }: { label: string; pct: number }) {
         <div className="w-4 h-4 rounded-full bg-[#4e8888] flex items-center justify-center flex-shrink-0">
           <Icon path={PATHS.check} size={8} color="white" viewBox="0 0 12 12" />
         </div>
-        <span className="text-sm font-normal text-slate-800">{label}</span>
+        <span className="text-xs font-bold text-slate-800">{label}</span>
       </div>
       <ProgressBar pct={pct} />
-      <p className="text-xs text-[#4e8888] font-normal mt-1 text-right">{pct}%</p>
+      <p className="text-[9px] text-[#4e8888] font-semibold mt-1 text-right">{pct}%</p>
     </div>
   );
 }
@@ -62,9 +62,9 @@ function LockedNode({ label }: { label: string }) {
     <div className="bg-white border border-slate-200 rounded-lg px-3 py-2 w-28 opacity-60">
       <div className="flex items-center gap-1.5">
         <Icon path={PATHS.lock} size={9} color="#94a3b8" viewBox="0 0 20 16" />
-        <span className="text-xs font-normal text-slate-400">{label}</span>
+        <span className="text-[10px] font-semibold text-slate-400">{label}</span>
       </div>
-      <p className="text-[10px] text-slate-300 mt-0.5">Locked</p>
+      <p className="text-[8px] text-slate-300 mt-0.5">Locked</p>
     </div>
   );
 }
@@ -102,21 +102,21 @@ function RoadmapCanvas() {
           <div className="absolute tracking-wide" style={{ left: 250, top: 92 }}><CompletedNode label="Javascript" pct={100} /></div>
           <div className="absolute bg-[#4e8888] rounded-xl p-3 w-32 shadow-lg" style={{ left: 245, top: 190 }}>
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-sm font-normal text-white tracking-wide">CSS</span>
+              <span className="text-sm font-bold text-white tracking-wide">CSS</span>
               <div className="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center">
                 <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3" stroke="white" strokeWidth="1.2" fill="none"/><circle cx="4" cy="4" r="1" fill="white"/></svg>
               </div>
             </div>
-            <p className="text-[10px] text-white/60 mb-1.5">Part 2 of 4</p>
+            <p className="text-[9px] text-white/60 mb-1.5">Part 2 of 4</p>
             <ProgressBar pct={45} dark />
-            <p className="text-[10px] text-white/90 font-normal mt-1 text-right">IN PROGRESS</p>
+            <p className="text-[9px] text-white/90 font-bold mt-1 text-right">IN PROGRESS</p>
           </div>
           {/* Legend */}
           <div className="absolute bottom-3 left-3 bg-white border border-slate-200 rounded-lg p-2.5 flex flex-col gap-1">
-            <p className="text-[10px] font-normal text-slate-400 uppercase tracking-widest mb-1">Map Legend</p>
-            <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-[#4e8888]" /><span className="text-xs text-slate-500">Completed</span></div>
-            <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full border-2 border-[#4e8888]" /><span className="text-xs text-slate-500">Active Node</span></div>
-            <div className="flex items-center gap-1.5"><Icon path={PATHS.lock} size={9} color="#cbd5e1" viewBox="0 0 20 16" /><span className="text-xs text-slate-500">Locked Stage</span></div>
+            <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mb-1">Map Legend</p>
+            <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-[#4e8888]" /><span className="text-[9px] text-slate-500 font-medium">Completed</span></div>
+            <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full border-2 border-[#4e8888]" /><span className="text-[9px] text-slate-500 font-medium">Active Node</span></div>
+            <div className="flex items-center gap-1.5"><Icon path={PATHS.lock} size={9} color="#cbd5e1" viewBox="0 0 20 16" /><span className="text-[9px] text-slate-500 font-medium">Locked Stage</span></div>
           </div>
         </div>
       </div>
@@ -229,13 +229,13 @@ function PathRoadmap() {
             <div className="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
             </div>
-            <span className="text-base font-normal text-slate-800">Github</span>
+            <span className="text-sm font-bold text-slate-800">Github</span>
           </div>
           <div ref={resumeRef} className="bg-white border border-slate-200 rounded-2xl p-5 flex flex-col items-center gap-3 w-32 shadow-sm">
             <div className="w-12 h-12 rounded-full bg-[#4e8888] flex items-center justify-center">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg>
             </div>
-            <span className="text-base font-normal text-slate-800">Resume</span>
+            <span className="text-sm font-bold text-slate-800">Resume</span>
           </div>
         </div>
 
@@ -246,7 +246,7 @@ function PathRoadmap() {
             <svg width="28" height="28" viewBox="0 0 27 27" fill="none">
               <path d="M13.5 2L16.5 9H24L18 13.5L20.5 20.5L13.5 16L6.5 20.5L9 13.5L3 9H10.5L13.5 2Z" fill="#4e8888"/>
             </svg>
-            <span className="text-xs font-normal text-[#4e8888] tracking-widest uppercase text-center leading-tight">
+            <span className="text-[10px] font-black text-[#4e8888] tracking-widest uppercase text-center leading-tight">
               Rolemap<br />AI
             </span>
           </div>
@@ -255,22 +255,22 @@ function PathRoadmap() {
         {/* OUTPUTS */}
         <div className="flex flex-col gap-4">
           <div ref={out0Ref} className="bg-white/70 border border-[#4e8888]/20 justify-center rounded-2xl px-5 py-3 flex items-center gap-3 w-60 shadow-sm">
-            <span className="text-base font-normal text-slate-700">Daily Tasks</span>
+            <span className="text-sm font-bold text-slate-700">Daily Tasks</span>
           </div>
           <div ref={out1Ref} className="bg-white/70 border border-[#4e8888]/20 justify-center rounded-2xl px-5 py-3 flex items-center gap-3 w-60 shadow-sm">
-            <span className="text-base font-normal text-slate-700">Personalized Roadmaps</span>
+            <span className="text-sm font-bold text-slate-700">Personalized Roadmaps</span>
           </div>
           <div ref={out2Ref} className="bg-white/70 border border-[#4e8888]/20 justify-center  rounded-2xl px-5 py-3 flex items-center gap-3 w-60 shadow-sm">
-            <span className="text-base font-normal text-slate-700">Gamified Process</span>
+            <span className="text-sm font-bold text-slate-700">Gamified Process</span>
           </div>
         </div>
 
         {/* DREAM ROLE */}
         <div ref={dreamRef} className="flex flex-col items-center gap-2 flex-shrink-0">
           <div className="bg-[#4e8888] rounded-2xl px-6 py-5 shadow-lg flex flex-col items-center gap-1.5">
-            <span className="text-base font-normal text-white whitespace-nowrap">Dream Role</span>
+            <span className="text-sm font-black text-white whitespace-nowrap">Dream Role</span>
           </div>
-          <p className="text-sm text-slate-400 font-normal text-center max-w-[100px] leading-snug">Your career destination</p>
+          <p className="text-xs text-slate-400 font-medium text-center max-w-[100px] leading-snug">Your career destination</p>
         </div>
       </div>
     </div>
@@ -287,22 +287,24 @@ export default function LandingPage() {
         <div className="grid grid-cols-2 gap-12 items-center">
           <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-4">
-              <h1 className="text-6xl font-normal leading-none tracking-wider text-slate-900">
+              <h1 className="text-6xl font-black leading-none tracking-wider text-slate-900">
                 Rolemap: Your<br />
                 <span>Career, </span>
                 <span className="text-[#4e8888]">Gamified.</span>
               </h1>
-              <p className="text-xl text-slate-500 leading-relaxed max-w-xxl">
+              <p className="text-xl text-slate-500 leading-relaxed max-w-xl">
                 Connect your Github and Resume to generate a personalized, daily-task-based roadmap to your dream role. Turn the job hunt into a quest.
               </p>
             </div>
             <div className="flex gap-4">
-              <button onClick={() => signIn("google", { callbackUrl: "/OnBoarding/Major" })} className="bg-[#4e8888] text-white rounded-lg h-12 px-7 text-base font-normal cursor-pointer hover:bg-[#3d7070] transition-colors">
-                Get Started
-              </button>
+              <Link href="/OnBoarding/Major">
+                <button className="bg-[#4e8888] text-white rounded-lg h-12 px-7 text-base font-bold cursor-pointer hover:bg-[#3d7070] transition-colors">
+                  Get Started
+                </button>
+              </Link>
               <button
-                onClick={() => document.getElementById('how-it-works')?.scrollIntoView({behavior: 'smooth'})}
-                className="bg-transparent text-[#4e8888] border-2 border-[#4e8888]/25 rounded-lg h-12 px-7 text-base font-normal cursor-pointer hover:border-[#4e8888]/50 transition-colors">
+              onClick={() => document.getElementById('how-it-works')?.scrollIntoView({behavior: 'smooth'})}
+              className="bg-transparent text-[#4e8888] border-2 border-[#4e8888]/25 rounded-lg h-12 px-7 text-base font-bold cursor-pointer hover:border-[#4e8888]/50 transition-colors">
                 Learn More
               </button>
             </div>
@@ -315,8 +317,8 @@ export default function LandingPage() {
       <div id="how-it-works" className="bg-slate-50 py-20">
         <div className="px-20 flex flex-col items-center gap-12">
           <div className="flex flex-col items-center gap-4 text-center">
-            <h2 className="text-5xl font-normal text-slate-900 tracking-wider">How Your Path is Built</h2>
-            <p className="text-xl text-slate-500 leading-relaxed max-w-5xl">
+            <h2 className="text-5xl font-bold text-slate-900 tracking-wider">How Your Path is Built</h2>
+            <p className="text-xl text-slate-500 leading-relaxed max-w-2xl">
               We analyze your professional footprint to craft an optimized journey specifically for your ambitions.
             </p>  
           </div>
@@ -329,8 +331,8 @@ export default function LandingPage() {
       {/* ROADMAP TO SUCCESS */}
       <div className="px-20 py-20 flex flex-col items-center gap-12 tracking-wide">
         <div className="flex flex-col items-center gap-4 text-center">
-          <h2 className="text-5xl font-normal text-slate-900 tracking-wider">The Roadmap to Success</h2>
-          <p className="text-xl text-slate-500 max-w-5xl">
+          <h2 className="text-5xl font-bold text-slate-900 tracking-wider">The Roadmap to Success</h2>
+          <p className="text-xl text-slate-500 max-w-xl">
             Everything you need to go from where you are to where you want to be.
           </p>
         </div>
@@ -344,7 +346,7 @@ export default function LandingPage() {
               <div className="w-12 h-12 bg-[#4e8888]/15 rounded-xl flex items-center justify-center">
                 <Icon path={PATHS[pathKey]} size={22} color="#4e8888" viewBox={viewBox} />
               </div>
-              <p className="text-xl font-normal text-slate-900">{title}</p>
+              <p className="text-xl font-bold text-slate-900">{title}</p>
               <p className="text-base text-slate-500 leading-relaxed">{desc}</p>
             </div>
           ))}
@@ -354,13 +356,12 @@ export default function LandingPage() {
       {/* CTA */}
       <div className="px-20 pb-20">
         <div className="bg-[#4e8888] rounded-3xl p-12 flex flex-col items-center gap-8 shadow-2xl text-center">
-          <h2 className="text-5xl font-normal text-white tracking-wider">Ready to level up your career?</h2>
-          <button
-            onClick={() => signIn("google", { callbackUrl: "/OnBoarding/Major" })}
-            className="tracking-wide bg-white text-[#4e8888] rounded-xl h-14 px-8 text-lg font-normal cursor-pointer hover:bg-slate-50 transition-colors"
-          >
-            Start My Journey Now
-          </button>
+          <h2 className="text-5xl font-black text-white tracking-wider">Ready to level up your career?</h2>
+          <Link href="/OnBoarding/Major" className="inline-block">
+            <button className="tracking-wide bg-white text-[#4e8888] rounded-xl h-14 px-8 text-lg font-bold cursor-pointer hover:bg-slate-50 transition-colors">
+              Start My Journey Now
+            </button>
+          </Link>
         </div>
       </div>
     </div>
