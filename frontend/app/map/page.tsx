@@ -44,50 +44,58 @@ function ParallaxLayers() {
           backgroundPosition: 'top left',
         }}
       />
-      {/* Back clouds — fills exactly the sky area above the ground (100vh - 20vh = 80vh) */}
+      {/* Back clouds — fade bottom edge into sky with mask gradient */}
       <div
         aria-hidden="true"
         className="fixed top-0 z-1 pointer-events-none"
         style={{
           ...PIXEL,
           width: '200%',
-          height: '80vh',
+          height: '67vh',
           backgroundImage: "url('/assets/clouds-back.png')",
-          backgroundSize: '512px 80vh',
+          backgroundSize: '512px 67vh',
           backgroundRepeat: 'repeat-x',
           backgroundPosition: 'top left',
           opacity: 0.85,
           animation: 'driftClouds 120s linear infinite',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
+          maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
         }}
       />
-      {/* Front clouds — same sky area */}
+      {/* Front clouds — anchored above grass line, fades into sky */}
       <div
         aria-hidden="true"
-        className="fixed top-0 z-2 pointer-events-none"
+        className="fixed z-2 pointer-events-none"
         style={{
           ...PIXEL,
+          bottom: '18vh',
           width: '200%',
-          height: '80vh',
+          height: '67vh',
           backgroundImage: "url('/assets/clouds-front.png')",
-          backgroundSize: '512px 80vh',
+          backgroundSize: '512px 67vh',
           backgroundRepeat: 'repeat-x',
           backgroundPosition: 'top left',
           animation: 'driftClouds 60s linear infinite',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 55%, transparent 100%)',
+          maskImage: 'linear-gradient(to bottom, black 55%, transparent 100%)',
         }}
       />
-      {/* Ground — 20vh, top of ground tile meets bottom of cloud layers */}
+      {/* Ground — 33vh, fills bottom third of screen; z-[6] sits above ReactFlow canvas (z:5) to cover edge artifacts */}
       <div
         aria-hidden="true"
-        className="fixed bottom-0 z-3 pointer-events-none"
+        className="fixed bottom-0 pointer-events-none"
         style={{
           ...PIXEL,
+          zIndex: 6,
           left: '-2px',
           width: 'calc(100% + 4px)',
-          height: '20vh',
+          height: '33vh',
           backgroundImage: "url('/assets/ground.png')",
-          backgroundSize: '1796px 20vh',
+          backgroundSize: '1796px 33vh',
           backgroundRepeat: 'repeat-x',
           backgroundPosition: 'top left',
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 8%)',
+          maskImage: 'linear-gradient(to bottom, transparent 0%, black 8%)',
         }}
       />
     </>
@@ -272,7 +280,7 @@ function RoadmapContent() {
             onClose={() => {
               setActivePanel(null);
               if (activePanelPos) {
-                setCenter(activePanelPos.x, activePanelPos.y, { zoom: 0.5, duration: 800 });
+                setCenter(activePanelPos.x, activePanelPos.y, { zoom: 1.5, duration: 800 });
               }
             }}
           />

@@ -137,9 +137,12 @@ interface RoadmapNodeData {
   kind?: string;
   label: string;
   isCurrent?: boolean;
+<<<<<<< HEAD
   isJumping?: boolean;
   isMascotJumping?: boolean;
   decayHealth?: number; // 0–100; <100 = decaying, lower = worse
+=======
+>>>>>>> 0f62b321a83728b06b8499cfcf6886f94ee0a2c8
 }
 
 // Pixel crack overlay — severity 0 (mild) to 1 (severe)
@@ -266,6 +269,16 @@ const LAYER_COLORS = [
   'rgba(45, 110, 110, 0.75)',
 ];
 
+<<<<<<< HEAD
+=======
+// Lighter shadow layers for locked nodes — matches the subtlety of the rectangle's box-shadow
+const LAYER_COLORS_LOCKED = [
+  'rgba(122, 184, 184, 0.08)',
+  'rgba(122, 184, 184, 0.12)',
+  'rgba(122, 184, 184, 0.18)',
+];
+
+>>>>>>> 0f62b321a83728b06b8499cfcf6886f94ee0a2c8
 /**
  * Character image that sits above the node, peeking out from the top edge.
  * Only rendered when the node is active (in progress).
@@ -296,14 +309,26 @@ function OctagonPixelBorder({
   height,
   borderColor,
   bgColor,
+<<<<<<< HEAD
+=======
+  isLocked = false,
+>>>>>>> 0f62b321a83728b06b8499cfcf6886f94ee0a2c8
 }: {
   width: number;
   height: number;
   borderColor: string;
   bgColor: string;
+<<<<<<< HEAD
 }) {
   const cut = 24;
   const pad = LAYER_STEP * LAYER_COUNT + BORDER_WIDTH;
+=======
+  isLocked?: boolean;
+}) {
+  const cut = 24;
+  const pad = LAYER_STEP * LAYER_COUNT + BORDER_WIDTH;
+  const layerColors = isLocked ? LAYER_COLORS_LOCKED : LAYER_COLORS;
+>>>>>>> 0f62b321a83728b06b8499cfcf6886f94ee0a2c8
 
   // Octagon path offset by (dx, dy)
   const octPath = (dx: number, dy: number) =>
@@ -337,7 +362,11 @@ function OctagonPixelBorder({
           <path
             key={i}
             d={octPath(ox + offset, oy + offset)}
+<<<<<<< HEAD
             fill={LAYER_COLORS[layerIdx]}
+=======
+            fill={layerColors[layerIdx]}
+>>>>>>> 0f62b321a83728b06b8499cfcf6886f94ee0a2c8
           />
         );
       })}
@@ -360,16 +389,28 @@ function CirclePixelBorder({
   size,
   borderColor,
   bgColor,
+<<<<<<< HEAD
+=======
+  isLocked = false,
+>>>>>>> 0f62b321a83728b06b8499cfcf6886f94ee0a2c8
 }: {
   size: number;
   borderColor: string;
   bgColor: string;
+<<<<<<< HEAD
+=======
+  isLocked?: boolean;
+>>>>>>> 0f62b321a83728b06b8499cfcf6886f94ee0a2c8
 }) {
   const r = size / 2;
   const pad = LAYER_STEP * LAYER_COUNT + BORDER_WIDTH;
   const totalSize = size + pad * 2;
   const cx = pad + r;
   const cy = pad + r;
+<<<<<<< HEAD
+=======
+  const layerColors = isLocked ? LAYER_COLORS_LOCKED : LAYER_COLORS;
+>>>>>>> 0f62b321a83728b06b8499cfcf6886f94ee0a2c8
 
   return (
     <svg
@@ -396,7 +437,11 @@ function CirclePixelBorder({
             cx={cx + offset}
             cy={cy + offset}
             r={r}
+<<<<<<< HEAD
             fill={LAYER_COLORS[layerIdx]}
+=======
+            fill={layerColors[layerIdx]}
+>>>>>>> 0f62b321a83728b06b8499cfcf6886f94ee0a2c8
           />
         );
       })}
@@ -428,6 +473,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
   const isActive = data.progress > 0 && data.progress < 100;
   const isCurrent = !!data.isCurrent;
   const kind = data.kind || 'lesson';
+<<<<<<< HEAD
   const isJumping = !!data.isJumping;
   const isMascotJumping = !!data.isMascotJumping;
   const decaySeverity = data.decayHealth != null ? Math.max(0, (100 - data.decayHealth) / 100) : 0;
@@ -438,6 +484,11 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
   const borderColor = isDecaying
     ? `color-mix(in srgb, #7ab8b8 ${100 - decaySeverity * 60}%, #a0642a ${decaySeverity * 60}%)`
     : selected ? '#f7d22e' : isCurrent ? '#2e6666' : isActive ? '#4a9696' : '#7ab8b8';
+=======
+
+  const bgColor = isCurrent ? '#3d7a7a' : isActive ? '#eaf4f4' : isLocked ? 'rgba(255,255,255,0.7)' : '#ffffff';
+  const borderColor = selected ? '#FFBC42' : isCurrent ? '#2e6666' : isActive ? '#4a9696' : '#7ab8b8';
+>>>>>>> 0f62b321a83728b06b8499cfcf6886f94ee0a2c8
 
   // ── QUIZ (circle) ──────────────────────────────────────────────
   if (kind === 'quiz') {
@@ -452,6 +503,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
           justifyContent: 'center',
         }}
       >
+<<<<<<< HEAD
         <CirclePixelBorder size={QUIZ_SIZE} borderColor={borderColor} bgColor={bgColor} />
         {isCurrent && !data.isJumping && <CharacterMascot isJumping={isMascotJumping} />}
         {isDecaying && <CrackOverlay width={QUIZ_SIZE} height={QUIZ_SIZE} severity={decaySeverity} />}
@@ -459,6 +511,14 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
         <span
           style={{ position: 'relative', zIndex: 1 }}
           className={`text-xs leading-tight uppercase tracking-tight text-center px-2 ${isCurrent ? 'text-white' : isLocked ? 'text-slate-400' : 'text-slate-700'}`}
+=======
+        <CirclePixelBorder size={QUIZ_SIZE} borderColor={borderColor} bgColor={bgColor} isLocked={isLocked} />
+        {isCurrent && <Mascot />}
+        <Handle type="target" position={Position.Left} className="opacity-0!" />
+        <span
+          style={{ position: 'relative', zIndex: 1 }}
+          className={`text-xs leading-tight uppercase tracking-normal font-normal text-center px-2 ${isCurrent ? 'text-white' : isLocked ? 'text-slate-500' : 'text-slate-700'}`}
+>>>>>>> 0f62b321a83728b06b8499cfcf6886f94ee0a2c8
         >
           {data.label}
         </span>
@@ -480,12 +540,17 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
           alignItems: 'center',
           justifyContent: 'center',
         }}
+<<<<<<< HEAD
+=======
+        className={isLocked ? 'opacity-80' : ''}
+>>>>>>> 0f62b321a83728b06b8499cfcf6886f94ee0a2c8
       >
         <OctagonPixelBorder
           width={OCT_W}
           height={OCT_H}
           borderColor={borderColor}
           bgColor={bgColor}
+<<<<<<< HEAD
         />
         {isCurrent && !data.isJumping && <CharacterMascot isJumping={isMascotJumping} />}
         {isDecaying && <CrackOverlay width={OCT_W} height={OCT_H} severity={decaySeverity} />}
@@ -493,6 +558,15 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
         <div
           style={{ position: 'relative', zIndex: 1, width: '100%' }}
           className={`flex flex-col gap-2 px-5 py-4 ${isCurrent ? 'text-white' : isActive ? 'text-[#2e6666]' : isLocked ? 'text-slate-400' : 'text-slate-700'}`}
+=======
+          isLocked={isLocked}
+        />
+        {isCurrent && <Mascot />}
+        <Handle type="target" position={Position.Left} className="opacity-0!" />
+        <div
+          style={{ position: 'relative', zIndex: 1, width: '100%' }}
+          className={`flex flex-col gap-2 px-5 py-4 ${isCurrent ? 'text-white' : isActive ? 'text-[#2e6666]' : isLocked ? 'text-slate-500' : 'text-slate-700'}`}
+>>>>>>> 0f62b321a83728b06b8499cfcf6886f94ee0a2c8
         >
           <div className="flex items-center gap-2">
             {isLocked ? (
@@ -504,7 +578,11 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
             ) : (
               <ProjectIcon />
             )}
+<<<<<<< HEAD
             <span className="text-sm leading-tight uppercase tracking-tight">
+=======
+            <span className="text-sm leading-tight uppercase tracking-normal font-normal">
+>>>>>>> 0f62b321a83728b06b8499cfcf6886f94ee0a2c8
               {data.label}
             </span>
           </div>
@@ -519,7 +597,11 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
               </div>
             </div>
           )}
+<<<<<<< HEAD
           {isLocked && <span className="text-[10px] uppercase tracking-widest font-normal opacity-60">Locked</span>}
+=======
+          {isLocked && <span className="text-[10px] uppercase tracking-widest font-normal opacity-80">Locked</span>}
+>>>>>>> 0f62b321a83728b06b8499cfcf6886f94ee0a2c8
         </div>
         <Handle type="source" position={Position.Right} className="opacity-0!" />
       </div>
@@ -537,12 +619,20 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
         backgroundColor: bgColor,
       }}
       className={`shadow-sm transition-all flex flex-col items-center justify-center relative px-5 py-4 w-56 min-h-25
+<<<<<<< HEAD
         ${isCurrent ? 'text-white' : isActive ? 'text-[#2e6666]' : isLocked ? 'bg-white/70 text-slate-400' : 'text-slate-700'}
         ${selected ? 'shadow-lg' : ''}`}
     >
       <Handle type="target" position={Position.Left} className="opacity-0!" />
       {isCurrent && !data.isJumping && <CharacterMascot isJumping={isMascotJumping} />}
       {isDecaying && <CrackOverlay width={224} height={100} severity={decaySeverity} />}
+=======
+        ${isCurrent ? 'bg-[#3d7a7a] text-white' : isActive ? 'bg-[#eaf4f4] text-[#2e6666]' : isLocked ? 'bg-white text-slate-500 opacity-80' : 'bg-white text-slate-700'}
+        ${selected ? 'shadow-lg' : ''}`}
+    >
+      <Handle type="target" position={Position.Left} className="opacity-0!" />
+      {isCurrent && <Mascot />}
+>>>>>>> 0f62b321a83728b06b8499cfcf6886f94ee0a2c8
       <div className="flex flex-col gap-2 w-full">
         <div className="flex items-center gap-2">
           {isLocked ? (
@@ -554,7 +644,11 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
           ) : (
             <ProgressIcon />
           )}
+<<<<<<< HEAD
           <span className="text-sm leading-tight uppercase tracking-tight">
+=======
+          <span className="text-sm leading-tight uppercase tracking-normal font-normal">
+>>>>>>> 0f62b321a83728b06b8499cfcf6886f94ee0a2c8
             {data.label}
           </span>
         </div>
@@ -569,7 +663,11 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
             </div>
           </div>
         )}
+<<<<<<< HEAD
         {isLocked && <span className="text-[10px] uppercase tracking-widest font-normal opacity-60">Locked</span>}
+=======
+        {isLocked && <span className="text-[10px] uppercase tracking-widest font-normal opacity-80">Locked</span>}
+>>>>>>> 0f62b321a83728b06b8499cfcf6886f94ee0a2c8
       </div>
       <Handle type="source" position={Position.Right} className="opacity-0!" />
     </div>
