@@ -369,7 +369,7 @@ function DashboardCharacter() {
       if (el) {
         const r = el.getBoundingClientRect();
         const size = 80;
-        setPos({ x: r.left - 14 + r.width / 2 - size / 2, y: r.top - 67, size });
+        setPos({ x: r.left - 0 + r.width / 2 - size / 2, y: r.top - 50, size });
       }
       setCharPhase('falling-in');
       t2 = setTimeout(() => setCharPhase('visible'), 650);
@@ -380,7 +380,7 @@ function DashboardCharacter() {
   if (charPhase === 'hidden' || charState.phase === 'departing') return null;
   if (!pos) return null;
 
-  const CHAR_SIZE = 100;
+  const CHAR_SIZE = 70;
 
   return (
     <div style={{ position: 'fixed', inset: 0, zIndex: 9998, pointerEvents: 'none', overflow: 'hidden' }}>

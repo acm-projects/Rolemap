@@ -6,7 +6,7 @@
       "name": "Alex Morgan",
       "image_url": null,
       "github_username": "OhamjDung",
-      "xp_total": 2410,
+      "xp_total": 2460,
       "current_streak": 2,
       "longest_streak": 31,
       "onboarding_completed": true,
@@ -19,7 +19,7 @@
         "clothes": "suit.png",
         "pants": "pants.png",
         "shoes": "shoes.png",
-        "hair": "wavy.png",
+        "hair": "buzzcut.png",
         "accessories": "",
         "color_variants": {}
       }
@@ -339,7 +339,7 @@
       "roadmap_id": "rm-generated",
       "label": "Programming Fundamentals",
       "kind": "lesson",
-      "progress": 0,
+      "progress": 25,
       "locked": false,
       "position": {
         "x": 300,
@@ -7840,8 +7840,8 @@
     {
       "id": "ug-001",
       "user_id": "u-001",
-      "xp_total": 2410,
-      "tasks_completed": 24,
+      "xp_total": 2460,
+      "tasks_completed": 32,
       "leaderboard_rank": 2,
       "current_streak": 2,
       "longest_streak": 31,
@@ -11019,7 +11019,7 @@
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic": "Understand basic programming constructs like loops and conditionals.",
-      "status": "not_started"
+      "status": "completed"
     },
     {
       "task_id": "subtopic__cp-gen-000__1",
@@ -22184,28 +22184,36 @@
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic_idx": 0,
-      "status": "in_progress"
+      "status": "completed"
     },
     {
       "task_id": "resource__cp-gen-000__0__1",
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic_idx": 0,
-      "status": "in_progress"
+      "status": "completed"
     },
     {
       "task_id": "resource__cp-gen-000__0__2",
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic_idx": 0,
-      "status": "in_progress"
+      "status": "completed"
     },
     {
       "task_id": "resource__cp-gen-000__0__3",
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic_idx": 0,
-      "status": "in_progress"
+      "status": "completed"
+    },
+    {
+      "task_id": "resource__cp-gen-000__0__4",
+      "user_id": "u-001",
+      "checkpoint_id": "cp-gen-000",
+      "subtopic_idx": 0,
+      "status": "completed"
     }
-  ]
+  ],
+  "daily_done": false
 }
