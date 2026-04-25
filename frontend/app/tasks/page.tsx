@@ -84,6 +84,10 @@ function getDiePath(cat: string, file: string): string | null {
 // Tune these to adjust sleeping character position on the card
 const CHAR_TOP_OFFSET = -18;   // px from card top (increase = lower)
 const CHAR_RIGHT_OFFSET = 235; // px from card right edge (increase = further left)
+const FLIP_THRESHOLD = 180;        // if character top (px from screen top) is above this, flip horizontally
+const FLIP_BOTTOM_THRESHOLD = 480; // if character top (px from screen top) is below this, flip horizontally
+const FLIP_TOP_OFFSET = 0;     // additional px added to top when flipped (positive = lower)
+const FLIP_LEFT_OFFSET = 100;    // additional px added to left when flipped (positive = further right)
 
 function DieCharacter({ taskId, falling, fallDelta }: {
   taskId: string | null;
@@ -164,15 +168,17 @@ function DieCharacter({ taskId, falling, fallDelta }: {
     }
   }, [falling]);
 
-  // Keep invisible anchor in sync with card via RAF (for NavBar getBoundingClientRect on data-die-char)
+  // Keep sleeping character in sync with card via RAF; flip horizontally when outside scroll bounds
   useEffect(() => {
     if (phase !== 'sleeping' || !taskId) return;
     let rafId: number;
     const loop = () => {
       const pos = getCardFixed(taskId);
       if (pos && anchorRef.current) {
-        anchorRef.current.style.top = pos.top + 'px';
-        anchorRef.current.style.left = pos.left + 'px';
+        const flipped = pos.top < FLIP_THRESHOLD || pos.top > FLIP_BOTTOM_THRESHOLD;
+        anchorRef.current.style.top = (pos.top + (flipped ? FLIP_TOP_OFFSET : 0)) + 'px';
+        anchorRef.current.style.left = (pos.left + (flipped ? FLIP_LEFT_OFFSET : 0)) + 'px';
+        anchorRef.current.style.transform = flipped ? 'rotate(-90deg) scaleY(-1)' : 'rotate(-90deg)';
       }
       rafId = requestAnimationFrame(loop);
     };
@@ -247,7 +253,7 @@ function DieCharacter({ taskId, falling, fallDelta }: {
           width: S,
           height: S,
           imageRendering: 'pixelated',
-          zIndex: 9990,
+          zIndex: phase === 'sleeping' ? 9990 : 10000,
           pointerEvents: 'none',
           transform: R,
           transformOrigin: 'center center',
@@ -379,7 +385,7 @@ export default function DailyPage() {
             {checkpointLabel && (
               <div
                 className="-mx-5 -mt-5 mb-4"
-                style={{ borderBottomWidth: 4, borderBottomStyle: 'solid', borderBottomColor: '#2d5050', backgroundColor: '#4e8888' }}
+                style={{ borderBottomWidth: 4, borderBottomStyle: 'solid', borderBottomColor: '#2d5050', backgroundColor: '#4e8888', position: 'relative', zIndex: 9995 }}
               >
                 <div className="flex items-center gap-3 px-4 pt-4 pb-2">
                   <div className="flex-shrink-0 w-8 h-8 bg-[#3a6666] flex items-center justify-center" style={{ borderWidth: 2, borderStyle: 'solid', borderTopColor: '#5a9999', borderLeftColor: '#5a9999', borderRightColor: '#2d5050', borderBottomColor: '#2d5050' }}>
@@ -476,7 +482,7 @@ export default function DailyPage() {
               })}
             </div>
 
-            <div className="pt-4 mt-4 border-t-4 border-[#d4e8e8]">
+            <div className="pt-4 mt-4 border-t-4 border-[#d4e8e8]" style={{ position: 'relative', zIndex: 9995, backgroundColor: '#ffffff' }}>
               <PixelProgress value={completionPct} showLabel={true} />
             </div>
           </PixelPanel>
