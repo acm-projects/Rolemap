@@ -16,20 +16,28 @@ export function GlobalCharacter() {
   const { phase, startX, startY, floorY, charSize, animKey } = charState;
   const pathname = usePathname();
   const [equipped, setEquipped] = useState(DEFAULT_EQUIPPED);
+  const [colorVariants, setColorVariants] = useState<Record<string, number>>({});
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    try {
-      const eq = localStorage.getItem('character_saved');
-      if (eq) setEquipped(prev => ({ ...prev, ...JSON.parse(eq) }));
-    } catch {}
+    const load = () => {
+      try {
+        const eq = localStorage.getItem('character_saved');
+        const cv = localStorage.getItem('character_saved_variants');
+        if (eq) setEquipped(prev => ({ ...prev, ...JSON.parse(eq) }));
+        if (cv) setColorVariants(JSON.parse(cv));
+      } catch {}
+    };
+    load();
+    window.addEventListener('character-saved', load);
+    return () => window.removeEventListener('character-saved', load);
   }, []);
 
   if (!mounted || phase === 'idle') return null;
   if (HIDDEN_PATHS.some(p => pathname === p || pathname.startsWith(p + '/'))) return null;
-  // On tasks/shop page, local character handles arrival/walk — only show during departure
-  if ((pathname === '/tasks' || pathname === '/shop') && phase !== 'departing') return null;
+  // On tasks/shop/dashboard page, local character handles arrival/walk — only show during departure
+  if ((pathname === '/tasks' || pathname === '/shop' || pathname === '/dashboard') && phase !== 'departing') return null;
 
   // showLegs height formula matches CharacterPreview: Math.round(size * 32 / 28)
   const charHeight = Math.round(charSize * 32 / 28);
@@ -126,6 +134,7 @@ export function GlobalCharacter() {
             shoes={equipped.shoes}
             hair={equipped.hair}
             accessory={equipped.accessories}
+            variants={colorVariants}
           />
         ) : (
           <CharacterPreview
@@ -138,6 +147,7 @@ export function GlobalCharacter() {
             shoes={equipped.shoes}
             hair={equipped.hair}
             accessory={equipped.accessories}
+            variants={colorVariants}
           />
         )}
       </div>

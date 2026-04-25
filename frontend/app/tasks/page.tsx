@@ -59,7 +59,7 @@ function PixelPanel({ children, className }: { children: React.ReactNode; classN
 
 // ── Sleeping character on task card ──────────────────────────────────────────
 
-const DIE_SIZE = 44;
+const DIE_SIZE = 100;
 
 const DEFAULT_EQUIPPED_DIE = {
   skin: 'char1.png', eyes: 'eyes.png', clothes: 'suit.png',
@@ -82,8 +82,8 @@ function getDiePath(cat: string, file: string): string | null {
 }
 
 // Tune these to adjust sleeping character position on the card
-const CHAR_TOP_OFFSET = -40;   // px from card top (increase = lower)
-const CHAR_RIGHT_OFFSET = 4; // px from card right edge (increase = further left)
+const CHAR_TOP_OFFSET = -18;   // px from card top (increase = lower)
+const CHAR_RIGHT_OFFSET = 235; // px from card right edge (increase = further left)
 
 function DieCharacter({ taskId, falling, fallDelta }: {
   taskId: string | null;
@@ -93,20 +93,25 @@ function DieCharacter({ taskId, falling, fallDelta }: {
   const { charState } = useCharacter();
   const [equipped, setEquipped] = useState(DEFAULT_EQUIPPED_DIE);
   const [colorVariants, setColorVariants] = useState<Record<string, number>>({});
-  // 'hidden' → 'falling-in' → 'sleeping' ; on complete: 'sleeping' → 'falling-to-next' → 'sleeping'
   const [phase, setPhase] = useState<'hidden' | 'falling-in' | 'sleeping' | 'falling-to-next'>('hidden');
   const [fixedPos, setFixedPos] = useState<{ top: number; left: number } | null>(null);
   const [animKey, setAnimKey] = useState(0);
   const prevTaskId = useRef<string | null>(null);
   const mountTime = useRef(Date.now());
+  const anchorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    try {
-      const eq = localStorage.getItem('character_saved');
-      const cv = localStorage.getItem('character_saved_variants');
-      if (eq) setEquipped(p => ({ ...p, ...JSON.parse(eq) }));
-      if (cv) setColorVariants(JSON.parse(cv));
-    } catch {}
+    const load = () => {
+      try {
+        const eq = localStorage.getItem('character_saved');
+        const cv = localStorage.getItem('character_saved_variants');
+        if (eq) setEquipped(p => ({ ...p, ...JSON.parse(eq) }));
+        if (cv) setColorVariants(JSON.parse(cv));
+      } catch {}
+    };
+    load();
+    window.addEventListener('character-saved', load);
+    return () => window.removeEventListener('character-saved', load);
   }, []);
 
   const getCardFixed = (id: string) => {
@@ -131,7 +136,6 @@ function DieCharacter({ taskId, falling, fallDelta }: {
     prevTaskId.current = taskId;
 
     if (isFirst) {
-      // Delay start to let GlobalCharacter departure finish (~450ms after mount)
       const elapsed = Date.now() - mountTime.current;
       const delay = Math.max(0, 450 - elapsed);
       const t = setTimeout(() => {
@@ -144,80 +148,98 @@ function DieCharacter({ taskId, falling, fallDelta }: {
       }, delay);
       return () => clearTimeout(t);
     } else {
-      // Arrived at new card after falling-to-next
       const pos = getCardFixed(taskId);
       if (pos) setFixedPos(pos);
       setPhase('sleeping');
     }
   }, [taskId]);
 
-  // falling prop triggers fall-to-next
   useEffect(() => {
-    if (falling && phase === 'sleeping') {
+    if (falling && phase === 'sleeping' && taskId) {
+      // Capture current viewport position before switching to fixed animation
+      const pos = getCardFixed(taskId);
+      if (pos) setFixedPos(pos);
       setAnimKey(k => k + 1);
       setPhase('falling-to-next');
     }
   }, [falling]);
 
-  // Keep fixed position in sync with card (handles scroll + resize)
+  // Keep invisible anchor in sync with card via RAF (for NavBar getBoundingClientRect on data-die-char)
   useEffect(() => {
     if (phase !== 'sleeping' || !taskId) return;
-    const update = () => {
+    let rafId: number;
+    const loop = () => {
       const pos = getCardFixed(taskId);
-      if (pos) setFixedPos(pos);
+      if (pos && anchorRef.current) {
+        anchorRef.current.style.top = pos.top + 'px';
+        anchorRef.current.style.left = pos.left + 'px';
+      }
+      rafId = requestAnimationFrame(loop);
     };
-    document.getElementById('task-scroll')?.addEventListener('scroll', update);
-    window.addEventListener('resize', update);
-    return () => {
-      document.getElementById('task-scroll')?.removeEventListener('scroll', update);
-      window.removeEventListener('resize', update);
-    };
+    rafId = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(rafId);
   }, [phase, taskId]);
 
-  // Hide during tab departure so GlobalCharacter's jump-away plays cleanly
   if (charState.phase === 'departing') return null;
-  if (phase === 'hidden' || !fixedPos) return null;
+  if (phase === 'hidden') return null;
 
   const S = DIE_SIZE;
-  const layers: [string, string, string][] = [
-    [equipped.skin, 'skin', equipped.skin],
-    [equipped.pants, 'pants', equipped.pants],
-    [equipped.shoes, 'shoes', equipped.shoes],
-    [equipped.clothes, 'clothes', equipped.clothes],
-    [equipped.eyes, 'eyes', equipped.eyes],
-    [equipped.hair, 'hair', equipped.hair],
-    [equipped.accessories, 'accessories', equipped.accessories],
+  const layers: [string, string][] = [
+    [equipped.skin, 'skin'],
+    [equipped.pants, 'pants'],
+    [equipped.shoes, 'shoes'],
+    [equipped.clothes, 'clothes'],
+    [equipped.eyes, 'eyes'],
+    [equipped.hair, 'hair'],
+    [equipped.accessories, 'accessories'],
   ];
   const layerData = layers
     .filter(([f]) => f)
     .map(([f, cat]) => { const path = getDiePath(cat, f); return path ? { path, v: colorVariants[f] ?? 0, cat } : null; })
     .filter(Boolean) as { path: string; v: number; cat: string }[];
 
-  // Only animate non-eyes layers; eyes are locked to frame 1 (closed)
   const animatedV = [...new Set(layerData.filter(d => d.cat !== 'eyes' && d.cat !== 'skin').map(d => d.v))];
   const sleepKf = (v: number) => `ds${v}s${S}`;
   const makeSleepKf = (v: number) =>
     `@keyframes ${sleepKf(v)}{0%{background-position:${-v*2*S}px 0px;}50%{background-position:${-(v*2+1)*S}px 0px;}100%{background-position:${-v*2*S}px 0px;}}`;
 
+  const R = 'rotate(-90deg)';
   const k = animKey;
   let containerAnim: string | undefined;
   let kfStr = '';
 
-  if (phase === 'falling-in') {
+  if (phase === 'falling-in' && fixedPos) {
     const up = fixedPos.top + S;
-    kfStr = `@keyframes dfi${k}{0%{transform:translateY(${-up}px);}72%{transform:translateY(10px);}87%{transform:translateY(-5px);}100%{transform:translateY(0);}}`;
+    kfStr = `@keyframes dfi${k}{0%{transform:${R} translateX(${up}px);}72%{transform:${R} translateX(-10px);}87%{transform:${R} translateX(5px);}100%{transform:${R} translateX(0);}}`;
     containerAnim = `dfi${k} 0.65s linear forwards`;
-  } else if (phase === 'falling-to-next') {
+  } else if (phase === 'falling-to-next' && fixedPos) {
     const d = fallDelta;
-    kfStr = `@keyframes dfn${k}{0%{transform:translateY(0);}25%{transform:translateY(${Math.round(d*0.1)}px);}55%{transform:translateY(${Math.round(d*0.4)}px);}80%{transform:translateY(${d+10}px);}90%{transform:translateY(${d-4}px);}100%{transform:translateY(${d}px);}}`;
+    kfStr = `@keyframes dfn${k}{0%{transform:${R} translateX(0);}25%{transform:${R} translateX(${-Math.round(d*0.1)}px);}55%{transform:${R} translateX(${-Math.round(d*0.4)}px);}80%{transform:${R} translateX(${-(d+10)}px);}90%{transform:${R} translateX(${-(d-4)}px);}100%{transform:${R} translateX(${-d}px);}}`;
     containerAnim = `dfn${k} 0.5s linear forwards`;
   }
 
+  const layerDivs = layerData.map(({ path, v }, i) => (
+    <div key={i} style={{
+      position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+      backgroundImage: `url(/characters/${path})`,
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: `auto ${S}px`,
+      backgroundPosition: `${-v * 2 * S}px 0px`,
+      imageRendering: 'pixelated',
+    }} />
+  ));
+
+  const styleEl = <style>{animatedV.map(makeSleepKf).join('') + kfStr}</style>;
+
+  if (!fixedPos) return null;
+
+  const isSleeping = phase === 'sleeping';
   return (
     <>
-      <style>{animatedV.map(makeSleepKf).join('') + kfStr}</style>
+      {styleEl}
       <div
-        {...(phase === 'sleeping' ? { 'data-die-char': '' } : {})}
+        ref={isSleeping ? anchorRef : undefined}
+        {...(isSleeping ? { 'data-die-char': '' } : {})}
         style={{
           position: 'fixed',
           top: fixedPos.top,
@@ -227,24 +249,12 @@ function DieCharacter({ taskId, falling, fallDelta }: {
           imageRendering: 'pixelated',
           zIndex: 9990,
           pointerEvents: 'none',
+          transform: R,
+          transformOrigin: 'center center',
           ...(containerAnim ? { animation: containerAnim } : {}),
         }}
       >
-        {layerData.map(({ path, v, cat }, i) => {
-          // skin + eyes locked to frame 0 (keeps face/eyes static closed)
-          const isStatic = cat === 'eyes' || cat === 'skin';
-          return (
-            <div key={i} style={{
-              position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-              backgroundImage: `url(/characters/${path})`,
-              backgroundRepeat: 'no-repeat',
-              backgroundSize: `auto ${S}px`,
-              backgroundPosition: isStatic ? `${-(v * 2 + 1) * S}px 0px` : `${-v * 2 * S}px 0px`,
-              animation: isStatic ? 'none' : `${sleepKf(v)} 1.8s steps(1) infinite`,
-              imageRendering: 'pixelated',
-            }} />
-          );
-        })}
+        {layerDivs}
       </div>
     </>
   );
@@ -327,6 +337,14 @@ export default function DailyPage() {
     }
   }
 
+  function handleMarkIncomplete() {
+    if (!activeTask || !completed.includes(activeTask)) return;
+    setCompleted(prev => prev.filter(id => id !== activeTask));
+    api.updateTask(activeTask, 'in_progress').catch(console.error);
+    // Move character back to this task if it has no current target
+    if (!charTaskId) setCharTaskId(activeTask);
+  }
+
   function handleMoreTasks() {
     api.advanceTasks().then(() => loadTasks()).catch(console.error);
   }
@@ -373,7 +391,7 @@ export default function DailyPage() {
             )}
 
             {/* Resource cards */}
-            <div id="task-scroll" className="flex flex-col gap-2 flex-1 overflow-y-auto">
+            <div id="task-scroll" className="flex flex-col gap-2 flex-1 overflow-y-auto" style={{ overscrollBehavior: 'none' }}>
 
               {/* Decay review tasks */}
               {decayTasks.map((entry) => {
@@ -599,16 +617,21 @@ export default function DailyPage() {
                 </div>
 
                 {/* Mark complete */}
-                <div className="mt-8">
+                <div className="mt-8 flex items-center gap-4">
                   {!isDone ? (
                     <PixelButton variant="primary" size="md" onClick={handleMarkComplete}>
                       <span className="text-sm">Mark Complete</span>
                     </PixelButton>
                   ) : (
-                    <div className="flex items-center gap-2 text-[#10B981]">
-                      <CheckCircle size={14} />
-                      <span className="text-sm uppercase tracking-widest">Complete</span>
-                    </div>
+                    <>
+                      <div className="flex items-center gap-2 text-[#10B981]">
+                        <CheckCircle size={14} />
+                        <span className="text-sm uppercase tracking-widest">Complete</span>
+                      </div>
+                      <PixelButton variant="ghost" size="sm" onClick={handleMarkIncomplete}>
+                        <span className="text-xs text-[#4e8888]">Undo</span>
+                      </PixelButton>
+                    </>
                   )}
                 </div>
               </div>

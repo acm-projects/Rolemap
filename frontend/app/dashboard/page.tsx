@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Navbar } from '../components/NavBar';
 import fire from '../../icons/fire.png';
 import { useRouter } from 'next/navigation';
+import { CharacterPreview } from '../components/CharacterPreview';
+import { useCharacter } from '../context/CharacterContext';
 import { api, type DashboardResponse, type DashboardRoadmap, type Checkpoint, type RoadmapEdge } from '@/lib/api';
 import {
   ReactFlow,
@@ -333,6 +335,94 @@ function RoadmapMinimap({
   );
 }
 
+// ─── Dashboard leaderboard character ─────────────────────────────────────────
+
+const DEFAULT_EQUIPPED_DASH = { skin: 'char1.png', eyes: 'eyes.png', clothes: 'suit.png', pants: 'pants.png', shoes: 'shoes.png', hair: 'buzzcut.png', accessories: '' };
+
+function DashboardCharacter() {
+  const { charState } = useCharacter();
+  const [equipped, setEquipped] = useState(DEFAULT_EQUIPPED_DASH);
+  const [colorVariants, setColorVariants] = useState<Record<string, number>>({});
+  const [charPhase, setCharPhase] = useState<'hidden' | 'falling-in' | 'visible'>('hidden');
+  const [pos, setPos] = useState<{ x: number; y: number; size: number } | null>(null);
+  const mountTime = useRef(Date.now());
+
+  useEffect(() => {
+    const loadEquipped = () => {
+      try {
+        const eq = localStorage.getItem('character_saved');
+        const cv = localStorage.getItem('character_saved_variants');
+        if (eq) setEquipped(prev => ({ ...prev, ...JSON.parse(eq) }));
+        if (cv) setColorVariants(JSON.parse(cv));
+      } catch {}
+    };
+    loadEquipped();
+    window.addEventListener('character-saved', loadEquipped);
+    return () => window.removeEventListener('character-saved', loadEquipped);
+  }, []);
+
+  useEffect(() => {
+    const delay = Math.max(50, 450 - (Date.now() - mountTime.current));
+    let t2: ReturnType<typeof setTimeout>;
+    const t1 = setTimeout(() => {
+      const el = document.querySelector('[data-rank-you]');
+      if (el) {
+        const r = el.getBoundingClientRect();
+        const size = 80;
+        setPos({ x: r.left - 14 + r.width / 2 - size / 2, y: r.top - 67, size });
+      }
+      setCharPhase('falling-in');
+      t2 = setTimeout(() => setCharPhase('visible'), 650);
+    }, delay);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, []);
+
+  if (charPhase === 'hidden' || charState.phase === 'departing') return null;
+  if (!pos) return null;
+
+  const CHAR_SIZE = 100;
+
+  return (
+    <div style={{ position: 'fixed', inset: 0, zIndex: 9998, pointerEvents: 'none', overflow: 'hidden' }}>
+      {charPhase === 'falling-in' && (
+        <style>{`
+          @keyframes dashCharFall {
+            0%   { transform: translateY(-700px); }
+            72%  { transform: translateY(10px); }
+            87%  { transform: translateY(-4px); }
+            100% { transform: translateY(0px); }
+          }
+        `}</style>
+      )}
+      <div
+        data-dashboard-char=""
+        style={{
+          position: 'absolute',
+          left: pos.x,
+          top: pos.y,
+          width: CHAR_SIZE,
+          height: CHAR_SIZE,
+          imageRendering: 'pixelated',
+          animation: charPhase === 'falling-in' ? 'dashCharFall 0.65s linear forwards' : 'none',
+        }}
+      >
+        <CharacterPreview
+          size={CHAR_SIZE}
+          walk
+          skin={equipped.skin}
+          eyes={equipped.eyes}
+          clothes={equipped.clothes}
+          pants={equipped.pants}
+          shoes={equipped.shoes}
+          hair={equipped.hair}
+          accessory={equipped.accessories}
+          variants={colorVariants}
+        />
+      </div>
+    </div>
+  );
+}
+
 // ─── Dashboard ────────────────────────────────────────────────────────────────
 
 export default function Dashboard() {
@@ -380,6 +470,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen w-full bg-[#f0f8f8] relative">
       <Navbar />
+      <DashboardCharacter />
 
       <div className="pt-25 px-8 pb-5 ml-8 mr-7">
         <div className="max-w-7xl mx-auto">
@@ -475,8 +566,11 @@ export default function Dashboard() {
                       ${user.is_you
                         ? 'bg-[#d4eaea] border-t-[#4a7c7c] border-l-[#4a7c7c] border-r-[#2d5050] border-b-[#2d5050]'
                         : 'bg-white border-t-[#d4e8e8] border-l-[#d4e8e8] border-r-[#7ab3b3] border-b-[#7ab3b3]'}`}>
-                    <span className={`text-base font-normal w-6 text-center shrink-0 ${user.is_you ? 'text-[#4a7c7c]' : 'text-slate-500'}`}>
-                      {user.rank}
+                    <span
+                      className={`text-base font-normal w-6 text-center shrink-0 ${user.is_you ? 'text-[#4a7c7c]' : 'text-slate-500'}`}
+                      {...(user.is_you ? { 'data-rank-you': '' } : {})}
+                    >
+                      {user.is_you ? '' : user.rank}
                     </span>
                     <div className="flex-1 min-w-0">
                       <p className="text-base font-normal text-slate-700">{user.is_you ? 'You' : user.name}</p>

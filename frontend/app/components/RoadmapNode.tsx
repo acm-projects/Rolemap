@@ -139,6 +139,49 @@ interface RoadmapNodeData {
   isCurrent?: boolean;
   isJumping?: boolean;
   isMascotJumping?: boolean;
+  decayHealth?: number; // 0–100; <100 = decaying, lower = worse
+}
+
+// Pixel crack overlay — severity 0 (mild) to 1 (severe)
+function CrackOverlay({ width, height, severity }: { width: number; height: number; severity: number }) {
+  const s = Math.max(0, Math.min(1, severity));
+  // Pre-baked crack paths: light cracks at low severity, more/deeper at high
+  const cracks = [
+    // always shown (even mild decay)
+    `M${width*0.25},${height*0.1} L${width*0.18},${height*0.35} L${width*0.28},${height*0.55}`,
+    `M${width*0.7},${height*0.15} L${width*0.78},${height*0.4}`,
+    // shown at moderate+ decay
+    ...(s > 0.35 ? [
+      `M${width*0.45},${height*0.0} L${width*0.38},${height*0.3} L${width*0.48},${height*0.6} L${width*0.42},${height*0.9}`,
+      `M${width*0.8},${height*0.5} L${width*0.68},${height*0.75} L${width*0.72},${height*0.95}`,
+    ] : []),
+    // shown at severe decay
+    ...(s > 0.65 ? [
+      `M${width*0.1},${height*0.6} L${width*0.22},${height*0.8} L${width*0.15},${height*1.0}`,
+      `M${width*0.55},${height*0.2} L${width*0.65},${height*0.45} L${width*0.58},${height*0.65} L${width*0.7},${height*0.85}`,
+    ] : []),
+  ];
+
+  const crackColor = s > 0.65 ? 'rgba(90,40,10,0.7)' : s > 0.35 ? 'rgba(80,50,20,0.55)' : 'rgba(100,70,30,0.4)';
+
+  return (
+    <svg
+      width={width} height={height}
+      style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none', zIndex: 5, imageRendering: 'pixelated' }}
+    >
+      {/* dark outline for depth */}
+      {cracks.map((d, i) => <path key={`o${i}`} d={d} fill="none" stroke="rgba(0,0,0,0.35)" strokeWidth={3} strokeLinecap="square" />)}
+      {/* main crack color */}
+      {cracks.map((d, i) => <path key={`c${i}`} d={d} fill="none" stroke={crackColor} strokeWidth={1.5} strokeLinecap="square" />)}
+      {/* crumble dots at severe */}
+      {s > 0.5 && [
+        [width*0.2, height*0.55], [width*0.75, height*0.42], [width*0.45, height*0.88],
+        [width*0.6, height*0.7], [width*0.12, height*0.8],
+      ].map(([cx, cy], i) => (
+        <rect key={`d${i}`} x={cx} y={cy} width={3} height={3} fill={crackColor} />
+      ))}
+    </svg>
+  );
 }
 const BAR_COLOR = '#3d7a7a';
 
@@ -387,8 +430,14 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
   const kind = data.kind || 'lesson';
   const isJumping = !!data.isJumping;
   const isMascotJumping = !!data.isMascotJumping;
-  const bgColor = isCurrent ? '#3d7a7a' : isActive ? '#eaf4f4' : isLocked ? 'rgba(255,255,255,0.7)' : '#ffffff';
-  const borderColor = selected ? '#f7d22e' : isCurrent ? '#2e6666' : isActive ? '#4a9696' : '#7ab8b8';
+  const decaySeverity = data.decayHealth != null ? Math.max(0, (100 - data.decayHealth) / 100) : 0;
+  const isDecaying = decaySeverity > 0;
+  const bgColor = isDecaying
+    ? `color-mix(in srgb, ${isCurrent ? '#3d7a7a' : isActive ? '#eaf4f4' : '#ffffff'} ${100 - decaySeverity * 30}%, #c8a060 ${decaySeverity * 30}%)`
+    : isCurrent ? '#3d7a7a' : isActive ? '#eaf4f4' : isLocked ? 'rgba(255,255,255,0.7)' : '#ffffff';
+  const borderColor = isDecaying
+    ? `color-mix(in srgb, #7ab8b8 ${100 - decaySeverity * 60}%, #a0642a ${decaySeverity * 60}%)`
+    : selected ? '#f7d22e' : isCurrent ? '#2e6666' : isActive ? '#4a9696' : '#7ab8b8';
 
   // ── QUIZ (circle) ──────────────────────────────────────────────
   if (kind === 'quiz') {
@@ -405,6 +454,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
       >
         <CirclePixelBorder size={QUIZ_SIZE} borderColor={borderColor} bgColor={bgColor} />
         {isCurrent && !data.isJumping && <CharacterMascot isJumping={isMascotJumping} />}
+        {isDecaying && <CrackOverlay width={QUIZ_SIZE} height={QUIZ_SIZE} severity={decaySeverity} />}
         <Handle type="target" position={Position.Left} className="opacity-0!" />
         <span
           style={{ position: 'relative', zIndex: 1 }}
@@ -438,6 +488,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
           bgColor={bgColor}
         />
         {isCurrent && !data.isJumping && <CharacterMascot isJumping={isMascotJumping} />}
+        {isDecaying && <CrackOverlay width={OCT_W} height={OCT_H} severity={decaySeverity} />}
         <Handle type="target" position={Position.Left} className="opacity-0!" />
         <div
           style={{ position: 'relative', zIndex: 1, width: '100%' }}
@@ -491,6 +542,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
     >
       <Handle type="target" position={Position.Left} className="opacity-0!" />
       {isCurrent && !data.isJumping && <CharacterMascot isJumping={isMascotJumping} />}
+      {isDecaying && <CrackOverlay width={224} height={100} severity={decaySeverity} />}
       <div className="flex flex-col gap-2 w-full">
         <div className="flex items-center gap-2">
           {isLocked ? (

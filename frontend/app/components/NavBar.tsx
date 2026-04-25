@@ -227,6 +227,13 @@ export function Navbar() {
                       triggerTransition(href, r.left + r.width / 2, r.bottom, r.width);
                       return;
                     }
+                    // Dashboard leaderboard character
+                    const dashChar = document.querySelector('[data-dashboard-char]');
+                    if (dashChar) {
+                      const r = dashChar.getBoundingClientRect();
+                      triggerTransition(href, r.left + r.width / 2, r.bottom, r.width);
+                      return;
+                    }
                     // Map page: use on-node mascot position (includes ReactFlow zoom)
                     const mascot = document.querySelector('[data-char-mascot]');
                     if (mascot) {
