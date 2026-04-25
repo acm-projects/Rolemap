@@ -306,7 +306,6 @@ function PixelCard({
 
 // ─── Minimap ──────────────────────────────────────────────────────────────────
 
-<<<<<<< HEAD
 function RoadmapMinimap({
   nodes,
   edges,
@@ -424,8 +423,6 @@ function DashboardCharacter() {
   );
 }
 
-=======
->>>>>>> 0f62b321a83728b06b8499cfcf6886f94ee0a2c8
 // ─── Dashboard ────────────────────────────────────────────────────────────────
 
 export default function Dashboard() {

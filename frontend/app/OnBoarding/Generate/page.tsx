@@ -1,9 +1,5 @@
 "use client";
-<<<<<<< HEAD
 import React, { useState, useEffect, useRef } from "react";
-=======
-import React, { useState, useEffect } from "react";
->>>>>>> 0f62b321a83728b06b8499cfcf6886f94ee0a2c8
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { api } from "@/lib/api";
@@ -213,36 +209,9 @@ export default function GenerateRoadmap() {
             {generating && (
               <div className="w-full max-w-xs">
                 <PixelProgress value={((stepIdx + 1) / PROGRESS_STEPS.length) * 100} showLabel={false} />
-<<<<<<< HEAD
                 <p className="text-xs text-[#4e8888] font-jersey text-center mt-2">{PROGRESS_STEPS[stepIdx]}</p>
               </div>
             )}
-=======
-              </div>
-            )}
-
-            <span className="text-xl text-[#2d5050] font-jersey text-center">
-              {done ? (error ? "Partial success" : "Roadmap Generated!") : generating ? "Generating..." : "Ready to generate?"}
-            </span>
-
-            <span className="text-md text-[#4e8888] font-jersey text-center">
-              {done
-                ? error
-                  ? error
-                  : result
-                    ? `Generated ${result.steps_count} learning steps for ${result.role}.`
-                    : "Your personalized path awaits."
-                : generating
-                  ? PROGRESS_STEPS[stepIdx]
-                  : "Based on your profile, we will map out everything you need to land your dream role."}
-            </span>
-
-            {!done && (
-              <PixelButton variant="primary" onClick={handleGenerate} disabled={generating} size="md">
-                <span className="font-jersey">{generating ? "Generating..." : "Generate Roadmap"}</span>
-              </PixelButton>
-            )}
->>>>>>> 0f62b321a83728b06b8499cfcf6886f94ee0a2c8
           </div>
         </div>
 

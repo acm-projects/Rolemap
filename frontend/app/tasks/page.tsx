@@ -1,9 +1,5 @@
 'use client';
-<<<<<<< HEAD
 import { useState, useEffect, useRef } from "react";
-=======
-import { useState, useEffect } from "react";
->>>>>>> 0f62b321a83728b06b8499cfcf6886f94ee0a2c8
 import { Navbar } from "../components/NavBar";
 import { useCharacter } from "../context/CharacterContext";
 import Image from "next/image";
