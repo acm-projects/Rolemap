@@ -307,6 +307,16 @@ export default function DailyPage() {
       charInitialized.current = true;
       const first = tasks.find(t => !completed.includes(t.id));
       setCharTaskId(first?.id ?? null);
+      if (first) {
+        setTimeout(() => {
+          const container = document.getElementById('task-scroll');
+          const el = document.querySelector(`[data-task-id="${first.id}"]`) as HTMLElement | null;
+          if (container && el) {
+            const offset = el.getBoundingClientRect().top - container.getBoundingClientRect().top;
+            container.scrollTop += offset - 8;
+          }
+        }, 150);
+      }
     }
   }, [tasks]);
 
