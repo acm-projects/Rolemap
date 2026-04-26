@@ -1,19 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-
-type Entry = {
-  id: string;
-  skill: string;
-  health: number;
-  times_practiced: number;
-  sm2_interval: number;
-  sm2_easiness: string;
-  sm2_repetitions: number;
-  days_until_review: number;
-  next_review: string;
-  last_reviewed_at: string;
-  decay_level: string;
-};
+import { api, type SkillDecayEntry } from "@/lib/api";
 
 const DECAY_COLORS: Record<string, string> = {
   fresh:       "#508484",
@@ -23,14 +10,18 @@ const DECAY_COLORS: Record<string, string> = {
 };
 
 export default function TestDecayPage() {
-  const [data, setData] = useState<Entry[]>([]);
+  const [data, setData] = useState<SkillDecayEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<string | null>(null);
 
   const fetchData = async () => {
-    const res = await fetch("/api/test-decay");
-    const json = await res.json();
-    setData(json);
+    try {
+      const json = await api.skillDecay();
+      setData(json);
+    } catch (e) {
+      console.error(e);
+      setData([]);
+    }
     setLoading(false);
   };
 
@@ -38,12 +29,12 @@ export default function TestDecayPage() {
 
   const handleReview = async (id: string, quality: number) => {
     setUpdating(id);
-    await fetch("/api/test-decay", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, quality }),
-    });
-    await fetchData();
+    try {
+      await api.reviewSkillDecay(id, quality);
+      await fetchData();
+    } catch (e) {
+      console.error(e);
+    }
     setUpdating(null);
   };
 

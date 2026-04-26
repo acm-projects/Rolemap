@@ -18,6 +18,7 @@ import { NodePanel, NodePanelData } from '@/app/components/ConceptNodePanel';
 import { Navbar } from '@/app/components/NavBar';
 import { api, type Checkpoint, type RoadmapEdge } from '@/lib/api';
 import { applyDagreLayout } from '@/lib/layout';
+import { useCharacter } from '@/app/context/CharacterContext';
 
 const nodeTypes = { roadmap: RoadmapNode };
 
@@ -101,12 +102,19 @@ function ParallaxLayers() {
   );
 }
 
-function toFlowNodes(checkpoints: Checkpoint[]) {
+function toFlowNodes(checkpoints: Checkpoint[], decayMap: Record<string, number> = {}) {
   const currentCP = checkpoints.find(cp => !cp.locked && cp.progress < 100);
   return checkpoints.map(cp => ({
     id: cp.id,
     type: 'roadmap' as const,
-    data: { label: cp.label, progress: cp.progress, locked: cp.locked, kind: cp.kind, isCurrent: cp === currentCP },
+    data: {
+      label: cp.label,
+      progress: cp.progress,
+      locked: cp.locked,
+      kind: cp.kind,
+      isCurrent: cp === currentCP,
+      decayHealth: decayMap[cp.id],
+    },
     position: cp.position,
   }));
 }
@@ -147,6 +155,7 @@ function RoadmapContent() {
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
   const { setCenter, fitView } = useReactFlow();
+  const { notifyMapReady } = useCharacter();
 
   useEffect(() => {
     const load = roadmapParam
@@ -154,6 +163,9 @@ function RoadmapContent() {
       : api.dashboard().then(d => api.roadmapMap(d.active_roadmap.id));
 
     load.then(data => {
+    api.dashboard()
+      .then(d => api.roadmapMap(d.active_roadmap.id))
+      .then(data => {
         setCheckpoints(data.checkpoints);
 
         const flowNodes = toFlowNodes(data.checkpoints);
@@ -168,9 +180,14 @@ function RoadmapContent() {
         if (activeCP) {
           const laidOutNode = laidOutNodes.find(n => n.id === activeCP.id);
           const pos = laidOutNode?.position ?? activeCP.position;
+          // Start camera animation
           setTimeout(() => {
             setCenter(pos.x + 128, pos.y + 70, { zoom: 1.5, duration: 1000 });
           }, 200);
+          // After camera settles + 600ms beat, trigger CharacterMascot fall-in
+          setTimeout(() => {
+            notifyMapReady();
+          }, 1800);
         } else {
           setTimeout(() => fitView({ duration: 1000 }), 200);
         }
@@ -192,10 +209,17 @@ function RoadmapContent() {
   }, [pendingCenter, setCenter]);
 
   const handleNodeClick: NodeMouseHandler = useCallback((_event, node) => {
-    const data = node.data as { label: string; progress: number; locked: boolean; kind?: string };
+    const data = node.data as { label: string; progress: number; locked: boolean; kind?: string; isCurrent?: boolean };
 
     setPendingCenter({ x: node.position.x + 300, y: node.position.y + 85 });
     setActivePanelPos({ x: node.position.x + 300, y: node.position.y + 85 });
+
+    if (data.isCurrent) {
+      setNodes(ns => ns.map(n => n.id === node.id ? { ...n, data: { ...n.data, isMascotJumping: true } } : n));
+      setTimeout(() => {
+        setNodes(ns => ns.map(n => n.id === node.id ? { ...n, data: { ...n.data, isMascotJumping: false } } : n));
+      }, 1200);
+    }
 
     if (!data.locked && data.kind === 'quiz') {
       router.push(`/quiz?checkpoint=${node.id}&label=${encodeURIComponent(data.label)}`);

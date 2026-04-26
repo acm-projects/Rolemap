@@ -3,62 +3,56 @@ import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import { api, DEFAULT_CHARACTER } from "@/lib/api";
+import { useCharacter } from "../context/CharacterContext";
 
-function ShopCharacter({ size }: { size: number }) {
-  const [equipped, setEquipped] = useState(DEFAULT_CHARACTER);
+// Renders the user's custom character from shop localStorage data
+const DEFAULT_EQUIPPED = { skin: "char1.png", eyes: "eyes.png", clothes: "suit.png", pants: "pants.png", shoes: "shoes.png", hair: "buzzcut.png", accessories: "" };
+
+function ShopCharacter({ size, zoom = 1 }: { size: number; zoom?: number }) {
+  const [equipped, setEquipped] = useState<Record<string, string>>(DEFAULT_EQUIPPED);
   const [colorVariants, setColorVariants] = useState<Record<string, number>>({});
 
   useEffect(() => {
-    api.getCharacter()
-      .then(c => {
-        setEquipped(c);
-        setColorVariants(c.color_variants ?? {});
-      })
-      .catch(() => {
-        const eq = localStorage.getItem("character_saved");
-        const cv = localStorage.getItem("character_saved_variants");
-        if (eq) setEquipped({ ...DEFAULT_CHARACTER, ...JSON.parse(eq) });
-        if (cv) setColorVariants(JSON.parse(cv));
-      });
-
-    const onSave = (e: Event) => {
-      const detail = (e as CustomEvent).detail;
-      setEquipped(detail);
-      setColorVariants(detail.color_variants ?? {});
-    };
-    window.addEventListener("character-saved", onSave);
-    return () => window.removeEventListener("character-saved", onSave);
+    const eq = localStorage.getItem("character_saved");
+    const cv = localStorage.getItem("character_saved_variants");
+    if (eq) setEquipped(prev => ({ ...prev, ...JSON.parse(eq) }));
+    if (cv) setColorVariants(JSON.parse(cv));
   }, []);
 
-  const bgH = Math.round(size / 28 * 1568);
-  const scale = size / 28;
+  // Render at zoom*size so each pixel is bigger; crop center-horizontally, top-aligned
+  const renderSize = Math.round(size * zoom);
+  const bgH = Math.round(renderSize / 28 * 1568);
+  const scale = renderSize / 28;
+  const xOffset = (32 * scale - renderSize) / 2;
+  const clipLeft = (renderSize - size) / 2 + 4;
+  // Idle frame starts at sprite row 12 — shift background up so head aligns to top
+  const yOffset = Math.round(12 * scale);
 
   const layers: [string, string][] = [
     [equipped.skin, "skin"],
-    [equipped.eyes, "eyes"],
+    [equipped.pants, "pants"],
+    [equipped.shoes, "shoes"],
     [equipped.clothes, "clothes"],
+    [equipped.eyes, "eyes"],
     [equipped.hair, "hair"],
     [equipped.accessories, "accessories"],
   ];
 
   return (
     <div style={{ position: "relative", width: size, height: size, overflow: "hidden", imageRendering: "pixelated" }}>
-      <div style={{ position: "absolute", inset: 0, transform: "translateX(-9px) scale(1.4)", transformOrigin: "50% 100%" }}>
-        {layers.filter(([f]) => f).map(([f], i) => {
-          const v = colorVariants[f] ?? 0;
-          return (
-            <div key={i} style={{
-              position: "absolute", top: 0, left: 0, width: "100%", height: "100%",
-              backgroundImage: `url(/characters/${f})`,
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: `${-(v * 256 * scale)}px 0`,
-              backgroundSize: `auto ${bgH}px`,
-              imageRendering: "pixelated",
-            }} />
-          );
-        })}
-      </div>
+      {layers.filter(([f]) => f).map(([f], i) => {
+        const v = colorVariants[f] ?? 0;
+        return (
+          <div key={i} style={{
+            position: "absolute", top: 0, left: -clipLeft, width: renderSize, height: renderSize,
+            backgroundImage: `url(/characters/${f})`,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: `${-(v * 256 * scale) - xOffset}px ${-yOffset}px`,
+            backgroundSize: `auto ${bgH}px`,
+            imageRendering: "pixelated",
+          }} />
+        );
+      })}
     </div>
   );
 }
@@ -69,6 +63,7 @@ export function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { data: session } = useSession();
+  const { triggerTransition } = useCharacter();
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -205,16 +200,54 @@ export function Navbar() {
           {/* Nav links */}
           <div className="flex items-center gap-6">
             {navItems.map((item) => {
-              const isActive = pathname === `/${item.toLowerCase()}`;
+              const href = `/${item.toLowerCase()}`;
+              const isActive = pathname === href;
               return (
-                <Link
+                <button
                   key={item}
-                  href={`/${item.toLowerCase()}`}
-                  className={`pixel-nav-link text-[11px] pb-1 ${isActive ? 'active text-[#334155]' : 'text-[#334155] hover:text-[#334155]'}`}
-                  style={{ fontFamily: "'Press Start 2P', monospace" }}
+                  onClick={() => {
+                    // Walking character on non-map pages: getBoundingClientRect captures mid-animation X
+                    const walker = document.querySelector('[data-global-char]');
+                    if (walker) {
+                      const r = walker.getBoundingClientRect();
+                      triggerTransition(href, r.left + r.width / 2, r.bottom, r.width);
+                      return;
+                    }
+                    // Shop character preview
+                    const shopChar = document.querySelector('[data-shop-char]');
+                    if (shopChar) {
+                      const r = shopChar.getBoundingClientRect();
+                      triggerTransition(href, r.left + r.width / 2, r.bottom, r.width);
+                      return;
+                    }
+                    // Sleeping character on tasks page
+                    const dieChar = document.querySelector('[data-die-char]');
+                    if (dieChar) {
+                      const r = dieChar.getBoundingClientRect();
+                      triggerTransition(href, r.left + r.width / 2, r.bottom, r.width);
+                      return;
+                    }
+                    // Dashboard leaderboard character
+                    const dashChar = document.querySelector('[data-dashboard-char]');
+                    if (dashChar) {
+                      const r = dashChar.getBoundingClientRect();
+                      triggerTransition(href, r.left + r.width / 2, r.bottom, r.width);
+                      return;
+                    }
+                    // Map page: use on-node mascot position (includes ReactFlow zoom)
+                    const mascot = document.querySelector('[data-char-mascot]');
+                    if (mascot) {
+                      const r = mascot.getBoundingClientRect();
+                      triggerTransition(href, r.left + r.width / 2, r.bottom, r.width);
+                      return;
+                    }
+                    triggerTransition(href);
+                  }}
+                  className={`pixel-nav-link text-[11px] pb-1 ${isActive ? 'active text-[#2d5050]' : 'text-[#4e8888] hover:text-[#2d5050]'}`}
+                  style={{ fontFamily: "'Press Start 2P', monospace", background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
                 >
                   {item.toUpperCase()}
-                </Link>
+                </button>
               );
             })}
           </div>
@@ -234,7 +267,7 @@ export function Navbar() {
                 className="pixel-avatar w-10 h-10 flex items-center justify-center overflow-hidden"
                 style={{ backgroundColor: '#c8e6c9' }}
               >
-                <ShopCharacter size={40} />
+                <ShopCharacter size={40} zoom={1.5} />
               </button>
 
               {/* Dropdown */}

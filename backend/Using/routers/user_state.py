@@ -2,16 +2,20 @@
 User state router — serves mock_db.json data for frontend pages.
 Registered in main.py with prefix="/api/v1".
 """
-from fastapi import APIRouter, HTTPException, UploadFile, File
+from fastapi import APIRouter, HTTPException, UploadFile, File, Query
 from pathlib import Path
 import asyncio
 import datetime
+import hashlib
 import json
 import logging
+import math
 import shutil
 import sys
 from uuid import uuid4
 from typing import Any
+
+from models import ShopAppearancePatch, ShopPurchaseRequest, SkillDecayReviewRequest
 
 logger = logging.getLogger(__name__)
 
@@ -21,10 +25,13 @@ router = APIRouter()
 _background_tasks: set = set()
 
 DB_PATH = Path(__file__).parent.parent / "data" / "mock_db.json"
+SHOP_CATALOG_PATH = Path(__file__).parent.parent / "data" / "shop_catalog.json"
 UPLOAD_DIR = Path(__file__).parent.parent / "data" / "uploads"
 OUTPUT_DIR = Path(__file__).parent.parent / "output"
 RESUME_OUTPUT_PATH = OUTPUT_DIR / "result.json"
 GITHUB_OUTPUT_PATH = OUTPUT_DIR / "github_result.json"
+
+_shop_catalog_cache: dict | None = None
 
 # Quiz_Gen import
 _quiz_gen_path = str(Path(__file__).parent.parent / "Quiz_Gen")
@@ -908,6 +915,7 @@ async def update_task(task_id: str, body: dict[str, Any]):
                             old_progress = cp.get("progress", 0)
                             cp["progress"] = new_progress
                             if new_progress == 100 and old_progress < 100:
+                                _init_decay(cp)
                                 cp_kind = cp.get("kind", "lesson")
                                 bonus = XP_CHECKPOINT_PROJECT if cp_kind == "project" else XP_CHECKPOINT_LESSON
                                 _award_xp(db, bonus)
@@ -973,6 +981,7 @@ async def update_task(task_id: str, body: dict[str, Any]):
                     old_progress = cp.get("progress", 0)
                     cp["progress"] = new_progress
                     if new_progress == 100 and old_progress < 100:
+                        _init_decay(cp)
                         cp_kind = cp.get("kind", "lesson")
                         bonus = XP_CHECKPOINT_PROJECT if cp_kind == "project" else XP_CHECKPOINT_LESSON
                         _award_xp(db, bonus)
@@ -1150,6 +1159,10 @@ async def generate_roadmap_api(body: dict[str, Any]):
         with open(roadmap_json, encoding="utf-8") as f:
             roadmap_steps = json.load(f)
         print(f"[generate] Loaded {len(roadmap_steps)} steps from roadmap.json", flush=True)
+        MAX_LESSONS = 75  # yields ~100 total checkpoints after gates are inserted
+        if len(roadmap_steps) > MAX_LESSONS:
+            roadmap_steps = roadmap_steps[:MAX_LESSONS]
+            print(f"[generate] Capped roadmap at {MAX_LESSONS} lessons", flush=True)
     else:
         print("[generate] ERROR: roadmap.json was not created — generator likely failed", flush=True)
 
@@ -1187,7 +1200,7 @@ async def generate_roadmap_api(body: dict[str, Any]):
                 gate_label = f"{role} Project #{quiz_count // 3}"
             else:
                 gate_kind = "quiz"
-                gate_label = " + ".join(lesson_buffer[-batch_count:]) + " Quiz"
+                gate_label = lesson_buffer[-1] + " Quiz"
             skeleton.append({"label": gate_label, "kind": gate_kind})
             lesson_buffer = []
             batch_count = 0
@@ -1226,7 +1239,15 @@ async def generate_roadmap_api(body: dict[str, Any]):
             print(f"[generate] Gemini batch failed ({e}), using fallback", flush=True)
 
     def _fallback(label: str) -> dict:
-        return {"description": f"Learn {label}", "learning_goals": [label]}
+        return {
+            "description": f"Learn the key concepts of {label}.",
+            "learning_goals": [
+                f"Understand the core principles of {label}",
+                f"Apply {label} in practical scenarios",
+                f"Explore advanced patterns in {label}",
+                f"Build something real using {label}",
+            ],
+        }
 
     # --- Pass 3: assemble final checkpoints ---
     checkpoints = []
@@ -1471,4 +1492,361 @@ async def get_quiz(checkpoint_id: str):
         "checkpoint_id": checkpoint_id,
         "label": cp["label"],
         "questions": questions,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Shop (catalog + user cosmetics in mock_db)
+# ---------------------------------------------------------------------------
+
+def _load_shop_catalog() -> dict:
+    global _shop_catalog_cache
+    if _shop_catalog_cache is None:
+        with open(SHOP_CATALOG_PATH, encoding="utf-8") as f:
+            _shop_catalog_cache = json.load(f)
+    return _shop_catalog_cache
+
+
+def _ensure_user_shop(db: dict) -> dict:
+    default_equipped = {
+        "skin": "char1.png",
+        "eyes": "eyes.png",
+        "clothes": "suit.png",
+        "pants": "pants.png",
+        "shoes": "shoes.png",
+        "hair": "buzzcut.png",
+        "accessories": "",
+    }
+    db.setdefault(
+        "user_shop",
+        {
+            "user_id": USER_ID,
+            "purchased_item_ids": [],
+            "equipped": dict(default_equipped),
+            "gender": "boy",
+            "color_variants": {},
+        },
+    )
+    shop = db["user_shop"]
+    shop.setdefault("purchased_item_ids", [])
+    shop.setdefault("equipped", dict(default_equipped))
+    shop.setdefault("gender", "boy")
+    shop.setdefault("color_variants", {})
+    return shop
+
+
+def _item_unlocked(item: dict, purchased: set) -> bool:
+    if item.get("cost", 0) <= 0:
+        return True
+    return item["id"] in purchased
+
+
+def _merge_shop_items(catalog: dict, purchased: set) -> dict:
+    out: dict[str, list] = {}
+    for cat, items in catalog.items():
+        out[cat] = [
+            {**it, "unlocked": _item_unlocked(it, purchased)}
+            for it in items
+        ]
+    return out
+
+
+@router.get("/shop")
+async def get_shop():
+    """Return catalog with per-user unlock flags, XP, and saved appearance."""
+    db = load_db()
+    catalog = _load_shop_catalog()
+    shop = _ensure_user_shop(db)
+    purchased = set(shop["purchased_item_ids"])
+    user = db["users"][0]
+    xp = user.get("xp_total", 0)
+    if db.get("user_gamification"):
+        xp = db["user_gamification"][0].get("xp_total", xp)
+    return {
+        "items": _merge_shop_items(catalog, purchased),
+        "equipped": shop["equipped"],
+        "gender": shop.get("gender", "boy"),
+        "color_variants": shop.get("color_variants", {}),
+        "xp_total": xp,
+    }
+
+
+@router.post("/shop/purchase")
+async def shop_purchase(body: ShopPurchaseRequest):
+    """Spend XP to unlock a paid cosmetic."""
+    db = load_db()
+    catalog = _load_shop_catalog()
+    if body.category not in catalog:
+        raise HTTPException(status_code=400, detail="Unknown category")
+
+    item = next((i for i in catalog[body.category] if i["id"] == body.item_id), None)
+    if not item:
+        raise HTTPException(status_code=404, detail="Item not found")
+
+    cost = int(item.get("cost", 0))
+    if cost <= 0:
+        raise HTTPException(status_code=400, detail="Item is already free")
+
+    shop = _ensure_user_shop(db)
+    purchased = set(shop["purchased_item_ids"])
+    if _item_unlocked(item, purchased):
+        raise HTTPException(status_code=400, detail="Already unlocked")
+
+    user = db["users"][0]
+    xp = user.get("xp_total", 0)
+    if db.get("user_gamification"):
+        xp = db["user_gamification"][0].get("xp_total", xp)
+
+    if xp < cost:
+        raise HTTPException(status_code=400, detail="Not enough XP")
+
+    user["xp_total"] = user.get("xp_total", 0) - cost
+    if db.get("user_gamification"):
+        db["user_gamification"][0]["xp_total"] = user["xp_total"]
+
+    shop["purchased_item_ids"].append(body.item_id)
+    save_db(db)
+
+    purchased.add(body.item_id)
+    return {
+        "ok": True,
+        "xp_total": user["xp_total"],
+        "items": _merge_shop_items(catalog, purchased),
+    }
+
+
+@router.patch("/shop/appearance")
+async def shop_appearance(body: ShopAppearancePatch):
+    """Save equipped layers, optional gender and color variant indices."""
+    db = load_db()
+    catalog = _load_shop_catalog()
+    shop = _ensure_user_shop(db)
+
+    required = ("skin", "eyes", "clothes", "pants", "shoes", "hair", "accessories")
+    for key in required:
+        if key not in body.equipped:
+            raise HTTPException(status_code=400, detail=f"Missing equipped.{key}")
+
+    for cat, file_val in body.equipped.items():
+        if cat not in catalog:
+            raise HTTPException(status_code=400, detail=f"Unknown category {cat}")
+        allowed = {i["file"] for i in catalog[cat]}
+        if file_val not in allowed:
+            raise HTTPException(status_code=400, detail=f"Invalid file for {cat}: {file_val}")
+
+    shop["equipped"] = dict(body.equipped)
+    if body.gender is not None:
+        if body.gender not in ("boy", "girl"):
+            raise HTTPException(status_code=400, detail="gender must be boy or girl")
+        shop["gender"] = body.gender
+    if body.color_variants is not None:
+        shop["color_variants"] = dict(body.color_variants)
+
+    save_db(db)
+    return {"ok": True, "equipped": shop["equipped"], "gender": shop["gender"], "color_variants": shop["color_variants"]}
+
+
+# ---------------------------------------------------------------------------
+# Skill decay (SM-2 on roadmap checkpoints, mock_db)
+# ---------------------------------------------------------------------------
+
+def _iso_utc(dt: datetime.datetime) -> str:
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=datetime.timezone.utc)
+    return dt.astimezone(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.000Z")
+
+
+def _init_decay(cp: dict) -> None:
+    """Set initial SM-2 state when a checkpoint is first completed. No-op if already set."""
+    if cp.get("decay"):
+        return
+    now = datetime.datetime.now(datetime.timezone.utc)
+    cp["decay"] = {
+        "times_practiced": 0,
+        "sm2_interval": 1,
+        "sm2_easiness": 2.5,
+        "sm2_repetitions": 0,
+        "next_review": _iso_utc(now + datetime.timedelta(days=1)),
+        "last_reviewed_at": _iso_utc(now),
+    }
+
+
+def _parse_utc(value: Any) -> datetime.datetime:
+    if isinstance(value, datetime.datetime):
+        if value.tzinfo is None:
+            return value.replace(tzinfo=datetime.timezone.utc)
+        return value.astimezone(datetime.timezone.utc)
+    s = str(value).replace("Z", "+00:00")
+    dt = datetime.datetime.fromisoformat(s)
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=datetime.timezone.utc)
+    return dt.astimezone(datetime.timezone.utc)
+
+
+def _virtual_decay_defaults(cp_id: str) -> dict:
+    """Stable demo defaults when checkpoint has no persisted decay."""
+    now = datetime.datetime.now(datetime.timezone.utc)
+    bucket = int(hashlib.md5(cp_id.encode()).hexdigest()[:8], 16) % 4
+    if bucket == 0:
+        next_r = now + datetime.timedelta(days=5)
+    elif bucket == 1:
+        next_r = now + datetime.timedelta(days=1)
+    elif bucket == 2:
+        next_r = now - datetime.timedelta(days=1)
+    else:
+        next_r = now - datetime.timedelta(days=10)
+    last_r = now - datetime.timedelta(days=15)
+    return {
+        "times_practiced": 0,
+        "sm2_interval": 1,
+        "sm2_easiness": 2.5,
+        "sm2_repetitions": 0,
+        "next_review": next_r,
+        "last_reviewed_at": last_r,
+    }
+
+
+def _checkpoint_decay_state(cp: dict) -> dict:
+    base = _virtual_decay_defaults(cp["id"])
+    raw = cp.get("decay") or {}
+    merged = {**base, **raw}
+    merged["next_review"] = _parse_utc(merged["next_review"])
+    merged["last_reviewed_at"] = _parse_utc(merged["last_reviewed_at"])
+    merged["sm2_easiness"] = float(merged["sm2_easiness"])
+    merged["sm2_interval"] = max(1, int(merged["sm2_interval"]))
+    merged["sm2_repetitions"] = int(merged["sm2_repetitions"])
+    merged["times_practiced"] = int(merged["times_practiced"])
+    return merged
+
+
+def _decay_level(next_review: datetime.datetime, sm2_interval: int) -> str:
+    """Match frontend `app/api/test-decay/route.ts` getDecayLevel."""
+    now = datetime.datetime.now(datetime.timezone.utc)
+    days_until = math.ceil((next_review - now).total_seconds() / (3600 * 24))
+    if days_until > 3:
+        return "fresh"
+    if days_until > 0:
+        return "review_soon"
+    if days_until > -sm2_interval:
+        return "decaying"
+    return "forgotten"
+
+
+def _decay_health(next_review: datetime.datetime, sm2_interval: int) -> int:
+    """Health bar from overdue days (same idea as frontend `skillDecay.calculateHealth`)."""
+    now = datetime.datetime.now(datetime.timezone.utc)
+    days_overdue = max(0.0, (now - next_review).total_seconds() / (3600 * 24))
+    denom = max(sm2_interval, 1)
+    return max(0, min(100, round(100 - (days_overdue / denom) * 100)))
+
+
+def _resolve_decay_roadmap_id(db: dict, roadmap_id: str | None) -> str:
+    if roadmap_id:
+        if not any(r.get("id") == roadmap_id for r in db.get("roadmaps", [])):
+            raise HTTPException(status_code=404, detail="Roadmap not found")
+        return roadmap_id
+    rm = next((r for r in db.get("roadmaps", []) if r.get("id") == "rm-generated"), None)
+    if rm:
+        return rm["id"]
+    rm = next((r for r in db.get("roadmaps", []) if r.get("status") == "active"), None)
+    if rm:
+        return rm["id"]
+    raise HTTPException(status_code=404, detail="No roadmap found")
+
+
+def _apply_sm2(state: dict, quality: int) -> dict:
+    """SM-2 update aligned with `frontend/app/api/test-decay/route.ts` POST."""
+    sm2_interval = state["sm2_interval"]
+    sm2_easiness = float(state["sm2_easiness"])
+    sm2_repetitions = int(state["sm2_repetitions"])
+    times_practiced = int(state["times_practiced"])
+
+    if quality >= 3:
+        if sm2_repetitions == 0:
+            sm2_interval = 1
+        elif sm2_repetitions == 1:
+            sm2_interval = 6
+        else:
+            sm2_interval = max(1, round(sm2_interval * sm2_easiness))
+        sm2_repetitions += 1
+    else:
+        sm2_repetitions = 0
+        sm2_interval = 1
+
+    sm2_easiness = max(
+        1.3,
+        sm2_easiness + 0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02),
+    )
+
+    now = datetime.datetime.now(datetime.timezone.utc)
+    next_review = now + datetime.timedelta(days=max(1, sm2_interval))
+    times_practiced += 1
+
+    return {
+        "times_practiced": times_practiced,
+        "sm2_interval": max(1, int(sm2_interval)),
+        "sm2_easiness": sm2_easiness,
+        "sm2_repetitions": sm2_repetitions,
+        "next_review": next_review,
+        "last_reviewed_at": now,
+    }
+
+
+@router.get("/skills/decay")
+async def get_skills_decay(roadmap_id: str | None = Query(default=None)):
+    """List SM-2 decay rows for completed checkpoints. Scans all roadmaps when no specific id given."""
+    db = load_db()
+    rows = []
+    for cp in db.get("roadmap_checkpoints", []):
+        if roadmap_id and cp.get("roadmap_id") != roadmap_id:
+            continue
+        if cp.get("progress", 0) < 100:
+            continue
+        st = _checkpoint_decay_state(cp)
+        next_r = st["next_review"]
+        sm2_i = st["sm2_interval"]
+        now = datetime.datetime.now(datetime.timezone.utc)
+        days_until = math.ceil((next_r - now).total_seconds() / (3600 * 24))
+        rows.append(
+            {
+                "id": cp["id"],
+                "skill": cp.get("label", ""),
+                "health": _decay_health(next_r, sm2_i),
+                "times_practiced": st["times_practiced"],
+                "sm2_interval": sm2_i,
+                "sm2_easiness": f"{st['sm2_easiness']:.2f}",
+                "sm2_repetitions": st["sm2_repetitions"],
+                "days_until_review": days_until,
+                "next_review": _iso_utc(next_r),
+                "last_reviewed_at": _iso_utc(st["last_reviewed_at"]),
+                "decay_level": _decay_level(next_r, sm2_i),
+            }
+        )
+    rows.sort(key=lambda r: r["health"])
+    return rows
+
+
+@router.post("/skills/decay/review")
+async def post_skills_decay_review(body: SkillDecayReviewRequest):
+    """Apply one SM-2 review and persist `decay` on the checkpoint."""
+    db = load_db()
+    cp = next((c for c in db.get("roadmap_checkpoints", []) if c["id"] == body.id), None)
+    if not cp:
+        raise HTTPException(status_code=404, detail="Checkpoint not found")
+
+    st = _checkpoint_decay_state(cp)
+    updated = _apply_sm2(st, body.quality)
+    cp["decay"] = {
+        "times_practiced": updated["times_practiced"],
+        "sm2_interval": updated["sm2_interval"],
+        "sm2_easiness": updated["sm2_easiness"],
+        "sm2_repetitions": updated["sm2_repetitions"],
+        "next_review": _iso_utc(updated["next_review"]),
+        "last_reviewed_at": _iso_utc(updated["last_reviewed_at"]),
+    }
+    save_db(db)
+    return {
+        "success": True,
+        "new_interval": updated["sm2_interval"],
+        "next_review": _iso_utc(updated["next_review"]),
     }

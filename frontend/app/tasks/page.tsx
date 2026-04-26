@@ -1,10 +1,21 @@
 'use client';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Navbar } from "../components/NavBar";
+import { useCharacter } from "../context/CharacterContext";
 import Image from "next/image";
 import pic6 from "../tasks/target.png";
 import PixelButton from "../components/PixelButton";
 import { api, type Task } from "@/lib/api";
+import PixelProgress from "../components/PixelProgress";
+import { useRouter } from "next/navigation";
+import { api, type Task, type SkillDecayEntry } from "@/lib/api";
+import { BookOpen, CheckCircle, ExternalLink, Code2, Trophy, Zap } from 'lucide-react';
+
+const DECAY_STYLE: Record<string, { borderColor: string; badgeBg: string; badgeText: string; label: string; headerBg: string }> = {
+  review_soon: { borderColor: '#f59e0b', badgeBg: '#fef3c7', badgeText: '#92400e', label: 'Review Soon',  headerBg: '#fffbeb' },
+  decaying:    { borderColor: '#f97316', badgeBg: '#ffedd5', badgeText: '#9a3412', label: 'Needs Review', headerBg: '#fff7ed' },
+  forgotten:   { borderColor: '#ef4444', badgeBg: '#fee2e2', badgeText: '#991b1b', label: 'Decayed',      headerBg: '#fef2f2' },
+};
 
 // ── Pixel-art icons ──────────────────────────────────────────────────────────
 
@@ -112,8 +123,218 @@ function TaskProgress({ value }: { value: number }) {
 }
 
 // ── Main Page ────────────────────────────────────────────────────────────────
+// ── Sleeping character on task card ──────────────────────────────────────────
+
+const DIE_SIZE = 100;
+
+const DEFAULT_EQUIPPED_DIE = {
+  skin: 'char1.png', eyes: 'eyes.png', clothes: 'suit.png',
+  pants: 'pants.png', shoes: 'shoes.png', hair: 'buzzcut.png', accessories: '',
+};
+
+function getDiePath(cat: string, file: string): string | null {
+  if (!file) return null;
+  const base = file.replace('.png', '_die.png');
+  switch (cat) {
+    case 'skin':         return `die/${base}`;
+    case 'clothes':      return `die/clothes/${base}`;
+    case 'pants':        return `die/clothes/${base}`;
+    case 'shoes':        return `die/clothes/${base}`;
+    case 'hair':         return `die/hair/${base}`;
+    case 'eyes':         return `die/eyes/${file === 'blush_all.png' ? 'blush_die.png' : base}`;
+    case 'accessories':  return `die/acc/${base}`;
+    default:             return null;
+  }
+}
+
+// Tune these to adjust sleeping character position on the card
+const CHAR_TOP_OFFSET = -18;   // px from card top (increase = lower)
+const CHAR_RIGHT_OFFSET = 235; // px from card right edge (increase = further left)
+const FLIP_THRESHOLD = 180;        // if character top (px from screen top) is above this, flip horizontally
+const FLIP_BOTTOM_THRESHOLD = 480; // if character top (px from screen top) is below this, flip horizontally
+const FLIP_TOP_OFFSET = 0;     // additional px added to top when flipped (positive = lower)
+const FLIP_LEFT_OFFSET = 100;    // additional px added to left when flipped (positive = further right)
+
+function DieCharacter({ taskId, falling, fallDelta }: {
+  taskId: string | null;
+  falling: boolean;
+  fallDelta: number;
+}) {
+  const { charState } = useCharacter();
+  const [equipped, setEquipped] = useState(DEFAULT_EQUIPPED_DIE);
+  const [colorVariants, setColorVariants] = useState<Record<string, number>>({});
+  const [phase, setPhase] = useState<'hidden' | 'falling-in' | 'sleeping' | 'falling-to-next'>('hidden');
+  const [fixedPos, setFixedPos] = useState<{ top: number; left: number } | null>(null);
+  const [animKey, setAnimKey] = useState(0);
+  const prevTaskId = useRef<string | null>(null);
+  const mountTime = useRef(Date.now());
+  const anchorRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const load = () => {
+      try {
+        const eq = localStorage.getItem('character_saved');
+        const cv = localStorage.getItem('character_saved_variants');
+        if (eq) setEquipped(p => ({ ...p, ...JSON.parse(eq) }));
+        if (cv) setColorVariants(JSON.parse(cv));
+      } catch {}
+    };
+    load();
+    window.addEventListener('character-saved', load);
+    return () => window.removeEventListener('character-saved', load);
+  }, []);
+
+  const getCardFixed = (id: string) => {
+    const el = document.querySelector(`[data-task-id="${id}"]`) as HTMLElement | null;
+    if (!el) return null;
+    const rect = el.getBoundingClientRect();
+    return {
+      top: rect.top + CHAR_TOP_OFFSET,
+      left: rect.left + rect.width - DIE_SIZE - CHAR_RIGHT_OFFSET,
+    };
+  };
+
+  useEffect(() => {
+    if (!taskId) {
+      prevTaskId.current = null;
+      setPhase('hidden');
+      setFixedPos(null);
+      return;
+    }
+
+    const isFirst = prevTaskId.current === null;
+    prevTaskId.current = taskId;
+
+    if (isFirst) {
+      const elapsed = Date.now() - mountTime.current;
+      const delay = Math.max(0, 450 - elapsed);
+      const t = setTimeout(() => {
+        const pos = getCardFixed(taskId);
+        if (!pos) return;
+        setFixedPos(pos);
+        setAnimKey(k => k + 1);
+        setPhase('falling-in');
+        setTimeout(() => setPhase('sleeping'), 700);
+      }, delay);
+      return () => clearTimeout(t);
+    } else {
+      const pos = getCardFixed(taskId);
+      if (pos) setFixedPos(pos);
+      setPhase('sleeping');
+    }
+  }, [taskId]);
+
+  useEffect(() => {
+    if (falling && phase === 'sleeping' && taskId) {
+      // Capture current viewport position before switching to fixed animation
+      const pos = getCardFixed(taskId);
+      if (pos) setFixedPos(pos);
+      setAnimKey(k => k + 1);
+      setPhase('falling-to-next');
+    }
+  }, [falling]);
+
+  // Keep sleeping character in sync with card via RAF; flip horizontally when outside scroll bounds
+  useEffect(() => {
+    if (phase !== 'sleeping' || !taskId) return;
+    let rafId: number;
+    const loop = () => {
+      const pos = getCardFixed(taskId);
+      if (pos && anchorRef.current) {
+        const flipped = pos.top < FLIP_THRESHOLD || pos.top > FLIP_BOTTOM_THRESHOLD;
+        anchorRef.current.style.top = (pos.top + (flipped ? FLIP_TOP_OFFSET : 0)) + 'px';
+        anchorRef.current.style.left = (pos.left + (flipped ? FLIP_LEFT_OFFSET : 0)) + 'px';
+        anchorRef.current.style.transform = flipped ? 'rotate(-90deg) scaleY(-1)' : 'rotate(-90deg)';
+      }
+      rafId = requestAnimationFrame(loop);
+    };
+    rafId = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(rafId);
+  }, [phase, taskId]);
+
+  if (charState.phase === 'departing') return null;
+  if (phase === 'hidden') return null;
+
+  const S = DIE_SIZE;
+  const layers: [string, string][] = [
+    [equipped.skin, 'skin'],
+    [equipped.pants, 'pants'],
+    [equipped.shoes, 'shoes'],
+    [equipped.clothes, 'clothes'],
+    [equipped.eyes, 'eyes'],
+    [equipped.hair, 'hair'],
+    [equipped.accessories, 'accessories'],
+  ];
+  const layerData = layers
+    .filter(([f]) => f)
+    .map(([f, cat]) => { const path = getDiePath(cat, f); return path ? { path, v: colorVariants[f] ?? 0, cat } : null; })
+    .filter(Boolean) as { path: string; v: number; cat: string }[];
+
+  const animatedV = [...new Set(layerData.filter(d => d.cat !== 'eyes' && d.cat !== 'skin').map(d => d.v))];
+  const sleepKf = (v: number) => `ds${v}s${S}`;
+  const makeSleepKf = (v: number) =>
+    `@keyframes ${sleepKf(v)}{0%{background-position:${-v*2*S}px 0px;}50%{background-position:${-(v*2+1)*S}px 0px;}100%{background-position:${-v*2*S}px 0px;}}`;
+
+  const R = 'rotate(-90deg)';
+  const k = animKey;
+  let containerAnim: string | undefined;
+  let kfStr = '';
+
+  if (phase === 'falling-in' && fixedPos) {
+    const up = fixedPos.top + S;
+    kfStr = `@keyframes dfi${k}{0%{transform:${R} translateX(${up}px);}72%{transform:${R} translateX(-10px);}87%{transform:${R} translateX(5px);}100%{transform:${R} translateX(0);}}`;
+    containerAnim = `dfi${k} 0.65s linear forwards`;
+  } else if (phase === 'falling-to-next' && fixedPos) {
+    const d = fallDelta;
+    kfStr = `@keyframes dfn${k}{0%{transform:${R} translateX(0);}25%{transform:${R} translateX(${-Math.round(d*0.1)}px);}55%{transform:${R} translateX(${-Math.round(d*0.4)}px);}80%{transform:${R} translateX(${-(d+10)}px);}90%{transform:${R} translateX(${-(d-4)}px);}100%{transform:${R} translateX(${-d}px);}}`;
+    containerAnim = `dfn${k} 0.5s linear forwards`;
+  }
+
+  const layerDivs = layerData.map(({ path, v }, i) => (
+    <div key={i} style={{
+      position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+      backgroundImage: `url(/characters/${path})`,
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: `auto ${S}px`,
+      backgroundPosition: `${-v * 2 * S}px 0px`,
+      imageRendering: 'pixelated',
+    }} />
+  ));
+
+  const styleEl = <style>{animatedV.map(makeSleepKf).join('') + kfStr}</style>;
+
+  if (!fixedPos) return null;
+
+  const isSleeping = phase === 'sleeping';
+  return (
+    <>
+      {styleEl}
+      <div
+        ref={isSleeping ? anchorRef : undefined}
+        {...(isSleeping ? { 'data-die-char': '' } : {})}
+        style={{
+          position: 'fixed',
+          top: fixedPos.top,
+          left: fixedPos.left,
+          width: S,
+          height: S,
+          imageRendering: 'pixelated',
+          zIndex: phase === 'sleeping' ? 9990 : 10000,
+          pointerEvents: 'none',
+          transform: R,
+          transformOrigin: 'center center',
+          ...(containerAnim ? { animation: containerAnim } : {}),
+        }}
+      >
+        {layerDivs}
+      </div>
+    </>
+  );
+}
+
 
 export default function DailyPage() {
+  const router = useRouter();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [activeTask, setActiveTask] = useState<string | null>(null);
   const [completed, setCompleted] = useState<string[]>([]);
@@ -121,6 +342,15 @@ export default function DailyPage() {
   const [checkpointLabel, setCheckpointLabel] = useState<string | null>(null);
   const [subtopicIndex, setSubtopicIndex] = useState(0);
   const [totalSubtopics, setTotalSubtopics] = useState(0);
+  const [decayTasks, setDecayTasks] = useState<SkillDecayEntry[]>([]);
+  const [activeDecayTask, setActiveDecayTask] = useState<SkillDecayEntry | null>(null);
+
+  // Sleeping character state
+  const [charTaskId, setCharTaskId] = useState<string | null>(null);
+  const [charFalling, setCharFalling] = useState(false);
+  const [charFallDelta, setCharFallDelta] = useState(0);
+  const charInitialized = useRef(false);
+  const fallTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   function loadTasks() {
     api.tasks().then(d => {
@@ -134,16 +364,67 @@ export default function DailyPage() {
     }).catch(console.error);
   }
 
-  useEffect(() => { loadTasks(); }, []);
-
   const activeTaskObj = tasks.find(t => t.id === activeTask) ?? null;
   const allDone = tasks.length > 0 && completed.length >= tasks.length;
+  useEffect(() => { loadTasks();
+    if (allDone && checkpointLabel) {
+    localStorage.setItem('node_just_completed', checkpointLabel);
+  }
+
+  }, [allDone, checkpointLabel]);
+
+  // Initialize charTaskId on first tasks load
+  useEffect(() => {
+    if (tasks.length > 0 && !charInitialized.current) {
+      charInitialized.current = true;
+      const first = tasks.find(t => !completed.includes(t.id));
+      setCharTaskId(first?.id ?? null);
+      if (first) {
+        setTimeout(() => {
+          const container = document.getElementById('task-scroll');
+          const el = document.querySelector(`[data-task-id="${first.id}"]`) as HTMLElement | null;
+          if (container && el) {
+            const offset = el.getBoundingClientRect().top - container.getBoundingClientRect().top;
+            container.scrollTop += offset - 8;
+          }
+        }, 150);
+      }
+    }
+  }, [tasks]);
 
   function handleMarkComplete() {
-    if (activeTask && !completed.includes(activeTask)) {
-      setCompleted(prev => [...prev, activeTask]);
-      api.updateTask(activeTask, 'completed').catch(console.error);
+    if (!activeTask || completed.includes(activeTask)) return;
+
+    const newCompleted = [...completed, activeTask];
+    setCompleted(newCompleted);
+    api.updateTask(activeTask, 'completed').catch(console.error);
+
+    // Trigger fall if character is on this task
+    if (charTaskId === activeTask) {
+      const nextTask = tasks.find(t => !newCompleted.includes(t.id));
+      if (nextTask) {
+        const curEl = document.querySelector(`[data-task-id="${activeTask}"]`) as HTMLElement | null;
+        const nextEl = document.querySelector(`[data-task-id="${nextTask.id}"]`) as HTMLElement | null;
+        if (curEl && nextEl) {
+          const d = nextEl.getBoundingClientRect().top - curEl.getBoundingClientRect().top;
+          setCharFallDelta(d);
+        }
+      }
+      setCharFalling(true);
+      if (fallTimerRef.current) clearTimeout(fallTimerRef.current);
+      fallTimerRef.current = setTimeout(() => {
+        setCharFalling(false);
+        setCharTaskId(nextTask?.id ?? null);
+      }, 550);
     }
+  }
+
+  function handleMarkIncomplete() {
+    if (!activeTask || !completed.includes(activeTask)) return;
+    setCompleted(prev => prev.filter(id => id !== activeTask));
+    api.updateTask(activeTask, 'in_progress').catch(console.error);
+    // Move character back to this task if it has no current target
+    if (!charTaskId) setCharTaskId(activeTask);
   }
 
   function handleMoreTasks() {
@@ -158,6 +439,8 @@ export default function DailyPage() {
 
   return (
     <div className="min-h-screen bg-linear-to-b from-[#7EC8E3] to-[#E1FAFF]" style={{ fontFamily: "'Press Start 2P', monospace" }}>
+    <div className="min-h-screen bg-[#f0f8f8]" style={{ imageRendering: 'pixelated' }}>
+      <DieCharacter taskId={charTaskId} falling={charFalling} fallDelta={charFallDelta} />
       <Navbar />
 
       <div className="w-[95%] max-w-6xl mx-auto pt-[104px] pb-8 flex gap-8 h-screen">
@@ -171,6 +454,7 @@ export default function DailyPage() {
               <div
                 className="-mx-5 -mt-5 mb-4"
                 style={{ borderBottomWidth: 4, borderBottomStyle: 'solid', borderBottomColor: '#334155', backgroundColor: 'white' }}
+                style={{ borderBottomWidth: 4, borderBottomStyle: 'solid', borderBottomColor: '#2d5050', backgroundColor: '#4e8888', position: 'relative', zIndex: 9995 }}
               >
                 <div className="px-4 py-2" style={{ backgroundColor: '#334155' }}>
                   <p className="text-[18px] text-[#F9EC72] uppercase tracking-widest" style={{ fontWeight: 400 }}>Today&apos;s Challenge</p>
@@ -201,6 +485,46 @@ export default function DailyPage() {
 
             {/* Task list */}
             <div className="flex flex-col gap-3 flex-1 overflow-y-auto">
+            {/* Resource cards */}
+            <div id="task-scroll" className="flex flex-col gap-2 flex-1 overflow-y-auto" style={{ overscrollBehavior: 'none' }}>
+
+              {/* Decay review tasks */}
+              {decayTasks.map((entry) => {
+                const style = DECAY_STYLE[entry.decay_level] ?? DECAY_STYLE.decaying;
+                const isSelected = activeDecayTask?.id === entry.id;
+                return (
+                  <div
+                    key={`decay-${entry.id}`}
+                    onClick={() => { setActiveDecayTask(entry); setActiveTask(null); }}
+                    style={{
+                      borderWidth: 4,
+                      borderStyle: 'solid',
+                      borderColor: isSelected ? style.borderColor : '#e5c97a',
+                      backgroundColor: isSelected ? style.headerBg : '#fffdf5',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <div className="flex items-center gap-3 p-3">
+                      <div className="flex-shrink-0 w-9 h-9 flex items-center justify-center border-2" style={{ backgroundColor: style.badgeBg, borderColor: style.borderColor }}>
+                        <Zap size={14} style={{ color: style.borderColor }} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[10px] uppercase truncate leading-tight mb-0.5 font-medium" style={{ color: style.borderColor }}>⚡ REVIEW</p>
+                        <h3 className="text-xs truncate text-[#2d5050] leading-tight">{entry.skill}</h3>
+                        <div className="mt-1 h-1 w-full bg-gray-200" style={{ borderRadius: 0 }}>
+                          <div className="h-full" style={{ width: `${entry.health}%`, backgroundColor: style.borderColor, borderRadius: 0 }} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* Separator if both decay and regular tasks exist */}
+              {decayTasks.length > 0 && tasks.length > 0 && (
+                <div className="h-[4px] bg-[#d4e8e8] -mx-0 my-1" />
+              )}
+
               {tasks.map((task) => {
                 const isActive = activeTask === task.id;
                 const isDoneItem = completed.includes(task.id);
@@ -252,6 +576,32 @@ export default function DailyPage() {
                         )}
                       </div>
                     </div>
+                  <div key={task.id} data-task-id={task.id}>
+                    <PixelCard
+                      onClick={() => { setActiveTask(task.id); setActiveDecayTask(null); }}
+                      selected={isActive}
+                      hover
+                    >
+                      <div className="flex items-center gap-3 p-3">
+                        <div className="flex-shrink-0 w-9 h-9 bg-[#f0f8f8] flex items-center justify-center border-2 border-[#d4e8e8]">
+                          {isDoneItem
+                            ? <CheckCircle size={14} className="text-[#10B981]" />
+                            : task.type === 'Coding'
+                              ? <Code2 size={14} className="text-[#4e8888]" />
+                              : <BookOpen size={14} className="text-[#4e8888]" />
+                          }
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[10px] text-[#7ab3b3] uppercase truncate leading-tight mb-0.5">{task.type}</p>
+                          <h3 className="text-xs truncate text-[#2d5050] leading-tight">
+                            {task.title}
+                          </h3>
+                          {isDoneItem && (
+                            <p className="text-xs text-[#10B981] uppercase mt-0.5">Done</p>
+                          )}
+                        </div>
+                      </div>
+                    </PixelCard>
                   </div>
                 );
               })}
@@ -260,6 +610,8 @@ export default function DailyPage() {
             {/* Progress bar section */}
             <div className="pt-4 mt-4" style={{ borderTopWidth: 3, borderTopStyle: 'solid', borderTopColor: '#334155' }}>
               <TaskProgress value={completionPct} />
+            <div className="pt-4 mt-4 border-t-4 border-[#d4e8e8]" style={{ position: 'relative', zIndex: 9995, backgroundColor: '#ffffff' }}>
+              <PixelProgress value={completionPct} showLabel={true} />
             </div>
 
           </PixelPanel>
@@ -270,6 +622,63 @@ export default function DailyPage() {
           <PixelPanel className="flex-1 bg-white p-10 flex flex-col h-full overflow-y-auto">
 
             {allDone ? (
+            {/* Decay task detail */}
+            {activeDecayTask ? (() => {
+              const entry = activeDecayTask;
+              const style = DECAY_STYLE[entry.decay_level] ?? DECAY_STYLE.decaying;
+              return (
+                <div className="flex flex-col h-full">
+                  <div className="flex items-center gap-3 mb-6">
+                    <span
+                      className="text-xs text-white uppercase tracking-widest px-2.5 py-1 font-medium"
+                      style={{ backgroundColor: style.borderColor, borderWidth: 2, borderStyle: 'solid', borderColor: style.borderColor }}
+                    >
+                      ⚡ SKILL REVIEW
+                    </span>
+                    <span
+                      className="text-xs uppercase tracking-widest px-2 py-1"
+                      style={{ backgroundColor: style.badgeBg, color: style.badgeText, borderWidth: 2, borderStyle: 'solid', borderColor: style.borderColor }}
+                    >
+                      {style.label}
+                    </span>
+                  </div>
+
+                  <div className="mb-8">
+                    <h1 className="text-3xl md:text-4xl text-[#2d5050] leading-tight mb-4">{entry.skill}</h1>
+                    <div className="w-full h-3 bg-gray-200 mb-2" style={{ borderRadius: 0 }}>
+                      <div className="h-full" style={{ width: `${entry.health}%`, backgroundColor: style.borderColor, borderRadius: 0 }} />
+                    </div>
+                    <p className="text-xs text-[#4e8888] uppercase tracking-widest">{entry.health}% health · {entry.times_practiced} practice{entry.times_practiced !== 1 ? 's' : ''}</p>
+                    <div className="w-16 h-1 mt-4" style={{ backgroundColor: style.borderColor }} />
+                  </div>
+
+                  <div className="space-y-4 text-[#3a6666] flex-1">
+                    <p className="text-base leading-relaxed">
+                      Your knowledge of <strong>{entry.skill}</strong> is {entry.decay_level === 'forgotten' ? 'fading fast' : entry.decay_level === 'decaying' ? 'starting to decay' : 'due for a refresh'}.
+                      Take a quick quiz to reinforce it and reset the review clock.
+                    </p>
+                    {entry.days_until_review < 0 && (
+                      <p className="text-sm" style={{ color: style.borderColor }}>
+                        {Math.abs(Math.round(entry.days_until_review))} day{Math.abs(Math.round(entry.days_until_review)) !== 1 ? 's' : ''} overdue
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="mt-8">
+                    <PixelButton
+                      variant="primary"
+                      size="md"
+                      onClick={() => router.push(`/quiz?checkpoint=${entry.id}&label=${encodeURIComponent(entry.skill)}&review=true`)}
+                    >
+                      <span className="text-sm">⚡ Take Quiz</span>
+                    </PixelButton>
+                  </div>
+                </div>
+              );
+            })()
+
+            /* All resources done — "Done for the day" */
+            : allDone ? (
               <div className="flex flex-col items-center justify-center h-full gap-6">
                 <div
                   className="w-20 h-20 flex items-center justify-center"
@@ -308,6 +717,7 @@ export default function DailyPage() {
                 {/* Title and Divider */}
                 <div className="mb-8">
                   <h1 className="text-5xl text-[#334155] leading-tight mb-4" style={{ fontWeight: 400 }}>
+                  <h1 className="text-3xl md:text-4xl text-[#2d5050] tracking-normal font-normal leading-tight mb-4">
                     {activeTaskObj.title}
                   </h1>
                   <div className="w-16 h-1.5" style={{ backgroundColor: '#84BC2F' }} />
@@ -358,6 +768,8 @@ export default function DailyPage() {
 
                 {/* Footer / Status */}
                 <div className="mt-8">
+                {/* Mark complete */}
+                <div className="mt-8 flex items-center gap-4">
                   {!isDone ? (
                     <PixelButton variant="primary" size="md" onClick={handleMarkComplete}>
                       <span className="text-base">Mark Complete</span>
@@ -367,6 +779,15 @@ export default function DailyPage() {
                       <PixelCheckIcon size={20} color="#84BC2F" />
                       <span className="text-base uppercase tracking-widest text-[#84BC2F]" style={{ fontWeight: 400 }}>Complete</span>
                     </div>
+                    <>
+                      <div className="flex items-center gap-2 text-[#10B981]">
+                        <CheckCircle size={14} />
+                        <span className="text-sm uppercase tracking-widest">Complete</span>
+                      </div>
+                      <PixelButton variant="ghost" size="sm" onClick={handleMarkIncomplete}>
+                        <span className="text-xs text-[#4e8888]">Undo</span>
+                      </PixelButton>
+                    </>
                   )}
                 </div>
 

@@ -102,7 +102,7 @@ body {
   97%  { opacity: 0.96; }
 }
 
-/* Animating the path stones on the map page */
+/* animating the stones on the map page */
 @keyframes stones-fwd {
   to { stroke-dashoffset: 22; }
 }

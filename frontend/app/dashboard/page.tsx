@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Navbar } from '../components/NavBar';
 import fire from '../../icons/fire.png';
 import { useRouter } from 'next/navigation';
+import { CharacterPreview } from '../components/CharacterPreview';
+import { useCharacter } from '../context/CharacterContext';
 import { api, type DashboardResponse, type DashboardRoadmap, type Checkpoint, type RoadmapEdge } from '@/lib/api';
 import {
   ReactFlow,
@@ -302,6 +304,124 @@ function PixelCard({
   );
 }
 
+// ─── Minimap ──────────────────────────────────────────────────────────────────
+
+function RoadmapMinimap({
+  nodes,
+  edges,
+  doneNodes,
+  active,
+}: {
+  nodes: { x: number; y: number }[];
+  edges: { a: number; b: number; done: boolean }[];
+  doneNodes: number[];
+  active: boolean;
+}) {
+  return (
+    <svg viewBox="0 0 100 100" className="w-full h-full" preserveAspectRatio="xMidYMid meet" style={{ opacity: active ? 1 : 0.7 }}>
+      {edges.map((e, i) => {
+        const na = nodes[e.a], nb = nodes[e.b];
+        return (
+          <line key={i} x1={na.x} y1={na.y} x2={nb.x} y2={nb.y}
+            stroke={e.done ? '#4a7c7c' : '#cbd5e1'} strokeWidth="2.5"
+            strokeDasharray={e.done ? 'none' : '4 3'} />
+        );
+      })}
+      {nodes.map((n, i) => (
+        <circle key={i} cx={n.x} cy={n.y} r="6"
+          fill={doneNodes.includes(i) ? '#4a7c7c' : '#e2e8f0'} stroke="white" strokeWidth="2" />
+      ))}
+    </svg>
+  );
+}
+
+// ─── Dashboard leaderboard character ─────────────────────────────────────────
+
+const DEFAULT_EQUIPPED_DASH = { skin: 'char1.png', eyes: 'eyes.png', clothes: 'suit.png', pants: 'pants.png', shoes: 'shoes.png', hair: 'buzzcut.png', accessories: '' };
+
+function DashboardCharacter() {
+  const { charState } = useCharacter();
+  const [equipped, setEquipped] = useState(DEFAULT_EQUIPPED_DASH);
+  const [colorVariants, setColorVariants] = useState<Record<string, number>>({});
+  const [charPhase, setCharPhase] = useState<'hidden' | 'falling-in' | 'visible'>('hidden');
+  const [pos, setPos] = useState<{ x: number; y: number; size: number } | null>(null);
+  const mountTime = useRef(Date.now());
+
+  useEffect(() => {
+    const loadEquipped = () => {
+      try {
+        const eq = localStorage.getItem('character_saved');
+        const cv = localStorage.getItem('character_saved_variants');
+        if (eq) setEquipped(prev => ({ ...prev, ...JSON.parse(eq) }));
+        if (cv) setColorVariants(JSON.parse(cv));
+      } catch {}
+    };
+    loadEquipped();
+    window.addEventListener('character-saved', loadEquipped);
+    return () => window.removeEventListener('character-saved', loadEquipped);
+  }, []);
+
+  useEffect(() => {
+    const delay = Math.max(50, 450 - (Date.now() - mountTime.current));
+    let t2: ReturnType<typeof setTimeout>;
+    const t1 = setTimeout(() => {
+      const el = document.querySelector('[data-rank-you]');
+      if (el) {
+        const r = el.getBoundingClientRect();
+        const size = 80;
+        setPos({ x: r.left - 0 + r.width / 2 - size / 2, y: r.top - 50, size });
+      }
+      setCharPhase('falling-in');
+      t2 = setTimeout(() => setCharPhase('visible'), 650);
+    }, delay);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, []);
+
+  if (charPhase === 'hidden' || charState.phase === 'departing') return null;
+  if (!pos) return null;
+
+  const CHAR_SIZE = 70;
+
+  return (
+    <div style={{ position: 'fixed', inset: 0, zIndex: 9998, pointerEvents: 'none', overflow: 'hidden' }}>
+      {charPhase === 'falling-in' && (
+        <style>{`
+          @keyframes dashCharFall {
+            0%   { transform: translateY(-700px); }
+            72%  { transform: translateY(10px); }
+            87%  { transform: translateY(-4px); }
+            100% { transform: translateY(0px); }
+          }
+        `}</style>
+      )}
+      <div
+        data-dashboard-char=""
+        style={{
+          position: 'absolute',
+          left: pos.x,
+          top: pos.y,
+          width: CHAR_SIZE,
+          height: CHAR_SIZE,
+          imageRendering: 'pixelated',
+          animation: charPhase === 'falling-in' ? 'dashCharFall 0.65s linear forwards' : 'none',
+        }}
+      >
+        <CharacterPreview
+          size={CHAR_SIZE}
+          walk
+          skin={equipped.skin}
+          eyes={equipped.eyes}
+          clothes={equipped.clothes}
+          pants={equipped.pants}
+          shoes={equipped.shoes}
+          hair={equipped.hair}
+          accessory={equipped.accessories}
+          variants={colorVariants}
+        />
+      </div>
+    </div>
+  );
+}
 
 // ─── Dashboard ────────────────────────────────────────────────────────────────
 
@@ -313,7 +433,6 @@ export default function Dashboard() {
   const [selectedRoadmap, setSelectedRoadmap] = useState<DashboardRoadmap | null>(null);
 
   useEffect(() => {
-    // Gate: redirect to onboarding if not completed
     api.currentUser()
       .then(user => { if (!user.onboarding_completed) router.replace("/OnBoarding/Major"); })
       .catch(() => {});
@@ -336,7 +455,7 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen w-full bg-[#eef1f7] flex items-center justify-center">
+      <div className="min-h-screen w-full bg-[#f0f8f8] flex items-center justify-center">
         <p className="text-slate-400">Loading...</p>
       </div>
     );
@@ -351,46 +470,70 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen w-full bg-[#f0f8f8] relative">
       <Navbar />
+      <DashboardCharacter />
 
       <div className="pt-25 px-8 pb-5 ml-8 mr-7">
         <div className="max-w-7xl mx-auto">
 
           {/* Header row */}
-          <div className="flex items-start justify-between mb-6 gap-4">
-
-            {/* Left: title */}
+          <div className="flex items-start justify-between mb-8 gap-6">
             <div>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">
+                {data?.active_roadmap.title} Path
+              </p>
               <div className='flex items-center '>
-                <h1 className="text-5xl text-slate-700 leading-tight tracking-wider">Dashboard</h1>
+                <h1 className="text-4xl font-bold text-slate-700 leading-tight">Dashboard</h1>
               </div>
               <p className="text-xl text-[#508484] mt-1">Welcome back, {userName}</p>
             </div>
 
-            {/* Right: quick stats + today's challenge */}
-            <div className="flex items-stretch gap-3 shrink-0">
+            <div className="flex items-center gap-3 flex-shrink-0">
+              {/* XP block */}
+              <PixelCard className="flex items-center gap-2 px-4 py-2.5">
+                <div className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-blue-400">
+                    <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider leading-none">Total XP</p>
+                  <p className="text-sm font-bold text-slate-700">{xpTotal}</p>
+                </div>
+              </PixelCard>
 
-              {/* XP — no box */}
-              <div className="flex items-center gap-3 px-2">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10 text-yellow-400 shrink-0">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-                <p className="text-4xl text-slate-700 whitespace-nowrap">XP: {xpTotal}</p>
-              </div>
-
-              {/* Progress — no box */}
-              <div className="flex items-center gap-3 px-2">
-                <div className="relative w-10 h-10 shrink-0">
+              {/* Progress block */}
+              <PixelCard className="flex items-center gap-2 px-4 py-2.5">
+                <div className="relative w-7 h-7 shrink-0">
                   <svg className="w-full h-full" viewBox="0 0 200 200">
                     <circle cx="100" cy="100" r="80" fill="none" stroke="#e2e8f0" strokeWidth="28" />
                     <circle cx="100" cy="100" r="80" fill="none" stroke="#4a7c7c" strokeWidth="28"
                       strokeDasharray={`${displayProgress * 5.03} 502`} strokeLinecap="round"
                       style={{ transition: 'stroke-dasharray 1s ease-out' }} transform="rotate(-90 100 100)" />
                   </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-[8px] font-bold text-slate-700">{displayProgress}%</span>
+                  </div>
                 </div>
-                <p className="text-4xl text-slate-700 whitespace-nowrap">{displayProgress}%</p>
-              </div>
+                <div>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider leading-none">Progress</p>
+                  <p className="text-sm font-bold text-slate-700">{displayProgress}%</p>
+                </div>
+              </PixelCard>
 
-              {/* Today's Challenge — PixelCard with gradient + PixelButton */}
+              {/* Challenges block */}
+              <PixelCard className="flex items-center gap-2 px-4 py-2.5">
+                <div className="w-7 h-7 rounded-full bg-green-100 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-green-500">
+                    <path fillRule="evenodd" d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12a4.49 4.49 0 01-1.549 3.397 4.491 4.491 0 01-1.307 3.497 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider leading-none">Challenges</p>
+                  <p className="text-sm font-bold text-slate-700">{tasksCompleted}/30</p>
+                </div>
+              </PixelCard>
+
+              {/* Today's Challenge */}
               <PixelCard className="bg-gradient-to-r from-[#4a7c7c] to-[#6fa8a8] px-5 py-2.5 flex items-center gap-4 text-white !border-t-[#6fa8a8] !border-l-[#6fa8a8] !border-r-[#2d5050] !border-b-[#2d5050]">
                 <div>
                   <p className="text-lg uppercase tracking-normal opacity-75 leading-none mb-0.5">Today&apos;s Challenge</p>
@@ -406,7 +549,7 @@ export default function Dashboard() {
           {/* Main content: 3 columns */}
           <div className="grid grid-cols-12 gap-6">
 
-            {/* LEFT col: Streak Leaderboard */}
+            {/* LEFT col: Leaderboard */}
             <PixelCard className="col-span-3 p-6 h-100 flex flex-col">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
@@ -423,8 +566,11 @@ export default function Dashboard() {
                       ${user.is_you
                         ? 'bg-[#d4eaea] border-t-[#4a7c7c] border-l-[#4a7c7c] border-r-[#2d5050] border-b-[#2d5050]'
                         : 'bg-white border-t-[#d4e8e8] border-l-[#d4e8e8] border-r-[#7ab3b3] border-b-[#7ab3b3]'}`}>
-                    <span className={`text-base font-normal w-6 text-center shrink-0 ${user.is_you ? 'text-[#4a7c7c]' : 'text-slate-500'}`}>
-                      {user.rank}
+                    <span
+                      className={`text-base font-normal w-6 text-center shrink-0 ${user.is_you ? 'text-[#4a7c7c]' : 'text-slate-500'}`}
+                      {...(user.is_you ? { 'data-rank-you': '' } : {})}
+                    >
+                      {user.is_you ? '' : user.rank}
                     </span>
                     <div className="flex-1 min-w-0">
                       <p className="text-base font-normal text-slate-700">{user.is_you ? 'You' : user.name}</p>
@@ -448,9 +594,9 @@ export default function Dashboard() {
                 <span className="text-2xl text-slate-400 cursor-pointer hover:text-slate-600 leading-none select-none">+</span>
               </div>
 
-              <div className="flex flex-col gap-2 flex-1 overflow-y-auto">
+              <div className="grid grid-cols-2 gap-3 flex-1 min-h-0">
                 {roadmaps.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center text-center py-8">
+                  <div className="col-span-2 flex flex-col items-center justify-center text-center py-8">
                     <p className="text-sm text-slate-400 mb-2">No roadmaps yet</p>
                     <a href="/OnBoarding/Major" className="text-xs text-[#4a7c7c] bg-[#4a7c7c]/10 hover:bg-[#4a7c7c]/20 px-4 py-1.5 rounded-xl transition-colors">
                       Complete onboarding to generate your roadmap
