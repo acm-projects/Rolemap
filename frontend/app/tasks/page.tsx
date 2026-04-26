@@ -5,11 +5,9 @@ import { useCharacter } from "../context/CharacterContext";
 import Image from "next/image";
 import pic6 from "../tasks/target.png";
 import PixelButton from "../components/PixelButton";
-import { api, type Task } from "@/lib/api";
-import PixelProgress from "../components/PixelProgress";
-import { useRouter } from "next/navigation";
 import { api, type Task, type SkillDecayEntry } from "@/lib/api";
-import { BookOpen, CheckCircle, ExternalLink, Code2, Trophy, Zap } from 'lucide-react';
+import { useRouter } from "next/navigation";
+import { Zap } from 'lucide-react';
 
 const DECAY_STYLE: Record<string, { borderColor: string; badgeBg: string; badgeText: string; label: string; headerBg: string }> = {
   review_soon: { borderColor: '#f59e0b', badgeBg: '#fef3c7', badgeText: '#92400e', label: 'Review Soon',  headerBg: '#fffbeb' },
@@ -226,7 +224,6 @@ function DieCharacter({ taskId, falling, fallDelta }: {
 
   useEffect(() => {
     if (falling && phase === 'sleeping' && taskId) {
-      // Capture current viewport position before switching to fixed animation
       const pos = getCardFixed(taskId);
       if (pos) setFixedPos(pos);
       setAnimKey(k => k + 1);
@@ -366,11 +363,12 @@ export default function DailyPage() {
 
   const activeTaskObj = tasks.find(t => t.id === activeTask) ?? null;
   const allDone = tasks.length > 0 && completed.length >= tasks.length;
-  useEffect(() => { loadTasks();
-    if (allDone && checkpointLabel) {
-    localStorage.setItem('node_just_completed', checkpointLabel);
-  }
 
+  useEffect(() => {
+    loadTasks();
+    if (allDone && checkpointLabel) {
+      localStorage.setItem('node_just_completed', checkpointLabel);
+    }
   }, [allDone, checkpointLabel]);
 
   // Initialize charTaskId on first tasks load
@@ -399,7 +397,6 @@ export default function DailyPage() {
     setCompleted(newCompleted);
     api.updateTask(activeTask, 'completed').catch(console.error);
 
-    // Trigger fall if character is on this task
     if (charTaskId === activeTask) {
       const nextTask = tasks.find(t => !newCompleted.includes(t.id));
       if (nextTask) {
@@ -423,7 +420,6 @@ export default function DailyPage() {
     if (!activeTask || !completed.includes(activeTask)) return;
     setCompleted(prev => prev.filter(id => id !== activeTask));
     api.updateTask(activeTask, 'in_progress').catch(console.error);
-    // Move character back to this task if it has no current target
     if (!charTaskId) setCharTaskId(activeTask);
   }
 
@@ -438,8 +434,7 @@ export default function DailyPage() {
   const isDone = activeTaskObj ? completed.includes(activeTaskObj.id) : false;
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-[#7EC8E3] to-[#E1FAFF]" style={{ fontFamily: "'Press Start 2P', monospace" }}>
-    <div className="min-h-screen bg-[#f0f8f8]" style={{ imageRendering: 'pixelated' }}>
+    <div className="min-h-screen bg-linear-to-b from-[#7EC8E3] to-[#E1FAFF]" style={{ fontFamily: "'Press Start 2P', monospace", imageRendering: 'pixelated' }}>
       <DieCharacter taskId={charTaskId} falling={charFalling} fallDelta={charFallDelta} />
       <Navbar />
 
@@ -454,7 +449,6 @@ export default function DailyPage() {
               <div
                 className="-mx-5 -mt-5 mb-4"
                 style={{ borderBottomWidth: 4, borderBottomStyle: 'solid', borderBottomColor: '#334155', backgroundColor: 'white' }}
-                style={{ borderBottomWidth: 4, borderBottomStyle: 'solid', borderBottomColor: '#2d5050', backgroundColor: '#4e8888', position: 'relative', zIndex: 9995 }}
               >
                 <div className="px-4 py-2" style={{ backgroundColor: '#334155' }}>
                   <p className="text-[18px] text-[#F9EC72] uppercase tracking-widest" style={{ fontWeight: 400 }}>Today&apos;s Challenge</p>
@@ -484,8 +478,6 @@ export default function DailyPage() {
             )}
 
             {/* Task list */}
-            <div className="flex flex-col gap-3 flex-1 overflow-y-auto">
-            {/* Resource cards */}
             <div id="task-scroll" className="flex flex-col gap-2 flex-1 overflow-y-auto" style={{ overscrollBehavior: 'none' }}>
 
               {/* Decay review tasks */}
@@ -533,7 +525,8 @@ export default function DailyPage() {
                 return (
                   <div
                     key={task.id}
-                    onClick={() => setActiveTask(task.id)}
+                    data-task-id={task.id}
+                    onClick={() => { setActiveTask(task.id); setActiveDecayTask(null); }}
                     className="cursor-pointer transition-all duration-100 active:translate-y-[1px]"
                     style={{
                       borderWidth: 2,
@@ -576,42 +569,14 @@ export default function DailyPage() {
                         )}
                       </div>
                     </div>
-                  <div key={task.id} data-task-id={task.id}>
-                    <PixelCard
-                      onClick={() => { setActiveTask(task.id); setActiveDecayTask(null); }}
-                      selected={isActive}
-                      hover
-                    >
-                      <div className="flex items-center gap-3 p-3">
-                        <div className="flex-shrink-0 w-9 h-9 bg-[#f0f8f8] flex items-center justify-center border-2 border-[#d4e8e8]">
-                          {isDoneItem
-                            ? <CheckCircle size={14} className="text-[#10B981]" />
-                            : task.type === 'Coding'
-                              ? <Code2 size={14} className="text-[#4e8888]" />
-                              : <BookOpen size={14} className="text-[#4e8888]" />
-                          }
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-[10px] text-[#7ab3b3] uppercase truncate leading-tight mb-0.5">{task.type}</p>
-                          <h3 className="text-xs truncate text-[#2d5050] leading-tight">
-                            {task.title}
-                          </h3>
-                          {isDoneItem && (
-                            <p className="text-xs text-[#10B981] uppercase mt-0.5">Done</p>
-                          )}
-                        </div>
-                      </div>
-                    </PixelCard>
                   </div>
                 );
               })}
             </div>
 
-            {/* Progress bar section */}
+            {/* Progress bar */}
             <div className="pt-4 mt-4" style={{ borderTopWidth: 3, borderTopStyle: 'solid', borderTopColor: '#334155' }}>
               <TaskProgress value={completionPct} />
-            <div className="pt-4 mt-4 border-t-4 border-[#d4e8e8]" style={{ position: 'relative', zIndex: 9995, backgroundColor: '#ffffff' }}>
-              <PixelProgress value={completionPct} showLabel={true} />
             </div>
 
           </PixelPanel>
@@ -621,8 +586,6 @@ export default function DailyPage() {
         <div className="flex-1 flex flex-col min-w-0">
           <PixelPanel className="flex-1 bg-white p-10 flex flex-col h-full overflow-y-auto">
 
-            {allDone ? (
-            {/* Decay task detail */}
             {activeDecayTask ? (() => {
               const entry = activeDecayTask;
               const style = DECAY_STYLE[entry.decay_level] ?? DECAY_STYLE.decaying;
@@ -677,7 +640,6 @@ export default function DailyPage() {
               );
             })()
 
-            /* All resources done — "Done for the day" */
             : allDone ? (
               <div className="flex flex-col items-center justify-center h-full gap-6">
                 <div
@@ -705,9 +667,9 @@ export default function DailyPage() {
                   <span
                     className="text-base uppercase tracking-widest px-3 py-1.5"
                     style={{
-                        backgroundColor: activeTaskObj.type === 'Coding' ? '#334155' : '#84BC2F',
-                        color: activeTaskObj.type === 'Coding' ? '#F9EC72' : 'white',
-                        fontWeight: 400
+                      backgroundColor: activeTaskObj.type === 'Coding' ? '#334155' : '#84BC2F',
+                      color: activeTaskObj.type === 'Coding' ? '#F9EC72' : 'white',
+                      fontWeight: 400
                     }}
                   >
                     {activeTaskObj.type}
@@ -717,7 +679,6 @@ export default function DailyPage() {
                 {/* Title and Divider */}
                 <div className="mb-8">
                   <h1 className="text-5xl text-[#334155] leading-tight mb-4" style={{ fontWeight: 400 }}>
-                  <h1 className="text-3xl md:text-4xl text-[#2d5050] tracking-normal font-normal leading-tight mb-4">
                     {activeTaskObj.title}
                   </h1>
                   <div className="w-16 h-1.5" style={{ backgroundColor: '#84BC2F' }} />
@@ -767,25 +728,19 @@ export default function DailyPage() {
                 </div>
 
                 {/* Footer / Status */}
-                <div className="mt-8">
-                {/* Mark complete */}
                 <div className="mt-8 flex items-center gap-4">
                   {!isDone ? (
                     <PixelButton variant="primary" size="md" onClick={handleMarkComplete}>
                       <span className="text-base">Mark Complete</span>
                     </PixelButton>
                   ) : (
-                    <div className="flex items-center gap-2">
-                      <PixelCheckIcon size={20} color="#84BC2F" />
-                      <span className="text-base uppercase tracking-widest text-[#84BC2F]" style={{ fontWeight: 400 }}>Complete</span>
-                    </div>
                     <>
-                      <div className="flex items-center gap-2 text-[#10B981]">
-                        <CheckCircle size={14} />
-                        <span className="text-sm uppercase tracking-widest">Complete</span>
+                      <div className="flex items-center gap-2">
+                        <PixelCheckIcon size={20} color="#84BC2F" />
+                        <span className="text-base uppercase tracking-widest text-[#84BC2F]" style={{ fontWeight: 400 }}>Complete</span>
                       </div>
                       <PixelButton variant="ghost" size="sm" onClick={handleMarkIncomplete}>
-                        <span className="text-xs text-[#4e8888]">Undo</span>
+                        <span className="text-xs">Undo</span>
                       </PixelButton>
                     </>
                   )}
