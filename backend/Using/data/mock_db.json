@@ -16346,7 +16346,7 @@
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic_idx": 0,
-      "status": "completed"
+      "status": "not_started"
     },
     {
       "task_id": "resource__cp-gen-000__0__1",
