@@ -184,6 +184,13 @@ const LAYER_COLORS = [
   'rgba(45, 110, 110, 0.75)',
 ];
 
+// Lighter shadow layers for locked nodes — matches the subtlety of the rectangle's box-shadow
+const LAYER_COLORS_LOCKED = [
+  'rgba(122, 184, 184, 0.08)',
+  'rgba(122, 184, 184, 0.12)',
+  'rgba(122, 184, 184, 0.18)',
+];
+
 /**
  * Character image that sits above the node, peeking out from the top edge.
  * Only rendered when the node is active (in progress).
@@ -214,14 +221,17 @@ function OctagonPixelBorder({
   height,
   borderColor,
   bgColor,
+  isLocked = false,
 }: {
   width: number;
   height: number;
   borderColor: string;
   bgColor: string;
+  isLocked?: boolean;
 }) {
   const cut = 24;
   const pad = LAYER_STEP * LAYER_COUNT + BORDER_WIDTH;
+  const layerColors = isLocked ? LAYER_COLORS_LOCKED : LAYER_COLORS;
 
   // Octagon path offset by (dx, dy)
   const octPath = (dx: number, dy: number) =>
@@ -255,7 +265,7 @@ function OctagonPixelBorder({
           <path
             key={i}
             d={octPath(ox + offset, oy + offset)}
-            fill={LAYER_COLORS[layerIdx]}
+            fill={layerColors[layerIdx]}
           />
         );
       })}
@@ -278,16 +288,19 @@ function CirclePixelBorder({
   size,
   borderColor,
   bgColor,
+  isLocked = false,
 }: {
   size: number;
   borderColor: string;
   bgColor: string;
+  isLocked?: boolean;
 }) {
   const r = size / 2;
   const pad = LAYER_STEP * LAYER_COUNT + BORDER_WIDTH;
   const totalSize = size + pad * 2;
   const cx = pad + r;
   const cy = pad + r;
+  const layerColors = isLocked ? LAYER_COLORS_LOCKED : LAYER_COLORS;
 
   return (
     <svg
@@ -314,7 +327,7 @@ function CirclePixelBorder({
             cx={cx + offset}
             cy={cy + offset}
             r={r}
-            fill={LAYER_COLORS[layerIdx]}
+            fill={layerColors[layerIdx]}
           />
         );
       })}
@@ -348,7 +361,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
   const kind = data.kind || 'lesson';
   const isJumping = !!data.isJumping;
   const bgColor = isCurrent ? '#3d7a7a' : isActive ? '#eaf4f4' : isLocked ? 'rgba(255,255,255,0.7)' : '#ffffff';
-  const borderColor = selected ? '#f7d22e' : isCurrent ? '#2e6666' : isActive ? '#4a9696' : '#7ab8b8';
+  const borderColor = selected ? '#FFBC42' : isCurrent ? '#2e6666' : isActive ? '#4a9696' : '#7ab8b8';
 
   // ── QUIZ (circle) ──────────────────────────────────────────────
   if (kind === 'quiz') {
@@ -390,6 +403,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
           alignItems: 'center',
           justifyContent: 'center',
         }}
+        className={isLocked ? 'opacity-80' : ''}
       >
         <OctagonPixelBorder
           width={OCT_W}
@@ -413,7 +427,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
             ) : (
               <ProjectIcon />
             )}
-            <span className="text-sm leading-tight uppercase tracking-tight">
+            <span className="text-sm leading-tight uppercase tracking-normal font-normal">
               {data.label}
             </span>
           </div>
@@ -428,7 +442,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
               </div>
             </div>
           )}
-          {isLocked && <span className="text-[10px] uppercase tracking-widest font-normal opacity-60">Locked</span>}
+          {isLocked && <span className="text-[10px] uppercase tracking-widest font-normal opacity-80">Locked</span>}
         </div>
         <Handle type="source" position={Position.Right} className="opacity-0!" />
       </div>
@@ -461,7 +475,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
           ) : (
             <ProgressIcon />
           )}
-          <span className="text-sm leading-tight uppercase tracking-tight">
+          <span className="text-sm leading-tight uppercase tracking-normal font-normal">
             {data.label}
           </span>
         </div>
@@ -476,7 +490,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
             </div>
           </div>
         )}
-        {isLocked && <span className="text-[10px] uppercase tracking-widest font-normal opacity-60">Locked</span>}
+        {isLocked && <span className="text-[10px] uppercase tracking-widest font-normal opacity-80">Locked</span>}
       </div>
       <Handle type="source" position={Position.Right} className="opacity-0!" />
     </div>
