@@ -45,7 +45,7 @@ function toMiniFlowEdges(edges: RoadmapEdge[], checkpoints: Checkpoint[]) {
       type: 'step' as const,
       animated: false,
       style: {
-        stroke: unlocked ? '#548080' : '#c8d0dc',
+        stroke: unlocked ? '#04A0FF' : '#8ED4FF',
         strokeWidth: 7,
         strokeDasharray: '8 14',
         strokeLinecap: 'square' as const,
@@ -56,7 +56,7 @@ function toMiniFlowEdges(edges: RoadmapEdge[], checkpoints: Checkpoint[]) {
 }
 
 // ─── Static fallback shown when a roadmap has no generated data ───────────────
-const EDGE_STYLE = { stroke: '#c8d0dc', strokeWidth: 7, strokeDasharray: '8 14', strokeLinecap: 'square' as const };
+const EDGE_STYLE = { stroke: '#8ED4FF', strokeWidth: 7, strokeDasharray: '8 14', strokeLinecap: 'square' as const };
 const FALLBACK_NODES = [
   { id: 'f1', type: 'roadmap' as const, position: { x: 0,    y: 60 }, data: { label: 'Concept 1', progress: 0, locked: false, kind: 'lesson', isCurrent: true  } },
   { id: 'f2', type: 'roadmap' as const, position: { x: 320,  y: 60 }, data: { label: 'Concept 2', progress: 0, locked: true,  kind: 'lesson', isCurrent: false } },
@@ -94,7 +94,7 @@ function FallbackMiniMap() {
       elementsSelectable={false} zoomOnScroll={false}
       panOnScroll={false} panOnDrag={false}
     >
-      <Background variant={BackgroundVariant.Dots} color="#d1d5db" gap={24} size={1.5} />
+      <Background variant={BackgroundVariant.Dots} color="#8ED4FF" gap={24} size={1.5} />
     </ReactFlow>
   );
 }
@@ -117,7 +117,6 @@ function MiniRoadmapContent({ roadmapId }: { roadmapId: string }) {
         const flowNodes = toMiniFlowNodes(data.checkpoints);
         const flowEdges = toMiniFlowEdges(data.edges, data.checkpoints);
         const laidOut = applyDagreLayout(flowNodes, flowEdges);
-
         // Find anchor: first in-progress node → first unlocked node → leftmost node
         const activeCP =
           data.checkpoints.find(cp => !cp.locked && cp.progress < 100) ??
@@ -126,7 +125,6 @@ function MiniRoadmapContent({ roadmapId }: { roadmapId: string }) {
         const anchorNode = activeCP
           ? laidOut.find(n => n.id === activeCP.id)
           : laidOut.reduce((min, n) => (n.position.x < min.position.x ? n : min), laidOut[0]);
-
         // Show anchor + next 3 nodes to its right (sorted by x, then y for tie-breaking)
         const cutoff = anchorNode?.position.x ?? 0;
         const fromAnchor = laidOut
@@ -137,7 +135,6 @@ function MiniRoadmapContent({ roadmapId }: { roadmapId: string }) {
         const visibleEdges = flowEdges.filter(e => visibleIds.has(e.source) && visibleIds.has(e.target));
         setNodes(visibleNodes);
         setEdges(visibleEdges);
-
         // Store anchor center so we can position the viewport consistently
         if (anchorNode) {
           setAnchorCenter({ x: anchorNode.position.x + 128, y: anchorNode.position.y + 70 });
@@ -146,7 +143,6 @@ function MiniRoadmapContent({ roadmapId }: { roadmapId: string }) {
       .catch(() => setError(true))
       .finally(() => setLoading(false));
   }, [roadmapId]); // eslint-disable-line react-hooks/exhaustive-deps
-
   // Position viewport so the anchor node sits in the left portion of the minimap
   useEffect(() => {
     if (!nodesInitialized || nodes.length === 0 || !anchorCenter) return;
@@ -155,12 +151,12 @@ function MiniRoadmapContent({ roadmapId }: { roadmapId: string }) {
   }, [nodesInitialized]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (loading) {
-    return <div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading map...</div>;
+    return <div className="flex items-center justify-center h-full text-[#78ADCF] text-sm">Loading map...</div>;
   }
 
   if (error) {
     return (
-      <div className="w-full h-full bg-[#eef1f7]">
+      <div className="w-full h-full bg-[#E1FAFF]">
         <ReactFlowProvider>
           <FallbackMiniMap />
         </ReactFlowProvider>
@@ -182,14 +178,14 @@ function MiniRoadmapContent({ roadmapId }: { roadmapId: string }) {
       panOnScroll={false}
       panOnDrag={false}
     >
-      <Background variant={BackgroundVariant.Dots} color="#d1d5db" gap={24} size={1.5} />
+      <Background variant={BackgroundVariant.Dots} color="#8ED4FF" gap={24} size={1.5} />
     </ReactFlow>
   );
 }
 
 function MiniRoadmap({ roadmapId }: { roadmapId: string }) {
   return (
-    <div className="w-full h-full bg-[#eef1f7]">
+    <div className="w-full h-full bg-[#E1FAFF]">
       <ReactFlowProvider>
         <MiniRoadmapContent roadmapId={roadmapId} />
       </ReactFlowProvider>
@@ -197,12 +193,12 @@ function MiniRoadmap({ roadmapId }: { roadmapId: string }) {
   );
 }
 
-// ─── Pixel primitives (inlined) ───────────────────────────────────────────────
+// ─── Pixel primitives (inlined) ─────────────────────────────────────────────────────────
 
 interface PixelButtonProps {
   children: React.ReactNode;
   onClick?: () => void;
-  variant?: 'primary' | 'secondary' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'yellow';
   size?: 'xs' | 'sm' | 'md' | 'lg';
   disabled?: boolean;
   type?: 'button' | 'submit';
@@ -219,11 +215,13 @@ function PixelButton({
   const getVariantClasses = () => {
     switch (variant) {
       case 'primary':
-        return 'bg-[#4e8888] hover:bg-[#5e9a9a] active:bg-[#3a6666] text-white border-t-[#7ab3b3] border-l-[#7ab3b3] border-r-[#2d5050] border-b-[#2d5050]';
+        return 'bg-[#04A0FF] hover:bg-[#1aadff] active:bg-[#0080cc] text-white border-t-[#8ED4FF] border-l-[#8ED4FF] border-r-[#0060aa] border-b-[#0060aa]';
       case 'secondary':
-        return 'bg-[#d4e8e8] hover:bg-[#c0dede] active:bg-[#b0d0d0] text-[#2d5050] border-t-[#e8f4f4] border-l-[#e8f4f4] border-r-[#9fc9c9] border-b-[#9fc9c9]';
+        return 'bg-[#BEF8FF] hover:bg-[#d4fbff] active:bg-[#a0f0ff] text-[#334155] border-t-[#DEF2FF] border-l-[#DEF2FF] border-r-[#78ADCF] border-b-[#78ADCF]';
+      case 'yellow':
+        return 'bg-[#F9EC72] hover:bg-[#fdf0a0] active:bg-[#f0e050] text-[#334155] border-t-[#fdf8c0] border-l-[#fdf8c0] border-r-[#c8b800] border-b-[#c8b800]';
       case 'ghost':
-        return 'bg-transparent hover:bg-[#e8f4f4] active:bg-[#d4e8e8] text-[#4e8888] border-transparent';
+        return 'bg-transparent hover:bg-[#BEF8FF] active:bg-[#8ED4FF] text-[#04A0FF] border-transparent';
     }
   };
 
@@ -287,12 +285,12 @@ function PixelCard({
         pixel-border
         bg-white
         border-4
-        border-t-[#d4e8e8] border-l-[#d4e8e8]
-        border-r-[#7ab3b3] border-b-[#7ab3b3]
+        border-t-[#DEF2FF] border-l-[#DEF2FF]
+        border-r-[#334155] border-b-[#334155]
         transition-all duration-100
         ${onClick ? 'cursor-pointer' : ''}
-        ${hover && onClick ? 'hover:bg-[#f0f8f8] hover:translate-y-[-2px]' : ''}
-        ${selected ? 'border-t-[#7ab3b3] border-l-[#7ab3b3] border-r-[#4e8888] border-b-[#4e8888] bg-[#e8f4f4]' : ''}
+        ${hover && onClick ? 'hover:bg-[#E1FAFF] hover:translate-y-[-2px]' : ''}
+        ${selected ? 'border-t-[#8ED4FF] border-l-[#8ED4FF] border-r-[#334155] border-b-[#334155] bg-[#BEF8FF]' : ''}
         active:translate-y-[1px]
         ${className}
       `}
@@ -336,8 +334,8 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen w-full bg-[#eef1f7] flex items-center justify-center">
-        <p className="text-slate-400">Loading...</p>
+      <div className="min-h-screen w-full bg-linear-to-b from-[#7EC8E3] to-[#E1FAFF] flex items-center justify-center">
+        <p className="text-[#78ADCF]">Loading...</p>
       </div>
     );
   }
@@ -349,7 +347,8 @@ export default function Dashboard() {
   const leaderboard = data?.leaderboard ?? [];
 
   return (
-    <div className="min-h-screen w-full bg-[#f0f8f8] relative">
+    // ── Page background: gradient from sky blue to light cyan ──
+    <div className="min-h-screen w-full bg-linear-to-b from-[#7EC8E3] to-[#E1FAFF] relative">
       <Navbar />
 
       <div className="pt-25 px-8 pb-5 ml-8 mr-7">
@@ -360,43 +359,47 @@ export default function Dashboard() {
 
             {/* Left: title */}
             <div>
-              <div className='flex items-center '>
-                <h1 className="text-5xl text-slate-700 leading-tight tracking-wider">Dashboard</h1>
+              <div className='flex items-center'>
+                {/* Title text: 334155 (Charcoal Blue) */}
+                <h1 className="text-5xl text-[#334155] leading-tight tracking-wider">Dashboard</h1>
               </div>
-              <p className="text-xl text-[#508484] mt-1">Welcome back, {userName}</p>
+              {/* Subtitle: slightly lighter, using Sky Reflection */}
+              <p className="text-xl text-[#78ADCF] mt-1">Welcome back, {userName}</p>
             </div>
 
             {/* Right: quick stats + today's challenge */}
             <div className="flex items-stretch gap-3 shrink-0">
 
-              {/* XP — no box */}
+              {/* XP — Star icon + value in F9EC72 (Banana Cream yellow) */}
               <div className="flex items-center gap-3 px-2">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10 text-yellow-400 shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10 shrink-0" style={{ color: '#F9EC72' }}>
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
-                <p className="text-4xl text-slate-700 whitespace-nowrap">XP: {xpTotal}</p>
+                {/* Currency/XP number also in F9EC72 per whiteboard */}
+                <p className="text-4xl whitespace-nowrap" style={{ color: '#F9EC72' }}>XP: {xpTotal}</p>
               </div>
 
-              {/* Progress — no box */}
+              {/* Progress ring — green (84BC2F = Lime Moss) per whiteboard */}
               <div className="flex items-center gap-3 px-2">
                 <div className="relative w-10 h-10 shrink-0">
                   <svg className="w-full h-full" viewBox="0 0 200 200">
-                    <circle cx="100" cy="100" r="80" fill="none" stroke="#e2e8f0" strokeWidth="28" />
-                    <circle cx="100" cy="100" r="80" fill="none" stroke="#4a7c7c" strokeWidth="28"
+                    <circle cx="100" cy="100" r="80" fill="none" stroke="#DEF2FF" strokeWidth="28" />
+                    <circle cx="100" cy="100" r="80" fill="none" stroke="#84BC2F" strokeWidth="28"
                       strokeDasharray={`${displayProgress * 5.03} 502`} strokeLinecap="round"
                       style={{ transition: 'stroke-dasharray 1s ease-out' }} transform="rotate(-90 100 100)" />
                   </svg>
                 </div>
-                <p className="text-4xl text-slate-700 whitespace-nowrap">{displayProgress}%</p>
+                <p className="text-4xl text-[#334155] whitespace-nowrap">{displayProgress}%</p>
               </div>
 
-              {/* Today's Challenge — PixelCard with gradient + PixelButton */}
-              <PixelCard className="bg-gradient-to-r from-[#4a7c7c] to-[#6fa8a8] px-5 py-2.5 flex items-center gap-4 text-white !border-t-[#6fa8a8] !border-l-[#6fa8a8] !border-r-[#2d5050] !border-b-[#2d5050]">
+              {/* Today's Challenge — consistent top-left with other cards: DEF2FF */}
+              <PixelCard className="bg-[#BEF8FF] px-5 py-2.5 flex items-center gap-4 !border-t-[#DEF2FF] !border-l-[#DEF2FF] !border-r-[#334155] !border-b-[#334155]">
                 <div>
-                  <p className="text-lg uppercase tracking-normal opacity-75 leading-none mb-0.5">Today&apos;s Challenge</p>
-                  <p className="text-lg tracking-normal leading-tight">Build a useState counter</p>
+                  <p className="text-lg uppercase tracking-normal opacity-75 leading-none mb-0.5 text-[#334155]">Today&apos;s Challenge</p>
+                  <p className="text-lg tracking-normal leading-tight text-[#334155]">Build a useState counter</p>
                 </div>
-                <PixelButton variant="secondary" size="sm">
+                {/* Open Map / action buttons → yellow (F9EC72) per whiteboard */}
+                <PixelButton variant="yellow" size="sm">
                   Start →
                 </PixelButton>
               </PixelCard>
@@ -410,10 +413,10 @@ export default function Dashboard() {
             <PixelCard className="col-span-3 p-6 h-100 flex flex-col">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-[#BEF8FF] flex items-center justify-center">
                     <Image src={fire} alt="Fire Icon" className="h-6 w-6" />
                   </div>
-                  <h2 className="text-2xl text-slate-800 uppercase tracking-wider">Leaderboard</h2>
+                  <h2 className="text-2xl text-[#334155] uppercase tracking-wider">Leaderboard</h2>
                 </div>
               </div>
               <div className="flex flex-col gap-2 flex-1 overflow-y-auto">
@@ -421,17 +424,18 @@ export default function Dashboard() {
                   <div key={user.rank}
                     className={`flex items-center gap-3 px-4 py-3 transition-all border-2
                       ${user.is_you
-                        ? 'bg-[#d4eaea] border-t-[#4a7c7c] border-l-[#4a7c7c] border-r-[#2d5050] border-b-[#2d5050]'
-                        : 'bg-white border-t-[#d4e8e8] border-l-[#d4e8e8] border-r-[#7ab3b3] border-b-[#7ab3b3]'}`}>
-                    <span className={`text-base font-normal w-6 text-center shrink-0 ${user.is_you ? 'text-[#4a7c7c]' : 'text-slate-500'}`}>
+                        // highlighted row for "you": BEF8FF bg, consistent borders
+                        ? 'bg-[#BEF8FF] border-t-[#DEF2FF] border-l-[#DEF2FF] border-r-[#334155] border-b-[#334155]'
+                        : 'bg-white border-t-[#DEF2FF] border-l-[#DEF2FF] border-r-[#8ED4FF] border-b-[#8ED4FF]'}`}>
+                    <span className={`text-base font-normal w-6 text-center shrink-0 ${user.is_you ? 'text-[#04A0FF]' : 'text-[#78ADCF]'}`}>
                       {user.rank}
                     </span>
                     <div className="flex-1 min-w-0">
-                      <p className="text-base font-normal text-slate-700">{user.is_you ? 'You' : user.name}</p>
-                      <p className="text-lg text-slate-400">{user.subtitle}</p>
+                      <p className="text-base font-normal text-[#334155]">{user.is_you ? 'You' : user.name}</p>
+                      <p className="text-lg text-[#78ADCF]">{user.subtitle}</p>
                     </div>
                     <div className="flex items-center gap-1.5 shrink-0">
-                      <span className={`text-base font-normal ${user.is_you ? 'text-slate-700' : 'text-slate-500'}`}>
+                      <span className={`text-base font-normal ${user.is_you ? 'text-[#334155]' : 'text-[#78ADCF]'}`}>
                         {user.streak}
                       </span>
                       <Image src={fire} alt="Fire Icon" className="h-5 w-5" />
@@ -444,15 +448,15 @@ export default function Dashboard() {
             {/* MIDDLE col: My Roadmaps */}
             <PixelCard className="col-span-3 p-5 flex flex-col h-100">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-2xl text-slate-800 tracking-wider">MY ROADMAPS</h2>
-                <span className="text-2xl text-slate-400 cursor-pointer hover:text-slate-600 leading-none select-none">+</span>
+                <h2 className="text-2xl text-[#334155] tracking-wider">MY ROADMAPS</h2>
+                <span className="text-2xl text-[#04A0FF] cursor-pointer hover:text-[#0080cc] leading-none select-none">+</span>
               </div>
 
               <div className="flex flex-col gap-2 flex-1 overflow-y-auto">
                 {roadmaps.length === 0 ? (
                   <div className="flex flex-col items-center justify-center text-center py-8">
-                    <p className="text-sm text-slate-400 mb-2">No roadmaps yet</p>
-                    <a href="/OnBoarding/Major" className="text-xs text-[#4a7c7c] bg-[#4a7c7c]/10 hover:bg-[#4a7c7c]/20 px-4 py-1.5 rounded-xl transition-colors">
+                    <p className="text-sm text-[#78ADCF] mb-2">No roadmaps yet</p>
+                    <a href="/OnBoarding/Major" className="text-xs text-[#04A0FF] bg-[#BEF8FF] hover:bg-[#8ED4FF] px-4 py-1.5 rounded-xl transition-colors">
                       Complete onboarding to generate your roadmap
                     </a>
                   </div>
@@ -462,14 +466,14 @@ export default function Dashboard() {
                       key={rm.id}
                       onClick={() => setSelectedRoadmap(rm)}
                       className={`flex items-center justify-between px-4 py-3 cursor-pointer transition-all hover:-translate-y-px border-2
-                        ${rm.progress_percentage > 0
-                          ? 'bg-[#d4eaea] border-t-[#4a7c7c] border-l-[#4a7c7c] border-r-[#2d5050] border-b-[#2d5050]'
-                          : 'bg-white border-t-[#d4e8e8] border-l-[#d4e8e8] border-r-[#7ab3b3] border-b-[#7ab3b3]'
+                        ${selectedRoadmap?.id === rm.id
+                          ? 'bg-[#BEF8FF] border-t-[#DEF2FF] border-l-[#DEF2FF] border-r-[#334155] border-b-[#334155]'
+                          : 'bg-white border-t-[#DEF2FF] border-l-[#DEF2FF] border-r-[#8ED4FF] border-b-[#8ED4FF]'
                         }`}
                     >
                       <div className="flex-1">
-                        <p className="text-base text-slate-700 tracking-normal mb-1.5">{rm.title}</p>
-                        <PixelProgress value={rm.progress_percentage} showLabel={false} />
+                        <p className="text-base text-[#334155] tracking-normal mb-1.5">{rm.title}</p>
+                        <PixelProgress value={rm.progress_percentage} showLabel={false} trackColor="#8ED4FF" fillColor="#04A0FF" />
                       </div>
                     </div>
                   );
@@ -477,11 +481,12 @@ export default function Dashboard() {
               </div>
             </PixelCard>
 
-            {/* RIGHT col: Minimap — always visible, widest panel */}
+            {/* RIGHT col: Minimap */}
             <PixelCard className="col-span-6 p-5 flex flex-col h-100">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-2xl text-slate-800 tracking-wider">MAP</h2>
-                <PixelButton variant="secondary" size="xs" onClick={() => router.push(selectedRoadmap ? `/map?roadmap=${selectedRoadmap.id}` : '/map')}>
+                <h2 className="text-2xl text-[#334155] tracking-wider">MAP</h2>
+                {/* Open Map → yellow button per whiteboard */}
+                <PixelButton variant="yellow" size="xs" onClick={() => router.push(selectedRoadmap ? `/map?roadmap=${selectedRoadmap.id}` : '/map')}>
                   Open Full Map →
                 </PixelButton>
               </div>
@@ -489,7 +494,7 @@ export default function Dashboard() {
                 {selectedRoadmap ? (
                   <MiniRoadmap key={selectedRoadmap.id} roadmapId={selectedRoadmap.id} />
                 ) : (
-                  <div className="flex items-center justify-center h-full text-sm text-slate-300 tracking-normal">
+                  <div className="flex items-center justify-center h-full text-sm text-[#8ED4FF] tracking-normal">
                     Select a roadmap to preview
                   </div>
                 )}
