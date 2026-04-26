@@ -10,6 +10,7 @@ import json
 import logging
 import shutil
 import sys
+from uuid import uuid4
 from typing import Any
 
 logger = logging.getLogger(__name__)
@@ -21,6 +22,9 @@ _background_tasks: set = set()
 
 DB_PATH = Path(__file__).parent.parent / "data" / "mock_db.json"
 UPLOAD_DIR = Path(__file__).parent.parent / "data" / "uploads"
+OUTPUT_DIR = Path(__file__).parent.parent / "output"
+RESUME_OUTPUT_PATH = OUTPUT_DIR / "result.json"
+GITHUB_OUTPUT_PATH = OUTPUT_DIR / "github_result.json"
 
 # Quiz_Gen import
 _quiz_gen_path = str(Path(__file__).parent.parent / "Quiz_Gen")
@@ -262,6 +266,136 @@ def save_db(db: dict) -> None:
         json.dump(db, f, indent=2)
 
 
+def _load_optional_json(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        return data if isinstance(data, dict) else {}
+    except (OSError, json.JSONDecodeError) as exc:
+        logger.warning("Failed to load JSON from %s: %s", path, exc)
+        return {}
+
+
+def _get_resume_output() -> dict[str, Any]:
+    return _load_optional_json(RESUME_OUTPUT_PATH)
+
+
+def _get_github_output() -> dict[str, Any]:
+    return _load_optional_json(GITHUB_OUTPUT_PATH)
+
+
+def _get_resume_state(db: dict) -> dict[str, list[dict[str, Any]]]:
+    state = db.setdefault("resume_state", {})
+    state.setdefault("added_skills", [])
+    state.setdefault("added_projects", [])
+    return state
+
+
+def _normalize_resume_project(project: dict[str, Any], index: int) -> dict[str, Any]:
+    descriptions = project.get("descriptions", [])
+    bullets = [item for item in descriptions if isinstance(item, str) and item.strip()]
+    fallback_name = f"Resume Project {index}"
+    name = (project.get("name") or "").strip() or fallback_name
+
+    tech = ""
+    if bullets:
+        first_bullet = bullets[0]
+        if " using " in first_bullet.lower():
+            tech = first_bullet.split(" using ", 1)[1].strip().rstrip(".")
+
+    return {
+        "id": f"resume-{index}",
+        "name": name,
+        "tech": tech,
+        "period": project.get("date", ""),
+        "bullets": bullets,
+        "source": "resume",
+    }
+
+
+def _get_profile_payload(db: dict) -> dict[str, str]:
+    user = db["users"][0]
+    resume_output = _get_resume_output()
+    github_output = _get_github_output()
+
+    resume_profile = resume_output.get("profile", {})
+    github_profile = github_output.get("profile", {})
+
+    name = (
+        resume_profile.get("name")
+        or github_profile.get("name")
+        or user.get("name")
+        or "Player One"
+    )
+    email = resume_profile.get("email") or user.get("email") or ""
+
+    github_username = (
+        user.get("github_username")
+        or github_output.get("username")
+        or ""
+    )
+    url = resume_profile.get("url") or ""
+    if github_username:
+        url = f"github.com/{github_username}"
+
+    return {
+        "name": name,
+        "email": email,
+        "url": url,
+    }
+
+
+def _get_resume_projects() -> list[dict[str, Any]]:
+    resume_output = _get_resume_output()
+    projects = resume_output.get("projects", [])
+    if not isinstance(projects, list):
+        return []
+    return [
+        _normalize_resume_project(project, index)
+        for index, project in enumerate(projects, start=1)
+        if isinstance(project, dict)
+    ]
+
+
+def _get_roadmap_projects(db: dict) -> list[dict[str, Any]]:
+    checkpoints = db.get("roadmap_checkpoints", [])
+    results = []
+    for checkpoint in checkpoints:
+        if checkpoint.get("progress", 0) < 100:
+            continue
+
+        label = checkpoint.get("label", "Completed Roadmap Node")
+        goals = checkpoint.get("learning_goals", [])
+        bullets = [
+            goal for goal in goals
+            if isinstance(goal, str) and goal.strip()
+        ]
+        description = checkpoint.get("description", "")
+        if description:
+            bullets = [description, *bullets]
+
+        results.append({
+            "id": checkpoint["id"],
+            "name": label,
+            "tech": checkpoint.get("kind", "roadmap").replace("_", " ").title(),
+            "period": "Completed",
+            "bullets": bullets[:4],
+            "source": "roadmap",
+        })
+    return results
+
+
+def _skill_exists(added_skills: list[dict[str, Any]], name: str) -> bool:
+    normalized = name.strip().lower()
+    return any(
+        isinstance(skill.get("name"), str)
+        and skill["name"].strip().lower() == normalized
+        for skill in added_skills
+    )
+
+
 # ---------------------------------------------------------------------------
 # GET /api/v1/users/me
 # ---------------------------------------------------------------------------
@@ -296,6 +430,104 @@ async def save_character(body: dict):
     db["users"][0]["character"] = {**DEFAULT_CHARACTER, **body}
     save_db(db)
     return db["users"][0]["character"]
+
+
+# ---------------------------------------------------------------------------
+# Profile endpoints used by the frontend profile page
+# ---------------------------------------------------------------------------
+@router.get("/profile")
+async def get_profile():
+    db = load_db()
+    return {"profile": _get_profile_payload(db)}
+
+
+@router.get("/profile/resume-projects")
+async def get_resume_projects():
+    return _get_resume_projects()
+
+
+@router.get("/profile/roadmap-projects")
+async def get_roadmap_projects():
+    db = load_db()
+    return _get_roadmap_projects(db)
+
+
+@router.get("/profile/resume/active")
+async def get_active_resume():
+    db = load_db()
+    return _get_resume_state(db)
+
+
+@router.post("/profile/resume/add-skill")
+async def add_resume_skill(body: dict[str, Any]):
+    name = str(body.get("name", "")).strip()
+    category = str(body.get("category", "")).strip()
+    if not name or not category:
+        raise HTTPException(status_code=400, detail="Skill name and category are required")
+
+    db = load_db()
+    state = _get_resume_state(db)
+    if _skill_exists(state["added_skills"], name):
+        raise HTTPException(status_code=409, detail="Skill already added")
+
+    skill = {"name": name, "category": category}
+    state["added_skills"].append(skill)
+    save_db(db)
+    return {"skill": skill}
+
+
+@router.delete("/profile/resume/remove-skill/{name}")
+async def remove_resume_skill(name: str):
+    db = load_db()
+    state = _get_resume_state(db)
+    before = len(state["added_skills"])
+    normalized = name.strip().lower()
+    state["added_skills"] = [
+        skill for skill in state["added_skills"]
+        if str(skill.get("name", "")).strip().lower() != normalized
+    ]
+    if len(state["added_skills"]) == before:
+        raise HTTPException(status_code=404, detail="Skill not found")
+    save_db(db)
+    return {"ok": True}
+
+
+@router.post("/profile/resume/add-project")
+async def add_resume_project(body: dict[str, Any]):
+    name = str(body.get("name", "")).strip()
+    if not name:
+        raise HTTPException(status_code=400, detail="Project name is required")
+
+    db = load_db()
+    state = _get_resume_state(db)
+    project = {
+        "id": str(uuid4()),
+        "name": name,
+        "tech": str(body.get("tech", "")).strip(),
+        "period": str(body.get("period", "")).strip(),
+        "bullets": [
+            item for item in body.get("bullets", [])
+            if isinstance(item, str) and item.strip()
+        ],
+    }
+    state["added_projects"].append(project)
+    save_db(db)
+    return {"project": project}
+
+
+@router.delete("/profile/resume/remove-project/{project_id}")
+async def remove_resume_project(project_id: str):
+    db = load_db()
+    state = _get_resume_state(db)
+    before = len(state["added_projects"])
+    state["added_projects"] = [
+        project for project in state["added_projects"]
+        if project.get("id") != project_id
+    ]
+    if len(state["added_projects"]) == before:
+        raise HTTPException(status_code=404, detail="Project not found")
+    save_db(db)
+    return {"ok": True}
 
 
 # ---------------------------------------------------------------------------
