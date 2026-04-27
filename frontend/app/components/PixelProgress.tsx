@@ -4,8 +4,8 @@ interface PixelProgressProps {
   showLabel?: boolean;
   step?: number;
   totalSteps?: number;
-  trackColor?: string; // background of empty segments (default: #d4e8e8)
-  fillColor?: string;  // color of filled segments (default: #4e8888)
+  trackColor?: string; // background of empty segments (default: #8ED4FF)
+  fillColor?: string;  // color of filled segments (default: #04A0FF)
 }
 export default function PixelProgress({
   value,
@@ -13,8 +13,8 @@ export default function PixelProgress({
   showLabel = true,
   step,
   totalSteps,
-  trackColor = '#d4e8e8',
-  fillColor = '#4e8888',
+  trackColor = '#8ED4FF',
+  fillColor = '#04A0FF',
 }: PixelProgressProps) {
   const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
   const segments = 20;
@@ -23,16 +23,16 @@ export default function PixelProgress({
     <div className="w-full">
       {showLabel && (
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xl text-[#4e8888] font-jersey">
+          <span className="text-xl text-[#78ADCF] font-jersey">
             PROGRESS
           </span>
           <div className="flex items-center gap-4">
             {step !== undefined && totalSteps !== undefined && (
-              <span className="text-xl text-[#4e8888] font-jersey">
+              <span className="text-xl text-[#78ADCF] font-jersey">
                 Step {step} of {totalSteps}
               </span>
             )}
-            <span className="text-xl text-[#4e8888] font-jersey">
+            <span className="text-xl text-[#78ADCF] font-jersey">
               {Math.round(percentage)}%
             </span>
           </div>
@@ -43,9 +43,9 @@ export default function PixelProgress({
         style={{
           borderTopColor: trackColor,
           borderLeftColor: trackColor,
-          borderRightColor: '#d4e8e8',
-          borderBottomColor: '#d4e8e8',
-          backgroundColor: '#f0f8f8',
+          borderRightColor: '#8ED4FF',
+          borderBottomColor: '#8ED4FF',
+          backgroundColor: '#E1FAFF',
         }}
       >
         <div className="flex gap-[2px] h-full">
@@ -54,7 +54,7 @@ export default function PixelProgress({
               key={i}
               className="flex-1 transition-all duration-150"
               style={{
-                backgroundColor: i < filledSegments ? fillColor : '#d4e8e8',
+                backgroundColor: i < filledSegments ? fillColor : trackColor,
                 imageRendering: 'pixelated',
                 ...(i < filledSegments ? {
                   borderTop: '1px solid rgba(255,255,255,0.3)',

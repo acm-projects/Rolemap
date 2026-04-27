@@ -18,11 +18,11 @@ export default function PixelButton({
   const getVariantClasses = () => {
     switch (variant) {
       case "primary":
-        return "bg-[#4e8888] hover:bg-[#5e9a9a] active:bg-[#3a6666] text-white border-t-[#7ab3b3] border-l-[#7ab3b3] border-r-[#2d5050] border-b-[#2d5050]";
+        return "bg-[#04A0FF] hover:bg-[#1aadff] active:bg-[#0080cc] text-white border-t-[#8ED4FF] border-l-[#8ED4FF] border-r-[#0060aa] border-b-[#0060aa]";
       case "secondary":
-        return "bg-[#d4e8e8] hover:bg-[#c0dede] active:bg-[#b0d0d0] text-[#2d5050] border-t-[#e8f4f4] border-l-[#e8f4f4] border-r-[#9fc9c9] border-b-[#9fc9c9]";
+        return "bg-[#BEF8FF] hover:bg-[#d4fbff] active:bg-[#a0f0ff] text-[#334155] border-t-[#DEF2FF] border-l-[#DEF2FF] border-r-[#78ADCF] border-b-[#78ADCF]";
       case "ghost":
-        return "bg-transparent hover:bg-[#e8f4f4] active:bg-[#d4e8e8] text-[#4e8888] border-transparent";
+        return "bg-transparent hover:bg-[#BEF8FF] active:bg-[#8ED4FF] text-[#04A0FF] border-transparent";
     }
   };
 

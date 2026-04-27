@@ -16,7 +16,7 @@ export default function PixelInput({
   return (
     <div className="relative">
       {icon && (
-        <div className="absolute left-3 top-1/2 -translate-y-1/2 z-10 text-[#4e8888]">
+        <div className="absolute left-3 top-1/2 -translate-y-1/2 z-10 text-[#78ADCF]">
           {icon}
         </div>
       )}
@@ -30,16 +30,16 @@ export default function PixelInput({
           ${icon ? "pl-10 pr-4" : "px-4"}
           py-3
           bg-white
-          text-[#2d5050]
+          text-[#334155]
           text- xl
           font-jersey
-          placeholder:text-[#7ab3b3]
+          placeholder:text-[#78ADCF]
           border-4
-          border-t-[#7ab3b3] border-l-[#7ab3b3]
-          border-r-[#d4e8e8] border-b-[#d4e8e8]
+          border-t-[#8ED4FF] border-l-[#8ED4FF]
+          border-r-[#DEF2FF] border-b-[#DEF2FF]
           focus:outline-none
-          focus:border-t-[#4e8888] focus:border-l-[#4e8888]
-          focus:border-r-[#7ab3b3] focus:border-b-[#7ab3b3]
+          focus:border-t-[#04A0FF] focus:border-l-[#04A0FF]
+          focus:border-r-[#8ED4FF] focus:border-b-[#8ED4FF]
           transition-all duration-100
         `}
         style={{ imageRendering: "pixelated" }}
