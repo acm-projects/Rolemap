@@ -17,9 +17,8 @@ export default function ResumeUpload() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Skip typing animation if page was already visited (e.g. returning from GitHub OAuth)
-  const [animationDone, setAnimationDone] = useState(false);
+  const [animationDone] = useState(() => sessionStorage.getItem('resume_visited') === '1');
   useEffect(() => {
-    if (sessionStorage.getItem('resume_visited') === '1') setAnimationDone(true);
     sessionStorage.setItem('resume_visited', '1');
     // Restore uploaded resume name after OAuth redirect
     const saved = sessionStorage.getItem('resume_uploaded');
