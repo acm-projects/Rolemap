@@ -1,13 +1,11 @@
 'use client';
 
 import React, { useState, useCallback, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   ReactFlow,
-  Background,
-  BackgroundVariant,
   useNodesState,
   useEdgesState,
-  MiniMap,
   Controls,
   NodeMouseHandler,
   ReactFlowProvider,
@@ -15,189 +13,279 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
-
 import { RoadmapNode } from '@/app/components/RoadmapNode';
 import { NodePanel, NodePanelData } from '@/app/components/ConceptNodePanel';
 import { Navbar } from '@/app/components/NavBar';
+import { api, type Checkpoint, type RoadmapEdge } from '@/lib/api';
+import { applyDagreLayout } from '@/lib/layout';
+import { useCharacter } from '@/app/context/CharacterContext';
 
-const nodeTypes = {
-  roadmap: RoadmapNode,
-};
+const nodeTypes = { roadmap: RoadmapNode };
 
-const initialNodes = [
-  { id: '1', type: 'roadmap', data: { label: 'HTML5 Foundations', progress: 100, locked: false, kind: 'lesson' }, position: { x: 0, y: 150 } },
-  { id: '2', type: 'roadmap', data: { label: 'Advanced CSS & Grid', progress: 100, locked: false, kind: 'lesson' }, position: { x: 300, y: 150 } },
-  { id: '3', type: 'roadmap', data: { label: 'Layouts Master Quiz', progress: 100, locked: false, kind: 'quiz' }, position: { x: 600, y: 150 } },
-  { id: '4', type: 'roadmap', data: { label: 'JS Logic & Variables', progress: 100, locked: false, kind: 'lesson' }, position: { x: 900, y: 50 } },
-  { id: '5', type: 'roadmap', data: { label: 'DOM & Events', progress: 100, locked: false, kind: 'lesson' }, position: { x: 900, y: 250 } },
-  { id: '6', type: 'roadmap', data: { label: 'Interactive Site Project', progress: 40, locked: false, kind: 'project' }, position: { x: 1250, y: 150 } },
-  { id: '7', type: 'roadmap', data: { label: 'Asynchronous JS', progress: 0, locked: true, kind: 'lesson' }, position: { x: 1550, y: 150 } },
-  { id: '8', type: 'roadmap', data: { label: 'React Fundamentals', progress: 0, locked: true, kind: 'lesson' }, position: { x: 1850, y: 150 } },
-];
+// Confirmed asset dimensions (read from file headers):
+//   sky.png         256×240  → 2× = 512×480
+//   clouds-back.png 256×240  → 2× = 512×480
+//   clouds-front.png 256×240 → 2× = 512×480
+//   ground.png      898×106  → 2× = 1796×212
+const PIXEL: React.CSSProperties = { imageRendering: 'pixelated' };
 
-const initialEdges = [
-  { id: 'e1-2', source: '1', target: '2', type: 'default', animated: false, style: { stroke: '#4a7c7c', strokeWidth: 1.5, strokeDasharray: '6 4' } },
-  { id: 'e2-3', source: '2', target: '3', type: 'default', animated: false, style: { stroke: '#4a7c7c', strokeWidth: 1.5, strokeDasharray: '6 4' } },
-  { id: 'e3-4', source: '3', target: '4', type: 'default', animated: false, style: { stroke: '#4a7c7c', strokeWidth: 1.5, strokeDasharray: '6 4' } },
-  { id: 'e3-5', source: '3', target: '5', type: 'default', animated: false, style: { stroke: '#4a7c7c', strokeWidth: 1.5, strokeDasharray: '6 4' } },
-  { id: 'e4-6', source: '4', target: '6', type: 'default', animated: false, style: { stroke: '#4a7c7c', strokeWidth: 1.5, strokeDasharray: '6 4' } },
-  { id: 'e5-6', source: '5', target: '6', type: 'default', animated: false, style: { stroke: '#4a7c7c', strokeWidth: 1.5, strokeDasharray: '6 4' } },
-  { id: 'e6-7', source: '6', target: '7', type: 'default', animated: false, style: { stroke: '#c8d0dc', strokeWidth: 1.5, strokeDasharray: '6 4' } },
-  { id: 'e7-8', source: '7', target: '8', type: 'default', animated: false, style: { stroke: '#c8d0dc', strokeWidth: 1.5, strokeDasharray: '6 4' } },
-];
+function ParallaxLayers() {
+  return (
+    <>
+      {/* Sky — stretched to full viewport height, tiles only horizontally — no vertical seam */}
+      <div
+        aria-hidden="true"
+        className="fixed inset-0 z-0 pointer-events-none"
+        style={{
+          ...PIXEL,
+          backgroundImage: "url('/assets/sky.png')",
+          backgroundSize: '512px 100vh',
+          backgroundRepeat: 'repeat-x',
+          backgroundPosition: 'top left',
+        }}
+      />
+      {/* Back clouds — fade bottom edge into sky with mask gradient */}
+      <div
+        aria-hidden="true"
+        className="fixed top-0 z-1 pointer-events-none"
+        style={{
+          ...PIXEL,
+          width: '200%',
+          height: '67vh',
+          backgroundImage: "url('/assets/clouds-back.png')",
+          backgroundSize: '512px 67vh',
+          backgroundRepeat: 'repeat-x',
+          backgroundPosition: 'top left',
+          opacity: 0.85,
+          animation: 'driftClouds 120s linear infinite',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
+          maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
+        }}
+      />
+      {/* Front clouds — anchored above grass line, fades into sky */}
+      <div
+        aria-hidden="true"
+        className="fixed z-2 pointer-events-none"
+        style={{
+          ...PIXEL,
+          bottom: '18vh',
+          width: '200%',
+          height: '67vh',
+          backgroundImage: "url('/assets/clouds-front.png')",
+          backgroundSize: '512px 67vh',
+          backgroundRepeat: 'repeat-x',
+          backgroundPosition: 'top left',
+          animation: 'driftClouds 60s linear infinite',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 55%, transparent 100%)',
+          maskImage: 'linear-gradient(to bottom, black 55%, transparent 100%)',
+        }}
+      />
+      {/* Ground — 33vh, fills bottom third of screen; z-[6] sits above ReactFlow canvas (z:5) to cover edge artifacts */}
+      <div
+        aria-hidden="true"
+        className="fixed bottom-0 pointer-events-none"
+        style={{
+          ...PIXEL,
+          zIndex: 6,
+          left: '-2px',
+          width: 'calc(100% + 4px)',
+          height: '33vh',
+          backgroundImage: "url('/assets/ground.png')",
+          backgroundSize: '1796px 33vh',
+          backgroundRepeat: 'repeat-x',
+          backgroundPosition: 'top left',
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 8%)',
+          maskImage: 'linear-gradient(to bottom, transparent 0%, black 8%)',
+        }}
+      />
+    </>
+  );
+}
 
-const nodePanelData: Record<string, NodePanelData> = {
-  '1': { 
-    label: 'HTML5 Foundations', 
-    progress: 100, 
-    locked: false, 
-    description: "Establish a strong baseline for web development by mastering semantic HTML and fundamental CSS. This module covers the core principles of document structure, accessibility, and the foundational styling techniques needed to build clean, organized web pages.", 
-    learningGoals: [
-      "Author well-structured, accessible HTML5 markup", 
-      "Apply the CSS Box Model to control spacing and alignment", 
-      "Create fluid layouts that adapt to various screen sizes", 
-      "Utilize Flexbox and Grid for modern interface design"
-    ] 
-  },
-  '2': { 
-    label: 'Advanced CSS & Grid', 
-    progress: 100, 
-    locked: false, 
-    description: "Move beyond the basics to implement complex, high-performance user interfaces. You will explore sophisticated layout systems, modern CSS features like Subgrid and Container Queries, and best practices for managing scalable design systems.", 
-    learningGoals: [
-      "Develop smooth UI transitions and keyframe animations", 
-      "Solve intricate alignment challenges using CSS Subgrid", 
-      "Build truly modular components with Container Queries", 
-      "Implement CSS variables to maintain consistent theme logic"
-    ] 
-  },
-  '3': { 
-    label: 'Layouts Master Quiz', 
-    progress: 100, 
-    locked: false, 
-    kind: 'quiz', 
-    description: "Validate your proficiency in modern layout techniques. This quiz presents real-world styling scenarios to test your ability to build, scale, and debug modern web interfaces.",
-    learningGoals: [
-      "Solve complex positioning and alignment challenges", 
-      "Build components that respond to their environment", 
-      "Debug sizing issues in high-fidelity designs", 
-      "Master logic for style overrides and consistency"
-    ] 
-  },
-  '4': { 
-    label: 'JS Logic & Variables', 
-    progress: 100, 
-    locked: false, 
-    description: "Learn the core programming concepts required to add functionality to the web. This module focuses on JavaScript syntax, data manipulation, and conditional logic, teaching you how to write efficient code that processes information effectively.", 
-    learningGoals: [
-      "Understand variable scope and lifecycle using let and const", 
-      "Construct advanced logic using comparison and logical operators", 
-      "Manipulate data sets using modern ES6+ array methods", 
-      "Organize code into reusable, functional units"
-    ] 
-  },
-  '5': { 
-    label: 'DOM & Events', 
-    progress: 100, 
-    locked: false, 
-    description: "Gain control over the browser environment by interacting directly with page elements. You will learn to detect user actions and programmatically update the page content, creating a seamless and interactive experience without requiring full page reloads.", 
-    learningGoals: [
-      "Target and modify page elements using the DOM API", 
-      "Implement efficient event listeners and delegation patterns", 
-      "Generate and inject dynamic content into the live document", 
-      "Sync UI states by manipulating classes and data attributes"
-    ] 
-  },
-  '6': { 
-    label: 'Interactive Site Project', 
-    progress: 30, 
-    locked: false, 
-    description: "Apply your cumulative knowledge of HTML, CSS, and JavaScript to develop a comprehensive web application. Working from a professional design specification, you will build a functional project that demonstrates your ability to handle complex state and user interactions.", 
-    learningGoals: [
-      "Structure a multi-part application with clean architecture", 
-      "Manage application state and persistent user data", 
-      "Resolve cross-browser styling and functional discrepancies", 
-      "Finalize and host a production-ready web application"
-    ] 
-  },
-  '7': { 
-    label: 'Asynchronous JS', 
-    progress: 0, 
-    locked: true, 
-    description: "Master the techniques required to handle operations that take time to complete, such as fetching data from external APIs or interacting with databases. This module covers the evolution of asynchronous patterns in JavaScript, ensuring you can manage complex data flows without blocking the main execution thread.", 
-    learningGoals: [
-      "Manage asynchronous operations using Promises and callbacks", 
-      "Implement clean, readable code with Async/Await syntax", 
-      "Execute HTTP requests to retrieve and submit data to APIs", 
-      "Handle errors and edge cases in networked environments"
-    ] 
-  },
-  '8': { 
-    label: 'React Fundamentals', 
-    progress: 0, 
-    locked: true, 
-    description: "Transition from imperative DOM manipulation to a declarative, component-based architecture. You will learn the core concepts of the React library, focusing on how to build modular user interfaces that efficiently update in response to changing data and user input.", 
-    learningGoals: [
-      "Develop reusable UI components using JSX syntax", 
-      "Manage local component state and application properties (props)", 
-      "Utilize React Hooks for side effects and state management", 
-      "Understand the component lifecycle and reconciliation process"
-    ] 
-  },
-};
+function toFlowNodes(checkpoints: Checkpoint[], decayMap: Record<string, number> = {}) {
+  const currentCP = checkpoints.find(cp => !cp.locked && cp.progress < 100);
+  return checkpoints.map(cp => ({
+    id: cp.id,
+    type: 'roadmap' as const,
+    data: {
+      label: cp.label,
+      progress: cp.progress,
+      locked: cp.locked,
+      kind: cp.kind,
+      isCurrent: cp === currentCP,
+      decayHealth: decayMap[cp.id],
+    },
+    position: cp.position,
+  }));
+}
+
+function toFlowEdges(edges: RoadmapEdge[], checkpoints: Checkpoint[]) {
+  return edges.map(e => {
+    const sourceCP = checkpoints.find(cp => cp.id === e.source);
+    const unlocked = sourceCP && !sourceCP.locked;
+    return {
+      id: e.id,
+      source: e.source,
+      target: e.target,
+      type: 'step' as const,
+      animated: false,
+      style: {
+        stroke: unlocked ? '#548080' : '#c8d0dc',
+        strokeWidth: 7,
+        strokeDasharray: '8 14',
+        strokeLinecap: 'square',
+        animation: unlocked ? 'stones-fwd 2.4s linear infinite' : 'none',
+      },
+    };
+  });
+}
 
 function RoadmapContent() {
-  const [nodes, , onNodesChange] = useNodesState(initialNodes);
-  const [edges, , onEdgesChange] = useEdgesState(initialEdges);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const roadmapParam = searchParams.get('roadmap');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [nodes, setNodes, onNodesChange] = useNodesState<any>([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [edges, setEdges, onEdgesChange] = useEdgesState<any>([]);
+  const [checkpoints, setCheckpoints] = useState<Checkpoint[]>([]);
   const [activePanel, setActivePanel] = useState<NodePanelData | null>(null);
+  const [activePanelPos, setActivePanelPos] = useState<{ x: number; y: number } | null>(null);
+  const [pendingCenter, setPendingCenter] = useState<{ x: number; y: number } | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const { setCenter, fitView } = useReactFlow();
-
+  const { notifyMapReady } = useCharacter();
 
   useEffect(() => {
-    const activeNode = nodes.find(n => !n.data.locked && n.data.progress < 100);
+    api.dashboard()
+      .then(d => api.roadmapMap(d.active_roadmap.id))
+      .then(data => {
+        setCheckpoints(data.checkpoints);
 
-    if (activeNode) {
-      const timer = setTimeout(() => {
-        setCenter(activeNode.position.x, activeNode.position.y + 85, { 
-          zoom: 1.2, 
-          duration: 1000 
-        });
-      }, 100);
-      return () => clearTimeout(timer);
-    } else {
-      fitView({ duration: 1000 });
-    }
-  }, []); 
+        const flowNodes = toFlowNodes(data.checkpoints);
+        const flowEdges = toFlowEdges(data.edges, data.checkpoints);
+        const laidOutNodes = applyDagreLayout(flowNodes, flowEdges);
+
+        setNodes(laidOutNodes);
+        setEdges(flowEdges);
+
+        // Auto-center on first in-progress node using dagre-computed position
+        const activeCP = data.checkpoints.find(cp => !cp.locked && cp.progress < 100);
+        if (activeCP) {
+          const laidOutNode = laidOutNodes.find(n => n.id === activeCP.id);
+          const pos = laidOutNode?.position ?? activeCP.position;
+          // Start camera animation
+          setTimeout(() => {
+            setCenter(pos.x + 128, pos.y + 70, { zoom: 1.5, duration: 1000 });
+          }, 200);
+          // After camera settles + 600ms beat, trigger CharacterMascot fall-in
+          setTimeout(() => {
+            notifyMapReady();
+          }, 1800);
+        } else {
+          setTimeout(() => fitView({ duration: 1000 }), 200);
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        setLoadError('Failed to load roadmap. Please try again.');
+      })
+      .finally(() => setLoading(false));
+  }, [roadmapParam]);  // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!pendingCenter) return;
+    const timer = setTimeout(() => {
+      setCenter(pendingCenter.x, pendingCenter.y, { zoom: 1.5, duration: 800 });
+      setPendingCenter(null);
+    }, 50);
+    return () => clearTimeout(timer);
+  }, [pendingCenter, setCenter]);
 
   const handleNodeClick: NodeMouseHandler = useCallback((_event, node) => {
-    const data = node.data as { label: string; progress: number; locked: boolean; kind?: string };
-    if (data.locked) return;
+    const data = node.data as { label: string; progress: number; locked: boolean; kind?: string; isCurrent?: boolean };
 
-    const panel = nodePanelData[node.id];
-    if (panel) {
-      setActivePanel(panel);
-      setCenter(node.position.x + 300, node.position.y + 85, { zoom: 1.1, duration: 800 });
+    setPendingCenter({ x: node.position.x + 300, y: node.position.y + 85 });
+    setActivePanelPos({ x: node.position.x + 300, y: node.position.y + 85 });
+
+    if (data.isCurrent) {
+      setNodes(ns => ns.map(n => n.id === node.id ? { ...n, data: { ...n.data, isMascotJumping: true } } : n));
+      setTimeout(() => {
+        setNodes(ns => ns.map(n => n.id === node.id ? { ...n, data: { ...n.data, isMascotJumping: false } } : n));
+      }, 1200);
     }
-  }, [setCenter]);
+
+    if (!data.locked && data.kind === 'quiz') {
+      router.push(`/quiz?checkpoint=${node.id}&label=${encodeURIComponent(data.label)}`);
+      return;
+    }
+
+    const cp = checkpoints.find(c => c.id === node.id);
+    if (cp) {
+      setActivePanel({
+        label: cp.label,
+        progress: cp.progress,
+        locked: cp.locked,
+        kind: cp.kind,
+        description: cp.description,
+        learningGoals: cp.learning_goals,
+        subtopicCompletion: cp.subtopic_completion ?? [],
+      });
+    }
+  }, [checkpoints, router]);
+
+  if (loading) {
+    return (
+      <div className="h-screen w-screen bg-[#eef1f7] flex items-center justify-center">
+        <Navbar />
+        <p className="text-slate-400">Loading roadmap...</p>
+      </div>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <div className="h-screen w-screen bg-[#eef1f7] flex items-center justify-center">
+        <Navbar />
+        <p className="text-red-400">{loadError}</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="h-screen w-screen relative bg-[#eef1f7]">
+    <div className="h-screen w-screen relative overflow-hidden">
       <Navbar />
-      <div style={{ position: 'absolute', top: 72, left: 0, right: 0, bottom: 0 }}>
-        <ReactFlow 
-          nodes={nodes} 
-          edges={edges} 
-          onNodesChange={onNodesChange} 
-          onEdgesChange={onEdgesChange} 
-          nodeTypes={nodeTypes} 
+      <ParallaxLayers />
+      {/* z-index 5: above ground (z-3) and clouds (z-1/2), below navbar (z-10) */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 5 }}>
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          nodeTypes={nodeTypes}
           onNodeClick={handleNodeClick}
+          className="map-flow"
+          style={{ background: 'transparent' }}
         >
-          <Background variant={BackgroundVariant.Dots} color="#d1d5db" gap={24} size={1.5} />
-          <MiniMap position="bottom-left" style={{ width: 150, height: 100 }} />
           <Controls position="bottom-right" />
         </ReactFlow>
       </div>
-      {activePanel && <NodePanel data={activePanel} onClose={() => setActivePanel(null)} />}
+      {/* z-index 20: above ReactFlow and navbar */}
+      {activePanel && (
+        <div style={{ position: 'relative', zIndex: 20 }}>
+          <NodePanel
+            data={activePanel}
+            onClose={() => {
+              setActivePanel(null);
+              if (activePanelPos) {
+                setCenter(activePanelPos.x, activePanelPos.y, { zoom: 1.5, duration: 800 });
+              }
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }

@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import QuizConfetti from '../../components/ui/quiz-confetti';
+import { api, type QuizQuestion } from '@/lib/api';
 
-const questions = [
+const FALLBACK_QUESTIONS: QuizQuestion[] = [
   {
     id: 1,
     question: "Which property allows a nested grid to align its tracks exactly with those of its parent container?",
@@ -44,14 +45,30 @@ const questions = [
 
 export default function QuizPage() {
   const router = useRouter();
-  const label = useSearchParams().get('label') ?? 'Quiz';
+  const searchParams = useSearchParams();
+  const label = searchParams.get('label') ?? 'Quiz';
+  const checkpointId = searchParams.get('checkpoint');
+  const isReview = searchParams.get('review') === 'true';
 
+  const [questions, setQuestions] = useState<QuizQuestion[] | null>(null);
   const [idx, setIdx] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
+  const [reviewInterval, setReviewInterval] = useState<number | null>(null);
+  const submittedRef = useRef(false);
 
-  const q = questions[idx];
+  useEffect(() => {
+    if (checkpointId) {
+      api.quiz(checkpointId)
+        .then(d => setQuestions(d.questions))
+        .catch(() => setQuestions(FALLBACK_QUESTIONS));
+    } else {
+      setQuestions(FALLBACK_QUESTIONS);
+    }
+  }, [checkpointId]);
+
+  const q = questions?.[idx];
   const answered = selected !== null;
 
   function handleSelect(i: number) {
@@ -62,7 +79,20 @@ export default function QuizPage() {
 
   function handleNext() {
     if (idx + 1 >= questions.length) {
+      // score already includes the last answer from handleSelect
+      const finalScore = score;
       setDone(true);
+      // Submit to backend once (guard against StrictMode double-fire)
+      if (checkpointId && !submittedRef.current) {
+        submittedRef.current = true;
+        api.submitQuiz(checkpointId, finalScore, questions.length).catch(console.error);
+        if (isReview) {
+          const quality = Math.round((finalScore / questions.length) * 5);
+          api.reviewSkillDecay(checkpointId, quality)
+            .then(r => setReviewInterval(r.new_interval))
+            .catch(console.error);
+        }
+      }
     } else {
       setIdx(i => i + 1);
       setSelected(null);
@@ -79,7 +109,12 @@ export default function QuizPage() {
       <div className="z-10 bg-white rounded-2xl border border-slate-200 shadow-xl p-10 max-w-md w-full text-center relative">
         <div className="text-4xl mb-4">{score >= 3 ? '🎉' : '📝'}</div>
         <h2 className="text-2xl font-bold text-slate-700 mb-1">{score >= 3 ? 'Passed!' : 'Keep Studying'}</h2>
-        <p className="text-slate-400 text-sm mb-6">{label}</p>
+        <p className="text-slate-400 text-sm mb-2">{label}</p>
+        {isReview && reviewInterval !== null && (
+          <p className="text-xs font-semibold text-purple-600 bg-purple-50 border border-purple-200 rounded-lg px-3 py-1.5 mb-4 inline-block">
+            ✓ Skill updated — next review in {reviewInterval} day{reviewInterval !== 1 ? 's' : ''}
+          </p>
+        )}
         <p className="text-5xl font-black text-slate-600 mb-2">{score}/{questions.length}</p>
         <div className="h-2 bg-slate-100 rounded-full overflow-hidden mb-8">
           <div className={`h-full rounded-full ${score >= 3 ? 'bg-[#23C552]' : 'bg-[#F84F31]'}`} style={{ width: `${(score / questions.length) * 100}%` }} />
@@ -88,6 +123,29 @@ export default function QuizPage() {
           <button onClick={() => router.back()} className="flex-1 border border-slate-200 text-slate-600 font-semibold py-3 rounded-xl hover:bg-slate-50 transition-colors">Back to Map</button>
           <button onClick={() => { setIdx(0); setSelected(null); setScore(0); setDone(false); }} className="flex-1 bg-[#4a7c7c] text-white font-semibold py-3 rounded-xl hover:bg-[#3d6e6e] transition-colors">Retake</button>
         </div>
+      </div>
+    </div>
+  );
+
+  // Loading skeleton
+  if (!questions) return (
+    <div className="min-h-screen bg-[#eef1f7] flex items-center justify-center px-4">
+      <div className="w-full max-w-xl">
+        <div className="h-4 w-20 bg-slate-200 rounded animate-pulse mb-4" />
+        <div className="h-3 w-32 bg-slate-200 rounded animate-pulse mb-2" />
+        <div className="h-6 w-48 bg-slate-200 rounded animate-pulse mb-4" />
+        <div className="h-2 bg-slate-200 rounded-full mb-6 animate-pulse" />
+        <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-5 mb-3">
+          <div className="h-3 w-24 bg-slate-200 rounded animate-pulse mb-3" />
+          <div className="h-5 w-full bg-slate-200 rounded animate-pulse mb-2" />
+          <div className="h-5 w-3/4 bg-slate-200 rounded animate-pulse mb-5" />
+          <div className="space-y-2">
+            {[0,1,2,3].map(i => (
+              <div key={i} className="h-10 w-full bg-slate-100 rounded-xl animate-pulse" />
+            ))}
+          </div>
+        </div>
+        <div className="h-12 w-full bg-slate-200 rounded-2xl animate-pulse" />
       </div>
     </div>
   );

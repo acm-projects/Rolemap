@@ -1,0 +1,387 @@
+{
+  "users": [
+    {
+      "id": "u-001",
+      "email": "demo@rolemap.dev",
+      "name": "Demo User",
+      "xp_total": 350,
+      "current_streak": 3,
+      "longest_streak": 7,
+      "onboarding_completed": true,
+      "last_active_date": "2026-04-22"
+    }
+  ],
+  "user_gamification": [
+    {
+      "user_id": "u-001",
+      "xp_total": 350,
+      "tasks_completed": 4,
+      "leaderboard_rank": 2,
+      "current_streak": 3,
+      "longest_streak": 7
+    }
+  ],
+  "roadmaps": [
+    {
+      "id": "rm-001",
+      "user_id": "u-001",
+      "title": "Front-End Engineer",
+      "status": "active"
+    }
+  ],
+  "roadmap_checkpoints": [
+    {
+      "id": "cp-001",
+      "roadmap_id": "rm-001",
+      "label": "HTML Basics",
+      "kind": "lesson",
+      "progress": 100,
+      "locked": false,
+      "position": { "x": 0, "y": 0 },
+      "description": "Learn the building blocks of the web: elements, attributes, semantic markup, and document structure.",
+      "learning_goals": [
+        "Understand HTML document structure",
+        "Use semantic elements correctly",
+        "Build accessible forms",
+        "Link pages and embed media"
+      ]
+    },
+    {
+      "id": "cp-002",
+      "roadmap_id": "rm-001",
+      "label": "CSS Fundamentals",
+      "kind": "lesson",
+      "progress": 60,
+      "locked": false,
+      "position": { "x": 0, "y": 0 },
+      "description": "Style web pages with CSS: the box model, selectors, flexbox, and responsive design.",
+      "learning_goals": [
+        "Master the CSS box model",
+        "Use flexbox for layout",
+        "Apply responsive design with media queries",
+        "Style typography and colors"
+      ]
+    },
+    {
+      "id": "cp-003",
+      "roadmap_id": "rm-001",
+      "label": "CSS Fundamentals Quiz",
+      "kind": "quiz",
+      "progress": 0,
+      "locked": true,
+      "position": { "x": 0, "y": 0 },
+      "description": "Test your CSS knowledge.",
+      "learning_goals": []
+    },
+    {
+      "id": "cp-004",
+      "roadmap_id": "rm-001",
+      "label": "JavaScript Basics",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": { "x": 0, "y": 0 },
+      "description": "Core JavaScript: variables, functions, control flow, and working with the DOM.",
+      "learning_goals": [
+        "Variables, types, and operators",
+        "Functions and scope",
+        "Arrays and objects",
+        "Control flow and loops"
+      ]
+    },
+    {
+      "id": "cp-005",
+      "roadmap_id": "rm-001",
+      "label": "DOM Manipulation",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": { "x": 0, "y": 0 },
+      "description": "Interact with the browser: select elements, handle events, and update the page dynamically.",
+      "learning_goals": [
+        "Select and traverse DOM nodes",
+        "Handle click and keyboard events",
+        "Mutate the DOM dynamically",
+        "Understand event bubbling"
+      ]
+    },
+    {
+      "id": "cp-006",
+      "roadmap_id": "rm-001",
+      "label": "JavaScript Quiz",
+      "kind": "quiz",
+      "progress": 0,
+      "locked": true,
+      "position": { "x": 0, "y": 0 },
+      "description": "Test your JavaScript knowledge.",
+      "learning_goals": []
+    },
+    {
+      "id": "cp-007",
+      "roadmap_id": "rm-001",
+      "label": "React Foundations",
+      "kind": "lesson",
+      "progress": 0,
+      "locked": true,
+      "position": { "x": 0, "y": 0 },
+      "description": "Build UIs with React: components, JSX, props, state, and hooks.",
+      "learning_goals": [
+        "Components and JSX syntax",
+        "Props and data flow",
+        "useState and useEffect",
+        "Conditional rendering and lists"
+      ]
+    },
+    {
+      "id": "cp-008",
+      "roadmap_id": "rm-001",
+      "label": "Front-End Project #1",
+      "kind": "project",
+      "progress": 0,
+      "locked": true,
+      "position": { "x": 0, "y": 0 },
+      "description": "Build a complete interactive web app using HTML, CSS, and React.",
+      "learning_goals": [
+        "Plan and scaffold the project",
+        "Implement core features",
+        "Style and make it responsive",
+        "Deploy to the web"
+      ]
+    }
+  ],
+  "roadmap_edges": [
+    { "id": "e-001", "roadmap_id": "rm-001", "source": "cp-001", "target": "cp-002" },
+    { "id": "e-002", "roadmap_id": "rm-001", "source": "cp-002", "target": "cp-003" },
+    { "id": "e-003", "roadmap_id": "rm-001", "source": "cp-003", "target": "cp-004" },
+    { "id": "e-004", "roadmap_id": "rm-001", "source": "cp-004", "target": "cp-005" },
+    { "id": "e-005", "roadmap_id": "rm-001", "source": "cp-005", "target": "cp-006" },
+    { "id": "e-006", "roadmap_id": "rm-001", "source": "cp-006", "target": "cp-007" },
+    { "id": "e-007", "roadmap_id": "rm-001", "source": "cp-007", "target": "cp-008" }
+  ],
+  "leaderboard": [
+    { "rank": 1, "name": "Alex K.",    "subtitle": "Full-Stack Engineer", "streak": 14, "is_you": false },
+    { "rank": 2, "name": "Demo User",  "subtitle": "Front-End Engineer",  "streak": 3,  "is_you": true  },
+    { "rank": 3, "name": "Priya S.",   "subtitle": "Data Scientist",       "streak": 2,  "is_you": false },
+    { "rank": 4, "name": "Marcus T.",  "subtitle": "Cloud Engineer",       "streak": 1,  "is_you": false }
+  ],
+  "achievements": [
+    { "id": "ach-001", "title": "First Step",   "description": "Complete your first checkpoint." },
+    { "id": "ach-002", "title": "On a Roll",    "description": "Maintain a 3-day streak."        },
+    { "id": "ach-003", "title": "Quiz Crusher", "description": "Pass your first quiz."            }
+  ],
+  "user_achievements": [
+    { "user_id": "u-001", "achievement_id": "ach-001", "earned_at": "2026-04-20T10:00:00Z" },
+    { "user_id": "u-001", "achievement_id": "ach-002", "earned_at": "2026-04-22T08:00:00Z" }
+  ],
+  "quiz_questions": {
+    "cp-003": [
+      {
+        "id": 1,
+        "question": "Which CSS property controls the space between an element's content and its border?",
+        "options": ["margin", "padding", "border-spacing", "gap"],
+        "correct": 1,
+        "explanation": "padding is the space inside the border; margin is outside."
+      },
+      {
+        "id": 2,
+        "question": "What does `display: flex` do?",
+        "options": [
+          "Makes the element invisible",
+          "Turns the element into a flex container",
+          "Floats the element left",
+          "Centers the element on the page"
+        ],
+        "correct": 1,
+        "explanation": "display: flex activates flexbox layout on the container."
+      },
+      {
+        "id": 3,
+        "question": "Which unit is relative to the viewport width?",
+        "options": ["em", "rem", "vw", "px"],
+        "correct": 2,
+        "explanation": "vw stands for viewport width — 1vw = 1% of the viewport width."
+      },
+      {
+        "id": 4,
+        "question": "How do you select all <p> elements inside a .card class?",
+        "options": [".card + p", ".card > p", ".card p", "#card p"],
+        "correct": 2,
+        "explanation": ".card p selects any <p> descendant of .card, at any depth."
+      },
+      {
+        "id": 5,
+        "question": "Which media query targets screens narrower than 768px?",
+        "options": [
+          "@media (min-width: 768px)",
+          "@media (max-width: 768px)",
+          "@media screen and (width: 768px)",
+          "@media (device-width: 768px)"
+        ],
+        "correct": 1,
+        "explanation": "max-width: 768px matches viewports up to 768px wide."
+      }
+    ],
+    "cp-006": [
+      {
+        "id": 1,
+        "question": "What does `===` check in JavaScript?",
+        "options": [
+          "Value only",
+          "Type only",
+          "Value and type",
+          "Reference equality"
+        ],
+        "correct": 2,
+        "explanation": "=== is strict equality — both value and type must match."
+      },
+      {
+        "id": 2,
+        "question": "Which method adds an item to the end of an array?",
+        "options": ["shift()", "unshift()", "push()", "pop()"],
+        "correct": 2,
+        "explanation": "push() appends one or more items to the end of an array."
+      },
+      {
+        "id": 3,
+        "question": "What is the output of `typeof null`?",
+        "options": ["'null'", "'undefined'", "'object'", "'boolean'"],
+        "correct": 2,
+        "explanation": "typeof null returns 'object' — a historical JavaScript quirk."
+      },
+      {
+        "id": 4,
+        "question": "Which keyword declares a block-scoped variable?",
+        "options": ["var", "let", "function", "global"],
+        "correct": 1,
+        "explanation": "let and const are block-scoped; var is function-scoped."
+      },
+      {
+        "id": 5,
+        "question": "What does `Array.prototype.map()` return?",
+        "options": [
+          "The original array, mutated",
+          "A new array with each element transformed",
+          "A single accumulated value",
+          "A boolean"
+        ],
+        "correct": 1,
+        "explanation": "map() returns a new array; it does not mutate the original."
+      }
+    ]
+  },
+  "task_resources_cache": [
+    {
+      "concept": "CSS Fundamentals",
+      "subtopic": "Master the CSS box model",
+      "result": {
+        "learning_tasks": [
+          {
+            "title": "CSS Box Model — MDN",
+            "type": "Article",
+            "description": "Deep-dive into content, padding, border, and margin with interactive diagrams.",
+            "url": "https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/The_box_model",
+            "objectives": ["Understand content/padding/border/margin", "Spot box-sizing differences"]
+          },
+          {
+            "title": "Box Model Visualizer",
+            "type": "Interactive",
+            "description": "Tweak padding, margin, and border live and see the layout update instantly.",
+            "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing",
+            "objectives": ["Visually grasp how each layer affects size"]
+          }
+        ],
+        "coding_tasks": [
+          {
+            "title": "Card Component Challenge",
+            "type": "Practice",
+            "description": "Build a product card using box model properties — no frameworks, plain CSS.",
+            "url": "",
+            "objectives": ["Apply padding and margin", "Use border-radius and box-shadow", "Center with auto margins"]
+          }
+        ]
+      }
+    },
+    {
+      "concept": "CSS Fundamentals",
+      "subtopic": "Use flexbox for layout",
+      "result": {
+        "learning_tasks": [
+          {
+            "title": "Flexbox Froggy",
+            "type": "Interactive",
+            "description": "Learn flexbox by guiding frogs to their lily pads — 24 levels of increasing difficulty.",
+            "url": "https://flexboxfroggy.com",
+            "objectives": ["justify-content", "align-items", "flex-direction", "flex-wrap"]
+          },
+          {
+            "title": "A Complete Guide to Flexbox — CSS-Tricks",
+            "type": "Article",
+            "description": "The canonical flexbox cheat-sheet with visual examples for every property.",
+            "url": "https://css-tricks.com/snippets/css/a-guide-to-flexbox/",
+            "objectives": ["All flex container and item properties"]
+          }
+        ],
+        "coding_tasks": [
+          {
+            "title": "Build a Navbar with Flexbox",
+            "type": "Practice",
+            "description": "Create a responsive navigation bar: logo left, links center, CTA right.",
+            "url": "",
+            "objectives": ["space-between alignment", "Flex-shrink for mobile", "Wrap on small screens"]
+          }
+        ]
+      }
+    },
+    {
+      "concept": "CSS Fundamentals",
+      "subtopic": "Apply responsive design with media queries",
+      "result": {
+        "learning_tasks": [
+          {
+            "title": "Responsive Design Basics — web.dev",
+            "type": "Article",
+            "description": "Google's guide to viewport meta tags, fluid grids, and mobile-first media queries.",
+            "url": "https://web.dev/responsive-web-design-basics/",
+            "objectives": ["viewport meta tag", "min-width vs max-width queries", "Fluid units"]
+          }
+        ],
+        "coding_tasks": [
+          {
+            "title": "Make a 3-Column Layout Responsive",
+            "type": "Practice",
+            "description": "Start with a desktop 3-col grid and collapse it to a single column on mobile.",
+            "url": "",
+            "objectives": ["Write two breakpoints", "Test in DevTools device mode"]
+          }
+        ]
+      }
+    },
+    {
+      "concept": "CSS Fundamentals",
+      "subtopic": "Style typography and colors",
+      "result": {
+        "learning_tasks": [
+          {
+            "title": "Google Fonts + Variable Fonts Guide",
+            "type": "Article",
+            "description": "Pick, load, and optimize web fonts — plus intro to CSS custom properties for color tokens.",
+            "url": "https://fonts.google.com",
+            "objectives": ["font-family stack", "line-height and letter-spacing", "CSS color formats"]
+          }
+        ],
+        "coding_tasks": [
+          {
+            "title": "Design a Typography Scale",
+            "type": "Practice",
+            "description": "Define h1–h6 and body styles using CSS variables. Apply a Google Font.",
+            "url": "",
+            "objectives": ["CSS custom properties", "rem-based scale", "Contrast ratio check"]
+          }
+        ]
+      }
+    }
+  ],
+  "user_subtopic_progress": [],
+  "user_resource_progress": [],
+  "daily_done": false
+}

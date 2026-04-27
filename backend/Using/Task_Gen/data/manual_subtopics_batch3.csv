@@ -1,0 +1,88 @@
+VirusTotal,File and URL scanning procedures|Malware analysis integration|API usage and automation|Community intelligence leveraging|False positive identification|Threat hunting applications|Report interpretation|Enterprise deployment
+Joe Sandbox,Dynamic malware analysis|Sandbox environment setup|Behavioral analysis reports|API integration|Custom analysis configurations|Threat intelligence extraction|Report customization|Performance optimization
+any.run,Interactive malware analysis|Real-time behavior monitoring|Network traffic analysis|Registry and file monitoring|Screenshot and video capture|API automation|Threat intelligence integration|Analysis report generation
+urlvoid,URL reputation checking|Malicious website detection|API integration|Threat intelligence feeds|False positive handling|Automated scanning workflows|Report analysis|Security tool integration
+urlscan,Website analysis and screenshots|Malicious content detection|DOM analysis|Network request monitoring|API automation|Threat hunting applications|Report interpretation|Integration strategies
+WHOIS,Domain registration lookup|Contact information retrieval|Historical WHOIS data|Privacy protection analysis|Threat intelligence applications|API integration|Automation techniques|Investigation procedures
+Phishing,Email-based social engineering|Phishing campaign identification|Email analysis techniques|URL analysis procedures|User awareness training|Technical countermeasures|Incident response procedures|Threat intelligence integration
+Whishing,Voice-based social engineering|Phone call attack vectors|Caller ID spoofing|Social manipulation techniques|Detection strategies|Prevention measures|Incident response|User education
+Whaling,Executive targeting techniques|High-value target identification|Advanced social engineering|Business email compromise|Detection strategies|Executive protection|Incident response|Awareness training
+Smishing,SMS-based phishing attacks|Mobile threat vectors|Text message analysis|Mobile security measures|User awareness training|Technical countermeasures|Incident response|Threat intelligence
+Spam vs Spim,Email spam identification|Instant messaging spam|Filtering mechanisms|Anti-spam technologies|User education|Legal considerations|Threat intelligence|Prevention strategies
+Shoulder Surfing,Physical observation techniques|Visual eavesdropping methods|Prevention strategies|Environmental awareness|Screen privacy protection|Behavioral countermeasures|Detection techniques|Security awareness
+Dumpster Diving,Physical information gathering|Document disposal security|Privacy protection measures|Information classification|Secure disposal procedures|Detection strategies|Physical security controls|Awareness training
+Tailgating,Physical access control bypassing|Social engineering techniques|Access control weaknesses|Prevention strategies|Security awareness training|Physical security measures|Detection systems|Incident response
+Social Engineering,Human psychology exploitation|Manipulation techniques|Trust building strategies|Information elicitation|Prevention and awareness|Technical countermeasures|Incident response|Training programs
+Reconnaissance,Information gathering techniques|Open source intelligence|Network enumeration|Social media intelligence|Technical reconnaissance|Passive vs active methods|Threat modeling|Defensive strategies
+Impersonation,Identity deception techniques|Authority figure exploitation|Digital impersonation|Voice and communication mimicking|Detection strategies|Prevention measures|Incident response|Legal considerations
+Watering Hole Attack,Targeted website compromise|Victim profiling techniques|Exploit kit deployment|Detection strategies|Prevention measures|Incident response|Threat intelligence|Defensive tactics
+Drive by Attack,Malicious website exploitation|Browser vulnerability exploitation|Exploit kit analysis|Detection techniques|Prevention strategies|Web security measures|Incident response|Threat hunting
+Typo Squatting,Domain name exploitation|Brand impersonation|User misdirection techniques|Detection strategies|Prevention measures|Legal remedies|Monitoring techniques|Brand protection
+Brute Force vs Password Spray,Password attack methodologies|Attack vector differences|Detection strategies|Prevention techniques|Account lockout policies|Authentication strengthening|Monitoring approaches|Incident response
+DoS vs DDoS,Denial of service concepts|Distributed attack coordination|Attack vector analysis|Mitigation strategies|Network protection|Incident response|Recovery procedures|Prevention techniques
+MITM,Man-in-the-middle attack vectors|Interception techniques|Certificate manipulation|Detection strategies|Prevention measures|Encryption importance|Network security|Incident response
+Spoofing,Identity falsification techniques|IP address spoofing|Email spoofing methods|DNS spoofing attacks|Detection strategies|Prevention measures|Authentication mechanisms|Incident response
+Evil Twin,Rogue wireless access point|Network impersonation|Credential harvesting|Detection techniques|Prevention strategies|Wireless security measures|User education|Incident response
+DNS Poisoning,DNS cache manipulation|Malicious redirection|Attack vectors|Detection techniques|Prevention strategies|DNS security measures|Incident response|Recovery procedures
+Deauth Attack,Wireless deauthentication|802.11 protocol exploitation|Attack execution|Detection methods|Prevention strategies|Wireless security hardening|Monitoring techniques|Incident response
+VLAN Hopping,VLAN security bypass|Switch exploitation|Attack methodologies|Detection techniques|Prevention strategies|Network segmentation|Security hardening|Incident response
+Rogue Access Point,Unauthorized wireless devices|Network infiltration|Detection techniques|Prevention strategies|Wireless security policies|Monitoring systems|Incident response|Physical security
+Buffer Overflow,Memory corruption exploitation|Stack-based overflows|Heap-based overflows|Exploit development|Detection techniques|Prevention strategies|Code security|Vulnerability assessment
+Memory Leak,Resource management failures|Memory allocation issues|Performance impact|Detection techniques|Prevention strategies|Code review practices|Testing methodologies|Debugging techniques
+XSS,Cross-site scripting vectors|Reflected XSS attacks|Stored XSS vulnerabilities|DOM-based XSS|Detection techniques|Prevention strategies|Input validation|Output encoding
+SQL Injection,Database query manipulation|Attack vector analysis|Blind injection techniques|Union-based attacks|Detection methods|Prevention strategies|Secure coding practices|Database security
+CSRF,Cross-site request forgery|Attack vector analysis|Token-based protection|Same-origin policy|Detection techniques|Prevention strategies|Secure development|Testing methodologies
+Replay Attack,Session replay exploitation|Token reuse attacks|Detection techniques|Prevention strategies|Cryptographic countermeasures|Session management|Security protocols|Incident response
+Pass the Hash,Credential reuse attacks|Windows authentication exploitation|Lateral movement techniques|Detection strategies|Prevention measures|Credential protection|Monitoring techniques|Incident response
+Directory Traversal,Path manipulation attacks|File system access bypass|Attack vector analysis|Detection techniques|Prevention strategies|Input validation|Access controls|Security testing
+Stakeholders,Stakeholder identification|Interest analysis|Communication strategies|Engagement planning|Conflict resolution|Requirements gathering|Project success factors|Relationship management
+HR,Human resource management|Recruitment and selection|Performance management|Employee relations|Compensation and benefits|Training and development|Legal compliance|Organizational development
+Legal,Legal compliance requirements|Regulatory frameworks|Contract management|Intellectual property|Privacy laws|Risk management|Litigation support|Policy development
+Compliance,Regulatory requirement management|Compliance framework implementation|Audit preparation|Risk assessment|Policy development|Training programs|Monitoring and reporting|Remediation procedures
+Management,Leadership principles|Strategic planning|Team management|Performance management|Communication skills|Decision making|Resource allocation|Change management
+Cloud Skills and Knowledge,Cloud service models|Deployment models|Cloud architecture|Security considerations|Cost optimization|Migration strategies|Governance frameworks|Service management
+Understand the Concept of Security in the Cloud,Shared responsibility model|Cloud security frameworks|Identity and access management|Data protection|Network security|Compliance requirements|Incident response|Security monitoring
+Understand the basics and general flow of deploying in the cloud,Cloud deployment models|Infrastructure provisioning|Application deployment|CI/CD pipelines|Configuration management|Monitoring setup|Scaling strategies|Cost optimization
+Understand the differences between cloud and on-premises,Infrastructure ownership|Cost models|Scalability differences|Security responsibilities|Compliance considerations|Performance characteristics|Management approaches|Migration strategies
+Understand the concept of Infrastructure as Code,IaC principles and benefits|Declarative vs imperative approaches|Version control integration|Infrastructure automation|Testing strategies|Deployment pipelines|Configuration management|Best practices
+Understand the Concept of Serverless,Function as a Service concepts|Event-driven architecture|Serverless frameworks|Cold start optimization|Cost models|Scaling characteristics|Monitoring strategies|Security considerations
+SaaS,Software as a Service models|Multi-tenancy architecture|Subscription management|Integration strategies|Data security|Compliance considerations|Vendor evaluation|Migration planning
+PaaS,Platform as a Service offerings|Development environment|Application deployment|Service integration|Scaling mechanisms|Vendor lock-in considerations|Cost optimization|Security responsibilities
+IaaS,Infrastructure as a Service models|Virtual machine management|Storage services|Network configuration|Security responsibilities|Cost management|Resource optimization|Service level agreements
+Private,Private cloud architecture|On-premises deployment|Security advantages|Cost considerations|Scalability limitations|Management overhead|Compliance benefits|Hybrid integration
+Public,Public cloud services|Multi-tenant environments|Cost advantages|Scalability benefits|Security considerations|Vendor dependencies|Service availability|Compliance challenges
+Hybrid,Hybrid cloud architecture|Workload distribution|Data synchronization|Network connectivity|Security integration|Management complexity|Cost optimization|Migration strategies
+GCP,Google Cloud Platform services|Compute engine management|Cloud storage solutions|BigQuery analytics|Kubernetes engine|Identity and access management|Networking services|Cost optimization
+Dropbox,File synchronization services|Collaboration features|Security controls|API integration|Business administration|Compliance features|Mobile access|Storage management
+Box,Enterprise file sharing|Collaboration workflows|Security and compliance|API development|Administrative controls|Integration capabilities|Mobile access|Governance features
+OneDrive,Microsoft file storage|Office 365 integration|Synchronization features|Sharing and collaboration|Security controls|Administrative management|Mobile access|Business features
+Google Drive,File storage and sharing|Google Workspace integration|Collaboration features|API development|Security controls|Administrative management|Mobile access|Backup solutions
+GTFOBINS,Unix binary exploitation|Living off the land techniques|Privilege escalation methods|File read/write capabilities|Command execution|Bypass techniques|Detection strategies|Defensive measures
+WADCOMS,Windows command reference|Attack technique documentation|Post-exploitation commands|Privilege escalation|Persistence mechanisms|Defense evasion|Collection techniques|Exfiltration methods
+ORACLE,Oracle database architecture|SQL query optimization|PL/SQL programming|Database administration|Performance tuning|Security configuration|Backup and recovery|High availability
+TRANSACTIONS,Database transaction concepts|ACID properties|Transaction isolation levels|Concurrency control|Deadlock handling|Performance optimization|Distributed transactions|Error handling
+DATA-DRIVEN DECISION MAKING,Data collection strategies|Analysis methodologies|Statistical interpretation|Visualization techniques|Business intelligence|Performance metrics|Decision frameworks|Continuous improvement
+AGILE,Agile methodology principles|Scrum framework implementation|Sprint planning and execution|User story development|Daily standups|Retrospectives|Continuous improvement|Team collaboration
+CONFLUENCE,Wiki platform administration|Content creation and organization|Collaboration workflows|Template development|Permission management|Integration capabilities|Reporting features|Maintenance procedures
+DOCKER,Container fundamentals|Image creation and management|Dockerfile best practices|Container orchestration basics|Networking configurations|Volume management|Security hardening|Troubleshooting techniques
+EMOTIONAL INTELLIGENCE,Self-awareness development|Emotion regulation|Empathy and social awareness|Relationship management|Communication skills|Conflict resolution|Leadership effectiveness|Team dynamics
+JENKINS,CI/CD pipeline creation|Build automation|Plugin management|Security configuration|Distributed builds|Pipeline as code|Integration strategies|Troubleshooting techniques
+JIRA,Project management setup|Issue tracking workflows|Custom field configuration|Reporting and dashboards|Integration capabilities|User management|Automation rules|Performance optimization
+KUBERNETES,Container orchestration fundamentals|Cluster architecture|Pod and service management|Configuration management|Resource management|Security best practices|Monitoring and logging|Troubleshooting techniques
+PERFORMANCE METRICS,KPI identification and definition|Measurement methodologies|Data collection strategies|Analysis techniques|Reporting and visualization|Continuous monitoring|Improvement planning|Stakeholder communication
+SCRUM,Scrum framework fundamentals|Role definitions|Ceremony implementation|Artifact management|Sprint execution|Backlog refinement|Team dynamics|Continuous improvement
+SPLUNK,Log data ingestion|Search and analysis|Dashboard creation|Alert configuration|Data modeling|App development|Security use cases|Performance optimization
+STRATEGIC THINKING,Vision development|Environmental scanning|Strategic analysis|Goal setting|Resource allocation|Risk assessment|Implementation planning|Performance measurement
+PROGRAMMING SKILLS,Algorithm design|Data structure implementation|Code organization|Debugging techniques|Version control|Testing methodologies|Documentation practices|Continuous learning
+STATISTICS,Descriptive statistics|Inferential statistics|Probability theory|Hypothesis testing|Regression analysis|Statistical software|Data interpretation|Research methodology
+DISTRIBUTED SYSTEMS,System architecture design|Consistency models|Partitioning strategies|Replication techniques|Consensus algorithms|Fault tolerance|Performance optimization|Monitoring strategies
+ORCHESTRATION,Workflow automation|Service coordination|Resource management|Dependency handling|Error recovery|Scaling strategies|Monitoring integration|Performance optimization
+FLINK,Stream processing fundamentals|Event time processing|State management|Window operations|Fault tolerance|Deployment strategies|Performance tuning|Monitoring and debugging
+KAFKA,Message broker architecture|Topic and partition management|Producer and consumer configuration|Stream processing|Cluster management|Security configuration|Performance optimization|Monitoring strategies
+SCALA,Functional programming concepts|Object-oriented features|Type system|Collection operations|Concurrent programming|Build tools (SBT)|Testing frameworks|Performance optimization
+GENERATIVE AI,Large language model concepts|Prompt engineering techniques|Fine-tuning strategies|Evaluation methodologies|Ethical considerations|Deployment strategies|Performance optimization|Use case development
+CASSANDRA,NoSQL database concepts|Data modeling strategies|Cluster architecture|Replication strategies|Consistency levels|Performance tuning|Backup and recovery|Monitoring techniques
+NOSQL DATABASES,Database model comparison|Document databases|Key-value stores|Column-family databases|Graph databases|Scalability patterns|Consistency models|Use case selection
+NETWORKING,Network protocols|TCP/IP fundamentals|Routing and switching|Network security|Performance optimization|Troubleshooting techniques|Network design|Monitoring strategies
+SPARK,Distributed computing fundamentals|RDD and DataFrame operations|Spark SQL|Streaming processing|Machine learning integration|Cluster management|Performance optimization|Debugging techniques
+DATA STRUCTURES AND ALGORITHMS,Array and list operations|Tree and graph algorithms|Sorting and searching|Hash tables|Dynamic programming|Complexity analysis|Algorithm optimization|Problem-solving strategies
