@@ -43,7 +43,7 @@ export default function LearningPreferences() {
   }, [canContinue]);
 
   return (
-    <div className="relative h-screen overflow-hidden w-full bg-[#f0f8f8] p-3 flex flex-col">
+    <div className="relative h-screen overflow-hidden w-full bg-linear-to-b from-[#7EC8E3] to-[#E1FAFF] p-3 flex flex-col">
       <div className="scanlines" />
 
       <div className="max-w-5xl mx-auto w-full flex flex-col justify-between flex-1">
@@ -54,7 +54,7 @@ export default function LearningPreferences() {
               text="How do you learn best?"
               speed={20}
               delay={400}
-              className="text-5xl text-[#2d5050] leading-relaxed block"
+              className="text-5xl text-[#334155] leading-relaxed block"
             />
           </div>
           <div className="min-h-[5rem]">
@@ -62,7 +62,7 @@ export default function LearningPreferences() {
               text="Select the modalities that help you absorb complex technical concepts most effectively."
               speed={10}
               delay={800}
-              className="text-2xl text-[#4e8888] leading-relaxed max-w-2xl block"
+              className="text-2xl text-[#78ADCF] leading-relaxed max-w-2xl block"
             />
           </div>
         </div>
@@ -74,19 +74,19 @@ export default function LearningPreferences() {
               <PixelCard key={p.id} onClick={() => toggle(p.id)} selected={isSelected}>
                 <div
                   className={`flex justify-center items-center p-3 flex flex-col gap-2 h-full transition-all duration-100 ${
-                    isSelected ? "bg-[#3a6666] translate-y-[4px]" : "bg-transparent translate-y-0"
+                    isSelected ? "bg-[#0080cc] translate-y-[4px]" : "bg-transparent translate-y-0"
                   }`}
                 >
                   <div
                     className={`w-10 h-10 flex items-center justify-center transition-colors duration-100 ${
-                      isSelected ? "text-white" : "text-[#4e8888]"
+                      isSelected ? "text-white" : "text-[#78ADCF]"
                     }`}
                   >
                     {p.icon}
                   </div>
                   <span
                     className={`text-3xl font-jersey transition-colors duration-100 ${
-                      isSelected ? "text-white" : "text-[#2d5050]"
+                      isSelected ? "text-white" : "text-[#334155]"
                     }`}
                   >
                     {p.label}
@@ -106,8 +106,8 @@ export default function LearningPreferences() {
               return (
                 <div
                   key={id}
-                  className="flex items-center gap-1.5 bg-[#3a6666] text-white text-sm font-jersey px-3 py-1 cursor-pointer hover:bg-[#2d5050] transition-colors"
-                  style={{ borderWidth: 2, borderStyle: 'solid', borderTopColor: '#4e8888', borderLeftColor: '#4e8888', borderRightColor: '#1e3838', borderBottomColor: '#1e3838' }}
+                  className="flex items-center gap-1.5 bg-[#04A0FF] text-white text-sm font-jersey px-3 py-1 cursor-pointer hover:bg-[#0080cc] transition-colors"
+                  style={{ borderWidth: 2, borderStyle: 'solid', borderTopColor: '#8ED4FF', borderLeftColor: '#8ED4FF', borderRightColor: '#0060aa', borderBottomColor: '#0060aa' }}
                   onClick={() => toggle(id)}
                 >
                   {pref.label}
@@ -119,15 +119,15 @@ export default function LearningPreferences() {
         )}
 
         <div className="mb-2 flex-1 flex flex-col pt-2">
-          <span className="text-3xl text-[#4e8888] font-jersey uppercase tracking-widest mb-1">
+          <span className="text-3xl text-[#78ADCF] font-jersey uppercase tracking-widest mb-1">
             Other Preferences
           </span>
-          <div className="pixel-border border-[#7ab3b3] bg-white flex-1">
+          <div className="pixel-border border-[#8ED4FF] bg-white flex-1">
             <textarea
               value={otherText}
               onChange={(e) => setOtherText(e.target.value)}
               placeholder="E.g., I prefer focused 2-hour sprints with 15-minute breaks..."
-              className="w-full h-full text-sm text-[#2d5050] placeholder-[#9fc9c9] bg-transparent outline-none resize-none p-3 font-jersey leading-relaxed"
+              className="w-full h-full text-sm text-[#334155] placeholder-[#78ADCF] bg-transparent outline-none resize-none p-3 font-jersey leading-relaxed"
               style={{ fontFamily: "'Press Start 2P', monospace", fontSize: "16px" }}
             />
           </div>
