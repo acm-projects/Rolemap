@@ -6,13 +6,13 @@
       "name": "Alex Morgan",
       "image_url": null,
       "github_username": "SiriKishoreDola",
-      "xp_total": 75,
-      "current_streak": 1,
+      "xp_total": 140,
+      "current_streak": 2,
       "longest_streak": 2,
       "onboarding_completed": true,
       "onboarding_step": 5,
       "created_at": "2025-09-01T00:00:00Z",
-      "last_active_date": "2026-04-25",
+      "last_active_date": "2026-04-26",
       "character": {
         "skin": "char1.png",
         "eyes": "eyes.png",
@@ -2311,11 +2311,11 @@
     {
       "id": "ug-001",
       "user_id": "u-001",
-      "xp_total": 75,
-      "tasks_completed": 11,
+      "xp_total": 140,
+      "tasks_completed": 22,
       "leaderboard_rank": 2,
       "current_streak": 2,
-      "longest_streak": 31,
+      "longest_streak": 2,
       "updated_at": "2026-03-29T12:00:00Z"
     }
   ],
@@ -3271,7 +3271,7 @@
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic": "Identify and use different data types effectively.",
-      "status": "not_started"
+      "status": "completed"
     },
     {
       "task_id": "subtopic__cp-gen-000__2",
@@ -14564,6 +14564,166 @@
         "total_resources_found": 15
       },
       "cached_at": "2026-04-26T02:56:32.854695"
+    },
+    {
+      "concept": "Programming Fundamentals",
+      "subtopic": "Explore advanced patterns in Programming Fundamentals",
+      "result": {
+        "metadata": {
+          "concept": "Programming Fundamentals",
+          "subtopic": "Explore advanced patterns in Programming Fundamentals",
+          "preference": "Interactive-Heavy",
+          "version": "V3-intelligent-hybrid",
+          "processing_time_seconds": 25.91,
+          "llm_enhanced": true
+        },
+        "learning_tasks": [
+          {
+            "title": "MasteringProgrammingPatterns. A Guide for... -DEVCommunity",
+            "description": "Learn Explore advanced patterns in Programming Fundamentals: For juniordeveloperslooking to enhance their coding skills, understanding and applyingprogrammingpat",
+            "url": "https://dev.to/fritzlolpro/mastering-programming-patterns-a-guide-for-junior-developers-9pp",
+            "type": "Learning",
+            "curated_by": "rule-based authority ranking",
+            "objectives": [
+              "Understand the fundamentals of Explore advanced patterns in Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Explore advanced patterns in Programming Fundamentals fits into Programming Fundamentals workflows"
+            ]
+          },
+          {
+            "title": "TopProgrammingFundamentalsCourses Online - Updated...",
+            "description": "Learn Explore advanced patterns in Programming Fundamentals: Learn thefundamentalsofprogrammingfrom a top-rated Udemy instructor. Whether you\u2019re interested in le",
+            "url": "https://www.udemy.com/topic/programming-fundamentals/",
+            "type": "Learning",
+            "curated_by": "rule-based authority ranking",
+            "objectives": [
+              "Understand the fundamentals of Explore advanced patterns in Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Explore advanced patterns in Programming Fundamentals fits into Programming Fundamentals workflows"
+            ]
+          },
+          {
+            "title": "ProgrammingFundamentalsin Kotlin | Coursera",
+            "description": "Learn Explore advanced patterns in Programming Fundamentals: ProgrammingFundamentalsin Kotlin. This course is part of multipleprograms.Final graded quiz:Programm",
+            "url": "https://www.coursera.org/learn/meta-programming-fundamentals-kotlin",
+            "type": "Learning",
+            "curated_by": "rule-based authority ranking",
+            "objectives": [
+              "Understand the fundamentals of Explore advanced patterns in Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Explore advanced patterns in Programming Fundamentals fits into Programming Fundamentals workflows"
+            ]
+          }
+        ],
+        "coding_tasks": [
+          {
+            "title": "ProgrammingFundamentalsin Swift | Coursera",
+            "description": "Learn Explore advanced patterns in Programming Fundamentals: ProgrammingFundamentalsin Swift. This course is part of multipleprograms.Explorethe basicprogramming",
+            "url": "https://www.coursera.org/learn/programming-fundamentals-swift",
+            "type": "Coding",
+            "curated_by": "rule-based authority ranking",
+            "objectives": [
+              "Understand the fundamentals of Explore advanced patterns in Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Explore advanced patterns in Programming Fundamentals fits into Programming Fundamentals workflows"
+            ]
+          },
+          {
+            "title": "datacamp.com/tracks/python-programming-fundamentals",
+            "description": "Learn Explore advanced patterns in Programming Fundamentals: In this track, you\u2019ll build up yourprogrammingskills in Python!",
+            "url": "https://www.datacamp.com/tracks/python-programming-fundamentals",
+            "type": "Coding",
+            "curated_by": "rule-based authority ranking",
+            "objectives": [
+              "Understand the fundamentals of Explore advanced patterns in Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Explore advanced patterns in Programming Fundamentals fits into Programming Fundamentals workflows"
+            ]
+          }
+        ],
+        "total_resources_found": 12
+      },
+      "cached_at": "2026-04-26T02:56:58.820752"
+    },
+    {
+      "concept": "Programming Fundamentals",
+      "subtopic": "Build something real using Programming Fundamentals",
+      "result": {
+        "metadata": {
+          "concept": "Programming Fundamentals",
+          "subtopic": "Build something real using Programming Fundamentals",
+          "preference": "Interactive-Heavy",
+          "version": "V3-intelligent-hybrid",
+          "processing_time_seconds": 11.03,
+          "llm_enhanced": true
+        },
+        "learning_tasks": [
+          {
+            "title": "codecademy.com/learn/learn-how-to-code",
+            "description": "Learn Build something real using Programming Fundamentals: Start here and learnprogrammingfundamentalsthat can be helpful for any...",
+            "url": "https://www.codecademy.com/learn/learn-how-to-code",
+            "type": "Learning",
+            "curated_by": "rule-based authority ranking",
+            "objectives": [
+              "Understand the fundamentals of Build something real using Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Build something real using Programming Fundamentals fits into Programming Fundamentals workflows"
+            ]
+          },
+          {
+            "title": "JavaProgrammingFundamentals",
+            "description": "Learn Build something real using Programming Fundamentals: JavaProgrammingFundamentalsJava is a high-level, class-based, object-orientedprogramminglanguage tha",
+            "url": "https://www.udemy.com/course/java-programming-fundamental/",
+            "type": "Learning",
+            "curated_by": "rule-based authority ranking",
+            "objectives": [
+              "Understand the fundamentals of Build something real using Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Build something real using Programming Fundamentals fits into Programming Fundamentals workflows"
+            ]
+          },
+          {
+            "title": "ProgrammingFundamentals: Operator Precedence and... | LinkedIn",
+            "description": "Learn Build something real using Programming Fundamentals: ProgrammingLearning Journey \u2013 Day 2 Today I exploredsomeimportantprogrammingfundamentalsthat help in",
+            "url": "https://www.linkedin.com/posts/kavya-thupakula_programming-codingjourney-learninginpublic-activity-7437716576067530752-OqZW",
+            "type": "Learning",
+            "curated_by": "rule-based authority ranking",
+            "objectives": [
+              "Understand the fundamentals of Build something real using Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Build something real using Programming Fundamentals fits into Programming Fundamentals workflows"
+            ]
+          }
+        ],
+        "coding_tasks": [
+          {
+            "title": "codecademy.com/learn/learn-how-to-code",
+            "description": "Learn Build something real using Programming Fundamentals: Start here and learnprogrammingfundamentalsthat can be helpful for any...",
+            "url": "https://www.codecademy.com/learn/learn-how-to-code",
+            "type": "Coding",
+            "curated_by": "rule-based authority ranking",
+            "objectives": [
+              "Understand the fundamentals of Build something real using Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Build something real using Programming Fundamentals fits into Programming Fundamentals workflows"
+            ]
+          },
+          {
+            "title": "datacamp.com/tracks/python-programming-fundamentals",
+            "description": "Learn Build something real using Programming Fundamentals: In this track, you\u2019llbuildup yourprogrammingskills in Python!",
+            "url": "https://www.datacamp.com/tracks/python-programming-fundamentals",
+            "type": "Coding",
+            "curated_by": "rule-based authority ranking",
+            "objectives": [
+              "Understand the fundamentals of Build something real using Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Build something real using Programming Fundamentals fits into Programming Fundamentals workflows"
+            ]
+          }
+        ],
+        "total_resources_found": 12
+      },
+      "cached_at": "2026-04-26T02:57:09.921153"
     }
   ],
   "user_shop": {
@@ -14596,29 +14756,64 @@
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic_idx": 0,
-      "status": "completed"
+      "status": "not_started"
     },
     {
       "task_id": "resource__cp-gen-000__0__2",
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic_idx": 0,
-      "status": "completed"
+      "status": "not_started"
     },
     {
       "task_id": "resource__cp-gen-000__0__3",
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic_idx": 0,
-      "status": "completed"
+      "status": "not_started"
     },
     {
       "task_id": "resource__cp-gen-000__0__4",
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic_idx": 0,
+      "status": "not_started"
+    },
+    {
+      "task_id": "resource__cp-gen-000__1__0",
+      "user_id": "u-001",
+      "checkpoint_id": "cp-gen-000",
+      "subtopic_idx": 1,
       "status": "completed"
+    },
+    {
+      "task_id": "resource__cp-gen-000__1__1",
+      "user_id": "u-001",
+      "checkpoint_id": "cp-gen-000",
+      "subtopic_idx": 1,
+      "status": "not_started"
+    },
+    {
+      "task_id": "resource__cp-gen-000__1__2",
+      "user_id": "u-001",
+      "checkpoint_id": "cp-gen-000",
+      "subtopic_idx": 1,
+      "status": "not_started"
+    },
+    {
+      "task_id": "resource__cp-gen-000__1__3",
+      "user_id": "u-001",
+      "checkpoint_id": "cp-gen-000",
+      "subtopic_idx": 1,
+      "status": "not_started"
+    },
+    {
+      "task_id": "resource__cp-gen-000__1__4",
+      "user_id": "u-001",
+      "checkpoint_id": "cp-gen-000",
+      "subtopic_idx": 1,
+      "status": "not_started"
     }
   ],
-  "daily_done": false
+  "daily_done": true
 }

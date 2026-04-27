@@ -99,7 +99,7 @@ function TaskProgress({ value }: { value: number }) {
         <span className="text-base uppercase tracking-wide text-[#334155]" style={{ fontWeight: 400 }}>Progress</span>
         <span className="text-base text-[#84BC2F]" style={{ fontWeight: 400 }}>{Math.round(value)}%</span>
       </div>
-      <div style={{ border: '3px solid #334155', backgroundColor: '#E1FAFF', padding: 3 }}>
+      <div style={{ borderWidth: 3, borderStyle: 'solid', borderTopColor: '#4a5f7a', borderLeftColor: '#4a5f7a', borderRightColor: '#1e2d3d', borderBottomColor: '#1e2d3d', backgroundColor: '#E1FAFF', padding: 3 }}>
         <div className="flex gap-[3px] h-5">
           {Array.from({ length: segments }).map((_, i) => (
             <div
@@ -107,10 +107,12 @@ function TaskProgress({ value }: { value: number }) {
               style={{
                 flex: 1,
                 backgroundColor: i < filled ? '#84BC2F' : '#E1FAFF',
-                border: '2px solid #334155',
-                boxShadow: i < filled
-                  ? 'inset 0 2px 0 rgba(255,255,255,0.25), inset 0 -2px 0 rgba(0,0,0,0.15)'
-                  : 'none',
+                borderWidth: 2,
+                borderStyle: 'solid',
+                borderTopColor: i < filled ? '#a0d44f' : '#4a5f7a',
+                borderLeftColor: i < filled ? '#a0d44f' : '#4a5f7a',
+                borderRightColor: i < filled ? '#5a8a1e' : '#1e2d3d',
+                borderBottomColor: i < filled ? '#5a8a1e' : '#1e2d3d',
               }}
             />
           ))}
@@ -147,7 +149,7 @@ function getDiePath(cat: string, file: string): string | null {
 
 // Tune these to adjust sleeping character position on the card
 const CHAR_TOP_OFFSET = -18;   // px from card top (increase = lower)
-const CHAR_RIGHT_OFFSET = 235; // px from card right edge (increase = further left)
+const CHAR_LEFT_OFFSET = -100; // px from card left edge — positions character outside the panel against its outer left border
 const FLIP_THRESHOLD = 180;        // if character top (px from screen top) is above this, flip horizontally
 const FLIP_BOTTOM_THRESHOLD = 480; // if character top (px from screen top) is below this, flip horizontally
 const FLIP_TOP_OFFSET = 0;     // additional px added to top when flipped (positive = lower)
@@ -165,8 +167,10 @@ function DieCharacter({ taskId, falling, fallDelta }: {
   const [fixedPos, setFixedPos] = useState<{ top: number; left: number } | null>(null);
   const [animKey, setAnimKey] = useState(0);
   const prevTaskId = useRef<string | null>(null);
-  const mountTime = useRef(Date.now());
+  const mountTime = useRef(0);
   const anchorRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => { mountTime.current = Date.now(); }, []);
 
   useEffect(() => {
     const load = () => {
@@ -188,15 +192,17 @@ function DieCharacter({ taskId, falling, fallDelta }: {
     const rect = el.getBoundingClientRect();
     return {
       top: rect.top + CHAR_TOP_OFFSET,
-      left: rect.left + rect.width - DIE_SIZE - CHAR_RIGHT_OFFSET,
+      left: rect.left + CHAR_LEFT_OFFSET,
     };
   };
 
   useEffect(() => {
     if (!taskId) {
       prevTaskId.current = null;
-      setPhase('hidden');
-      setFixedPos(null);
+      queueMicrotask(() => {
+        setPhase('hidden');
+        setFixedPos(null);
+      });
       return;
     }
 
@@ -217,31 +223,47 @@ function DieCharacter({ taskId, falling, fallDelta }: {
       return () => clearTimeout(t);
     } else {
       const pos = getCardFixed(taskId);
-      if (pos) setFixedPos(pos);
-      setPhase('sleeping');
+      queueMicrotask(() => {
+        if (pos) setFixedPos(pos);
+        setPhase('sleeping');
+      });
     }
   }, [taskId]);
 
   useEffect(() => {
     if (falling && phase === 'sleeping' && taskId) {
       const pos = getCardFixed(taskId);
-      if (pos) setFixedPos(pos);
-      setAnimKey(k => k + 1);
-      setPhase('falling-to-next');
+      queueMicrotask(() => {
+        if (pos) setFixedPos(pos);
+        setAnimKey(k => k + 1);
+        setPhase('falling-to-next');
+      });
     }
   }, [falling]);
 
-  // Keep sleeping character in sync with card via RAF; flip horizontally when outside scroll bounds
+  // Keep sleeping character in sync with card via RAF; hide when card scrolls out of the task list
   useEffect(() => {
     if (phase !== 'sleeping' || !taskId) return;
     let rafId: number;
     const loop = () => {
-      const pos = getCardFixed(taskId);
-      if (pos && anchorRef.current) {
-        const flipped = pos.top < FLIP_THRESHOLD || pos.top > FLIP_BOTTOM_THRESHOLD;
-        anchorRef.current.style.top = (pos.top + (flipped ? FLIP_TOP_OFFSET : 0)) + 'px';
-        anchorRef.current.style.left = (pos.left + (flipped ? FLIP_LEFT_OFFSET : 0)) + 'px';
-        anchorRef.current.style.transform = flipped ? 'rotate(-90deg) scaleY(-1)' : 'rotate(-90deg)';
+      const el = document.querySelector(`[data-task-id="${taskId}"]`) as HTMLElement | null;
+      const scrollContainer = document.getElementById('task-scroll');
+      if (el && anchorRef.current) {
+        const cardRect = el.getBoundingClientRect();
+        const containerRect = scrollContainer?.getBoundingClientRect();
+        const inView = containerRect
+          ? cardRect.bottom > containerRect.top && cardRect.top < containerRect.bottom
+          : true;
+        if (!inView) {
+          anchorRef.current.style.visibility = 'hidden';
+        } else {
+          anchorRef.current.style.visibility = 'visible';
+          const pos = { top: cardRect.top + CHAR_TOP_OFFSET, left: cardRect.left + CHAR_LEFT_OFFSET };
+          const flipped = pos.top < FLIP_THRESHOLD || pos.top > FLIP_BOTTOM_THRESHOLD;
+          anchorRef.current.style.top = (pos.top + (flipped ? FLIP_TOP_OFFSET : 0)) + 'px';
+          anchorRef.current.style.left = (pos.left + (flipped ? FLIP_LEFT_OFFSET : 0)) + 'px';
+          anchorRef.current.style.transform = flipped ? 'rotate(-90deg) scaleY(-1)' : 'rotate(-90deg)';
+        }
       }
       rafId = requestAnimationFrame(loop);
     };
@@ -376,7 +398,7 @@ export default function DailyPage() {
     if (tasks.length > 0 && !charInitialized.current) {
       charInitialized.current = true;
       const first = tasks.find(t => !completed.includes(t.id));
-      setCharTaskId(first?.id ?? null);
+      queueMicrotask(() => setCharTaskId(first?.id ?? null));
       if (first) {
         setTimeout(() => {
           const container = document.getElementById('task-scroll');
@@ -730,9 +752,26 @@ export default function DailyPage() {
                 {/* Footer / Status */}
                 <div className="mt-8 flex items-center gap-4">
                   {!isDone ? (
-                    <PixelButton variant="primary" size="md" onClick={handleMarkComplete}>
-                      <span className="text-base">Mark Complete</span>
-                    </PixelButton>
+                    <button
+                      onClick={handleMarkComplete}
+                      className="active:translate-y-0.5 transition-all duration-100"
+                      style={{
+                        fontFamily: "'Press Start 2P', monospace",
+                        imageRendering: 'pixelated',
+                        backgroundColor: '#334155',
+                        color: '#F9EC72',
+                        borderWidth: 4,
+                        borderStyle: 'solid',
+                        borderTopColor: '#4a5f7a',
+                        borderLeftColor: '#4a5f7a',
+                        borderRightColor: '#1e2d3d',
+                        borderBottomColor: '#1e2d3d',
+                        padding: '8px 14px',
+                        fontSize: '10px',
+                      }}
+                    >
+                      Mark Complete
+                    </button>
                   ) : (
                     <>
                       <div className="flex items-center gap-2">
