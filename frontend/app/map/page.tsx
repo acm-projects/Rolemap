@@ -158,12 +158,21 @@ function RoadmapContent() {
   const { notifyMapReady } = useCharacter();
 
   useEffect(() => {
+    let mapData: Awaited<ReturnType<typeof api.roadmapMap>>;
     api.dashboard()
       .then(d => api.roadmapMap(d.active_roadmap.id))
       .then(data => {
+        mapData = data;
+        return api.skillDecay();
+      })
+      .then(decayRows => {
+        const data = mapData;
+        const decayMap: Record<string, number> = {};
+        for (const row of decayRows) decayMap[row.id] = row.health;
+
         setCheckpoints(data.checkpoints);
 
-        const flowNodes = toFlowNodes(data.checkpoints);
+        const flowNodes = toFlowNodes(data.checkpoints, decayMap);
         const flowEdges = toFlowEdges(data.edges, data.checkpoints);
         const laidOutNodes = applyDagreLayout(flowNodes, flowEdges);
 

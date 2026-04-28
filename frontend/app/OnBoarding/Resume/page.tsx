@@ -108,7 +108,7 @@ export default function ResumeUpload() {
     : null;
 
   return (
-    <div className="relative h-screen overflow-hidden w-full bg-linear-to-b from-[#334155] to-[#E1FAFF] p-3 flex flex-col">
+    <div className="relative h-screen overflow-hidden w-full bg-linear-to-b from-[#7EC8E3] to-[#E1FAFF] p-3 flex flex-col">
       <div className="scanlines" />
 
       <div className="max-w-5xl mx-auto w-full flex flex-col justify-between flex-1">

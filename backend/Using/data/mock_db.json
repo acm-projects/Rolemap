@@ -190,12 +190,12 @@
       "progress": 100,
       "locked": false,
       "decay": {
-        "times_practiced": 2,
-        "sm2_interval": 3,
-        "sm2_easiness": 2.5,
-        "sm2_repetitions": 2,
-        "next_review": "2026-04-22T00:00:00.000Z",
-        "last_reviewed_at": "2026-04-19T00:00:00.000Z"
+        "times_practiced": 3,
+        "sm2_interval": 8,
+        "sm2_easiness": 2.6,
+        "sm2_repetitions": 3,
+        "next_review": "2026-04-24T15:59:32.000Z",
+        "last_reviewed_at": "2026-04-16T15:59:32.000Z"
       },
       "position": {
         "x": 0,
@@ -218,11 +218,11 @@
       "locked": false,
       "decay": {
         "times_practiced": 1,
-        "sm2_interval": 1,
-        "sm2_easiness": 2.3,
+        "sm2_interval": 5,
+        "sm2_easiness": 2.2,
         "sm2_repetitions": 1,
-        "next_review": "2026-04-14T00:00:00.000Z",
-        "last_reviewed_at": "2026-04-13T00:00:00.000Z"
+        "next_review": "2026-04-20T15:59:32.000Z",
+        "last_reviewed_at": "2026-04-14T15:59:32.000Z"
       },
       "position": {
         "x": 300,

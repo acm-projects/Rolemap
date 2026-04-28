@@ -158,7 +158,7 @@ export default function GenerateRoadmap() {
   };
 
   return (
-    <div className="relative h-screen overflow-hidden w-full bg-linear-to-b from-[#334155] to-[#E1FAFF] p-3 flex flex-col">
+    <div className="relative h-screen overflow-hidden w-full bg-linear-to-b from-[#7EC8E3] to-[#E1FAFF] p-3 flex flex-col">
       <div className="scanlines" />
 
       <div className="max-w-5xl mx-auto w-full flex flex-col flex-1">
@@ -177,10 +177,11 @@ export default function GenerateRoadmap() {
           </div>
         </div>
 
-        <div className="mb-4" style={{ height: "260px" }}>
+        <div className="mb-4" style={{ height: done ? "auto" : "260px" }}>
           <div
             className={`
-              pixel-border h-full flex flex-col items-center justify-center gap-4 p-6 transition-all duration-100
+              pixel-border flex flex-col items-center justify-center gap-4 p-6 transition-all duration-100
+              ${done ? "h-auto" : "h-full"}
               ${
                 done
                   ? "border-t-[#8ED4FF] border-l-[#8ED4FF] border-r-[#04A0FF] border-b-[#04A0FF] bg-[#BEF8FF]"
@@ -210,6 +211,37 @@ export default function GenerateRoadmap() {
               <div className="w-full max-w-xs">
                 <PixelProgress value={((stepIdx + 1) / PROGRESS_STEPS.length) * 100} showLabel={false} />
                 <p className="text-xs text-[#78ADCF] font-jersey text-center mt-2">{PROGRESS_STEPS[stepIdx]}</p>
+              </div>
+            )}
+
+            {/* Completion banner */}
+            {done && !generating && (
+              <div className="w-full flex flex-col items-center gap-4 pt-2 border-t-2 border-[#8ED4FF]">
+                <div className="flex items-center gap-3">
+                  <span className="text-3xl select-none" style={{ imageRendering: "pixelated" }}>🗺️</span>
+                  <TypewriterText
+                    text={error ? "Generated with warnings" : "Roadmap has been generated!"}
+                    speed={30}
+                    delay={200}
+                    className={`text-3xl font-jersey ${error ? "text-[#78ADCF]" : "text-[#334155]"}`}
+                  />
+                </div>
+                {result && !error && (
+                  <div className="flex gap-6">
+                    <div className="flex flex-col items-center pixel-border px-5 py-2 border-t-[#8ED4FF] border-l-[#8ED4FF] border-r-[#04A0FF] border-b-[#04A0FF] bg-white">
+                      <span className="text-3xl text-[#04A0FF] font-jersey">{result.steps_count}</span>
+                      <span className="text-xs text-[#78ADCF] font-jersey mt-1">CHECKPOINTS</span>
+                    </div>
+                    <div className="flex flex-col items-center pixel-border px-5 py-2 border-t-[#8ED4FF] border-l-[#8ED4FF] border-r-[#04A0FF] border-b-[#04A0FF] bg-white">
+                      <span className="text-base text-[#334155] font-jersey uppercase tracking-wide">{result.role}</span>
+                      <span className="text-xs text-[#78ADCF] font-jersey mt-1">TARGET ROLE</span>
+                    </div>
+                  </div>
+                )}
+                {error && (
+                  <p className="text-xs text-[#78ADCF] font-jersey text-center max-w-xs">{error}</p>
+                )}
+                <p className="text-xs text-[#78ADCF] font-jersey">Press Enter or Continue to view your map</p>
               </div>
             )}
           </div>

@@ -14,7 +14,7 @@ export default function PixelProgress({
   step,
   totalSteps,
   trackColor = '#d4e8e8',
-  fillColor = '#4e8888',
+  fillColor = '#334155',
 }: PixelProgressProps) {
   const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
   const segments = 20;
@@ -23,16 +23,16 @@ export default function PixelProgress({
     <div className="w-full">
       {showLabel && (
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xl text-[#4e8888] font-jersey">
+          <span className="text-xl text-[#334155] font-jersey">
             PROGRESS
           </span>
           <div className="flex items-center gap-4">
             {step !== undefined && totalSteps !== undefined && (
-              <span className="text-xl text-[#4e8888] font-jersey">
+              <span className="text-xl text-[#334155] font-jersey">
                 Step {step} of {totalSteps}
               </span>
             )}
-            <span className="text-xl text-[#4e8888] font-jersey">
+            <span className="text-xl text-[#334155] font-jersey">
               {Math.round(percentage)}%
             </span>
           </div>
