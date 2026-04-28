@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { getStoredXP } from "@/lib/xp";
 import ResumeDocument, {
   AddedSkill,
   AddedProject,
@@ -112,7 +113,7 @@ function CharacterPreview({
               style={{
                 backgroundImage: `url(/characters/${f})`,
                 backgroundRepeat: "no-repeat",
-                backgroundPosition: `${-(v * 256 * scale)}px 0`,
+                backgroundPosition: `${-(v * 256 * scale) - (32 * scale - size) / 2}px 0`,
                 backgroundSize: `auto ${bgH}px`,
                 imageRendering: "pixelated",
               }}
@@ -417,8 +418,21 @@ function AddToResumePanel({
 
 export default function ProfilePage() {
   const router = useRouter();
-  const [equipped] = useState<Equipped>(DEFAULTS);
-  const [colorVariants] = useState<Record<string, number>>({});
+  const [xp, setXp] = useState(0);
+  const [equipped] = useState<Equipped>(() => {
+  try {
+    const raw = localStorage.getItem("character_saved");
+    if (raw) return { ...DEFAULTS, ...JSON.parse(raw) };
+  } catch {}
+  return DEFAULTS;
+  });
+  const [colorVariants] = useState<Record<string, number>>(() => {
+  try {
+    const raw = localStorage.getItem("character_saved_variants");
+    if (raw) return JSON.parse(raw);
+  } catch {}
+  return {};
+  });
   const [downloading, setDownloading] = useState(false);
   const [resumeScale, setResumeScale] = useState(0.83);
 
@@ -486,7 +500,14 @@ export default function ProfilePage() {
       window.clearTimeout(timeoutId);
     };
   }, []);
-
+  
+  //fetch xp
+  useEffect(() => {
+  setXp(getStoredXP());
+  const handler = (e: Event) => setXp((e as CustomEvent).detail);
+  window.addEventListener("xp-updated", handler);
+  return () => window.removeEventListener("xp-updated", handler);
+  }, []);
   // ── Skill handlers (optimistic + API sync) ─────────────────────────────────
   const handleAddSkill = async (skill: AddedSkill) => {
     setAddedSkills((prev) => [...prev, skill]);
@@ -573,19 +594,19 @@ export default function ProfilePage() {
   };
 
   // ── Derived ────────────────────────────────────────────────────────────────
-  const variants = {
-    skin: colorVariants[equipped.skin] ?? 0,
-    eyes: colorVariants[equipped.eyes] ?? 0,
-    clothes: colorVariants[equipped.clothes] ?? 0,
-    pants: colorVariants[equipped.pants] ?? 0,
-    shoes: colorVariants[equipped.shoes] ?? 0,
-    hair: colorVariants[equipped.hair] ?? 0,
-    accessories: colorVariants[equipped.accessories] ?? 0,
+  const variants: Record<string, number> = {
+  skin:        colorVariants[equipped.skin]        ?? 0,
+  eyes:        colorVariants[equipped.eyes]        ?? 0,
+  clothes:     colorVariants[equipped.clothes]     ?? 0,
+  pants:       colorVariants[equipped.pants]       ?? 0,
+  shoes:       colorVariants[equipped.shoes]       ?? 0,
+  hair:        colorVariants[equipped.hair]        ?? 0,
+  accessories: colorVariants[equipped.accessories] ?? 0,
   };
 
   const stats = [
     { label: "LEVEL", val: "42" },
-    { label: "XP", val: "200,000" },
+    { label: "XP", val: xp.toLocaleString()},
     { label: "STREAK", val: "7" },
     { label: "ROADMAPS", val: "3" },
   ];
