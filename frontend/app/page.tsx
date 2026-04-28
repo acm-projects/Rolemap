@@ -100,7 +100,7 @@ function LandingParallax() {
         className="fixed inset-0 z-0 pointer-events-none"
         style={{
           ...PIXEL,
-          backgroundImage: "url('/assets/sky.png')",
+          backgroundImage: "url('/assets/sky2.png')",
           backgroundSize: "512px 100vh",
           backgroundRepeat: "repeat-x",
           backgroundPosition: "top left",
