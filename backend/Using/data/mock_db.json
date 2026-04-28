@@ -6,7 +6,7 @@
       "name": "Alex Morgan",
       "image_url": null,
       "github_username": "SiriKishoreDola",
-      "xp_total": 155,
+      "xp_total": 210,
       "current_streak": 3,
       "longest_streak": 3,
       "onboarding_completed": true,
@@ -19,7 +19,7 @@
         "clothes": "suit.png",
         "pants": "pants.png",
         "shoes": "shoes.png",
-        "hair": "wavy.png",
+        "hair": "buzzcut.png",
         "accessories": "",
         "color_variants": {
           "pants.png": 0,
@@ -2315,8 +2315,8 @@
     {
       "id": "ug-001",
       "user_id": "u-001",
-      "xp_total": 155,
-      "tasks_completed": 25,
+      "xp_total": 210,
+      "tasks_completed": 36,
       "leaderboard_rank": 2,
       "current_streak": 3,
       "longest_streak": 3,
@@ -14823,8 +14823,8 @@
   "resume_state": {
     "added_skills": [
       {
-        "name": "React",
-        "category": "Frameworks"
+        "name": "TypeScript",
+        "category": "Languages"
       }
     ],
     "added_projects": []
