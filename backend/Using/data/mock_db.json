@@ -6,20 +6,20 @@
       "name": "Alex Morgan",
       "image_url": null,
       "github_username": "SiriKishoreDola",
-      "xp_total": 210,
-      "current_streak": 3,
-      "longest_streak": 3,
+      "xp_total": 235,
+      "current_streak": 4,
+      "longest_streak": 4,
       "onboarding_completed": true,
       "onboarding_step": 5,
       "created_at": "2025-09-01T00:00:00Z",
-      "last_active_date": "2026-04-27",
+      "last_active_date": "2026-04-28",
       "character": {
         "skin": "char1.png",
         "eyes": "eyes.png",
         "clothes": "suit.png",
         "pants": "pants.png",
         "shoes": "shoes.png",
-        "hair": "buzzcut.png",
+        "hair": "wavy.png",
         "accessories": "",
         "color_variants": {
           "pants.png": 0,
@@ -2315,11 +2315,11 @@
     {
       "id": "ug-001",
       "user_id": "u-001",
-      "xp_total": 210,
-      "tasks_completed": 36,
+      "xp_total": 235,
+      "tasks_completed": 41,
       "leaderboard_rank": 2,
-      "current_streak": 3,
-      "longest_streak": 3,
+      "current_streak": 4,
+      "longest_streak": 4,
       "updated_at": "2026-03-29T12:00:00Z"
     }
   ],
@@ -2380,7 +2380,7 @@
       "rank": 2,
       "name": "Alex Morgan",
       "subtitle": "Advanced Level",
-      "streak": 3,
+      "streak": 4,
       "is_you": true,
       "avatar": "AM",
       "avatar_bg": "#10b981"
@@ -14788,7 +14788,7 @@
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic_idx": 1,
-      "status": "completed"
+      "status": "in_progress"
     },
     {
       "task_id": "resource__cp-gen-000__1__1",
