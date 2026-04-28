@@ -1,4 +1,5 @@
 """GitHub REST API wrapper."""
+from __future__ import annotations
 import time
 import requests
 

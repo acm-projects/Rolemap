@@ -7,7 +7,6 @@ interface PixelProgressProps {
   trackColor?: string; // background of empty segments (default: #d4e8e8)
   fillColor?: string;  // color of filled segments (default: #4e8888)
 }
-
 export default function PixelProgress({
   value,
   max = 100,
@@ -20,7 +19,6 @@ export default function PixelProgress({
   const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
   const segments = 20;
   const filledSegments = Math.floor((percentage / 100) * segments);
-
   return (
     <div className="w-full">
       {showLabel && (

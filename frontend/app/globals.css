@@ -7,6 +7,16 @@
   background-color: transparent !important;
 }
 
+/* Remove borders/shadows and attribution on the map page */
+.map-flow .react-flow__controls,
+.map-flow .react-flow__panel,
+.map-flow .react-flow__attribution {
+  box-shadow: none;
+  border: none;
+}
+.map-flow .react-flow__attribution {
+  display: none;
+}
 
 :root {
   --background: #eef1f7;
@@ -16,7 +26,7 @@
   --grid-color: #c8d0dc;
 }
 
-/*The @theme block tells Tailwind to make these CSS variables 
+/*The @theme block tells Tailwind to make these CSS variables
   available as utility classes*/
 @theme inline {
   --color-background: var(--background);
@@ -30,7 +40,6 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
-    /*ededed*/
   }
 }
 
@@ -43,11 +52,10 @@ body {
   background: var(--background);
 }
 
-/*For React Flow classes. Makes the ends of the connection lines 
+/*For React Flow classes. Makes the ends of the connection lines
   rounded rather than sharp squares*/
 .react-flow__edge-path {
   stroke-linecap: round;
-  /*for straight edges: stroke-linecap: square;*/
   stroke-linejoin: round;
 }
 
@@ -109,7 +117,7 @@ html.map-no-scroll ::-webkit-scrollbar {
   display: none; /* Chrome / Safari / Edge */
 }
 
-/* Parallax background — cloud drift */
+/* Parallax background — translates by one tile width (512px) for a seamless loop */
 @keyframes driftClouds {
   from { transform: translateX(0); }
   to   { transform: translateX(-512px); }

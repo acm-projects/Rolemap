@@ -56,7 +56,7 @@ export default function CompanySelection() {
   }, [canContinue]);
 
   return (
-    <div className="relative h-screen overflow-hidden w-full bg-[#f0f8f8] p-3 flex flex-col">
+    <div className="relative h-screen overflow-hidden w-full bg-linear-to-b from-[#7EC8E3] to-[#E1FAFF] p-3 flex flex-col">
       <div className="scanlines" />
 
       <div className="max-w-5xl mx-auto w-full flex flex-col justify-between flex-1">
@@ -68,7 +68,7 @@ export default function CompanySelection() {
               text="Where do you want to work?"
               speed={30}
               delay={400}
-              className="text-5xl text-[#2d5050] mt-7 block"
+              className="text-5xl text-[#334155] mt-7 block"
             />
           </div>
           <div className="min-h-[7rem]">
@@ -76,7 +76,7 @@ export default function CompanySelection() {
               text="Select your target companies. We'll use this to customize your personalized learning path and interview preparation roadmap."
               speed={10}
               delay={900}
-              className="text-2xl text-[#4e8888] mb-5 max-w-2xl block"
+              className="text-2xl text-[#78ADCF] mb-5 max-w-2xl block"
             />
           </div>
         </div>
@@ -100,19 +100,19 @@ export default function CompanySelection() {
               <PixelCard key={company.id} onClick={() => toggleCompany(company.id)} selected={isSelected}>
                 <div
                   className={`h-full flex flex-col items-center justify-center gap-2 p-3 transition-all duration-100
-                    ${isSelected ? "bg-[#3a6666] translate-y-[4px]" : "bg-transparent translate-y-0"}
+                    ${isSelected ? "bg-[#04A0FF] translate-y-[4px]" : "bg-transparent translate-y-0"}
                   `}
                 >
                   <div
                     className={`flex items-center justify-center text-3xl font-jersey transition-colors duration-100
-                      ${isSelected ? "text-white" : "text-[#4e8888]"}
+                      ${isSelected ? "text-white" : "text-[#78ADCF]"}
                     `}
                   >
                     {company.logo}
                   </div>
                   <span
                     className={`text-2xl text-center font-jersey transition-colors duration-100
-                      ${isSelected ? "text-white" : "text-[#2d5050]"}
+                      ${isSelected ? "text-white" : "text-[#334155]"}
                     `}
                   >
                     {company.name}
@@ -132,8 +132,8 @@ export default function CompanySelection() {
               return (
                 <div
                   key={id}
-                  className="flex items-center gap-1.5 bg-[#3a6666] text-white text-sm font-jersey px-3 py-1 cursor-pointer hover:bg-[#2d5050] transition-colors"
-                  style={{ borderWidth: 2, borderStyle: 'solid', borderTopColor: '#4e8888', borderLeftColor: '#4e8888', borderRightColor: '#1e3838', borderBottomColor: '#1e3838' }}
+                  className="flex items-center gap-1.5 bg-[#04A0FF] text-white text-sm font-jersey px-3 py-1 cursor-pointer hover:bg-[#0080cc] transition-colors"
+                  style={{ borderWidth: 2, borderStyle: 'solid', borderTopColor: '#8ED4FF', borderLeftColor: '#8ED4FF', borderRightColor: '#0060aa', borderBottomColor: '#0060aa' }}
                   onClick={() => toggleCompany(id)}
                 >
                   {company.name}

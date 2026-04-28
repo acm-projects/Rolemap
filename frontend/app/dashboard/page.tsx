@@ -1,12 +1,16 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Navbar } from '../components/NavBar';
 import fire from '../../icons/fire.png';
 import star from '../../icons/star.png';
 import { useRouter } from 'next/navigation';
+import { CharacterPreview } from '../components/CharacterPreview';
+import { useCharacter } from '../context/CharacterContext';
 import { api, type DashboardResponse, type DashboardRoadmap, type Checkpoint, type RoadmapEdge } from '@/lib/api';
+// ── XP sync: shared localStorage util ────────────────────────────────────────
+import { getStoredXP, setStoredXP } from '@/lib/xp';
 import {
   ReactFlow,
   Background,
@@ -144,6 +148,7 @@ function MiniRoadmapContent({ roadmapId }: { roadmapId: string }) {
       .catch(() => setError(true))
       .finally(() => setLoading(false));
   }, [roadmapId]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // Position viewport so the anchor node sits in the left portion of the minimap
   useEffect(() => {
     if (!nodesInitialized || nodes.length === 0 || !anchorCenter) return;
@@ -301,6 +306,122 @@ function PixelCard({
   );
 }
 
+// ─── Dashboard leaderboard character ─────────────────────────────────────────
+
+const DEFAULT_EQUIPPED_DASH = { skin: 'char1.png', eyes: 'eyes.png', clothes: 'suit.png', pants: 'pants.png', shoes: 'shoes.png', hair: 'buzzcut.png', accessories: '' };
+
+const DASH_CHAR_SIZE = 70;
+const DASH_CHAR_TOP_OFFSET = -40;  // px above the anchor element
+
+function getAnchorPos() {
+  const el = document.querySelector('[data-rank-you]');
+  if (!el) return null;
+  const r = el.getBoundingClientRect();
+  return {
+    top: r.top + DASH_CHAR_TOP_OFFSET,
+    left: r.left + r.width / 2 - DASH_CHAR_SIZE / 2,
+  };
+}
+
+function DashboardCharacter() {
+  const { charState } = useCharacter();
+  const [equipped, setEquipped] = useState(DEFAULT_EQUIPPED_DASH);
+  const [colorVariants, setColorVariants] = useState<Record<string, number>>({});
+  const [charPhase, setCharPhase] = useState<'hidden' | 'falling-in' | 'visible'>('hidden');
+  const [initialPos, setInitialPos] = useState<{ top: number; left: number } | null>(null);
+  const anchorRef = useRef<HTMLDivElement>(null);
+  const mountTime = useRef(Date.now());
+
+  useEffect(() => {
+    const load = () => {
+      try {
+        const eq = localStorage.getItem('character_saved');
+        const cv = localStorage.getItem('character_saved_variants');
+        if (eq) setEquipped(prev => ({ ...prev, ...JSON.parse(eq) }));
+        if (cv) setColorVariants(JSON.parse(cv));
+      } catch {}
+    };
+    load();
+    window.addEventListener('character-saved', load);
+    return () => window.removeEventListener('character-saved', load);
+  }, []);
+
+  useEffect(() => {
+    const delay = Math.max(50, 450 - (Date.now() - mountTime.current));
+    let t2: ReturnType<typeof setTimeout>;
+    const t1 = setTimeout(() => {
+      const pos = getAnchorPos();
+      if (pos) setInitialPos(pos);
+      setCharPhase('falling-in');
+      t2 = setTimeout(() => setCharPhase('visible'), 650);
+    }, delay);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, []);
+
+  // RAF loop: keep character glued to the anchor element while visible
+  useEffect(() => {
+    if (charPhase !== 'visible') return;
+    let rafId: number;
+    const loop = () => {
+      const pos = getAnchorPos();
+      if (pos && anchorRef.current) {
+        anchorRef.current.style.top = pos.top + 'px';
+        anchorRef.current.style.left = pos.left + 'px';
+      }
+      rafId = requestAnimationFrame(loop);
+    };
+    rafId = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(rafId);
+  }, [charPhase]);
+
+  if (charPhase === 'hidden' || charState.phase === 'departing') return null;
+  if (!initialPos) return null;
+
+  const S = DASH_CHAR_SIZE;
+
+  return (
+    <>
+      {charPhase === 'falling-in' && (
+        <style>{`
+          @keyframes dashCharFall {
+            0%   { transform: translateY(-700px); }
+            72%  { transform: translateY(10px); }
+            87%  { transform: translateY(-4px); }
+            100% { transform: translateY(0px); }
+          }
+        `}</style>
+      )}
+      <div
+        ref={charPhase === 'visible' ? anchorRef : undefined}
+        data-dashboard-char=""
+        style={{
+          position: 'fixed',
+          top: initialPos.top,
+          left: initialPos.left,
+          width: S,
+          height: S,
+          imageRendering: 'pixelated',
+          zIndex: 9998,
+          pointerEvents: 'none',
+          animation: charPhase === 'falling-in' ? 'dashCharFall 0.65s linear forwards' : 'none',
+        }}
+      >
+        <CharacterPreview
+          size={S}
+          walk
+          skin={equipped.skin}
+          eyes={equipped.eyes}
+          clothes={equipped.clothes}
+          pants={equipped.pants}
+          shoes={equipped.shoes}
+          hair={equipped.hair}
+          accessory={equipped.accessories}
+          variants={colorVariants}
+        />
+      </div>
+    </>
+  );
+}
 
 // ─── Dashboard ────────────────────────────────────────────────────────────────
 
@@ -311,6 +432,19 @@ export default function Dashboard() {
   const [displayProgress, setDisplayProgress] = useState(0);
   const [selectedRoadmap, setSelectedRoadmap] = useState<DashboardRoadmap | null>(null);
 
+  // ── XP state: read from localStorage, kept in sync via xp-updated event ──
+  const [xp, setXp] = useState(0);
+
+  useEffect(() => {
+    // Read initial value from localStorage (populated below after API resolves)
+    setXp(getStoredXP());
+
+    // Listen for XP changes from any page (shop spending, lesson rewards, etc.)
+    const handler = (e: Event) => setXp((e as CustomEvent<number>).detail);
+    window.addEventListener('xp-updated', handler);
+    return () => window.removeEventListener('xp-updated', handler);
+  }, []);
+
   useEffect(() => {
     // Gate: redirect to onboarding if not completed
     api.currentUser()
@@ -320,6 +454,16 @@ export default function Dashboard() {
     api.dashboard()
       .then(d => {
         setData(d);
+
+        // Seed XP into localStorage from the API on first visit.
+        // If localStorage already has a value (e.g. player has spent XP in the
+        // shop this session), keep that value — don't overwrite with the server
+        // total, which may lag behind client-side spend.
+        if (!localStorage.getItem('player_xp')) {
+          setStoredXP(d.user.xp_total ?? 0);
+          setXp(d.user.xp_total ?? 0);
+        }
+
         // Default minimap to whichever roadmap matches the map page (active_roadmap)
         const preferred = d.roadmaps.find(r => r.id === d.active_roadmap.id);
         const active = (preferred && preferred.progress_percentage > 0)
@@ -342,7 +486,6 @@ export default function Dashboard() {
   }
 
   const userName = data?.user.name ?? '';
-  const xpTotal = data?.user.xp_total?.toLocaleString() ?? '0';
   const tasksCompleted = data?.gamification.tasks_completed ?? 0;
   const roadmaps = data?.roadmaps ?? [];
   const leaderboard = data?.leaderboard ?? [];
@@ -371,12 +514,12 @@ export default function Dashboard() {
             {/* Right: quick stats + today's challenge */}
             <div className="flex items-stretch gap-3 shrink-0">
 
-              {/* XP — original Heroicons star with yellow fill + dark teal stroke border */}
+              {/* XP — reads from shared localStorage so it matches shop/profile */}
               <div className="flex items-center gap-3 px-2">
                 {/* star.png — pixel-art star, drop-shadow used to create a visible dark teal border outline */}
                 <Image src={star} alt="Star Icon" width={44} height={44} style={{ imageRendering: 'pixelated', filter: 'drop-shadow(1px 0px 0px #334155) drop-shadow(-1px 0px 0px #334155) drop-shadow(0px 1px 0px #334155) drop-shadow(0px -1px 0px #334155)' }} className="shrink-0" />
-                {/* XP value color matches title (#7ec8e3) */}
-                <p className="text-4xl whitespace-nowrap text-[#334155]">XP: {xpTotal}</p>
+                {/* XP value: live from localStorage, updated by shop spending / lesson rewards */}
+                <p className="text-4xl whitespace-nowrap text-[#334155]">XP: {xp.toLocaleString()}</p>
               </div>
 
               {/* Progress ring — green (84BC2F = Lime Moss) per whiteboard */}
@@ -421,11 +564,14 @@ export default function Dashboard() {
               <div className="flex flex-col gap-2 flex-1 overflow-y-auto">
                 {leaderboard.slice(0, 4).map((user) => (
                   // Row border: lighter teal for unselected; "you" row gets dark teal outline + #c8e6e6 bg
-                  <div key={user.rank}
+                  <div
+                    key={user.rank}
+                    data-rank-you={user.is_you ? '' : undefined}
                     className={`flex items-center gap-3 px-4 py-3 transition-all border-4
                       ${user.is_you
                         ? 'bg-[#c8e6e6] border-[#7ec8e3]'
-                        : 'bg-white border-[#334155]'}`}>
+                        : 'bg-white border-[#334155]'}`}
+                  >
                     <span className={`text-base font-normal w-6 text-center shrink-0 ${user.is_you ? 'text-[#04A0FF]' : 'text-[#78ADCF]'}`}>
                       {user.rank}
                     </span>
@@ -504,6 +650,8 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      <DashboardCharacter />
     </div>
   );
 }

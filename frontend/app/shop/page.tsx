@@ -1,6 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navbar } from "../components/NavBar";
+import { useCharacter } from "../context/CharacterContext";
 import { api } from "@/lib/api";
 
 type Item = { id: string; name: string; file: string; cost: number; unlocked: boolean; };
@@ -42,23 +43,23 @@ const SHOP_ITEMS: Record<Category, Item[]> = {
     { id: "shoes_item",     name: "Shoes",    file: "shoes.png",     cost: 0,   unlocked: true  },
   ],
   hair: [
-    { id: "buzzcut",      name: "Buzzcut",      file: "buzzcut.png",          cost: 0,   unlocked: true  },
-    { id: "bob",          name: "Bob",          file: "bob.png",              cost: 100, unlocked: false },
-    { id: "gentleman",    name: "Gentleman",    file: "gentleman.png",        cost: 100, unlocked: false },
-    { id: "ponytail",     name: "Ponytail",     file: "ponytail.png",         cost: 150, unlocked: false },
-    { id: "midiwave",     name: "Midi Wave",    file: "midiwave.png",         cost: 150, unlocked: false },
-    { id: "curly",        name: "Curly",        file: "curly.png",            cost: 200, unlocked: false },
-    { id: "braids",       name: "Braids",       file: "braids.png",           cost: 200, unlocked: false },
-    { id: "extra_long",   name: "Extra Long",   file: "extra_long.png",       cost: 200, unlocked: false },
-    { id: "french_curl",  name: "French Curl",  file: "french_curl.png",      cost: 200, unlocked: false },
-    { id: "spacebuns",    name: "Space Buns",   file: "spacebuns.png",        cost: 250, unlocked: false },
-    { id: "emo",          name: "Emo",          file: "emo.png",              cost: 250, unlocked: false },
+    { id: "buzzcut",      name: "Buzzcut",      file: "buzzcut.png",      cost: 0,   unlocked: true  },
+    { id: "bob",          name: "Bob",          file: "bob.png",          cost: 100, unlocked: false },
+    { id: "gentleman",    name: "Gentleman",    file: "gentleman.png",    cost: 100, unlocked: false },
+    { id: "ponytail",     name: "Ponytail",     file: "ponytail.png",     cost: 150, unlocked: false },
+    { id: "midiwave",     name: "Midi Wave",    file: "midiwave.png",     cost: 150, unlocked: false },
+    { id: "curly",        name: "Curly",        file: "curly.png",        cost: 200, unlocked: false },
+    { id: "braids",       name: "Braids",       file: "braids.png",       cost: 200, unlocked: false },
+    { id: "extra_long",   name: "Extra Long",   file: "extra_long.png",   cost: 200, unlocked: false },
+    { id: "french_curl",  name: "French Curl",  file: "french_curl.png",  cost: 200, unlocked: false },
+    { id: "spacebuns",    name: "Space Buns",   file: "spacebuns.png",    cost: 250, unlocked: false },
+    { id: "emo",          name: "Emo",          file: "emo.png",          cost: 250, unlocked: false },
   ],
   accessories: [
-    { id: "none",       name: "None",      file: "",                    cost: 0,   unlocked: true  },
+    { id: "none",       name: "None",      file: "",                      cost: 0,   unlocked: true  },
     { id: "glasses",    name: "Glasses",   file: "glasses.png",            cost: 100, unlocked: false },
     { id: "sunglasses", name: "Sunglass",  file: "glasses_sun.png",        cost: 150, unlocked: false },
-    { id: "hat_lucky",  name: "Lucky Hat", file: "hat_lucky.png",          cost: 200, unlocked: false },
+    { id: "hat_lucky",  name: "Lucky Hat", file: "hat_lucky.png",         cost: 200, unlocked: false },
     { id: "hat_cowboy", name: "Cowboy",    file: "hat_cowboy.png",         cost: 200, unlocked: false },
     { id: "earring",    name: "Earrings",  file: "earring_emerald.png",    cost: 100, unlocked: false },
     { id: "beard",      name: "Beard",     file: "beard.png",              cost: 150, unlocked: false },
@@ -69,9 +70,7 @@ const CATEGORY_LABELS: Record<Category, string> = {
   skin: "SKIN", eyes: "FACE", clothes: "CLOTHES", pants: "LOWER", shoes: "SHOES", hair: "HAIR", accessories: "ACCS",
 };
 
-// Sampled dominant colors per variant column (256px each) from the sprite sheets
 const SPRITE_COLORS: Record<string, string[]> = {
-  // clothes
   "suit.png":       ["#8F3E35","#445161","#B07D4D","#753642","#A16958","#8A5B3E","#B35D5D","#4E445E","#693038","#3C455C"],
   "basic.png":      ["#332E32","#4B6275","#6283A4","#654530","#406158","#7D945F","#C8616B","#745C96","#B35249","#C5B6A0"],
   "sporty.png":     ["#C5B6A0","#4B6275","#6283A4","#654530","#406158","#7D945F","#C8616B","#745C96","#B35249","#C5B6A0"],
@@ -82,12 +81,10 @@ const SPRITE_COLORS: Record<string, string[]> = {
   "sailor.png":     ["#D78B20","#D78B20","#D78B20","#D78B20","#D78B20","#D78B20","#D78B20","#D78B20","#D78B20","#D78B20"],
   "sailor_bow.png": ["#D78B20","#D78B20","#D78B20","#D78B20","#D78B20","#D78B20","#D78B20","#D78B20","#D78B20","#D78B20"],
   "floral.png":     ["#C78548","#C78548","#C78548","#C78548","#C78548","#C78548","#C78548","#C78548","#C78548","#C78548"],
-  // pants / lower body
   "pants.png":     ["#332E32","#4B6275","#6283A4","#654530","#406158","#7D945F","#C8616B","#745C96","#B35249","#615A55"],
   "skirt.png":     ["#332E32","#435361","#637499","#583D2B","#385252","#758658","#B05B6A","#5C5178","#A14343","#62626A"],
   "shoes.png":     ["#393940","#404C57","#424D5E","#3B2B20","#334042","#646947","#804951","#444059","#783A3B","#363438"],
   "overalls.png":  ["#9C8D83","#4B6275","#6283A4","#654530","#406158","#7D945F","#C8616B","#745C96","#B35249","#9C8D83"],
-  // hair
   "buzzcut.png":    ["#503E39","#C49362","#715148","#9E675D","#B37355","#306E55","#558A4D","#736A67","#7E638F","#535782","#D97981","#564778","#A3524D","#518587"],
   "bob.png":        ["#5E4C41","#D4A66A","#82604F","#B57869","#C9855D","#306E55","#669C56","#A4968E","#7E638F","#626C9E","#FF858B","#564778","#B56355","#599997"],
   "curly.png":      ["#5E4C41","#C49362","#82604F","#B57869","#C9855D","#306E55","#669C56","#A4968E","#7E638F","#626C9E","#FF858B","#564778","#B56355","#599997"],
@@ -100,11 +97,9 @@ const SPRITE_COLORS: Record<string, string[]> = {
   "midiwave.png":    ["#5E4C41","#D4A66A","#82604F","#6B493D","#C9855D","#306E55","#669C56","#A4968E","#7E638F","#626C9E","#FF858B","#564778","#B56355","#599997"],
   "spacebuns.png":   ["#5E4C41","#D4A66A","#82604F","#B57869","#C9855D","#306E55","#669C56","#A4968E","#7E638F","#626C9E","#FF858B","#564778","#B56355","#599997"],
   "beard.png":       ["#493736","#A37758","#614440","#825952","#99624E","#2D5E52","#45734A","#757464","#786187","#53496E","#BA6877","#4B4B7A","#914747","#4D757A"],
-  // eyes/face
   "eyes.png":       ["#362F2D","#354652","#546E8A","#4D3530","#2E2723","#754B44","#475C4E","#24382D","#637D64","#544B4E","#6E656A","#B04F63","#C26576","#A64444"],
   "blush_all.png":  ["#D9776A","#FA7069","#FA8C73","#C25151","#873D3C"],
   "lipstick.png":   ["#CC6464","#AD4C44","#BD5C57","#963B3B","#6E2721"],
-  // accessories
   "glasses_sun.png":["#221F20","#323942","#48556B","#443424","#333E42","#495C44","#8C4D61","#423E57","#783A3D","#4A4543"],
   "clown.png":      ["#E8A738","#E8A738"],
   "pumpkin.png":    ["#CE60D6","#7D7411"],
@@ -147,7 +142,6 @@ function CharacterPreview({ skin, eyes, clothes, pants = "", shoes = "", hair, a
 }
 
 type Equipped = { skin: string; eyes: string; clothes: string; pants: string; shoes: string; hair: string; accessories: string };
-
 const DEFAULTS: Equipped = { skin: "char1.png", eyes: "eyes.png", clothes: "suit.png", pants: "pants.png", shoes: "shoes.png", hair: "buzzcut.png", accessories: "" };
 
 function loadSavedCharacter(): Equipped {
@@ -181,6 +175,17 @@ export default function ShopPage() {
   const [notification, setNotification] = useState<string | null>(null);
   const [previewItem, setPreviewItem] = useState<{ item: Item; category: Category } | null>(null);
   const [colorVariants, setColorVariants] = useState<Partial<Record<string, number>>>(loadSavedVariants);
+  const { charState } = useCharacter();
+
+  const [charPhase, setCharPhase] = useState<'hidden' | 'falling-in' | 'visible'>('hidden');
+
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setCharPhase('falling-in');
+      setTimeout(() => setCharPhase('visible'), 700);
+    }, 450);
+    return () => clearTimeout(t);
+  }, []);
 
   const showNotification = (msg: string) => {
     setNotification(msg);
@@ -188,14 +193,13 @@ export default function ShopPage() {
   };
 
   const handleBuy = (category: Category, item: Item) => {
-    if (item.unlocked) return;
     if (xp < item.cost) { showNotification("NOT ENOUGH XP!"); return; }
     setXp(prev => prev - item.cost);
     setItems(prev => ({
       ...prev,
       [category]: prev[category].map(i => i.id === item.id ? { ...i, unlocked: true } : i),
     }));
-    showNotification(`${item.name.toUpperCase()} UNLOCKED!`);
+    showNotification("UNLOCKED!");
   };
 
   const handleEquip = (category: Category, item: Item) => {
@@ -204,11 +208,8 @@ export default function ShopPage() {
     setPreviewItem(null);
   };
 
-  const previewWith = (category: Category, file: string) => ({
-    ...equipped, [category]: file,
-  });
+  const previewWith = (category: Category, file: string) => ({ ...equipped, [category]: file });
 
-  // Build variants map keyed by equipped file for CharacterPreview
   const equippedVariants: Partial<Record<Category, number>> = {
     skin:        colorVariants[equipped.skin]        ?? 0,
     eyes:        colorVariants[equipped.eyes]        ?? 0,
@@ -220,11 +221,11 @@ export default function ShopPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f0f8f8]" style={{ fontFamily: "'Press Start 2P', monospace" }}>
+    <div className="min-h-screen bg-linear-to-b from-[#7EC8E3] to-[#E1FAFF]" style={{ fontFamily: "'Press Start 2P', monospace" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-        .px-box  { border:4px solid #2d5050; box-shadow:4px 4px 0 0 rgba(0,0,0,.25); image-rendering:pixelated; }
-        .px-btn  { border:4px solid #2d5050; box-shadow:0 4px 0 0 rgba(0,0,0,.3),inset 0 -2px 0 0 rgba(0,0,0,.2); cursor:pointer; }
+        .px-box  { border:4px solid #334155; box-shadow:4px 4px 0 0 rgba(0,0,0,.25); image-rendering:pixelated; }
+        .px-btn  { border:4px solid #334155; box-shadow:0 4px 0 0 rgba(0,0,0,.3),inset 0 -2px 0 0 rgba(0,0,0,.2); cursor:pointer; }
         .px-btn:active { transform:translateY(2px); box-shadow:0 2px 0 0 rgba(0,0,0,.3); }
         .px-btn:disabled { opacity:.5; cursor:not-allowed; }
         .px-tab  { border:4px solid #2d5050; cursor:pointer; }
@@ -235,18 +236,17 @@ export default function ShopPage() {
         .px-card.locked{ opacity:.65; }
         .notif { position:fixed; top:2rem; left:50%; transform:translateX(-50%); z-index:200; border:4px solid #2d5050; box-shadow:4px 4px 0 0 rgba(0,0,0,.3); animation:ni .15s ease; }
         @keyframes ni { from{transform:translateX(-50%) translateY(-20px);opacity:0} to{transform:translateX(-50%) translateY(0);opacity:1} }
+        @keyframes shopCharFall { 0%{transform:translateY(-700px)} 72%{transform:translateY(10px)} 87%{transform:translateY(-5px)} 100%{transform:translateY(0)} }
         .modal-bg  { position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:150; display:flex; align-items:center; justify-content:center; }
         .modal-box { border:4px solid #2d5050; box-shadow:8px 8px 0 0 rgba(0,0,0,.4); }
       `}</style>
 
       <Navbar />
 
-      {/* Notification */}
       {notification && (
         <div className="notif bg-[#2d5050] text-[#f0f8f8] px-6 py-3 text-[22px]">▶ {notification}</div>
       )}
 
-      {/* Preview Modal */}
       {previewItem && (
         <div className="modal-bg" onClick={() => setPreviewItem(null)}>
           <div className="modal-box bg-[#f0f8f8] p-6 flex flex-col items-center gap-4" onClick={e => e.stopPropagation()}>
@@ -288,8 +288,7 @@ export default function ShopPage() {
         </div>
       )}
 
-      <div className="max-w-5xl mx-auto pt-24 px-6 pb-6">
-        {/* Header */}
+      <div className="max-w-6xl mx-auto pt-24 px-6 pb-6">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-[39px] text-[#2d5050]">CHARACTER SHOP</h1>
           <div className="px-box bg-[#2d5050] text-[#f0f8f8] px-4 py-2 flex items-center gap-2">
@@ -299,23 +298,28 @@ export default function ShopPage() {
         </div>
 
         <div className="grid grid-cols-3 gap-6">
-
-          {/* LEFT — Preview */}
           <div className="col-span-1 flex flex-col gap-4">
             <div className="px-box bg-[#e8f5f5] p-4 flex flex-col items-center gap-4">
               <p className="text-[28px] text-[#2d5050]">YOUR CHARACTER</p>
-              <CharacterPreview
-                size={160}
-                showLegs
-                skin={equipped.skin}
-                eyes={equipped.eyes}
-                clothes={equipped.clothes}
-                pants={equipped.pants}
-                shoes={equipped.shoes}
-                hair={equipped.hair}
-                accessory={equipped.accessories}
-                variants={equippedVariants}
-              />
+              {charPhase !== 'hidden' && charState.phase !== 'departing' && (
+                <div
+                  {...(charPhase === 'visible' ? { 'data-shop-char': '' } : {})}
+                  style={charPhase === 'falling-in' ? { animation: 'shopCharFall 0.65s linear forwards' } : {}}
+                >
+                  <CharacterPreview
+                    size={160}
+                    showLegs
+                    skin={equipped.skin}
+                    eyes={equipped.eyes}
+                    clothes={equipped.clothes}
+                    pants={equipped.pants}
+                    shoes={equipped.shoes}
+                    hair={equipped.hair}
+                    accessory={equipped.accessories}
+                    variants={equippedVariants}
+                  />
+                </div>
+              )}
               {activeTab !== "gender" && (() => {
                 const cat = activeTab as Category;
                 const item = items[cat].find(i => i.file === equipped[cat] || (i.file === "" && equipped[cat] === ""));
@@ -327,7 +331,8 @@ export default function ShopPage() {
                 ) : null;
               })()}
             </div>
-            {/* Color swatch panel — shows swatches for the active tab's equipped item */}
+
+            {/* Color swatch panel */}
             {(() => {
               if (activeTab === "gender") return null;
               const cat = activeTab as Category;
@@ -358,6 +363,7 @@ export default function ShopPage() {
                 </div>
               );
             })()}
+
             <div className="px-box bg-[#2d5050] text-[#7ab3b3] p-3">
               <p className="text-[17px] leading-relaxed">CLICK ANY ITEM TO PREVIEW IT ON YOUR CHARACTER.</p>
             </div>
@@ -377,9 +383,7 @@ export default function ShopPage() {
             </button>
           </div>
 
-          {/* RIGHT — Shop */}
           <div className="col-span-2">
-            {/* Tabs */}
             <div className="flex gap-1 mb-4">
               {(["gender", ...Object.keys(SHOP_ITEMS)] as Tab[]).map(tab => (
                 <button
@@ -392,7 +396,6 @@ export default function ShopPage() {
               ))}
             </div>
 
-            {/* Gender Picker */}
             {activeTab === "gender" ? (
               <div className="flex gap-8 justify-center mt-6">
                 {([{ label: "BOY", hair: "buzzcut.png" }, { label: "GIRL", hair: "wavy.png" }] as const).map(({ label, hair }) => (
@@ -414,73 +417,70 @@ export default function ShopPage() {
                 ))}
               </div>
             ) : (
-            /* Grid */
-            <div className="grid grid-cols-2 gap-3 overflow-y-auto pr-1" style={{ maxHeight: "60vh" }}>
-              {items[activeTab as Category].map(item => {
-                const isEquipped = equipped[activeTab as Category] === item.file;
-                const isLocked = !item.unlocked;
-                const canAfford = xp >= item.cost;
-                const pw = previewWith(activeTab as Category, item.file);
-                // Per-file variants: each file keeps its own selected color, no cross-contamination
-                const pwVariants: Partial<Record<Category, number>> = {
-                  skin:        colorVariants[pw.skin]        ?? 0,
-                  eyes:        colorVariants[pw.eyes]        ?? 0,
-                  clothes:     colorVariants[pw.clothes]     ?? 0,
-                  pants:       colorVariants[pw.pants]       ?? 0,
-                  shoes:       colorVariants[pw.shoes]       ?? 0,
-                  hair:        colorVariants[pw.hair]        ?? 0,
-                  accessories: colorVariants[pw.accessories] ?? 0,
-                };
+              <div className="grid grid-cols-2 gap-3 overflow-y-auto pr-1" style={{ maxHeight: "60vh" }}>
+                {items[activeTab as Category].map(item => {
+                  const isEquipped = equipped[activeTab as Category] === item.file;
+                  const isLocked = !item.unlocked;
+                  const canAfford = xp >= item.cost;
+                  const pw = previewWith(activeTab as Category, item.file);
+                  const pwVariants: Partial<Record<Category, number>> = {
+                    skin:        colorVariants[pw.skin]        ?? 0,
+                    eyes:        colorVariants[pw.eyes]        ?? 0,
+                    clothes:     colorVariants[pw.clothes]     ?? 0,
+                    pants:       colorVariants[pw.pants]       ?? 0,
+                    shoes:       colorVariants[pw.shoes]       ?? 0,
+                    hair:        colorVariants[pw.hair]        ?? 0,
+                    accessories: colorVariants[pw.accessories] ?? 0,
+                  };
 
-                return (
-                  <div
-                    key={item.id}
-                    onClick={() => setPreviewItem({ item, category: activeTab as Category })}
-                    className={`px-card bg-[#e8f5f5] p-2 flex flex-col items-center gap-1.5 ${isEquipped ? "on" : ""} ${isLocked ? "locked" : ""}`}
-                  >
-                    {/* Thumbnail — full character with this item */}
-                    <div style={{ position: "relative", width: 120, height: (activeTab === "pants" || activeTab === "shoes") ? Math.round(120 * 32 / 28) : 120, filter: isLocked ? "grayscale(1)" : undefined }}>
-                      <CharacterPreview
-                        size={120}
-                        showLegs={activeTab === "pants" || activeTab === "shoes"}
-                        skin={pw.skin} eyes={pw.eyes} clothes={pw.clothes} pants={pw.pants} shoes={pw.shoes} hair={pw.hair} accessory={pw.accessories}
-                        variants={pwVariants}
-                      />
-                      {isLocked && (
-                        <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.4)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                          <span style={{ fontSize: 50 }}>🔒</span>
-                        </div>
+                  return (
+                    <div
+                      key={item.id}
+                      onClick={() => setPreviewItem({ item, category: activeTab as Category })}
+                      className={`px-card bg-[#e8f5f5] p-2 flex flex-col items-center gap-1.5 ${isEquipped ? "on" : ""} ${isLocked ? "locked" : ""}`}
+                    >
+                      <div style={{ position: "relative", width: 120, height: (activeTab === "pants" || activeTab === "shoes") ? Math.round(120 * 32 / 28) : 120, filter: isLocked ? "grayscale(1)" : undefined }}>
+                        <CharacterPreview
+                          size={120}
+                          showLegs={activeTab === "pants" || activeTab === "shoes"}
+                          skin={pw.skin} eyes={pw.eyes} clothes={pw.clothes} pants={pw.pants} shoes={pw.shoes} hair={pw.hair} accessory={pw.accessories}
+                          variants={pwVariants}
+                        />
+                        {isLocked && (
+                          <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.4)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <span style={{ fontSize: 50 }}>🔒</span>
+                          </div>
+                        )}
+                      </div>
+
+                      <p className="text-[20px] text-[#2d5050] text-center">{item.name.toUpperCase()}</p>
+                      {item.cost > 0
+                        ? <p className="text-[20px] text-[#7ab3b3]">⭐{item.cost}</p>
+                        : <p className="text-[20px] text-[#4e8888]">FREE</p>
+                      }
+
+                      {isEquipped ? (
+                        <div className="px-box bg-[#7ab3b3] text-[#f0f8f8] px-2 py-0.5 text-[20px] w-full text-center">✓ ON</div>
+                      ) : isLocked ? (
+                        <button
+                          className="px-btn bg-[#2d5050] text-[#f0f8f8] px-2 py-0.5 text-[20px] w-full"
+                          disabled={!canAfford}
+                          onClick={e => { e.stopPropagation(); handleBuy(activeTab as Category, item); }}
+                        >
+                          {canAfford ? `BUY` : "💸"}
+                        </button>
+                      ) : (
+                        <button
+                          className="px-btn bg-[#4e8888] text-[#f0f8f8] px-2 py-0.5 text-[20px] w-full"
+                          onClick={e => { e.stopPropagation(); handleEquip(activeTab as Category, item); }}
+                        >
+                          EQUIP
+                        </button>
                       )}
                     </div>
-
-                    <p className="text-[20px] text-[#2d5050] text-center">{item.name.toUpperCase()}</p>
-                    {item.cost > 0
-                      ? <p className="text-[20px] text-[#7ab3b3]">⭐{item.cost}</p>
-                      : <p className="text-[20px] text-[#4e8888]">FREE</p>
-                    }
-
-                    {isEquipped ? (
-                      <div className="px-box bg-[#7ab3b3] text-[#f0f8f8] px-2 py-0.5 text-[20px] w-full text-center">✓ ON</div>
-                    ) : isLocked ? (
-                      <button
-                        className="px-btn bg-[#2d5050] text-[#f0f8f8] px-2 py-0.5 text-[20px] w-full"
-                        disabled={!canAfford}
-                        onClick={e => { e.stopPropagation(); handleBuy(activeTab as Category, item); }}
-                      >
-                        {canAfford ? `BUY` : "💸"}
-                      </button>
-                    ) : (
-                      <button
-                        className="px-btn bg-[#4e8888] text-[#f0f8f8] px-2 py-0.5 text-[20px] w-full"
-                        onClick={e => { e.stopPropagation(); handleEquip(activeTab as Category, item); }}
-                      >
-                        EQUIP
-                      </button>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
             )}
           </div>
         </div>

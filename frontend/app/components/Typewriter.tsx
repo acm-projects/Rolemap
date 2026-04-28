@@ -76,7 +76,7 @@ export default function TypewriterText({
     >
       {displayedText}
       {!isComplete && (
-        <span className="animate-pulse inline-block w-[2px] h-[1em] bg-current ml-1" />
+        <span className="animate-pulse inline-block w-0.5 h-[1em] bg-current ml-1" />
       )}
     </span>
   );

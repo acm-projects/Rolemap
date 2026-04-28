@@ -15,7 +15,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 load_dotenv(Path(__file__).parent.parent / ".env")
 
 def get_db_driver():
-    uri = os.environ.get("NEO4J_URI", "bolt://localhost:7687")
+    uri = os.environ.get("NEO4J_URI", "bolt://localhost:7687").replace("neo4j+s://", "neo4j+ssc://")
     user = os.environ.get("NEO4J_USER", "neo4j")
     password = os.environ.get("NEO4J_PASSWORD", "")
     return GraphDatabase.driver(uri, auth=(user, password))

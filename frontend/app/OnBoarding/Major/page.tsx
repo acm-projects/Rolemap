@@ -117,7 +117,7 @@ export default function SpecialtyPage() {
   }, [selected]);
 
   return (
-    <div className="relative h-screen overflow-hidden w-full bg-[#f0f8f8] p-3 flex flex-col">
+    <div className="relative h-screen overflow-hidden w-full bg-linear-to-b from-[#7EC8E3] to-[#E1FAFF] p-3 flex flex-col">
       <div className="scanlines" />
 
       <div className="max-w-5xl mx-auto w-full flex flex-col justify-between flex-1">
@@ -128,7 +128,7 @@ export default function SpecialtyPage() {
               text="What is your specialty?"
               speed={20}
               delay={400}
-              className="text-5xl text-[#2d5050] block mt-7"
+              className="text-5xl text-[#334155] block mt-7"
             />
           </div>
           <div className="min-h-[7rem]">
@@ -136,7 +136,7 @@ export default function SpecialtyPage() {
               text="Pick your primary focus area. You can search for a specific role or choose from the categories below."
               speed={10}
               delay={800}
-              className="text-2xl text-[#4e8888] max-w-2xl block mb-5"
+              className="text-2xl text-[#78ADCF] max-w-2xl block mb-5"
             />
           </div>
         </div>
@@ -153,16 +153,16 @@ export default function SpecialtyPage() {
             icon={<Search className="w-4 h-4" />}
           />
           {showDropdown && suggestions.length > 0 && (
-            <div className="absolute top-full left-0 right-0 mt-1 bg-white border-4 border-[#7ab3b3] z-20 shadow-lg">
+            <div className="absolute top-full left-0 right-0 mt-1 bg-white border-4 border-[#8ED4FF] z-20 shadow-lg">
               {suggestions.map((s) => (
                 <div
                   key={s.id}
                   onClick={() => handleSelectSuggestion(s.id, s.label)}
-                  className="flex items-center gap-3 px-4 py-2 hover:bg-[#e8f4f4] cursor-pointer border-b border-[#d4e8e8] last:border-0"
+                  className="flex items-center gap-3 px-4 py-2 hover:bg-[#E1FAFF] cursor-pointer border-b border-[#DEF2FF] last:border-0"
                 >
-                  <span className="text-[#4e8888]">{s.icon}</span>
-                  <span className="text-sm text-[#2d5050] font-jersey">{s.label}</span>
-                  {selected === s.id && <span className="ml-auto text-[#4e8888] text-xs font-jersey">✓</span>}
+                  <span className="text-[#78ADCF]">{s.icon}</span>
+                  <span className="text-sm text-[#334155] font-jersey">{s.label}</span>
+                  {selected === s.id && <span className="ml-auto text-[#04A0FF] text-xs font-jersey">✓</span>}
                 </div>
               ))}
             </div>
@@ -176,19 +176,19 @@ export default function SpecialtyPage() {
               <PixelCard key={s.id} onClick={() => handleCardSelect(s.id, s.label)} selected={isSelected}>
                 <div
                   className={`h-full flex flex-col items-center justify-center gap-3 transition-all duration-100 relative ${
-                    isSelected ? "bg-[#3a6666] translate-y-[4px]" : "bg-transparent translate-y-0"
+                    isSelected ? "bg-[#04A0FF] translate-y-[4px]" : "bg-transparent translate-y-0"
                   }`}
                 >
                   <div
                     className={`w-12 h-12 flex items-center justify-center transition-colors duration-100 ${
-                      isSelected ? "text-white" : "text-[#4e8888]"
+                      isSelected ? "text-white" : "text-[#78ADCF]"
                     }`}
                   >
                     {s.image}
                   </div>
                   <span
                     className={`text-xl text-center font-jersey leading-tight transition-colors duration-100 px-1 ${
-                      isSelected ? "text-white" : "text-[#2d5050]"
+                      isSelected ? "text-white" : "text-[#334155]"
                     }`}
                   >
                     {s.label}
@@ -199,7 +199,7 @@ export default function SpecialtyPage() {
           })}
         </div>
 
-        {selectedLabel && <div className="text-sm text-[#4e8888] font-jersey">Selected: {selectedLabel}</div>}
+        {selectedLabel && <div className="text-sm text-[#78ADCF] font-jersey">Selected: {selectedLabel}</div>}
 
         <div className="flex items-center justify-between mt-3">
           <PixelButton variant="ghost" onClick={() => router.push("/")} size="md">

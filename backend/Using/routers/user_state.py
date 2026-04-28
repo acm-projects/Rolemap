@@ -12,6 +12,7 @@ import logging
 import math
 import shutil
 import sys
+from uuid import uuid4
 from typing import Any
 
 from models import ShopAppearancePatch, ShopPurchaseRequest, SkillDecayReviewRequest
@@ -26,6 +27,9 @@ _background_tasks: set = set()
 DB_PATH = Path(__file__).parent.parent / "data" / "mock_db.json"
 SHOP_CATALOG_PATH = Path(__file__).parent.parent / "data" / "shop_catalog.json"
 UPLOAD_DIR = Path(__file__).parent.parent / "data" / "uploads"
+OUTPUT_DIR = Path(__file__).parent.parent / "output"
+RESUME_OUTPUT_PATH = OUTPUT_DIR / "result.json"
+GITHUB_OUTPUT_PATH = OUTPUT_DIR / "github_result.json"
 
 _shop_catalog_cache: dict | None = None
 
@@ -269,6 +273,136 @@ def save_db(db: dict) -> None:
         json.dump(db, f, indent=2)
 
 
+def _load_optional_json(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        return data if isinstance(data, dict) else {}
+    except (OSError, json.JSONDecodeError) as exc:
+        logger.warning("Failed to load JSON from %s: %s", path, exc)
+        return {}
+
+
+def _get_resume_output() -> dict[str, Any]:
+    return _load_optional_json(RESUME_OUTPUT_PATH)
+
+
+def _get_github_output() -> dict[str, Any]:
+    return _load_optional_json(GITHUB_OUTPUT_PATH)
+
+
+def _get_resume_state(db: dict) -> dict[str, list[dict[str, Any]]]:
+    state = db.setdefault("resume_state", {})
+    state.setdefault("added_skills", [])
+    state.setdefault("added_projects", [])
+    return state
+
+
+def _normalize_resume_project(project: dict[str, Any], index: int) -> dict[str, Any]:
+    descriptions = project.get("descriptions", [])
+    bullets = [item for item in descriptions if isinstance(item, str) and item.strip()]
+    fallback_name = f"Resume Project {index}"
+    name = (project.get("name") or "").strip() or fallback_name
+
+    tech = ""
+    if bullets:
+        first_bullet = bullets[0]
+        if " using " in first_bullet.lower():
+            tech = first_bullet.split(" using ", 1)[1].strip().rstrip(".")
+
+    return {
+        "id": f"resume-{index}",
+        "name": name,
+        "tech": tech,
+        "period": project.get("date", ""),
+        "bullets": bullets,
+        "source": "resume",
+    }
+
+
+def _get_profile_payload(db: dict) -> dict[str, str]:
+    user = db["users"][0]
+    resume_output = _get_resume_output()
+    github_output = _get_github_output()
+
+    resume_profile = resume_output.get("profile", {})
+    github_profile = github_output.get("profile", {})
+
+    name = (
+        resume_profile.get("name")
+        or github_profile.get("name")
+        or user.get("name")
+        or "Player One"
+    )
+    email = resume_profile.get("email") or user.get("email") or ""
+
+    github_username = (
+        user.get("github_username")
+        or github_output.get("username")
+        or ""
+    )
+    url = resume_profile.get("url") or ""
+    if github_username:
+        url = f"github.com/{github_username}"
+
+    return {
+        "name": name,
+        "email": email,
+        "url": url,
+    }
+
+
+def _get_resume_projects() -> list[dict[str, Any]]:
+    resume_output = _get_resume_output()
+    projects = resume_output.get("projects", [])
+    if not isinstance(projects, list):
+        return []
+    return [
+        _normalize_resume_project(project, index)
+        for index, project in enumerate(projects, start=1)
+        if isinstance(project, dict)
+    ]
+
+
+def _get_roadmap_projects(db: dict) -> list[dict[str, Any]]:
+    checkpoints = db.get("roadmap_checkpoints", [])
+    results = []
+    for checkpoint in checkpoints:
+        if checkpoint.get("progress", 0) < 100:
+            continue
+
+        label = checkpoint.get("label", "Completed Roadmap Node")
+        goals = checkpoint.get("learning_goals", [])
+        bullets = [
+            goal for goal in goals
+            if isinstance(goal, str) and goal.strip()
+        ]
+        description = checkpoint.get("description", "")
+        if description:
+            bullets = [description, *bullets]
+
+        results.append({
+            "id": checkpoint["id"],
+            "name": label,
+            "tech": checkpoint.get("kind", "roadmap").replace("_", " ").title(),
+            "period": "Completed",
+            "bullets": bullets[:4],
+            "source": "roadmap",
+        })
+    return results
+
+
+def _skill_exists(added_skills: list[dict[str, Any]], name: str) -> bool:
+    normalized = name.strip().lower()
+    return any(
+        isinstance(skill.get("name"), str)
+        and skill["name"].strip().lower() == normalized
+        for skill in added_skills
+    )
+
+
 # ---------------------------------------------------------------------------
 # GET /api/v1/users/me
 # ---------------------------------------------------------------------------
@@ -303,6 +437,104 @@ async def save_character(body: dict):
     db["users"][0]["character"] = {**DEFAULT_CHARACTER, **body}
     save_db(db)
     return db["users"][0]["character"]
+
+
+# ---------------------------------------------------------------------------
+# Profile endpoints used by the frontend profile page
+# ---------------------------------------------------------------------------
+@router.get("/profile")
+async def get_profile():
+    db = load_db()
+    return {"profile": _get_profile_payload(db)}
+
+
+@router.get("/profile/resume-projects")
+async def get_resume_projects():
+    return _get_resume_projects()
+
+
+@router.get("/profile/roadmap-projects")
+async def get_roadmap_projects():
+    db = load_db()
+    return _get_roadmap_projects(db)
+
+
+@router.get("/profile/resume/active")
+async def get_active_resume():
+    db = load_db()
+    return _get_resume_state(db)
+
+
+@router.post("/profile/resume/add-skill")
+async def add_resume_skill(body: dict[str, Any]):
+    name = str(body.get("name", "")).strip()
+    category = str(body.get("category", "")).strip()
+    if not name or not category:
+        raise HTTPException(status_code=400, detail="Skill name and category are required")
+
+    db = load_db()
+    state = _get_resume_state(db)
+    if _skill_exists(state["added_skills"], name):
+        raise HTTPException(status_code=409, detail="Skill already added")
+
+    skill = {"name": name, "category": category}
+    state["added_skills"].append(skill)
+    save_db(db)
+    return {"skill": skill}
+
+
+@router.delete("/profile/resume/remove-skill/{name}")
+async def remove_resume_skill(name: str):
+    db = load_db()
+    state = _get_resume_state(db)
+    before = len(state["added_skills"])
+    normalized = name.strip().lower()
+    state["added_skills"] = [
+        skill for skill in state["added_skills"]
+        if str(skill.get("name", "")).strip().lower() != normalized
+    ]
+    if len(state["added_skills"]) == before:
+        raise HTTPException(status_code=404, detail="Skill not found")
+    save_db(db)
+    return {"ok": True}
+
+
+@router.post("/profile/resume/add-project")
+async def add_resume_project(body: dict[str, Any]):
+    name = str(body.get("name", "")).strip()
+    if not name:
+        raise HTTPException(status_code=400, detail="Project name is required")
+
+    db = load_db()
+    state = _get_resume_state(db)
+    project = {
+        "id": str(uuid4()),
+        "name": name,
+        "tech": str(body.get("tech", "")).strip(),
+        "period": str(body.get("period", "")).strip(),
+        "bullets": [
+            item for item in body.get("bullets", [])
+            if isinstance(item, str) and item.strip()
+        ],
+    }
+    state["added_projects"].append(project)
+    save_db(db)
+    return {"project": project}
+
+
+@router.delete("/profile/resume/remove-project/{project_id}")
+async def remove_resume_project(project_id: str):
+    db = load_db()
+    state = _get_resume_state(db)
+    before = len(state["added_projects"])
+    state["added_projects"] = [
+        project for project in state["added_projects"]
+        if project.get("id") != project_id
+    ]
+    if len(state["added_projects"]) == before:
+        raise HTTPException(status_code=404, detail="Project not found")
+    save_db(db)
+    return {"ok": True}
 
 
 # ---------------------------------------------------------------------------
@@ -683,6 +915,7 @@ async def update_task(task_id: str, body: dict[str, Any]):
                             old_progress = cp.get("progress", 0)
                             cp["progress"] = new_progress
                             if new_progress == 100 and old_progress < 100:
+                                _init_decay(cp)
                                 cp_kind = cp.get("kind", "lesson")
                                 bonus = XP_CHECKPOINT_PROJECT if cp_kind == "project" else XP_CHECKPOINT_LESSON
                                 _award_xp(db, bonus)
@@ -748,6 +981,7 @@ async def update_task(task_id: str, body: dict[str, Any]):
                     old_progress = cp.get("progress", 0)
                     cp["progress"] = new_progress
                     if new_progress == 100 and old_progress < 100:
+                        _init_decay(cp)
                         cp_kind = cp.get("kind", "lesson")
                         bonus = XP_CHECKPOINT_PROJECT if cp_kind == "project" else XP_CHECKPOINT_LESSON
                         _award_xp(db, bonus)
@@ -925,6 +1159,10 @@ async def generate_roadmap_api(body: dict[str, Any]):
         with open(roadmap_json, encoding="utf-8") as f:
             roadmap_steps = json.load(f)
         print(f"[generate] Loaded {len(roadmap_steps)} steps from roadmap.json", flush=True)
+        MAX_LESSONS = 75  # yields ~100 total checkpoints after gates are inserted
+        if len(roadmap_steps) > MAX_LESSONS:
+            roadmap_steps = roadmap_steps[:MAX_LESSONS]
+            print(f"[generate] Capped roadmap at {MAX_LESSONS} lessons", flush=True)
     else:
         print("[generate] ERROR: roadmap.json was not created — generator likely failed", flush=True)
 
@@ -962,7 +1200,7 @@ async def generate_roadmap_api(body: dict[str, Any]):
                 gate_label = f"{role} Project #{quiz_count // 3}"
             else:
                 gate_kind = "quiz"
-                gate_label = " + ".join(lesson_buffer[-batch_count:]) + " Quiz"
+                gate_label = lesson_buffer[-1] + " Quiz"
             skeleton.append({"label": gate_label, "kind": gate_kind})
             lesson_buffer = []
             batch_count = 0
@@ -1001,7 +1239,15 @@ async def generate_roadmap_api(body: dict[str, Any]):
             print(f"[generate] Gemini batch failed ({e}), using fallback", flush=True)
 
     def _fallback(label: str) -> dict:
-        return {"description": f"Learn {label}", "learning_goals": [label]}
+        return {
+            "description": f"Learn the key concepts of {label}.",
+            "learning_goals": [
+                f"Understand the core principles of {label}",
+                f"Apply {label} in practical scenarios",
+                f"Explore advanced patterns in {label}",
+                f"Build something real using {label}",
+            ],
+        }
 
     # --- Pass 3: assemble final checkpoints ---
     checkpoints = []
@@ -1410,6 +1656,21 @@ def _iso_utc(dt: datetime.datetime) -> str:
     return dt.astimezone(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.000Z")
 
 
+def _init_decay(cp: dict) -> None:
+    """Set initial SM-2 state when a checkpoint is first completed. No-op if already set."""
+    if cp.get("decay"):
+        return
+    now = datetime.datetime.now(datetime.timezone.utc)
+    cp["decay"] = {
+        "times_practiced": 0,
+        "sm2_interval": 1,
+        "sm2_easiness": 2.5,
+        "sm2_repetitions": 0,
+        "next_review": _iso_utc(now + datetime.timedelta(days=1)),
+        "last_reviewed_at": _iso_utc(now),
+    }
+
+
 def _parse_utc(value: Any) -> datetime.datetime:
     if isinstance(value, datetime.datetime):
         if value.tzinfo is None:
@@ -1533,12 +1794,13 @@ def _apply_sm2(state: dict, quality: int) -> dict:
 
 @router.get("/skills/decay")
 async def get_skills_decay(roadmap_id: str | None = Query(default=None)):
-    """List SM-2 decay rows for checkpoints on a roadmap (default: generated, else first active)."""
+    """List SM-2 decay rows for completed checkpoints. Scans all roadmaps when no specific id given."""
     db = load_db()
-    rid = _resolve_decay_roadmap_id(db, roadmap_id)
     rows = []
     for cp in db.get("roadmap_checkpoints", []):
-        if cp.get("roadmap_id") != rid:
+        if roadmap_id and cp.get("roadmap_id") != roadmap_id:
+            continue
+        if cp.get("progress", 0) < 100:
             continue
         st = _checkpoint_decay_state(cp)
         next_r = st["next_review"]
