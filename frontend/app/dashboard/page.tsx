@@ -4,10 +4,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Navbar } from '../components/NavBar';
 import fire from '../../icons/fire.png';
+import star from '../../icons/star.png';
 import { useRouter } from 'next/navigation';
 import { CharacterPreview } from '../components/CharacterPreview';
 import { useCharacter } from '../context/CharacterContext';
 import { api, type DashboardResponse, type DashboardRoadmap, type Checkpoint, type RoadmapEdge } from '@/lib/api';
+// ── XP sync: shared localStorage util ────────────────────────────────────────
+import { getStoredXP, setStoredXP } from '@/lib/xp';
 import {
   ReactFlow,
   Background,
@@ -145,6 +148,7 @@ function MiniRoadmapContent({ roadmapId }: { roadmapId: string }) {
       .catch(() => setError(true))
       .finally(() => setLoading(false));
   }, [roadmapId]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // Position viewport so the anchor node sits in the left portion of the minimap
   useEffect(() => {
     if (!nodesInitialized || nodes.length === 0 || !anchorCenter) return;
@@ -195,7 +199,7 @@ function MiniRoadmap({ roadmapId }: { roadmapId: string }) {
   );
 }
 
-// ─── Pixel primitives (inlined) ─────────────────────────────────────────────────────────
+// ─── Pixel primitives ─────────────────────────────────────────────────────────
 
 interface PixelButtonProps {
   children: React.ReactNode;
@@ -273,6 +277,7 @@ interface PixelCardProps {
   className?: string;
 }
 
+// PixelCard — lighter teal border (#334155) when unselected, dark teal (#7ec8e3) + #c8e6e6 bg when selected
 function PixelCard({
   children,
   onClick,
@@ -287,12 +292,11 @@ function PixelCard({
         pixel-border
         bg-white
         border-4
-        border-t-[#DEF2FF] border-l-[#DEF2FF]
-        border-r-[#334155] border-b-[#334155]
+        border-[#334155]
         transition-all duration-100
         ${onClick ? 'cursor-pointer' : ''}
         ${hover && onClick ? 'hover:bg-[#E1FAFF] hover:translate-y-[-2px]' : ''}
-        ${selected ? 'border-t-[#8ED4FF] border-l-[#8ED4FF] border-r-[#334155] border-b-[#334155] bg-[#BEF8FF]' : ''}
+        ${selected ? 'border-[#7ec8e3] bg-[#c8e6e6]' : ''}
         active:translate-y-[1px]
         ${className}
       `}
@@ -301,7 +305,6 @@ function PixelCard({
     </div>
   );
 }
-
 
 // ─── Dashboard leaderboard character ─────────────────────────────────────────
 
@@ -429,6 +432,19 @@ export default function Dashboard() {
   const [displayProgress, setDisplayProgress] = useState(0);
   const [selectedRoadmap, setSelectedRoadmap] = useState<DashboardRoadmap | null>(null);
 
+  // ── XP state: read from localStorage, kept in sync via xp-updated event ──
+  const [xp, setXp] = useState(0);
+
+  useEffect(() => {
+    // Read initial value from localStorage (populated below after API resolves)
+    setXp(getStoredXP());
+
+    // Listen for XP changes from any page (shop spending, lesson rewards, etc.)
+    const handler = (e: Event) => setXp((e as CustomEvent<number>).detail);
+    window.addEventListener('xp-updated', handler);
+    return () => window.removeEventListener('xp-updated', handler);
+  }, []);
+
   useEffect(() => {
     // Gate: redirect to onboarding if not completed
     api.currentUser()
@@ -438,6 +454,16 @@ export default function Dashboard() {
     api.dashboard()
       .then(d => {
         setData(d);
+
+        // Seed XP into localStorage from the API on first visit.
+        // If localStorage already has a value (e.g. player has spent XP in the
+        // shop this session), keep that value — don't overwrite with the server
+        // total, which may lag behind client-side spend.
+        if (!localStorage.getItem('player_xp')) {
+          setStoredXP(d.user.xp_total ?? 0);
+          setXp(d.user.xp_total ?? 0);
+        }
+
         // Default minimap to whichever roadmap matches the map page (active_roadmap)
         const preferred = d.roadmaps.find(r => r.id === d.active_roadmap.id);
         const active = (preferred && preferred.progress_percentage > 0)
@@ -460,7 +486,6 @@ export default function Dashboard() {
   }
 
   const userName = data?.user.name ?? '';
-  const xpTotal = data?.user.xp_total?.toLocaleString() ?? '0';
   const tasksCompleted = data?.gamification.tasks_completed ?? 0;
   const roadmaps = data?.roadmaps ?? [];
   const leaderboard = data?.leaderboard ?? [];
@@ -468,7 +493,6 @@ export default function Dashboard() {
   return (
     // ── Page background: gradient from sky blue to light cyan ──
     <div className="min-h-screen w-full bg-linear-to-b from-[#7EC8E3] to-[#E1FAFF] relative">
-      <DashboardCharacter />
       <Navbar />
 
       <div className="pt-25 px-8 pb-5 ml-8 mr-7">
@@ -480,7 +504,7 @@ export default function Dashboard() {
             {/* Left: title */}
             <div>
               <div className='flex items-center'>
-                {/* Title text: 334155 (Charcoal Blue) */}
+                {/* Title text: #7ec8e3 (dark teal) matching shop page */}
                 <h1 className="text-5xl text-[#334155] leading-tight tracking-wider">Dashboard</h1>
               </div>
               {/* Subtitle: slightly lighter, using Sky Reflection */}
@@ -490,13 +514,12 @@ export default function Dashboard() {
             {/* Right: quick stats + today's challenge */}
             <div className="flex items-stretch gap-3 shrink-0">
 
-              {/* XP — Star icon + value in F9EC72 (Banana Cream yellow) */}
+              {/* XP — reads from shared localStorage so it matches shop/profile */}
               <div className="flex items-center gap-3 px-2">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10 shrink-0" style={{ color: '#F9EC72' }}>
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-                {/* Currency/XP number also in F9EC72 per whiteboard */}
-                <p className="text-4xl whitespace-nowrap" style={{ color: '#F9EC72' }}>XP: {xpTotal}</p>
+                {/* star.png — pixel-art star, drop-shadow used to create a visible dark teal border outline */}
+                <Image src={star} alt="Star Icon" width={44} height={44} style={{ imageRendering: 'pixelated', filter: 'drop-shadow(1px 0px 0px #334155) drop-shadow(-1px 0px 0px #334155) drop-shadow(0px 1px 0px #334155) drop-shadow(0px -1px 0px #334155)' }} className="shrink-0" />
+                {/* XP value: live from localStorage, updated by shop spending / lesson rewards */}
+                <p className="text-4xl whitespace-nowrap text-[#334155]">XP: {xp.toLocaleString()}</p>
               </div>
 
               {/* Progress ring — green (84BC2F = Lime Moss) per whiteboard */}
@@ -512,8 +535,8 @@ export default function Dashboard() {
                 <p className="text-4xl text-[#334155] whitespace-nowrap">{displayProgress}%</p>
               </div>
 
-              {/* Today's Challenge — consistent top-left with other cards: DEF2FF */}
-              <PixelCard className="bg-[#BEF8FF] px-5 py-2.5 flex items-center gap-4 !border-t-[#DEF2FF] !border-l-[#DEF2FF] !border-r-[#334155] !border-b-[#334155]">
+              {/* Today's Challenge — lighter teal border matching other unselected cards */}
+              <PixelCard className="bg-[#BEF8FF] px-5 py-2.5 flex items-center gap-4">
                 <div>
                   <p className="text-lg uppercase tracking-normal opacity-75 leading-none mb-0.5 text-[#334155]">Today&apos;s Challenge</p>
                   <p className="text-lg tracking-normal leading-tight text-[#334155]">Build a useState counter</p>
@@ -533,27 +556,28 @@ export default function Dashboard() {
             <PixelCard className="col-span-3 p-6 h-100 flex flex-col">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-[#BEF8FF] flex items-center justify-center">
-                    <Image src={fire} alt="Fire Icon" className="h-6 w-6" />
-                  </div>
+                  {/* Fire icon — no circle wrapper, just the icon directly */}
+                  <Image src={fire} alt="Fire Icon" className="h-6 w-6" />
                   <h2 className="text-2xl text-[#334155] uppercase tracking-wider">Leaderboard</h2>
                 </div>
               </div>
               <div className="flex flex-col gap-2 flex-1 overflow-y-auto">
                 {leaderboard.slice(0, 4).map((user) => (
-                  <div key={user.rank}
-                    className={`flex items-center gap-3 px-4 py-3 transition-all border-2
+                  // Row border: lighter teal for unselected; "you" row gets dark teal outline + #c8e6e6 bg
+                  <div
+                    key={user.rank}
+                    data-rank-you={user.is_you ? '' : undefined}
+                    className={`flex items-center gap-3 px-4 py-3 transition-all border-4
                       ${user.is_you
-                        // highlighted row for "you": BEF8FF bg, consistent borders
-                        ? 'bg-[#BEF8FF] border-t-[#DEF2FF] border-l-[#DEF2FF] border-r-[#334155] border-b-[#334155]'
-                        : 'bg-white border-t-[#DEF2FF] border-l-[#DEF2FF] border-r-[#8ED4FF] border-b-[#8ED4FF]'}`}>
-                    <span className={`text-base font-normal w-6 text-center shrink-0 ${user.is_you ? 'text-[#04A0FF]' : 'text-[#78ADCF]'}`}
-                      {...(user.is_you ? { 'data-rank-you': '' } : {})}>
+                        ? 'bg-[#c8e6e6] border-[#7ec8e3]'
+                        : 'bg-white border-[#334155]'}`}
+                  >
+                    <span className={`text-base font-normal w-6 text-center shrink-0 ${user.is_you ? 'text-[#04A0FF]' : 'text-[#78ADCF]'}`}>
                       {user.rank}
                     </span>
                     <div className="flex-1 min-w-0">
+                      {/* Subtitle removed — name only */}
                       <p className="text-base font-normal text-[#334155]">{user.is_you ? 'You' : user.name}</p>
-                      <p className="text-lg text-[#78ADCF]">{user.subtitle}</p>
                     </div>
                     <div className="flex items-center gap-1.5 shrink-0">
                       <span className={`text-base font-normal ${user.is_you ? 'text-[#334155]' : 'text-[#78ADCF]'}`}>
@@ -583,13 +607,14 @@ export default function Dashboard() {
                   </div>
                 ) : roadmaps.map((rm: DashboardRoadmap) => {
                   return (
+                    // Selected row: dark teal outline + #c8e6e6 bg; unselected: lighter teal border
                     <div
                       key={rm.id}
                       onClick={() => setSelectedRoadmap(rm)}
-                      className={`flex items-center justify-between px-4 py-3 cursor-pointer transition-all hover:-translate-y-px border-2
+                      className={`flex items-center justify-between px-4 py-3 cursor-pointer transition-all hover:-translate-y-px border-4
                         ${selectedRoadmap?.id === rm.id
-                          ? 'bg-[#BEF8FF] border-t-[#DEF2FF] border-l-[#DEF2FF] border-r-[#334155] border-b-[#334155]'
-                          : 'bg-white border-t-[#DEF2FF] border-l-[#DEF2FF] border-r-[#8ED4FF] border-b-[#8ED4FF]'
+                          ? 'bg-[#c8e6e6] border-[#7ec8e3]'
+                          : 'bg-white border-[#334155]'
                         }`}
                     >
                       <div className="flex-1">
@@ -625,6 +650,8 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      <DashboardCharacter />
     </div>
   );
 }

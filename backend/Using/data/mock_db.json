@@ -5,14 +5,14 @@
       "email": "alex.morgan@example.com",
       "name": "Alex Morgan",
       "image_url": null,
-      "github_username": "OhamjDung",
-      "xp_total": 0,
-      "current_streak": 0,
-      "longest_streak": 0,
-      "onboarding_completed": false,
+      "github_username": "SiriKishoreDola",
+      "xp_total": 275,
+      "current_streak": 4,
+      "longest_streak": 4,
+      "onboarding_completed": true,
       "onboarding_step": 5,
       "created_at": "2025-09-01T00:00:00Z",
-      "last_active_date": "2026-04-25",
+      "last_active_date": "2026-04-28",
       "character": {
         "skin": "char1.png",
         "eyes": "eyes.png",
@@ -20,8 +20,12 @@
         "pants": "pants.png",
         "shoes": "shoes.png",
         "hair": "buzzcut.png",
-        "accessories": "",
-        "color_variants": {}
+        "accessories": "hat_lucky.png",
+        "color_variants": {
+          "pants.png": 0,
+          "skirt.png": 6,
+          "suit.png": 1
+        }
       }
     }
   ],
@@ -153,8 +157,8 @@
       "user_id": "u-001",
       "role_id": "r-001",
       "title": "Front End Developer",
-      "status": "not_started",
-      "progress_percentage": 0
+      "status": "active",
+      "progress_percentage": 68
     },
     {
       "id": "rm-002",
@@ -162,7 +166,7 @@
       "role_id": "r-002",
       "title": "Full Stack Developer",
       "status": "not_started",
-      "progress_percentage": 0
+      "progress_percentage": 12
     },
     {
       "id": "rm-003",
@@ -178,7 +182,7 @@
       "role_id": "r-004",
       "title": "UX Design",
       "status": "not_started",
-      "progress_percentage": 0
+      "progress_percentage": 45
     }
   ],
   "roadmap_checkpoints": [
@@ -216,14 +220,6 @@
       "kind": "lesson",
       "progress": 100,
       "locked": false,
-      "decay": {
-        "times_practiced": 1,
-        "sm2_interval": 5,
-        "sm2_easiness": 2.2,
-        "sm2_repetitions": 1,
-        "next_review": "2026-04-20T15:59:32.000Z",
-        "last_reviewed_at": "2026-04-14T15:59:32.000Z"
-      },
       "position": {
         "x": 300,
         "y": 150
@@ -241,8 +237,8 @@
       "roadmap_id": "rm-001",
       "label": "Layouts Master Quiz",
       "kind": "quiz",
-      "progress": 0,
-      "locked": true,
+      "progress": 100,
+      "locked": false,
       "position": {
         "x": 600,
         "y": 150
@@ -260,8 +256,8 @@
       "roadmap_id": "rm-001",
       "label": "JS Logic & Variables",
       "kind": "lesson",
-      "progress": 0,
-      "locked": true,
+      "progress": 100,
+      "locked": false,
       "position": {
         "x": 900,
         "y": 50
@@ -279,8 +275,8 @@
       "roadmap_id": "rm-001",
       "label": "DOM & Events",
       "kind": "lesson",
-      "progress": 0,
-      "locked": true,
+      "progress": 100,
+      "locked": false,
       "position": {
         "x": 900,
         "y": 250
@@ -298,8 +294,8 @@
       "roadmap_id": "rm-001",
       "label": "Interactive Site Project",
       "kind": "project",
-      "progress": 0,
-      "locked": true,
+      "progress": 40,
+      "locked": false,
       "position": {
         "x": 1250,
         "y": 150
@@ -353,7 +349,7 @@
     {
       "id": "cp-gen-000",
       "roadmap_id": "rm-generated",
-      "label": "Internet",
+      "label": "Programming Fundamentals",
       "kind": "lesson",
       "progress": 0,
       "locked": false,
@@ -361,18 +357,18 @@
         "x": 300,
         "y": 100
       },
-      "description": "Understand the fundamental concepts of how the internet works, including protocols, client-server architecture, and basic networking. This lesson will cover the journey of a web request from your browser to a server and back.",
+      "description": "Learn the key concepts of Programming Fundamentals.",
       "learning_goals": [
-        "Explain the client-server model.",
-        "Describe HTTP/HTTPS protocols.",
-        "Understand IP addresses and DNS.",
-        "Trace the path of a web request."
+        "Understand the core principles of Programming Fundamentals",
+        "Apply Programming Fundamentals in practical scenarios",
+        "Explore advanced patterns in Programming Fundamentals",
+        "Build something real using Programming Fundamentals"
       ]
     },
     {
       "id": "cp-gen-001",
       "roadmap_id": "rm-generated",
-      "label": "Pick a Language",
+      "label": "Internet",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -380,18 +376,18 @@
         "x": 500,
         "y": 230
       },
-      "description": "This lesson guides you through the process of selecting a primary programming language for your full-stack journey, considering factors like community support, ecosystem, and career opportunities. You'll learn about popular choices and their typical use cases.",
+      "description": "Learn the key concepts of Internet.",
       "learning_goals": [
-        "Identify popular full-stack languages.",
-        "Evaluate language pros and cons.",
-        "Align language choice with career goals.",
-        "Make an informed language selection."
+        "Understand the core principles of Internet",
+        "Apply Internet in practical scenarios",
+        "Explore advanced patterns in Internet",
+        "Build something real using Internet"
       ]
     },
     {
       "id": "cp-gen-002",
       "roadmap_id": "rm-generated",
-      "label": "Pick a Language Quiz",
+      "label": "Internet Quiz",
       "kind": "quiz",
       "progress": 0,
       "locked": true,
@@ -399,18 +395,18 @@
         "x": 300,
         "y": 360
       },
-      "description": "This quiz tests your understanding of different programming languages and their suitability for various full-stack development scenarios. It ensures you can justify your language choice based on project requirements and ecosystem knowledge.",
+      "description": "Learn the key concepts of Internet Quiz.",
       "learning_goals": [
-        "Distinguish between language strengths.",
-        "Match languages to project types.",
-        "Recall common language ecosystems.",
-        "Articulate reasons for language choice."
+        "Understand the core principles of Internet Quiz",
+        "Apply Internet Quiz in practical scenarios",
+        "Explore advanced patterns in Internet Quiz",
+        "Build something real using Internet Quiz"
       ]
     },
     {
       "id": "cp-gen-003",
       "roadmap_id": "rm-generated",
-      "label": "Programming Fundamentals",
+      "label": "Basics of Probability",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -418,18 +414,18 @@
         "x": 500,
         "y": 490
       },
-      "description": "Dive into the core concepts of programming that are essential regardless of the language you choose. This module covers variables, data types, control structures, functions, and basic algorithms, forming the bedrock of your coding skills.",
+      "description": "Learn the key concepts of Basics of Probability.",
       "learning_goals": [
-        "Define variables and data types.",
-        "Implement control flow statements.",
-        "Write and use functions.",
-        "Apply basic algorithmic thinking."
+        "Understand the core principles of Basics of Probability",
+        "Apply Basics of Probability in practical scenarios",
+        "Explore advanced patterns in Basics of Probability",
+        "Build something real using Basics of Probability"
       ]
     },
     {
       "id": "cp-gen-004",
       "roadmap_id": "rm-generated",
-      "label": "Cloud Skills and Knowledge",
+      "label": "Bayes Theorem",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -437,18 +433,18 @@
         "x": 300,
         "y": 620
       },
-      "description": "This lesson introduces fundamental cloud computing concepts, services, and architectures relevant to full-stack engineers. You'll learn about different cloud providers, deployment models, and the benefits of cloud-native development.",
+      "description": "Learn the key concepts of Bayes Theorem.",
       "learning_goals": [
-        "Understand cloud service models (IaaS, PaaS, SaaS).",
-        "Identify major cloud providers (AWS, Azure, GCP).",
-        "Explain cloud scalability and elasticity.",
-        "Describe basic cloud deployment patterns."
+        "Understand the core principles of Bayes Theorem",
+        "Apply Bayes Theorem in practical scenarios",
+        "Explore advanced patterns in Bayes Theorem",
+        "Build something real using Bayes Theorem"
       ]
     },
     {
       "id": "cp-gen-005",
       "roadmap_id": "rm-generated",
-      "label": "Programming Skills",
+      "label": "Random Variances, PDFs",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -456,18 +452,18 @@
         "x": 500,
         "y": 750
       },
-      "description": "This module focuses on developing practical programming abilities beyond the absolute basics, including problem-solving techniques, debugging, and writing cleaner, more efficient code. It's about translating theoretical knowledge into functional applications.",
+      "description": "Learn the key concepts of Random Variances, PDFs.",
       "learning_goals": [
-        "Solve coding problems effectively.",
-        "Debug code systematically.",
-        "Write maintainable and readable code.",
-        "Refactor code for efficiency."
+        "Understand the core principles of Random Variances, PDFs",
+        "Apply Random Variances, PDFs in practical scenarios",
+        "Explore advanced patterns in Random Variances, PDFs",
+        "Build something real using Random Variances, PDFs"
       ]
     },
     {
       "id": "cp-gen-006",
       "roadmap_id": "rm-generated",
-      "label": "JavaScript",
+      "label": "Object Oriented Programming",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -475,18 +471,18 @@
         "x": 300,
         "y": 880
       },
-      "description": "Learn JavaScript, the cornerstone language of web development, covering its syntax, core concepts, and how it enables dynamic and interactive web pages. This lesson will prepare you for both front-end and back-end JavaScript development.",
+      "description": "Learn the key concepts of Object Oriented Programming.",
       "learning_goals": [
-        "Understand JavaScript syntax and types.",
-        "Work with functions and objects.",
-        "Manipulate the DOM.",
-        "Handle events and asynchronous operations."
+        "Understand the core principles of Object Oriented Programming",
+        "Apply Object Oriented Programming in practical scenarios",
+        "Explore advanced patterns in Object Oriented Programming",
+        "Build something real using Object Oriented Programming"
       ]
     },
     {
       "id": "cp-gen-007",
       "roadmap_id": "rm-generated",
-      "label": "JavaScript Quiz",
+      "label": "Object Oriented Programming Quiz",
       "kind": "quiz",
       "progress": 0,
       "locked": true,
@@ -494,18 +490,18 @@
         "x": 500,
         "y": 1010
       },
-      "description": "Test your comprehension of JavaScript fundamentals, including data types, control flow, functions, and DOM manipulation. This quiz ensures a solid understanding of the language crucial for both frontend and backend development.",
+      "description": "Learn the key concepts of Object Oriented Programming Quiz.",
       "learning_goals": [
-        "Demonstrate knowledge of JS syntax.",
-        "Solve basic JS programming challenges.",
-        "Identify correct DOM manipulation methods.",
-        "Explain asynchronous patterns in JS."
+        "Understand the core principles of Object Oriented Programming Quiz",
+        "Apply Object Oriented Programming Quiz in practical scenarios",
+        "Explore advanced patterns in Object Oriented Programming Quiz",
+        "Build something real using Object Oriented Programming Quiz"
       ]
     },
     {
       "id": "cp-gen-008",
       "roadmap_id": "rm-generated",
-      "label": "BEM",
+      "label": "Basic Syntax",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -513,18 +509,18 @@
         "x": 300,
         "y": 1140
       },
-      "description": "Explore BEM (Block, Element, Modifier), a popular methodology for organizing and naming CSS classes, promoting modularity and reusability in front-end development. This lesson will help you write scalable and maintainable stylesheets.",
+      "description": "Learn the key concepts of Basic Syntax.",
       "learning_goals": [
-        "Understand BEM naming conventions.",
-        "Apply BEM to CSS structuring.",
-        "Improve CSS modularity.",
-        "Enhance stylesheet maintainability."
+        "Understand the core principles of Basic Syntax",
+        "Apply Basic Syntax in practical scenarios",
+        "Explore advanced patterns in Basic Syntax",
+        "Build something real using Basic Syntax"
       ]
     },
     {
       "id": "cp-gen-009",
       "roadmap_id": "rm-generated",
-      "label": "App Store Distribution",
+      "label": "Matplotlib",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -532,18 +528,18 @@
         "x": 500,
         "y": 1270
       },
-      "description": "This lesson covers the process of preparing and submitting mobile applications to major app stores like Apple's App Store and Google Play. You'll learn about developer accounts, app metadata, review guidelines, and release cycles.",
+      "description": "Learn the key concepts of Matplotlib.",
       "learning_goals": [
-        "Understand app store requirements.",
-        "Prepare app for submission.",
-        "Manage developer accounts.",
-        "Navigate app review processes."
+        "Understand the core principles of Matplotlib",
+        "Apply Matplotlib in practical scenarios",
+        "Explore advanced patterns in Matplotlib",
+        "Build something real using Matplotlib"
       ]
     },
     {
       "id": "cp-gen-010",
       "roadmap_id": "rm-generated",
-      "label": "TestFlight",
+      "label": "Numpy",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -551,12 +547,12 @@
         "x": 300,
         "y": 1400
       },
-      "description": "Learn how to use TestFlight, Apple's platform for beta testing iOS apps before public release. This module will guide you through setting up builds, inviting testers, and collecting feedback to refine your applications.",
+      "description": "Learn the key concepts of Numpy.",
       "learning_goals": [
-        "Set up TestFlight for iOS apps.",
-        "Manage beta testers.",
-        "Distribute app builds.",
-        "Collect and interpret feedback."
+        "Understand the core principles of Numpy",
+        "Apply Numpy in practical scenarios",
+        "Explore advanced patterns in Numpy",
+        "Build something real using Numpy"
       ]
     },
     {
@@ -570,18 +566,18 @@
         "x": 500,
         "y": 1530
       },
-      "description": "Apply your foundational knowledge to build your first full-stack application. This project will involve creating a simple web application using basic HTML, CSS, JavaScript, and a minimal backend, solidifying your understanding of the web stack.",
+      "description": "Learn the key concepts of Full-Stack Engineer Project #1.",
       "learning_goals": [
-        "Develop a basic front-end interface.",
-        "Implement simple server-side logic.",
-        "Connect front-end to back-end.",
-        "Deploy a basic web application."
+        "Understand the core principles of Full-Stack Engineer Project #1",
+        "Apply Full-Stack Engineer Project #1 in practical scenarios",
+        "Explore advanced patterns in Full-Stack Engineer Project #1",
+        "Build something real using Full-Stack Engineer Project #1"
       ]
     },
     {
       "id": "cp-gen-012",
       "roadmap_id": "rm-generated",
-      "label": "FastLane",
+      "label": "Variables and Data Types",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -589,18 +585,18 @@
         "x": 300,
         "y": 1660
       },
-      "description": "Discover Fastlane, an open-source platform that automates common tasks for iOS and Android app development and deployment. This lesson will teach you how to streamline your mobile CI/CD pipeline, from screenshots to releasing your app.",
+      "description": "Learn the key concepts of Variables and Data Types.",
       "learning_goals": [
-        "Automate mobile build processes.",
-        "Configure Fastlane actions.",
-        "Streamline app release cycles.",
-        "Integrate Fastlane into CI/CD."
+        "Understand the core principles of Variables and Data Types",
+        "Apply Variables and Data Types in practical scenarios",
+        "Explore advanced patterns in Variables and Data Types",
+        "Build something real using Variables and Data Types"
       ]
     },
     {
       "id": "cp-gen-013",
       "roadmap_id": "rm-generated",
-      "label": "Learn a Programming Language",
+      "label": "Seaborn",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -608,18 +604,18 @@
         "x": 500,
         "y": 1790
       },
-      "description": "This lesson focuses on diving deep into the specifics of a chosen programming language, covering advanced syntax, idiomatic patterns, and its standard library. You'll gain proficiency in writing practical applications in your selected language.",
+      "description": "Learn the key concepts of Seaborn.",
       "learning_goals": [
-        "Master chosen language syntax.",
-        "Utilize standard library features.",
-        "Implement common data structures.",
-        "Write idiomatic code."
+        "Understand the core principles of Seaborn",
+        "Apply Seaborn in practical scenarios",
+        "Explore advanced patterns in Seaborn",
+        "Build something real using Seaborn"
       ]
     },
     {
       "id": "cp-gen-014",
       "roadmap_id": "rm-generated",
-      "label": "Learn a Programming Language Quiz",
+      "label": "Seaborn Quiz",
       "kind": "quiz",
       "progress": 0,
       "locked": true,
@@ -627,18 +623,18 @@
         "x": 300,
         "y": 1920
       },
-      "description": "This quiz assesses your in-depth knowledge and practical application skills in your chosen programming language. It covers advanced concepts, common library usage, and problem-solving scenarios specific to that language.",
+      "description": "Learn the key concepts of Seaborn Quiz.",
       "learning_goals": [
-        "Demonstrate advanced language proficiency.",
-        "Solve complex programming problems.",
-        "Recall specific library functions.",
-        "Identify optimal language constructs."
+        "Understand the core principles of Seaborn Quiz",
+        "Apply Seaborn Quiz in practical scenarios",
+        "Explore advanced patterns in Seaborn Quiz",
+        "Build something real using Seaborn Quiz"
       ]
     },
     {
       "id": "cp-gen-015",
       "roadmap_id": "rm-generated",
-      "label": "Operating System",
+      "label": "Pandas",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -646,18 +642,18 @@
         "x": 500,
         "y": 2050
       },
-      "description": "Gain a foundational understanding of how operating systems work, including processes, memory management, file systems, and command-line interfaces. This knowledge is crucial for understanding how your applications run and interact with hardware.",
+      "description": "Learn the key concepts of Pandas.",
       "learning_goals": [
-        "Explain OS core functions.",
-        "Understand processes and threads.",
-        "Describe file system hierarchy.",
-        "Use basic command-line tools."
+        "Understand the core principles of Pandas",
+        "Apply Pandas in practical scenarios",
+        "Explore advanced patterns in Pandas",
+        "Build something real using Pandas"
       ]
     },
     {
       "id": "cp-gen-016",
       "roadmap_id": "rm-generated",
-      "label": "Terminal Knowledge",
+      "label": "Data Structures",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -665,18 +661,18 @@
         "x": 300,
         "y": 2180
       },
-      "description": "Master the command-line interface (CLI), an indispensable tool for developers, covering essential commands for navigation, file manipulation, process management, and executing scripts. This will significantly boost your productivity.",
+      "description": "Learn the key concepts of Data Structures.",
       "learning_goals": [
-        "Navigate file systems with CLI.",
-        "Perform file operations (create, copy, move).",
-        "Manage running processes.",
-        "Execute scripts from the terminal."
+        "Understand the core principles of Data Structures",
+        "Apply Data Structures in practical scenarios",
+        "Explore advanced patterns in Data Structures",
+        "Build something real using Data Structures"
       ]
     },
     {
       "id": "cp-gen-017",
       "roadmap_id": "rm-generated",
-      "label": "Version Control Systems",
+      "label": "Loops",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -684,18 +680,18 @@
         "x": 500,
         "y": 2310
       },
-      "description": "Understand the principles of Version Control Systems (VCS), their importance in collaborative development, and common workflows. This module will introduce you to concepts like commits, branches, and merging, essential for team projects.",
+      "description": "Learn the key concepts of Loops.",
       "learning_goals": [
-        "Explain VCS importance.",
-        "Understand commits and repositories.",
-        "Describe branching strategies.",
-        "Identify common VCS operations."
+        "Understand the core principles of Loops",
+        "Apply Loops in practical scenarios",
+        "Explore advanced patterns in Loops",
+        "Build something real using Loops"
       ]
     },
     {
       "id": "cp-gen-018",
       "roadmap_id": "rm-generated",
-      "label": "VCS Hosting",
+      "label": "Essential libraries",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -703,18 +699,18 @@
         "x": 300,
         "y": 2440
       },
-      "description": "Learn about various platforms that host Version Control Systems, enabling remote collaboration and code backup. This lesson will cover services like GitHub, GitLab, and Bitbucket, and how they facilitate team development.",
+      "description": "Learn the key concepts of Essential libraries.",
       "learning_goals": [
-        "Identify major VCS hosting services.",
-        "Understand remote repository concepts.",
-        "Explain collaborative workflows.",
-        "Manage access and permissions."
+        "Understand the core principles of Essential libraries",
+        "Apply Essential libraries in practical scenarios",
+        "Explore advanced patterns in Essential libraries",
+        "Build something real using Essential libraries"
       ]
     },
     {
       "id": "cp-gen-019",
       "roadmap_id": "rm-generated",
-      "label": "VCS Hosting Quiz",
+      "label": "Essential libraries Quiz",
       "kind": "quiz",
       "progress": 0,
       "locked": true,
@@ -722,18 +718,18 @@
         "x": 500,
         "y": 2570
       },
-      "description": "This quiz evaluates your knowledge of Version Control System hosting platforms and their functionalities for collaborative development. It ensures you understand how to leverage these services effectively for team projects and code management.",
+      "description": "Learn the key concepts of Essential libraries Quiz.",
       "learning_goals": [
-        "Distinguish between hosting services.",
-        "Recall features of VCS platforms.",
-        "Explain remote repository management.",
-        "Identify best practices for collaboration."
+        "Understand the core principles of Essential libraries Quiz",
+        "Apply Essential libraries Quiz in practical scenarios",
+        "Explore advanced patterns in Essential libraries Quiz",
+        "Build something real using Essential libraries Quiz"
       ]
     },
     {
       "id": "cp-gen-020",
       "roadmap_id": "rm-generated",
-      "label": "Repo Hosting Services",
+      "label": "APIs",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -741,18 +737,18 @@
         "x": 300,
         "y": 2700
       },
-      "description": "This lesson delves into the practical aspects of using repository hosting services like GitHub, GitLab, and Bitbucket, focusing on creating repositories, managing access, pull requests, and code reviews for efficient team collaboration.",
+      "description": "Learn the key concepts of APIs.",
       "learning_goals": [
-        "Create and manage repositories.",
-        "Utilize pull/merge requests.",
-        "Participate in code reviews.",
-        "Collaborate on shared codebases."
+        "Understand the core principles of APIs",
+        "Apply APIs in practical scenarios",
+        "Explore advanced patterns in APIs",
+        "Build something real using APIs"
       ]
     },
     {
       "id": "cp-gen-021",
       "roadmap_id": "rm-generated",
-      "label": "Relational Databases",
+      "label": "Conditionals",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -760,18 +756,18 @@
         "x": 500,
         "y": 2830
       },
-      "description": "Understand the fundamentals of relational databases, including schema design, SQL queries for data manipulation, and the concepts of tables, rows, and columns. This is crucial for managing structured data in web applications.",
+      "description": "Learn the key concepts of Conditionals.",
       "learning_goals": [
-        "Explain relational database concepts.",
-        "Design basic database schemas.",
-        "Write SQL queries (SELECT, INSERT, UPDATE, DELETE).",
-        "Understand primary and foreign keys."
+        "Understand the core principles of Conditionals",
+        "Apply Conditionals in practical scenarios",
+        "Explore advanced patterns in Conditionals",
+        "Build something real using Conditionals"
       ]
     },
     {
       "id": "cp-gen-022",
       "roadmap_id": "rm-generated",
-      "label": "Package Managers",
+      "label": "IoT",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -779,12 +775,12 @@
         "x": 300,
         "y": 2960
       },
-      "description": "Learn about package managers, essential tools for installing, managing, and updating software libraries and dependencies in your projects. This lesson covers popular managers like npm, yarn, pip, and composer.",
+      "description": "Learn the key concepts of IoT.",
       "learning_goals": [
-        "Understand package manager purpose.",
-        "Install and manage dependencies.",
-        "Identify common package managers.",
-        "Resolve dependency conflicts."
+        "Understand the core principles of IoT",
+        "Apply IoT in practical scenarios",
+        "Explore advanced patterns in IoT",
+        "Build something real using IoT"
       ]
     },
     {
@@ -798,18 +794,18 @@
         "x": 500,
         "y": 3090
       },
-      "description": "Build a more complex full-stack application, incorporating a database, user authentication, and a more sophisticated front-end framework. This project will deepen your understanding of data persistence and user interaction.",
+      "description": "Learn the key concepts of Full-Stack Engineer Project #2.",
       "learning_goals": [
-        "Implement user authentication.",
-        "Integrate a relational database.",
-        "Build a dynamic front-end.",
-        "Deploy an application with persistent data."
+        "Understand the core principles of Full-Stack Engineer Project #2",
+        "Apply Full-Stack Engineer Project #2 in practical scenarios",
+        "Explore advanced patterns in Full-Stack Engineer Project #2",
+        "Build something real using Full-Stack Engineer Project #2"
       ]
     },
     {
       "id": "cp-gen-024",
       "roadmap_id": "rm-generated",
-      "label": "Pick a Framework",
+      "label": "Exceptions",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -817,18 +813,18 @@
         "x": 300,
         "y": 3220
       },
-      "description": "This lesson guides you through choosing suitable front-end and back-end frameworks based on project requirements, performance considerations, and community support. You'll evaluate popular options and their ecosystems.",
+      "description": "Learn the key concepts of Exceptions.",
       "learning_goals": [
-        "Identify popular web frameworks.",
-        "Evaluate framework pros and cons.",
-        "Align framework choice with project needs.",
-        "Make an informed framework selection."
+        "Understand the core principles of Exceptions",
+        "Apply Exceptions in practical scenarios",
+        "Explore advanced patterns in Exceptions",
+        "Build something real using Exceptions"
       ]
     },
     {
       "id": "cp-gen-025",
       "roadmap_id": "rm-generated",
-      "label": "Learn about APIs",
+      "label": "Functions, Builtin Functions",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -836,18 +832,18 @@
         "x": 500,
         "y": 3350
       },
-      "description": "Dive into Application Programming Interfaces (APIs), understanding how different software components communicate. You'll learn about RESTful principles, common API patterns, and how to design and consume APIs effectively.",
+      "description": "Learn the key concepts of Functions, Builtin Functions.",
       "learning_goals": [
-        "Define what an API is.",
-        "Understand RESTful API principles.",
-        "Design basic API endpoints.",
-        "Consume external APIs."
+        "Understand the core principles of Functions, Builtin Functions",
+        "Apply Functions, Builtin Functions in practical scenarios",
+        "Explore advanced patterns in Functions, Builtin Functions",
+        "Build something real using Functions, Builtin Functions"
       ]
     },
     {
       "id": "cp-gen-026",
       "roadmap_id": "rm-generated",
-      "label": "Caching",
+      "label": "Preprocessing Techniques",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -855,18 +851,18 @@
         "x": 300,
         "y": 3480
       },
-      "description": "Explore caching techniques to improve application performance and reduce database load. This lesson covers various caching strategies, including client-side, server-side, and database caching, along with common tools.",
+      "description": "Learn the key concepts of Preprocessing Techniques.",
       "learning_goals": [
-        "Explain the concept of caching.",
-        "Identify different caching levels.",
-        "Implement basic caching strategies.",
-        "Understand cache invalidation."
+        "Understand the core principles of Preprocessing Techniques",
+        "Apply Preprocessing Techniques in practical scenarios",
+        "Explore advanced patterns in Preprocessing Techniques",
+        "Build something real using Preprocessing Techniques"
       ]
     },
     {
       "id": "cp-gen-027",
       "roadmap_id": "rm-generated",
-      "label": "Caching Quiz",
+      "label": "Preprocessing Techniques Quiz",
       "kind": "quiz",
       "progress": 0,
       "locked": true,
@@ -874,18 +870,18 @@
         "x": 500,
         "y": 3610
       },
-      "description": "This quiz assesses your understanding of caching principles, various caching strategies, and their application in improving application performance and scalability. It covers topics from client-side to server-side caching mechanisms.",
+      "description": "Learn the key concepts of Preprocessing Techniques Quiz.",
       "learning_goals": [
-        "Distinguish caching types.",
-        "Recall caching benefits.",
-        "Identify appropriate caching strategies.",
-        "Explain cache invalidation concepts."
+        "Understand the core principles of Preprocessing Techniques Quiz",
+        "Apply Preprocessing Techniques Quiz in practical scenarios",
+        "Explore advanced patterns in Preprocessing Techniques Quiz",
+        "Build something real using Preprocessing Techniques Quiz"
       ]
     },
     {
       "id": "cp-gen-028",
       "roadmap_id": "rm-generated",
-      "label": "Web Security",
+      "label": "Data Cleaning",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -893,18 +889,18 @@
         "x": 300,
         "y": 3740
       },
-      "description": "Understand common web security vulnerabilities and best practices to protect your applications. This lesson covers topics like cross-site scripting (XSS), cross-site request forgery (CSRF), SQL injection, and secure coding principles.",
+      "description": "Learn the key concepts of Data Cleaning.",
       "learning_goals": [
-        "Identify common web vulnerabilities.",
-        "Implement secure coding practices.",
-        "Understand data protection principles.",
-        "Mitigate common attack vectors."
+        "Understand the core principles of Data Cleaning",
+        "Apply Data Cleaning in practical scenarios",
+        "Explore advanced patterns in Data Cleaning",
+        "Build something real using Data Cleaning"
       ]
     },
     {
       "id": "cp-gen-029",
       "roadmap_id": "rm-generated",
-      "label": "Writing CSS",
+      "label": "Excel",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -912,18 +908,18 @@
         "x": 500,
         "y": 3870
       },
-      "description": "Master the Cascading Style Sheets (CSS) language to style web pages, covering selectors, properties, layout techniques (Flexbox, Grid), and responsive design principles. You'll learn to create visually appealing and adaptive user interfaces.",
+      "description": "Learn the key concepts of Excel.",
       "learning_goals": [
-        "Understand CSS selectors and properties.",
-        "Apply Flexbox for layout.",
-        "Implement CSS Grid for complex layouts.",
-        "Create responsive designs with media queries."
+        "Understand the core principles of Excel",
+        "Apply Excel in practical scenarios",
+        "Explore advanced patterns in Excel",
+        "Build something real using Excel"
       ]
     },
     {
       "id": "cp-gen-030",
       "roadmap_id": "rm-generated",
-      "label": "Writing CSS Quiz",
+      "label": "Excel Quiz",
       "kind": "quiz",
       "progress": 0,
       "locked": true,
@@ -931,18 +927,18 @@
         "x": 300,
         "y": 4000
       },
-      "description": "This quiz tests your practical knowledge of CSS, covering selectors, properties, layout models like Flexbox and Grid, and responsive design techniques. It ensures you can effectively style and lay out web content.",
+      "description": "Learn the key concepts of Excel Quiz.",
       "learning_goals": [
-        "Demonstrate mastery of CSS selectors.",
-        "Apply Flexbox and Grid correctly.",
-        "Implement responsive design via media queries.",
-        "Debug CSS styling issues."
+        "Understand the core principles of Excel Quiz",
+        "Apply Excel Quiz in practical scenarios",
+        "Explore advanced patterns in Excel Quiz",
+        "Build something real using Excel Quiz"
       ]
     },
     {
       "id": "cp-gen-031",
       "roadmap_id": "rm-generated",
-      "label": "CSS Architecture",
+      "label": "Feature Engineering",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -950,18 +946,18 @@
         "x": 500,
         "y": 4130
       },
-      "description": "Learn about structuring large CSS codebases for scalability and maintainability using methodologies like ITCSS, OOCSS, and SMACSS. This lesson focuses on organizing styles effectively in complex projects.",
+      "description": "Learn the key concepts of Feature Engineering.",
       "learning_goals": [
-        "Understand CSS modularization.",
-        "Apply CSS architectural patterns.",
-        "Improve stylesheet scalability.",
-        "Promote CSS reusability."
+        "Understand the core principles of Feature Engineering",
+        "Apply Feature Engineering in practical scenarios",
+        "Explore advanced patterns in Feature Engineering",
+        "Build something real using Feature Engineering"
       ]
     },
     {
       "id": "cp-gen-032",
       "roadmap_id": "rm-generated",
-      "label": "CSS Preprocessors",
+      "label": "Parquet",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -969,18 +965,18 @@
         "x": 300,
         "y": 4260
       },
-      "description": "Explore CSS preprocessors like Sass/SCSS and Less, which extend CSS with features like variables, mixins, functions, and nesting. This lesson will teach you how to write more powerful and maintainable stylesheets.",
+      "description": "Learn the key concepts of Parquet.",
       "learning_goals": [
-        "Understand CSS preprocessor benefits.",
-        "Use variables and mixins.",
-        "Implement nested rules.",
-        "Compile preprocessor code to CSS."
+        "Understand the core principles of Parquet",
+        "Apply Parquet in practical scenarios",
+        "Explore advanced patterns in Parquet",
+        "Build something real using Parquet"
       ]
     },
     {
       "id": "cp-gen-033",
       "roadmap_id": "rm-generated",
-      "label": "Build Tools",
+      "label": "Feature Scaling & Normalization",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -988,18 +984,18 @@
         "x": 500,
         "y": 4390
       },
-      "description": "Discover essential build tools that automate tasks in your development workflow, such as compiling code, minifying assets, running tests, and managing dependencies. This lesson covers tools like Webpack, Gulp, and Rollup.",
+      "description": "Learn the key concepts of Feature Scaling & Normalization.",
       "learning_goals": [
-        "Understand purpose of build tools.",
-        "Configure basic build processes.",
-        "Automate repetitive development tasks.",
-        "Improve development workflow efficiency."
+        "Understand the core principles of Feature Scaling & Normalization",
+        "Apply Feature Scaling & Normalization in practical scenarios",
+        "Explore advanced patterns in Feature Scaling & Normalization",
+        "Build something real using Feature Scaling & Normalization"
       ]
     },
     {
       "id": "cp-gen-034",
       "roadmap_id": "rm-generated",
-      "label": "Module Bundlers",
+      "label": "Type Checkers",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1007,12 +1003,12 @@
         "x": 300,
         "y": 4520
       },
-      "description": "Dive into module bundlers like Webpack, Rollup, and Parcel, which combine multiple code modules into a single optimized bundle for deployment. This lesson explains how they improve performance and simplify dependency management.",
+      "description": "Learn the key concepts of Type Checkers.",
       "learning_goals": [
-        "Explain module bundling concept.",
-        "Configure a module bundler.",
-        "Optimize code for production.",
-        "Manage module dependencies efficiently."
+        "Understand the core principles of Type Checkers",
+        "Apply Type Checkers in practical scenarios",
+        "Explore advanced patterns in Type Checkers",
+        "Build something real using Type Checkers"
       ]
     },
     {
@@ -1026,18 +1022,18 @@
         "x": 500,
         "y": 4650
       },
-      "description": "Develop a feature-rich full-stack application leveraging a front-end framework and a robust backend. This project will integrate advanced database interactions, APIs, and ensure a polished user experience.",
+      "description": "Learn the key concepts of Full-Stack Engineer Project #3.",
       "learning_goals": [
-        "Build an application using a modern framework.",
-        "Implement complex data models.",
-        "Design and consume custom APIs.",
-        "Focus on user experience and UI."
+        "Understand the core principles of Full-Stack Engineer Project #3",
+        "Apply Full-Stack Engineer Project #3 in practical scenarios",
+        "Explore advanced patterns in Full-Stack Engineer Project #3",
+        "Build something real using Full-Stack Engineer Project #3"
       ]
     },
     {
       "id": "cp-gen-036",
       "roadmap_id": "rm-generated",
-      "label": "npm",
+      "label": "What is Machine Learning?",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1045,18 +1041,18 @@
         "x": 300,
         "y": 4780
       },
-      "description": "Learn to use npm (Node Package Manager), the default package manager for JavaScript, covering how to install, manage, and publish packages, as well as configure project scripts and dependencies.",
+      "description": "Learn the key concepts of What is Machine Learning?.",
       "learning_goals": [
-        "Install and manage npm packages.",
-        "Understand `package.json`.",
-        "Create and run npm scripts.",
-        "Manage project dependencies."
+        "Understand the core principles of What is Machine Learning?",
+        "Apply What is Machine Learning? in practical scenarios",
+        "Explore advanced patterns in What is Machine Learning?",
+        "Build something real using What is Machine Learning?"
       ]
     },
     {
       "id": "cp-gen-037",
       "roadmap_id": "rm-generated",
-      "label": "Git",
+      "label": "Feature Selection",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1064,18 +1060,18 @@
         "x": 500,
         "y": 4910
       },
-      "description": "Master Git, the industry-standard distributed version control system, learning core commands for tracking changes, branching, merging, and collaborating with others on codebases. This is fundamental for any developer.",
+      "description": "Learn the key concepts of Feature Selection.",
       "learning_goals": [
-        "Initialize Git repositories.",
-        "Perform commits and track changes.",
-        "Create and merge branches.",
-        "Resolve basic merge conflicts."
+        "Understand the core principles of Feature Selection",
+        "Apply Feature Selection in practical scenarios",
+        "Explore advanced patterns in Feature Selection",
+        "Build something real using Feature Selection"
       ]
     },
     {
       "id": "cp-gen-038",
       "roadmap_id": "rm-generated",
-      "label": "Git Quiz",
+      "label": "Feature Selection Quiz",
       "kind": "quiz",
       "progress": 0,
       "locked": true,
@@ -1083,18 +1079,18 @@
         "x": 300,
         "y": 5040
       },
-      "description": "This quiz evaluates your proficiency with Git commands and version control concepts, including branching, merging, and remote repository interactions. It ensures you can effectively manage code history and collaborate in teams.",
+      "description": "Learn the key concepts of Feature Selection Quiz.",
       "learning_goals": [
-        "Demonstrate Git command mastery.",
-        "Explain branching strategies.",
-        "Resolve common Git issues.",
-        "Understand remote repository operations."
+        "Understand the core principles of Feature Selection Quiz",
+        "Apply Feature Selection Quiz in practical scenarios",
+        "Explore advanced patterns in Feature Selection Quiz",
+        "Build something real using Feature Selection Quiz"
       ]
     },
     {
       "id": "cp-gen-039",
       "roadmap_id": "rm-generated",
-      "label": "Containers",
+      "label": "SSR",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1102,18 +1098,18 @@
         "x": 500,
         "y": 5170
       },
-      "description": "Introduce yourself to containers and containerization technologies like Docker. This lesson explains how containers provide consistent development environments and simplify application deployment and scaling.",
+      "description": "Learn the key concepts of SSR.",
       "learning_goals": [
-        "Understand container concept.",
-        "Explain benefits of containerization.",
-        "Run basic Docker commands.",
-        "Create simple Dockerfiles."
+        "Understand the core principles of SSR",
+        "Apply SSR in practical scenarios",
+        "Explore advanced patterns in SSR",
+        "Build something real using SSR"
       ]
     },
     {
       "id": "cp-gen-040",
       "roadmap_id": "rm-generated",
-      "label": "Design and Development Principles",
+      "label": "GraphQL",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1121,18 +1117,18 @@
         "x": 300,
         "y": 5300
       },
-      "description": "Learn fundamental software design and development principles, such as SOLID, DRY, KISS, and YAGNI, to write clean, maintainable, and extensible code. This lesson promotes good programming practices.",
+      "description": "Learn the key concepts of GraphQL.",
       "learning_goals": [
-        "Understand SOLID principles.",
-        "Apply DRY, KISS, YAGNI.",
-        "Write modular and extensible code.",
-        "Improve code quality and maintainability."
+        "Understand the core principles of GraphQL",
+        "Apply GraphQL in practical scenarios",
+        "Explore advanced patterns in GraphQL",
+        "Build something real using GraphQL"
       ]
     },
     {
       "id": "cp-gen-041",
       "roadmap_id": "rm-generated",
-      "label": "Design and Development Principles Quiz",
+      "label": "GraphQL Quiz",
       "kind": "quiz",
       "progress": 0,
       "locked": true,
@@ -1140,18 +1136,18 @@
         "x": 500,
         "y": 5430
       },
-      "description": "This quiz assesses your understanding and application of core design and development principles like SOLID, DRY, and KISS. It ensures you can identify and implement best practices for writing maintainable and scalable code.",
+      "description": "Learn the key concepts of GraphQL Quiz.",
       "learning_goals": [
-        "Explain common design principles.",
-        "Identify principle violations.",
-        "Apply principles to coding scenarios.",
-        "Justify design decisions based on principles."
+        "Understand the core principles of GraphQL Quiz",
+        "Apply GraphQL Quiz in practical scenarios",
+        "Explore advanced patterns in GraphQL Quiz",
+        "Build something real using GraphQL Quiz"
       ]
     },
     {
       "id": "cp-gen-042",
       "roadmap_id": "rm-generated",
-      "label": "Containerization vs Virtualization",
+      "label": "PWAs",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1159,18 +1155,18 @@
         "x": 300,
         "y": 5560
       },
-      "description": "Compare and contrast containerization (e.g., Docker) with traditional virtualization (e.g., VMs), understanding their respective advantages, use cases, and underlying technologies. This clarifies when to use each approach.",
+      "description": "Learn the key concepts of PWAs.",
       "learning_goals": [
-        "Differentiate containers and VMs.",
-        "Identify benefits of each technology.",
-        "Choose appropriate tech for use cases.",
-        "Understand underlying mechanisms."
+        "Understand the core principles of PWAs",
+        "Apply PWAs in practical scenarios",
+        "Explore advanced patterns in PWAs",
+        "Build something real using PWAs"
       ]
     },
     {
       "id": "cp-gen-043",
       "roadmap_id": "rm-generated",
-      "label": "Message Brokers",
+      "label": "Static Site Generators",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1178,18 +1174,18 @@
         "x": 500,
         "y": 5690
       },
-      "description": "Explore message brokers (e.g., RabbitMQ, Kafka) and their role in building loosely coupled, asynchronous, and scalable distributed systems. This lesson covers messaging patterns and their implementation.",
+      "description": "Learn the key concepts of Static Site Generators.",
       "learning_goals": [
-        "Understand message broker purpose.",
-        "Explain asynchronous communication.",
-        "Identify common message broker patterns.",
-        "Integrate a message broker example."
+        "Understand the core principles of Static Site Generators",
+        "Apply Static Site Generators in practical scenarios",
+        "Explore advanced patterns in Static Site Generators",
+        "Build something real using Static Site Generators"
       ]
     },
     {
       "id": "cp-gen-044",
       "roadmap_id": "rm-generated",
-      "label": "Search Engines",
+      "label": "Mobile Apps",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1197,18 +1193,18 @@
         "x": 300,
         "y": 5820
       },
-      "description": "Learn the basics of how search engines work, including crawling, indexing, ranking, and search engine optimization (SEO) principles. This knowledge is valuable for making your applications discoverable.",
+      "description": "Learn the key concepts of Mobile Apps.",
       "learning_goals": [
-        "Understand search engine components.",
-        "Explain crawling and indexing.",
-        "Apply basic SEO principles.",
-        "Optimize content for discoverability."
+        "Understand the core principles of Mobile Apps",
+        "Apply Mobile Apps in practical scenarios",
+        "Explore advanced patterns in Mobile Apps",
+        "Build something real using Mobile Apps"
       ]
     },
     {
       "id": "cp-gen-045",
       "roadmap_id": "rm-generated",
-      "label": "The Fundamentals",
+      "label": "Polynomial Regression",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1216,12 +1212,12 @@
         "x": 500,
         "y": 5950
       },
-      "description": "Revisit and reinforce the absolute core concepts of computing and programming that underpin all further learning. This ensures a strong foundation in logic, data representation, and computational thinking.",
+      "description": "Learn the key concepts of Polynomial Regression.",
       "learning_goals": [
-        "Reinforce computational thinking.",
-        "Understand binary and data representation.",
-        "Review basic data structures.",
-        "Strengthen problem-solving logic."
+        "Understand the core principles of Polynomial Regression",
+        "Apply Polynomial Regression in practical scenarios",
+        "Explore advanced patterns in Polynomial Regression",
+        "Build something real using Polynomial Regression"
       ]
     },
     {
@@ -1235,18 +1231,18 @@
         "x": 300,
         "y": 6080
       },
-      "description": "Undertake a project that integrates multiple services, perhaps involving third-party APIs or message queues. This project emphasizes system design, asynchronous operations, and deploying a more complex, distributed application.",
+      "description": "Learn the key concepts of Full-Stack Engineer Project #4.",
       "learning_goals": [
-        "Integrate multiple microservices.",
-        "Implement asynchronous communication.",
-        "Work with third-party APIs.",
-        "Design a distributed system."
+        "Understand the core principles of Full-Stack Engineer Project #4",
+        "Apply Full-Stack Engineer Project #4 in practical scenarios",
+        "Explore advanced patterns in Full-Stack Engineer Project #4",
+        "Build something real using Full-Stack Engineer Project #4"
       ]
     },
     {
       "id": "cp-gen-047",
       "roadmap_id": "rm-generated",
-      "label": "HTML",
+      "label": "Ridge",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1254,18 +1250,18 @@
         "x": 500,
         "y": 6210
       },
-      "description": "Master HyperText Markup Language (HTML), the standard language for creating web pages. This lesson covers semantic HTML5 elements, document structure, forms, and accessibility best practices for robust web content.",
+      "description": "Learn the key concepts of Ridge.",
       "learning_goals": [
-        "Structure web pages with HTML5.",
-        "Use semantic HTML elements.",
-        "Create interactive forms.",
-        "Implement basic accessibility features."
+        "Understand the core principles of Ridge",
+        "Apply Ridge in practical scenarios",
+        "Explore advanced patterns in Ridge",
+        "Build something real using Ridge"
       ]
     },
     {
       "id": "cp-gen-048",
       "roadmap_id": "rm-generated",
-      "label": "CSS",
+      "label": "Lasso",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1273,18 +1269,18 @@
         "x": 300,
         "y": 6340
       },
-      "description": "Deepen your understanding of Cascading Style Sheets (CSS) beyond the basics, exploring advanced layout techniques, animations, transitions, and performance considerations for modern web design.",
+      "description": "Learn the key concepts of Lasso.",
       "learning_goals": [
-        "Apply advanced CSS selectors.",
-        "Implement CSS animations and transitions.",
-        "Optimize CSS for performance.",
-        "Understand browser rendering processes."
+        "Understand the core principles of Lasso",
+        "Apply Lasso in practical scenarios",
+        "Explore advanced patterns in Lasso",
+        "Build something real using Lasso"
       ]
     },
     {
       "id": "cp-gen-049",
       "roadmap_id": "rm-generated",
-      "label": "Network",
+      "label": "What is Unsupervised Learning?",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1292,18 +1288,18 @@
         "x": 500,
         "y": 6470
       },
-      "description": "Explore advanced networking concepts relevant to web development, including common protocols (TCP/IP, UDP), HTTP/2, WebSockets, and network security basics. This builds on foundational internet knowledge.",
+      "description": "Learn the key concepts of What is Unsupervised Learning?.",
       "learning_goals": [
-        "Understand TCP/IP and UDP.",
-        "Explain HTTP/2 and WebSockets.",
-        "Identify common network vulnerabilities.",
-        "Configure basic network settings."
+        "Understand the core principles of What is Unsupervised Learning?",
+        "Apply What is Unsupervised Learning? in practical scenarios",
+        "Explore advanced patterns in What is Unsupervised Learning?",
+        "Build something real using What is Unsupervised Learning?"
       ]
     },
     {
       "id": "cp-gen-050",
       "roadmap_id": "rm-generated",
-      "label": "Network Quiz",
+      "label": "What is Unsupervised Learning? Quiz",
       "kind": "quiz",
       "progress": 0,
       "locked": true,
@@ -1311,18 +1307,18 @@
         "x": 300,
         "y": 6600
       },
-      "description": "This quiz assesses your advanced knowledge of networking concepts, including protocols, security, and performance considerations critical for modern web applications. It covers topics like HTTP/2, WebSockets, and network architecture.",
+      "description": "Learn the key concepts of What is Unsupervised Learning? Quiz.",
       "learning_goals": [
-        "Explain advanced networking protocols.",
-        "Identify network security best practices.",
-        "Diagnose common network issues.",
-        "Compare network architectural patterns."
+        "Understand the core principles of What is Unsupervised Learning? Quiz",
+        "Apply What is Unsupervised Learning? Quiz in practical scenarios",
+        "Explore advanced patterns in What is Unsupervised Learning? Quiz",
+        "Build something real using What is Unsupervised Learning? Quiz"
       ]
     },
     {
       "id": "cp-gen-051",
       "roadmap_id": "rm-generated",
-      "label": "Asynchronism",
+      "label": "ElasticNet Regularization",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1330,18 +1326,18 @@
         "x": 500,
         "y": 6730
       },
-      "description": "Master asynchronous programming patterns crucial for non-blocking operations in both frontend and backend development. This lesson covers callbacks, promises, async/await, and event loops.",
+      "description": "Learn the key concepts of ElasticNet Regularization.",
       "learning_goals": [
-        "Understand asynchronous vs. synchronous.",
-        "Implement callbacks and promises.",
-        "Use async/await effectively.",
-        "Explain event loop mechanisms."
+        "Understand the core principles of ElasticNet Regularization",
+        "Apply ElasticNet Regularization in practical scenarios",
+        "Explore advanced patterns in ElasticNet Regularization",
+        "Build something real using ElasticNet Regularization"
       ]
     },
     {
       "id": "cp-gen-052",
       "roadmap_id": "rm-generated",
-      "label": "Common Services",
+      "label": "Clustering",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1349,18 +1345,18 @@
         "x": 300,
         "y": 6860
       },
-      "description": "Learn about commonly used external services and APIs that full-stack engineers integrate into their applications, such as payment gateways, email services, and analytics platforms.",
+      "description": "Learn the key concepts of Clustering.",
       "learning_goals": [
-        "Identify common third-party services.",
-        "Understand integration patterns.",
-        "Work with external APIs.",
-        "Evaluate service providers."
+        "Understand the core principles of Clustering",
+        "Apply Clustering in practical scenarios",
+        "Explore advanced patterns in Clustering",
+        "Build something real using Clustering"
       ]
     },
     {
       "id": "cp-gen-053",
       "roadmap_id": "rm-generated",
-      "label": "Common Services Quiz",
+      "label": "Clustering Quiz",
       "kind": "quiz",
       "progress": 0,
       "locked": true,
@@ -1368,18 +1364,18 @@
         "x": 500,
         "y": 6990
       },
-      "description": "This quiz tests your knowledge of integrating and utilizing common third-party services like payment gateways, email providers, and analytics tools. It ensures you understand their functionality and integration patterns.",
+      "description": "Learn the key concepts of Clustering Quiz.",
       "learning_goals": [
-        "Recall common service providers.",
-        "Explain service integration methods.",
-        "Identify best practices for using external APIs.",
-        "Evaluate different service offerings."
+        "Understand the core principles of Clustering Quiz",
+        "Apply Clustering Quiz in practical scenarios",
+        "Explore advanced patterns in Clustering Quiz",
+        "Build something real using Clustering Quiz"
       ]
     },
     {
       "id": "cp-gen-054",
       "roadmap_id": "rm-generated",
-      "label": "Linting",
+      "label": "Dimensionality Reduction",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1387,18 +1383,18 @@
         "x": 300,
         "y": 7120
       },
-      "description": "Understand the importance of linting tools in maintaining code quality, consistency, and catching potential errors early. This lesson covers setting up linters like ESLint and Prettier for various languages.",
+      "description": "Learn the key concepts of Dimensionality Reduction.",
       "learning_goals": [
-        "Explain purpose of linting.",
-        "Configure a linter for a project.",
-        "Enforce coding style guides.",
-        "Improve code consistency."
+        "Understand the core principles of Dimensionality Reduction",
+        "Apply Dimensionality Reduction in practical scenarios",
+        "Explore advanced patterns in Dimensionality Reduction",
+        "Build something real using Dimensionality Reduction"
       ]
     },
     {
       "id": "cp-gen-055",
       "roadmap_id": "rm-generated",
-      "label": "Testing",
+      "label": "Exclusive",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1406,18 +1402,18 @@
         "x": 500,
         "y": 7250
       },
-      "description": "Learn various software testing methodologies, including unit, integration, and end-to-end testing, along with popular testing frameworks. This module emphasizes writing robust and reliable applications.",
+      "description": "Learn the key concepts of Exclusive.",
       "learning_goals": [
-        "Understand different testing types.",
-        "Write effective unit tests.",
-        "Implement integration tests.",
-        "Utilize testing frameworks."
+        "Understand the core principles of Exclusive",
+        "Apply Exclusive in practical scenarios",
+        "Explore advanced patterns in Exclusive",
+        "Build something real using Exclusive"
       ]
     },
     {
       "id": "cp-gen-056",
       "roadmap_id": "rm-generated",
-      "label": "CI / CD",
+      "label": "Principal Component Analysis",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1425,18 +1421,18 @@
         "x": 300,
         "y": 7380
       },
-      "description": "Dive into Continuous Integration (CI) and Continuous Deployment (CD) pipelines, learning how to automate build, test, and deployment processes. This is crucial for rapid and reliable software delivery.",
+      "description": "Learn the key concepts of Principal Component Analysis.",
       "learning_goals": [
-        "Explain CI/CD benefits.",
-        "Set up a basic CI pipeline.",
-        "Automate deployment processes.",
-        "Integrate testing into CI/CD."
+        "Understand the core principles of Principal Component Analysis",
+        "Apply Principal Component Analysis in practical scenarios",
+        "Explore advanced patterns in Principal Component Analysis",
+        "Build something real using Principal Component Analysis"
       ]
     },
     {
       "id": "cp-gen-057",
       "roadmap_id": "rm-generated",
-      "label": "More about Databases",
+      "label": "Overlapping",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1444,12 +1440,12 @@
         "x": 500,
         "y": 7510
       },
-      "description": "Expand your database knowledge beyond relational models, exploring NoSQL databases (e.g., MongoDB, Redis), their use cases, and how to choose the right database for different application requirements.",
+      "description": "Learn the key concepts of Overlapping.",
       "learning_goals": [
-        "Understand NoSQL database types.",
-        "Compare relational vs. NoSQL.",
-        "Choose appropriate database technology.",
-        "Perform basic NoSQL operations."
+        "Understand the core principles of Overlapping",
+        "Apply Overlapping in practical scenarios",
+        "Explore advanced patterns in Overlapping",
+        "Build something real using Overlapping"
       ]
     },
     {
@@ -1463,18 +1459,18 @@
         "x": 300,
         "y": 7640
       },
-      "description": "Build a complex application with a focus on robust backend architecture, API design, and scalable data storage. This project will require advanced database modeling, secure authentication, and efficient data retrieval.",
+      "description": "Learn the key concepts of Full-Stack Engineer Project #5.",
       "learning_goals": [
-        "Design a scalable backend architecture.",
-        "Implement a complex API with documentation.",
-        "Manage advanced database interactions.",
-        "Ensure application security."
+        "Understand the core principles of Full-Stack Engineer Project #5",
+        "Apply Full-Stack Engineer Project #5 in practical scenarios",
+        "Explore advanced patterns in Full-Stack Engineer Project #5",
+        "Build something real using Full-Stack Engineer Project #5"
       ]
     },
     {
       "id": "cp-gen-059",
       "roadmap_id": "rm-generated",
-      "label": "Authentication Strategies",
+      "label": "Hierarchical",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1482,18 +1478,18 @@
         "x": 500,
         "y": 7770
       },
-      "description": "Explore various authentication strategies for web applications, including session-based, token-based (JWT), OAuth, and OpenID Connect. This lesson covers implementing secure user login and access control.",
+      "description": "Learn the key concepts of Hierarchical.",
       "learning_goals": [
-        "Understand different auth methods.",
-        "Implement session-based authentication.",
-        "Utilize token-based (JWT) auth.",
-        "Explain OAuth/OpenID Connect."
+        "Understand the core principles of Hierarchical",
+        "Apply Hierarchical in practical scenarios",
+        "Explore advanced patterns in Hierarchical",
+        "Build something real using Hierarchical"
       ]
     },
     {
       "id": "cp-gen-060",
       "roadmap_id": "rm-generated",
-      "label": "Web Security Basics",
+      "label": "Probabilistic",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1501,18 +1497,18 @@
         "x": 300,
         "y": 7900
       },
-      "description": "Reinforce fundamental web security practices, focusing on protecting against common vulnerabilities like input validation, secure cookie handling, and implementing HTTPS. This lesson is a practical application of security knowledge.",
+      "description": "Learn the key concepts of Probabilistic.",
       "learning_goals": [
-        "Apply input validation techniques.",
-        "Implement secure cookie practices.",
-        "Configure HTTPS for web apps.",
-        "Prevent common web attacks."
+        "Understand the core principles of Probabilistic",
+        "Apply Probabilistic in practical scenarios",
+        "Explore advanced patterns in Probabilistic",
+        "Build something real using Probabilistic"
       ]
     },
     {
       "id": "cp-gen-061",
       "roadmap_id": "rm-generated",
-      "label": "Web Components",
+      "label": "Precision",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1520,18 +1516,18 @@
         "x": 500,
         "y": 8030
       },
-      "description": "Learn about Web Components, a set of web platform APIs that allow you to create reusable custom elements with encapsulated functionality. This lesson explores Custom Elements, Shadow DOM, and HTML Templates.",
+      "description": "Learn the key concepts of Precision.",
       "learning_goals": [
-        "Understand Web Components concept.",
-        "Create custom HTML elements.",
-        "Utilize Shadow DOM for encapsulation.",
-        "Implement HTML Templates."
+        "Understand the core principles of Precision",
+        "Apply Precision in practical scenarios",
+        "Explore advanced patterns in Precision",
+        "Build something real using Precision"
       ]
     },
     {
       "id": "cp-gen-062",
       "roadmap_id": "rm-generated",
-      "label": "Web Components Quiz",
+      "label": "Precision Quiz",
       "kind": "quiz",
       "progress": 0,
       "locked": true,
@@ -1539,18 +1535,18 @@
         "x": 300,
         "y": 8160
       },
-      "description": "This quiz tests your understanding of Web Components, including Custom Elements, Shadow DOM, and HTML Templates. It ensures you can create and utilize reusable, encapsulated UI components effectively.",
+      "description": "Learn the key concepts of Precision Quiz.",
       "learning_goals": [
-        "Explain Web Components APIs.",
-        "Recall Custom Element lifecycle.",
-        "Differentiate Shadow DOM from light DOM.",
-        "Identify use cases for HTML Templates."
+        "Understand the core principles of Precision Quiz",
+        "Apply Precision Quiz in practical scenarios",
+        "Explore advanced patterns in Precision Quiz",
+        "Build something real using Precision Quiz"
       ]
     },
     {
       "id": "cp-gen-063",
       "roadmap_id": "rm-generated",
-      "label": "Type Checkers",
+      "label": "What is Model Evaluation?",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1558,18 +1554,18 @@
         "x": 500,
         "y": 8290
       },
-      "description": "Discover the benefits of static type checkers like TypeScript for JavaScript projects, learning how they improve code quality, readability, and reduce bugs by adding type definitions.",
+      "description": "Learn the key concepts of What is Model Evaluation?.",
       "learning_goals": [
-        "Understand static typing benefits.",
-        "Use TypeScript for JavaScript projects.",
-        "Define and apply types.",
-        "Improve code robustness with types."
+        "Understand the core principles of What is Model Evaluation?",
+        "Apply What is Model Evaluation? in practical scenarios",
+        "Explore advanced patterns in What is Model Evaluation?",
+        "Build something real using What is Model Evaluation?"
       ]
     },
     {
       "id": "cp-gen-064",
       "roadmap_id": "rm-generated",
-      "label": "SSR",
+      "label": "Recall",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1577,18 +1573,18 @@
         "x": 300,
         "y": 8420
       },
-      "description": "Explore Server-Side Rendering (SSR) for front-end applications, understanding its advantages for performance, SEO, and initial page load times. This lesson covers frameworks and techniques for implementing SSR.",
+      "description": "Learn the key concepts of Recall.",
       "learning_goals": [
-        "Explain Server-Side Rendering concept.",
-        "Identify SSR benefits (SEO, performance).",
-        "Implement basic SSR with a framework.",
-        "Compare SSR with Client-Side Rendering."
+        "Understand the core principles of Recall",
+        "Apply Recall in practical scenarios",
+        "Explore advanced patterns in Recall",
+        "Build something real using Recall"
       ]
     },
     {
       "id": "cp-gen-065",
       "roadmap_id": "rm-generated",
-      "label": "GraphQL",
+      "label": "Why is it important?",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1596,18 +1592,18 @@
         "x": 500,
         "y": 8550
       },
-      "description": "Learn GraphQL, a query language for APIs, offering a more efficient and flexible alternative to traditional REST APIs. This lesson covers schema definition, queries, mutations, and subscriptions.",
+      "description": "Learn the key concepts of Why is it important?.",
       "learning_goals": [
-        "Understand GraphQL benefits.",
-        "Define GraphQL schemas.",
-        "Write GraphQL queries and mutations.",
-        "Set up a basic GraphQL server."
+        "Understand the core principles of Why is it important?",
+        "Apply Why is it important? in practical scenarios",
+        "Explore advanced patterns in Why is it important?",
+        "Build something real using Why is it important?"
       ]
     },
     {
       "id": "cp-gen-066",
       "roadmap_id": "rm-generated",
-      "label": "GraphQL Quiz",
+      "label": "Why is it important? Quiz",
       "kind": "quiz",
       "progress": 0,
       "locked": true,
@@ -1615,18 +1611,18 @@
         "x": 300,
         "y": 8680
       },
-      "description": "This quiz evaluates your understanding of GraphQL concepts, including schema definition, queries, mutations, and subscriptions. It ensures you can design and interact with GraphQL APIs effectively.",
+      "description": "Learn the key concepts of Why is it important? Quiz.",
       "learning_goals": [
-        "Explain GraphQL core principles.",
-        "Recall schema definition language (SDL).",
-        "Formulate correct GraphQL queries.",
-        "Identify differences from REST APIs."
+        "Understand the core principles of Why is it important? Quiz",
+        "Apply Why is it important? Quiz in practical scenarios",
+        "Explore advanced patterns in Why is it important? Quiz",
+        "Build something real using Why is it important? Quiz"
       ]
     },
     {
       "id": "cp-gen-067",
       "roadmap_id": "rm-generated",
-      "label": "PWAs",
+      "label": "Log Loss",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1634,18 +1630,18 @@
         "x": 500,
         "y": 8810
       },
-      "description": "Dive into Progressive Web Apps (PWAs), understanding how to build web applications that offer a native-app-like experience, including offline capabilities, push notifications, and home screen installation.",
+      "description": "Learn the key concepts of Log Loss.",
       "learning_goals": [
-        "Understand PWA characteristics.",
-        "Implement service workers.",
-        "Enable offline functionality.",
-        "Add PWA to home screen functionality."
+        "Understand the core principles of Log Loss",
+        "Apply Log Loss in practical scenarios",
+        "Explore advanced patterns in Log Loss",
+        "Build something real using Log Loss"
       ]
     },
     {
       "id": "cp-gen-068",
       "roadmap_id": "rm-generated",
-      "label": "Scaling Databases",
+      "label": "Metrics to Evaluate",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1653,12 +1649,12 @@
         "x": 300,
         "y": 8940
       },
-      "description": "Learn advanced strategies for scaling databases to handle high traffic and large data volumes, including replication, sharding, and database partitioning. This lesson addresses common performance bottlenecks.",
+      "description": "Learn the key concepts of Metrics to Evaluate.",
       "learning_goals": [
-        "Understand database scaling challenges.",
-        "Implement database replication.",
-        "Explain sharding and partitioning.",
-        "Optimize database performance."
+        "Understand the core principles of Metrics to Evaluate",
+        "Apply Metrics to Evaluate in practical scenarios",
+        "Explore advanced patterns in Metrics to Evaluate",
+        "Build something real using Metrics to Evaluate"
       ]
     },
     {
@@ -1672,18 +1668,18 @@
         "x": 500,
         "y": 9070
       },
-      "description": "Develop a highly scalable and performant full-stack application, focusing on advanced architectural patterns, database scaling, and deployment to a cloud environment with CI/CD. This project showcases production-readiness.",
+      "description": "Learn the key concepts of Full-Stack Engineer Project #6.",
       "learning_goals": [
-        "Design for high availability and scalability.",
-        "Implement advanced database scaling.",
-        "Deploy to a cloud platform using CI/CD.",
-        "Monitor application performance."
+        "Understand the core principles of Full-Stack Engineer Project #6",
+        "Apply Full-Stack Engineer Project #6 in practical scenarios",
+        "Explore advanced patterns in Full-Stack Engineer Project #6",
+        "Build something real using Full-Stack Engineer Project #6"
       ]
     },
     {
       "id": "cp-gen-070",
       "roadmap_id": "rm-generated",
-      "label": "Static Site Generators",
+      "label": "Accuracy",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1691,18 +1687,18 @@
         "x": 300,
         "y": 9200
       },
-      "description": "Explore Static Site Generators (SSGs) like Next.js (for static export), Gatsby, and Jekyll, understanding how they pre-render content for faster loading times, improved security, and simpler hosting.",
+      "description": "Learn the key concepts of Accuracy.",
       "learning_goals": [
-        "Understand SSG benefits.",
-        "Use an SSG to build a site.",
-        "Explain pre-rendering concept.",
-        "Identify use cases for static sites."
+        "Understand the core principles of Accuracy",
+        "Apply Accuracy in practical scenarios",
+        "Explore advanced patterns in Accuracy",
+        "Build something real using Accuracy"
       ]
     },
     {
       "id": "cp-gen-071",
       "roadmap_id": "rm-generated",
-      "label": "Mobile Apps",
+      "label": "F1-Score",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1710,18 +1706,18 @@
         "x": 500,
         "y": 9330
       },
-      "description": "Get an overview of mobile application development, covering native development (iOS/Android) and cross-platform frameworks (React Native, Flutter). This lesson highlights considerations for building apps for mobile devices.",
+      "description": "Learn the key concepts of F1-Score.",
       "learning_goals": [
-        "Differentiate native vs. cross-platform.",
-        "Understand mobile app lifecycles.",
-        "Identify key mobile development tools.",
-        "Evaluate mobile app frameworks."
+        "Understand the core principles of F1-Score",
+        "Apply F1-Score in practical scenarios",
+        "Explore advanced patterns in F1-Score",
+        "Build something real using F1-Score"
       ]
     },
     {
       "id": "cp-gen-072",
       "roadmap_id": "rm-generated",
-      "label": "Desktop Apps",
+      "label": "ROC-AUC",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1729,18 +1725,18 @@
         "x": 300,
         "y": 9460
       },
-      "description": "Learn about building desktop applications using web technologies with frameworks like Electron or Tauri. This lesson covers packaging, distribution, and native feature integration for cross-platform desktop experiences.",
+      "description": "Learn the key concepts of ROC-AUC.",
       "learning_goals": [
-        "Understand desktop app frameworks.",
-        "Build a simple desktop application.",
-        "Explain packaging and distribution.",
-        "Integrate native system features."
+        "Understand the core principles of ROC-AUC",
+        "Apply ROC-AUC in practical scenarios",
+        "Explore advanced patterns in ROC-AUC",
+        "Build something real using ROC-AUC"
       ]
     },
     {
       "id": "cp-gen-073",
       "roadmap_id": "rm-generated",
-      "label": "Vue.js",
+      "label": "Confusion Matrix",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1748,18 +1744,18 @@
         "x": 500,
         "y": 9590
       },
-      "description": "Master Vue.js, a progressive JavaScript framework for building user interfaces, covering its reactive data binding, component-based architecture, and ecosystem (Vuex, Vue Router).",
+      "description": "Learn the key concepts of Confusion Matrix.",
       "learning_goals": [
-        "Build UI with Vue components.",
-        "Manage state with Vuex.",
-        "Handle routing with Vue Router.",
-        "Understand Vue's reactivity system."
+        "Understand the core principles of Confusion Matrix",
+        "Apply Confusion Matrix in practical scenarios",
+        "Explore advanced patterns in Confusion Matrix",
+        "Build something real using Confusion Matrix"
       ]
     },
     {
       "id": "cp-gen-074",
       "roadmap_id": "rm-generated",
-      "label": "Vue.js Quiz",
+      "label": "Confusion Matrix Quiz",
       "kind": "quiz",
       "progress": 0,
       "locked": true,
@@ -1767,18 +1763,18 @@
         "x": 300,
         "y": 9720
       },
-      "description": "This quiz assesses your proficiency in Vue.js, covering its core concepts like reactivity, components, state management (Vuex), and routing (Vue Router). It ensures you can build dynamic and interactive UIs.",
+      "description": "Learn the key concepts of Confusion Matrix Quiz.",
       "learning_goals": [
-        "Demonstrate Vue component creation.",
-        "Recall Vue's lifecycle hooks.",
-        "Apply state management patterns.",
-        "Solve common Vue development problems."
+        "Understand the core principles of Confusion Matrix Quiz",
+        "Apply Confusion Matrix Quiz in practical scenarios",
+        "Explore advanced patterns in Confusion Matrix Quiz",
+        "Build something real using Confusion Matrix Quiz"
       ]
     },
     {
       "id": "cp-gen-075",
       "roadmap_id": "rm-generated",
-      "label": "Svelte",
+      "label": "Validation Techniques",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1786,18 +1782,18 @@
         "x": 500,
         "y": 9850
       },
-      "description": "Explore Svelte, a radical new approach to building user interfaces that compiles components into small, vanilla JavaScript bundles at build time. This lesson covers Svelte's reactivity and component model.",
+      "description": "Learn the key concepts of Validation Techniques.",
       "learning_goals": [
-        "Understand Svelte's compilation approach.",
-        "Build UI with Svelte components.",
-        "Utilize Svelte's reactivity.",
-        "Compare Svelte with other frameworks."
+        "Understand the core principles of Validation Techniques",
+        "Apply Validation Techniques in practical scenarios",
+        "Explore advanced patterns in Validation Techniques",
+        "Build something real using Validation Techniques"
       ]
     },
     {
       "id": "cp-gen-076",
       "roadmap_id": "rm-generated",
-      "label": "Caddy",
+      "label": "K-Fold Cross Validation",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1805,18 +1801,18 @@
         "x": 300,
         "y": 9980
       },
-      "description": "Learn about Caddy, a powerful, open-source web server with automatic HTTPS using Let's Encrypt. This lesson covers setting up Caddy for serving web applications and proxying requests.",
+      "description": "Learn the key concepts of K-Fold Cross Validation.",
       "learning_goals": [
-        "Set up Caddy web server.",
-        "Configure automatic HTTPS.",
-        "Serve static files.",
-        "Reverse proxy applications."
+        "Understand the core principles of K-Fold Cross Validation",
+        "Apply K-Fold Cross Validation in practical scenarios",
+        "Explore advanced patterns in K-Fold Cross Validation",
+        "Build something real using K-Fold Cross Validation"
       ]
     },
     {
       "id": "cp-gen-077",
       "roadmap_id": "rm-generated",
-      "label": "Caddy Quiz",
+      "label": "K-Fold Cross Validation Quiz",
       "kind": "quiz",
       "progress": 0,
       "locked": true,
@@ -1824,18 +1820,18 @@
         "x": 500,
         "y": 10110
       },
-      "description": "This quiz tests your knowledge of Caddy web server configuration, including automatic HTTPS, serving static files, and reverse proxying. It ensures you can effectively deploy and manage web applications with Caddy.",
+      "description": "Learn the key concepts of K-Fold Cross Validation Quiz.",
       "learning_goals": [
-        "Recall Caddyfile syntax.",
-        "Explain automatic HTTPS process.",
-        "Configure basic server blocks.",
-        "Troubleshoot Caddy deployments."
+        "Understand the core principles of K-Fold Cross Validation Quiz",
+        "Apply K-Fold Cross Validation Quiz in practical scenarios",
+        "Explore advanced patterns in K-Fold Cross Validation Quiz",
+        "Build something real using K-Fold Cross Validation Quiz"
       ]
     },
     {
       "id": "cp-gen-078",
       "roadmap_id": "rm-generated",
-      "label": "MS IIS",
+      "label": "LOOCV",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1843,18 +1839,18 @@
         "x": 300,
         "y": 10240
       },
-      "description": "Get an introduction to Microsoft Internet Information Services (IIS), a flexible, secure, and manageable web server for Windows. This lesson covers basic setup, hosting web applications, and common configurations.",
+      "description": "Learn the key concepts of LOOCV.",
       "learning_goals": [
-        "Install and configure IIS.",
-        "Host a basic web application.",
-        "Manage application pools.",
-        "Understand IIS security features."
+        "Understand the core principles of LOOCV",
+        "Apply LOOCV in practical scenarios",
+        "Explore advanced patterns in LOOCV",
+        "Build something real using LOOCV"
       ]
     },
     {
       "id": "cp-gen-079",
       "roadmap_id": "rm-generated",
-      "label": "Web Servers",
+      "label": "Neural Network (NN) Basics",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1862,12 +1858,12 @@
         "x": 500,
         "y": 10370
       },
-      "description": "Understand the fundamental role of web servers (e.g., Nginx, Apache, Caddy) in delivering web content, including request handling, load balancing, and security considerations.",
+      "description": "Learn the key concepts of Neural Network (NN) Basics.",
       "learning_goals": [
-        "Explain web server functions.",
-        "Configure basic web server settings.",
-        "Understand load balancing concepts.",
-        "Secure web server deployments."
+        "Understand the core principles of Neural Network (NN) Basics",
+        "Apply Neural Network (NN) Basics in practical scenarios",
+        "Explore advanced patterns in Neural Network (NN) Basics",
+        "Build something real using Neural Network (NN) Basics"
       ]
     },
     {
@@ -1881,18 +1877,18 @@
         "x": 300,
         "y": 10500
       },
-      "description": "Design and implement a robust, real-time full-stack application using WebSockets or similar technologies. This project will challenge you to manage concurrent connections and dynamic data updates, potentially integrating a message broker.",
+      "description": "Learn the key concepts of Full-Stack Engineer Project #7.",
       "learning_goals": [
-        "Implement real-time data communication.",
-        "Manage concurrent user interactions.",
-        "Integrate WebSockets effectively.",
-        "Build a responsive, dynamic UI."
+        "Understand the core principles of Full-Stack Engineer Project #7",
+        "Apply Full-Stack Engineer Project #7 in practical scenarios",
+        "Explore advanced patterns in Full-Stack Engineer Project #7",
+        "Build something real using Full-Stack Engineer Project #7"
       ]
     },
     {
       "id": "cp-gen-081",
       "roadmap_id": "rm-generated",
-      "label": "Real-Time Data",
+      "label": "Deep Learning Libraries",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1900,18 +1896,18 @@
         "x": 500,
         "y": 10630
       },
-      "description": "Explore technologies and patterns for implementing real-time data capabilities in web applications, such as WebSockets, Server-Sent Events (SSE), and long polling. This lesson covers use cases and implementation details.",
+      "description": "Learn the key concepts of Deep Learning Libraries.",
       "learning_goals": [
-        "Understand real-time communication needs.",
-        "Implement WebSockets for live data.",
-        "Explore SSE and long polling.",
-        "Choose appropriate real-time tech."
+        "Understand the core principles of Deep Learning Libraries",
+        "Apply Deep Learning Libraries in practical scenarios",
+        "Explore advanced patterns in Deep Learning Libraries",
+        "Build something real using Deep Learning Libraries"
       ]
     },
     {
       "id": "cp-gen-082",
       "roadmap_id": "rm-generated",
-      "label": "Core Programming Concepts",
+      "label": "Deep Learning Architectures",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1919,18 +1915,18 @@
         "x": 300,
         "y": 10760
       },
-      "description": "This lesson reinforces and expands upon core programming concepts, diving deeper into data structures, algorithms, object-oriented programming (OOP), and functional programming paradigms.",
+      "description": "Learn the key concepts of Deep Learning Architectures.",
       "learning_goals": [
-        "Apply advanced data structures.",
-        "Implement common algorithms.",
-        "Understand OOP principles (inheritance, polymorphism).",
-        "Explore functional programming concepts."
+        "Understand the core principles of Deep Learning Architectures",
+        "Apply Deep Learning Architectures in practical scenarios",
+        "Explore advanced patterns in Deep Learning Architectures",
+        "Build something real using Deep Learning Architectures"
       ]
     },
     {
       "id": "cp-gen-083",
       "roadmap_id": "rm-generated",
-      "label": "Version Control",
+      "label": "Perceptron, Multi-layer Perceptrons",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1938,18 +1934,18 @@
         "x": 500,
         "y": 10890
       },
-      "description": "This lesson provides a comprehensive overview of version control systems, detailing advanced Git commands, branching strategies (Gitflow, GitHub Flow), and conflict resolution techniques for collaborative development.",
+      "description": "Learn the key concepts of Perceptron, Multi-layer Perceptrons.",
       "learning_goals": [
-        "Master advanced Git commands.",
-        "Implement various branching strategies.",
-        "Resolve complex merge conflicts.",
-        "Utilize Git for collaborative workflows."
+        "Understand the core principles of Perceptron, Multi-layer Perceptrons",
+        "Apply Perceptron, Multi-layer Perceptrons in practical scenarios",
+        "Explore advanced patterns in Perceptron, Multi-layer Perceptrons",
+        "Build something real using Perceptron, Multi-layer Perceptrons"
       ]
     },
     {
       "id": "cp-gen-084",
       "roadmap_id": "rm-generated",
-      "label": "GitHub",
+      "label": "TensorFlow",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1957,18 +1953,18 @@
         "x": 300,
         "y": 11020
       },
-      "description": "Master GitHub, the most popular platform for hosting Git repositories and collaborating on software projects. This lesson covers pull requests, issues, project boards, and advanced features for team development.",
+      "description": "Learn the key concepts of TensorFlow.",
       "learning_goals": [
-        "Manage repositories on GitHub.",
-        "Create and review pull requests.",
-        "Utilize GitHub Issues and Projects.",
-        "Collaborate effectively using GitHub."
+        "Understand the core principles of TensorFlow",
+        "Apply TensorFlow in practical scenarios",
+        "Explore advanced patterns in TensorFlow",
+        "Build something real using TensorFlow"
       ]
     },
     {
       "id": "cp-gen-085",
       "roadmap_id": "rm-generated",
-      "label": "GitHub Quiz",
+      "label": "TensorFlow Quiz",
       "kind": "quiz",
       "progress": 0,
       "locked": true,
@@ -1976,18 +1972,18 @@
         "x": 500,
         "y": 11150
       },
-      "description": "This quiz tests your comprehensive understanding of GitHub's features for version control, collaboration, and project management. It ensures you can effectively leverage the platform in team environments.",
+      "description": "Learn the key concepts of TensorFlow Quiz.",
       "learning_goals": [
-        "Demonstrate GitHub workflow mastery.",
-        "Recall features like Issues and Pull Requests.",
-        "Perform repository management tasks.",
-        "Troubleshoot common GitHub issues."
+        "Understand the core principles of TensorFlow Quiz",
+        "Apply TensorFlow Quiz in practical scenarios",
+        "Explore advanced patterns in TensorFlow Quiz",
+        "Build something real using TensorFlow Quiz"
       ]
     },
     {
       "id": "cp-gen-086",
       "roadmap_id": "rm-generated",
-      "label": "Tailwind CSS",
+      "label": "Keras",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -1995,18 +1991,18 @@
         "x": 300,
         "y": 11280
       },
-      "description": "Learn Tailwind CSS, a utility-first CSS framework for rapidly building custom designs. This lesson covers its utility classes, responsive design features, and how to configure it for your projects.",
+      "description": "Learn the key concepts of Keras.",
       "learning_goals": [
-        "Understand utility-first CSS.",
-        "Build UI with Tailwind classes.",
-        "Apply responsive design with Tailwind.",
-        "Configure Tailwind for projects."
+        "Understand the core principles of Keras",
+        "Apply Keras in practical scenarios",
+        "Explore advanced patterns in Keras",
+        "Build something real using Keras"
       ]
     },
     {
       "id": "cp-gen-087",
       "roadmap_id": "rm-generated",
-      "label": "React",
+      "label": "Forward propagation",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -2014,18 +2010,18 @@
         "x": 500,
         "y": 11410
       },
-      "description": "Master React, a declarative JavaScript library for building user interfaces. This lesson covers component-based architecture, state management with hooks, and the React ecosystem (React Router, Context API).",
+      "description": "Learn the key concepts of Forward propagation.",
       "learning_goals": [
-        "Build UI with React components.",
-        "Manage component state with hooks.",
-        "Implement routing with React Router.",
-        "Understand React's virtual DOM."
+        "Understand the core principles of Forward propagation",
+        "Apply Forward propagation in practical scenarios",
+        "Explore advanced patterns in Forward propagation",
+        "Build something real using Forward propagation"
       ]
     },
     {
       "id": "cp-gen-088",
       "roadmap_id": "rm-generated",
-      "label": "Node.js",
+      "label": "Cloud Skills and Knowledge",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -2033,18 +2029,18 @@
         "x": 300,
         "y": 11540
       },
-      "description": "Learn Node.js, a JavaScript runtime built on Chrome's V8 engine, enabling server-side application development. This lesson covers its event-driven architecture, modules, and building basic APIs.",
+      "description": "Learn the key concepts of Cloud Skills and Knowledge.",
       "learning_goals": [
-        "Understand Node.js event loop.",
-        "Build a simple Node.js server.",
-        "Work with Node.js modules.",
-        "Create basic RESTful APIs with Node.js."
+        "Understand the core principles of Cloud Skills and Knowledge",
+        "Apply Cloud Skills and Knowledge in practical scenarios",
+        "Explore advanced patterns in Cloud Skills and Knowledge",
+        "Build something real using Cloud Skills and Knowledge"
       ]
     },
     {
       "id": "cp-gen-089",
       "roadmap_id": "rm-generated",
-      "label": "Node.js Quiz",
+      "label": "Cloud Skills and Knowledge Quiz",
       "kind": "quiz",
       "progress": 0,
       "locked": true,
@@ -2052,18 +2048,18 @@
         "x": 500,
         "y": 11670
       },
-      "description": "This quiz assesses your knowledge of Node.js, including its asynchronous nature, core modules, and ability to build server-side applications and APIs. It ensures you can leverage Node.js effectively for backend development.",
+      "description": "Learn the key concepts of Cloud Skills and Knowledge Quiz.",
       "learning_goals": [
-        "Explain Node.js event-driven architecture.",
-        "Recall common Node.js core modules.",
-        "Build and test basic Node.js applications.",
-        "Troubleshoot Node.js runtime issues."
+        "Understand the core principles of Cloud Skills and Knowledge Quiz",
+        "Apply Cloud Skills and Knowledge Quiz in practical scenarios",
+        "Explore advanced patterns in Cloud Skills and Knowledge Quiz",
+        "Build something real using Cloud Skills and Knowledge Quiz"
       ]
     },
     {
       "id": "cp-gen-090",
       "roadmap_id": "rm-generated",
-      "label": "PostgreSQL",
+      "label": "PyTorch",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -2071,18 +2067,18 @@
         "x": 300,
         "y": 11800
       },
-      "description": "Dive deep into PostgreSQL, a powerful, open-source object-relational database system. This lesson covers advanced SQL features, performance tuning, indexing, and administration for robust data management.",
+      "description": "Learn the key concepts of PyTorch.",
       "learning_goals": [
-        "Master advanced SQL queries.",
-        "Design optimized database schemas.",
-        "Implement indexing strategies.",
-        "Perform basic PostgreSQL administration."
+        "Understand the core principles of PyTorch",
+        "Apply PyTorch in practical scenarios",
+        "Explore advanced patterns in PyTorch",
+        "Build something real using PyTorch"
       ]
     },
     {
       "id": "cp-gen-091",
       "roadmap_id": "rm-generated",
-      "label": "RESTful APIs",
+      "label": "Back Propagation",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -2090,12 +2086,12 @@
         "x": 500,
         "y": 11930
       },
-      "description": "Gain a comprehensive understanding of RESTful API design principles, including resource identification, statelessness, and various HTTP methods. This lesson focuses on building and consuming well-structured, scalable APIs.",
+      "description": "Learn the key concepts of Back Propagation.",
       "learning_goals": [
-        "Design truly RESTful APIs.",
-        "Understand HTTP methods and status codes.",
-        "Implement API versioning.",
-        "Secure RESTful API endpoints."
+        "Understand the core principles of Back Propagation",
+        "Apply Back Propagation in practical scenarios",
+        "Explore advanced patterns in Back Propagation",
+        "Build something real using Back Propagation"
       ]
     },
     {
@@ -2109,18 +2105,18 @@
         "x": 300,
         "y": 12060
       },
-      "description": "This capstone project involves building a production-ready, highly available, and secure full-stack application. You will apply all learned skills from advanced frameworks, cloud deployment, and robust system design, demonstrating readiness for real-world engineering challenges.",
+      "description": "Learn the key concepts of Full-Stack Engineer Project #8.",
       "learning_goals": [
-        "Design and implement a production-grade system.",
-        "Integrate advanced security features.",
-        "Deploy and monitor on a cloud platform.",
-        "Demonstrate full-stack engineering proficiency."
+        "Understand the core principles of Full-Stack Engineer Project #8",
+        "Apply Full-Stack Engineer Project #8 in practical scenarios",
+        "Explore advanced patterns in Full-Stack Engineer Project #8",
+        "Build something real using Full-Stack Engineer Project #8"
       ]
     },
     {
       "id": "cp-gen-093",
       "roadmap_id": "rm-generated",
-      "label": "JWT Auth",
+      "label": "Convolutional Neural Network",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -2128,18 +2124,18 @@
         "x": 500,
         "y": 12190
       },
-      "description": "Learn about JSON Web Tokens (JWT) for secure, stateless authentication in web applications. This lesson covers token structure, signing, verification, and best practices for implementing JWT-based authorization.",
+      "description": "Learn the key concepts of Convolutional Neural Network.",
       "learning_goals": [
-        "Understand JWT structure and purpose.",
-        "Implement JWT generation.",
-        "Verify JWT for authorization.",
-        "Secure JWT implementation."
+        "Understand the core principles of Convolutional Neural Network",
+        "Apply Convolutional Neural Network in practical scenarios",
+        "Explore advanced patterns in Convolutional Neural Network",
+        "Build something real using Convolutional Neural Network"
       ]
     },
     {
       "id": "cp-gen-094",
       "roadmap_id": "rm-generated",
-      "label": "Redis",
+      "label": "Convolution",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -2147,18 +2143,18 @@
         "x": 300,
         "y": 12320
       },
-      "description": "Explore Redis, an in-memory data structure store used as a database, cache, and message broker. This lesson covers Redis data types, common commands, and use cases for performance optimization.",
+      "description": "Learn the key concepts of Convolution.",
       "learning_goals": [
-        "Understand Redis data structures.",
-        "Use Redis for caching.",
-        "Implement Redis for session management.",
-        "Apply Redis for real-time features."
+        "Understand the core principles of Convolution",
+        "Apply Convolution in practical scenarios",
+        "Explore advanced patterns in Convolution",
+        "Build something real using Convolution"
       ]
     },
     {
       "id": "cp-gen-095",
       "roadmap_id": "rm-generated",
-      "label": "Linux Basics",
+      "label": "Pooling",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -2166,18 +2162,18 @@
         "x": 500,
         "y": 12450
       },
-      "description": "Gain foundational knowledge of the Linux operating system, including basic commands, file system hierarchy, user management, and common system utilities. This is essential for server-side development and deployment.",
+      "description": "Learn the key concepts of Pooling.",
       "learning_goals": [
-        "Navigate Linux file system.",
-        "Perform basic file operations.",
-        "Manage users and permissions.",
-        "Run essential system commands."
+        "Understand the core principles of Pooling",
+        "Apply Pooling in practical scenarios",
+        "Explore advanced patterns in Pooling",
+        "Build something real using Pooling"
       ]
     },
     {
       "id": "cp-gen-096",
       "roadmap_id": "rm-generated",
-      "label": "Basic AWS Services",
+      "label": "Activation Functions",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -2185,18 +2181,18 @@
         "x": 300,
         "y": 12580
       },
-      "description": "Get an introduction to fundamental Amazon Web Services (AWS) services relevant to full-stack engineers, such as EC2 (compute), S3 (storage), RDS (databases), and IAM (identity and access management).",
+      "description": "Learn the key concepts of Activation Functions.",
       "learning_goals": [
-        "Understand AWS EC2 instances.",
-        "Utilize AWS S3 for storage.",
-        "Deploy databases with AWS RDS.",
-        "Manage IAM users and roles."
+        "Understand the core principles of Activation Functions",
+        "Apply Activation Functions in practical scenarios",
+        "Explore advanced patterns in Activation Functions",
+        "Build something real using Activation Functions"
       ]
     },
     {
       "id": "cp-gen-097",
       "roadmap_id": "rm-generated",
-      "label": "Basic AWS Services Quiz",
+      "label": "Activation Functions Quiz",
       "kind": "quiz",
       "progress": 0,
       "locked": true,
@@ -2204,18 +2200,18 @@
         "x": 500,
         "y": 12710
       },
-      "description": "This quiz tests your understanding of essential AWS services like EC2, S3, RDS, and IAM. It ensures you can identify their core functionalities and apply them in basic cloud deployment scenarios.",
+      "description": "Learn the key concepts of Activation Functions Quiz.",
       "learning_goals": [
-        "Recall primary AWS service functions.",
-        "Identify appropriate AWS services for tasks.",
-        "Explain basic AWS security concepts.",
-        "Understand cloud resource management."
+        "Understand the core principles of Activation Functions Quiz",
+        "Apply Activation Functions Quiz in practical scenarios",
+        "Explore advanced patterns in Activation Functions Quiz",
+        "Build something real using Activation Functions Quiz"
       ]
     },
     {
       "id": "cp-gen-098",
       "roadmap_id": "rm-generated",
-      "label": "Monit",
+      "label": "Padding",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -2223,18 +2219,18 @@
         "x": 300,
         "y": 12840
       },
-      "description": "Learn how to use Monit, a free open-source utility for managing and monitoring Unix systems. This lesson covers configuring Monit to monitor processes, files, directories, and network connections, ensuring application uptime.",
+      "description": "Learn the key concepts of Padding.",
       "learning_goals": [
-        "Install and configure Monit.",
-        "Monitor system processes.",
-        "Set up file and directory checks.",
-        "Receive alerts for service failures."
+        "Understand the core principles of Padding",
+        "Apply Padding in practical scenarios",
+        "Explore advanced patterns in Padding",
+        "Build something real using Padding"
       ]
     },
     {
       "id": "cp-gen-099",
       "roadmap_id": "rm-generated",
-      "label": "Server Side",
+      "label": "Strides",
       "kind": "lesson",
       "progress": 0,
       "locked": true,
@@ -2242,12 +2238,12 @@
         "x": 500,
         "y": 12970
       },
-      "description": "This lesson consolidates your knowledge of backend development, covering server architectures, handling HTTP requests, integrating databases, and building robust, scalable APIs. It ties together many backend concepts.",
+      "description": "Learn the key concepts of Strides.",
       "learning_goals": [
-        "Design server-side architectures.",
-        "Handle HTTP requests and responses.",
-        "Integrate data storage solutions.",
-        "Build secure and scalable APIs."
+        "Understand the core principles of Strides",
+        "Apply Strides in practical scenarios",
+        "Explore advanced patterns in Strides",
+        "Build something real using Strides"
       ]
     }
   ],
@@ -2327,11 +2323,11 @@
     {
       "id": "ug-001",
       "user_id": "u-001",
-      "xp_total": 0,
-      "tasks_completed": 0,
-      "leaderboard_rank": 4,
-      "current_streak": 0,
-      "longest_streak": 0,
+      "xp_total": 275,
+      "tasks_completed": 49,
+      "leaderboard_rank": 2,
+      "current_streak": 4,
+      "longest_streak": 4,
       "updated_at": "2026-03-29T12:00:00Z"
     }
   ],
@@ -2358,7 +2354,26 @@
       "xp_reward": 150
     }
   ],
-  "user_achievements": [],
+  "user_achievements": [
+    {
+      "id": "ua-001",
+      "user_id": "u-001",
+      "achievement_id": "ach-001",
+      "earned_at": "2026-02-10T09:00:00Z"
+    },
+    {
+      "id": "ua-002",
+      "user_id": "u-001",
+      "achievement_id": "ach-002",
+      "earned_at": "2026-03-01T14:30:00Z"
+    },
+    {
+      "id": "ua-003",
+      "user_id": "u-001",
+      "achievement_id": "ach-003",
+      "earned_at": "2026-03-15T08:00:00Z"
+    }
+  ],
   "leaderboard": [
     {
       "rank": 1,
@@ -2373,7 +2388,7 @@
       "rank": 2,
       "name": "Alex Morgan",
       "subtitle": "Advanced Level",
-      "streak": 2,
+      "streak": 4,
       "is_you": true,
       "avatar": "AM",
       "avatar_bg": "#10b981"
@@ -3261,14 +3276,14 @@
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic": "Understand basic programming constructs like loops and conditionals.",
-      "status": "not_started"
+      "status": "completed"
     },
     {
       "task_id": "subtopic__cp-gen-000__1",
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic": "Identify and use different data types effectively.",
-      "status": "not_started"
+      "status": "completed"
     },
     {
       "task_id": "subtopic__cp-gen-000__2",
@@ -14403,324 +14418,324 @@
       "cached_at": "2026-04-07T19:16:29.944471"
     },
     {
-      "concept": "Internet",
-      "subtopic": "Explain the client-server model.",
+      "concept": "Programming Fundamentals",
+      "subtopic": "Understand the core principles of Programming Fundamentals",
       "result": {
         "metadata": {
-          "concept": "Internet",
-          "subtopic": "Explain the client-server model.",
+          "concept": "Programming Fundamentals",
+          "subtopic": "Understand the core principles of Programming Fundamentals",
           "preference": "Interactive-Heavy",
           "version": "V3-intelligent-hybrid",
-          "processing_time_seconds": 47.89,
+          "processing_time_seconds": 11.37,
           "llm_enhanced": true
         },
         "learning_tasks": [
           {
-            "title": "The World Wide Web | Learn The Web",
-            "description": "This resource from 'Learn The Web' likely offers a structured explanation of the client-server model within the context of the World Wide Web, detailing how requests and responses work. Its educational focus suggests an approach suitable for guided learning with potential for visual aids and structured activities.",
-            "url": "https://learn-the-web.vercel.app/docs/fundamentals/internet/web",
+            "title": "Java > Daily News & Articles > 2011 > 12 _ Java API By Example,",
+            "description": "Learn Understand the core principles of Programming Fundamentals: You should either enable JavaScript in your browser settingsoruse a browser that supports JavaScript",
+            "url": "http://kickjava.com/news/201112.htm",
             "type": "Learning",
+            "curated_by": "rule-based authority ranking",
             "objectives": [
-              "Understand the fundamental roles of clients and servers in web communication.",
-              "Grasp the sequence of a client request and server response, including HTTP basics.",
-              "Relate the client-server model to the overall functioning of the World Wide Web."
-            ],
-            "curated_by": "LLM-intelligent (anti-hallucination)"
+              "Understand the fundamentals of Understand the core principles of Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Understand the core principles of Programming Fundamentals fits into Programming Fundamentals workflows"
+            ]
           },
           {
-            "title": "Networks - Part 2/2 | AS Level | By Zak - \u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u0432\u0438\u0434\u0435\u043e \u043e\u043d\u043b\u0430\u0439\u043d \u043e\u0442...",
-            "description": "This video tutorial aims to explain the client-server model in networked computers, providing examples of applications that use it. The video format is excellent for visual learners, enhancing understanding through dynamic explanations and demonstrations.",
-            "url": "https://rutube.ru/video/d1f3caf9c1dbf051ef26721f6d87cbf2/",
+            "title": "Programming Fundamentals: A Guide for Beginners - DEV Community",
+            "description": "Learn Understand the core principles of Programming Fundamentals: November 15, 2024 -Official documentation: Reading the documentation of your programming language he",
+            "url": "https://dev.to/luisdev07/programming-fundamentals-a-guide-for-beginners-52km",
             "type": "Learning",
+            "curated_by": "rule-based authority ranking",
             "objectives": [
-              "Explain the client-server model conceptually using visual and auditory aids.",
-              "Identify diverse applications that leverage the client-server architecture.",
-              "Visualize the interaction flow between clients and servers in a network."
-            ],
-            "curated_by": "LLM-intelligent (anti-hallucination)"
+              "Understand the fundamentals of Understand the core principles of Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Understand the core principles of Programming Fundamentals fits into Programming Fundamentals workflows"
+            ]
           },
           {
-            "title": "Introduction to Web Technologies and Internet Standards Study Guide",
-            "description": "This Quizlet study guide provides an interactive way to learn and reinforce definitions and concepts related to the client-server model and Internet protocols. Its format is ideal for self-assessment, memorization, and actively engaging with the material through flashcards and quizzes.",
-            "url": "https://quizlet.com/study-guides/introduction-to-web-technologies-and-internet-standards-654c7d48-139f-4934-bd18-27648075b023",
+            "title": "The State of Mozilla: 2017 Annual Report \u2014 Mozilla",
+            "description": "Learn Understand the core principles of Programming Fundamentals: Founded as a community open source project in 1998,Mozillacurrently consistsoftwo organizations:the5",
+            "url": "https://www.mozilla.org/en-US/foundation/annualreport/2017/",
             "type": "Learning",
+            "curated_by": "rule-based authority ranking",
             "objectives": [
-              "Define key terms associated with the client-server model and Internet protocols.",
-              "Test comprehension of the client-server interaction through active recall.",
-              "Solidify understanding of the model's components and their relationships."
-            ],
-            "curated_by": "LLM-intelligent (anti-hallucination)"
+              "Understand the fundamentals of Understand the core principles of Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Understand the core principles of Programming Fundamentals fits into Programming Fundamentals workflows"
+            ]
           }
         ],
         "coding_tasks": [
           {
-            "title": "GitHub - remixtures/web-server-programming-java-2021: My solutions to the exerci",
-            "description": "This GitHub repository provides solutions to exercises from a University of Helsinki course, demonstrating how to implement a simple client and server in Java and create web applications that respond to HTTP requests. It offers concrete code examples for hands-on learning of the client-server model.",
-            "url": "https://github.com/remixtures/web-server-programming-java-2021",
+            "title": "Introduction to Programming - W3Schools.com",
+            "description": "Learn Understand the core principles of Programming Fundamentals: Tounderstandprogramming, we need tounderstandthebasic underlying concepts. The following pages expla",
+            "url": "https://www.w3schools.com/programming/index.php",
             "type": "Coding",
+            "curated_by": "rule-based authority ranking",
             "objectives": [
-              "Implement basic client and server functionalities using Java.",
-              "Understand how to create web applications that handle HTTP requests.",
-              "Analyze working code examples for client-server communication."
-            ],
-            "curated_by": "LLM-intelligent (anti-hallucination)"
+              "Understand the fundamentals of Understand the core principles of Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Understand the core principles of Programming Fundamentals fits into Programming Fundamentals workflows"
+            ]
           },
           {
-            "title": "GitHub - udacity/nd1309_exercise_client_server: Client-Server Exercise with Node",
-            "description": "This Udacity GitHub repository contains a practical exercise designed to build a web service using Node.js, focusing on creating a server that responds to requests. It offers a direct, hands-on opportunity to implement and understand the client-server model through coding.",
-            "url": "https://github.com/udacity/nd1309_exercise_client_server",
+            "title": "What is Programming? A Handbook for Beginners - freeCodeCamp.org",
+            "description": "Learn Understand the core principles of Programming Fundamentals: Object-orientedprogramminglanguages Scripting languages Logicprogramminglanguages And the list of ty",
+            "url": "https://www.freecodecamp.org/news/what-is-programming-tutorial-for-beginners/",
             "type": "Coding",
+            "curated_by": "rule-based authority ranking",
             "objectives": [
-              "Practice building a web service from scratch using Node.js.",
-              "Understand the fundamental steps in creating a server that processes requests.",
-              "Gain practical experience in implementing client-server interactions."
-            ],
-            "curated_by": "LLM-intelligent (anti-hallucination)"
+              "Understand the fundamentals of Understand the core principles of Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Understand the core principles of Programming Fundamentals fits into Programming Fundamentals workflows"
+            ]
           }
         ],
-        "total_resources_found": 17
+        "total_resources_found": 26
       },
-      "cached_at": "2026-04-25T22:29:58.289871"
+      "cached_at": "2026-04-26T02:56:19.688936"
     },
     {
-      "concept": "Internet",
-      "subtopic": "Describe HTTP/HTTPS protocols.",
+      "concept": "Programming Fundamentals",
+      "subtopic": "Apply Programming Fundamentals in practical scenarios",
       "result": {
         "metadata": {
-          "concept": "Internet",
-          "subtopic": "Describe HTTP/HTTPS protocols.",
+          "concept": "Programming Fundamentals",
+          "subtopic": "Apply Programming Fundamentals in practical scenarios",
           "preference": "Interactive-Heavy",
           "version": "V3-intelligent-hybrid",
-          "processing_time_seconds": 43.22,
+          "processing_time_seconds": 13.06,
           "llm_enhanced": true
         },
         "learning_tasks": [
           {
-            "title": "How the web works - Learn web development - MDN Web Docs",
-            "description": "This MDN guide provides essential context on how the web operates, illustrating HTTP's role as the fundamental application protocol for client-server communication. It lays a broad foundation for understanding internet interactions.",
-            "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Web_standards/How_the_web_works",
+            "title": "The Python Tutorial \u2014 Python 3.14.3 documentation",
+            "description": "Learn Apply Programming Fundamentals in practical scenarios: Apr 7, 2026 \u00b7The PythonTutorial\u00b6 Tip Thistutorialis designed for programmers that are new to the Pyt",
+            "url": "https://docs.python.org/3/tutorial/index.html",
             "type": "Learning",
+            "curated_by": "rule-based authority ranking",
             "objectives": [
-              "Understand HTTP's function as an application protocol within the web.",
-              "Grasp the basic interaction model between clients and servers.",
-              "Contextualize HTTP's importance in the overall internet architecture."
-            ],
-            "curated_by": "LLM-intelligent (anti-hallucination)"
+              "Understand the fundamentals of Apply Programming Fundamentals in practical scenarios",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Apply Programming Fundamentals in practical scenarios fits into Programming Fundamentals workflows"
+            ]
           },
           {
-            "title": "Overview of HTTP - MDN Web Docs",
-            "description": "As an authoritative MDN guide, this resource offers a detailed overview of HTTP, explaining its core principles and function in fetching web resources. It provides a solid technical foundation for the protocol's mechanisms.",
-            "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview",
+            "title": "Python Programming Fundamentals: A Complete Beginner's Guide ...",
+            "description": "Learn Apply Programming Fundamentals in practical scenarios: Jun 7, 2025 \u00b7PythonProgrammingFundamentals: A Complete Beginner'sGuide(Part 1) Welcome to the first ",
+            "url": "https://dev.to/fonyuygita/python-programming-fundamentals-a-complete-beginners-guide-part-1-2h3k",
             "type": "Learning",
+            "curated_by": "rule-based authority ranking",
             "objectives": [
-              "Define HTTP and its primary role in data exchange on the web.",
-              "Identify the key components and concepts of HTTP communication.",
-              "Recognize HTTP's status as the foundation of web data transfer."
-            ],
-            "curated_by": "LLM-intelligent (anti-hallucination)"
+              "Understand the fundamentals of Apply Programming Fundamentals in practical scenarios",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Apply Programming Fundamentals in practical scenarios fits into Programming Fundamentals workflows"
+            ]
           },
           {
-            "title": "What is HTTPS? - Cloudflare",
-            "description": "This Cloudflare article precisely defines HTTPS as the secure counterpart to HTTP, explaining the encryption and security protocols (SSL/TLS) it utilizes. It clarifies how HTTPS protects data integrity and confidentiality.",
-            "url": "https://www.cloudflare.com/learning/ssl/what-is-https/",
+            "title": "Programming Fundamentals: A Guide for Beginners - DEV Community",
+            "description": "Learn Apply Programming Fundamentals in practical scenarios: November 15, 2024 -The more you practice, the faster you\u2019ll learn. Be patient: Learning to program t",
+            "url": "https://dev.to/luisdev07/programming-fundamentals-a-guide-for-beginners-52km",
             "type": "Learning",
+            "curated_by": "rule-based authority ranking",
             "objectives": [
-              "Differentiate between HTTP and HTTPS protocols.",
-              "Understand the purpose and mechanisms of security in HTTPS (SSL/TLS).",
-              "Explain why HTTPS is crucial for secure data transmission over the internet."
-            ],
-            "curated_by": "LLM-intelligent (anti-hallucination)"
+              "Understand the fundamentals of Apply Programming Fundamentals in practical scenarios",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Apply Programming Fundamentals in practical scenarios fits into Programming Fundamentals workflows"
+            ]
           }
         ],
         "coding_tasks": [
           {
-            "title": "What is HTTP - W3Schools.com",
-            "description": "This resource offers a practical introduction to HTTP, often including interactive 'Try it Yourself' examples to demonstrate its use in web development for handling various data types (HTML, CSS, JSON) and with APIs like XHR.",
-            "url": "https://www.w3schools.com/whatis/whatis_http.asp",
+            "title": "Solve Programming Questions | HackerRank",
+            "description": "Learn Apply Programming Fundamentals in practical scenarios: Join over 28 million developers in solving code challenges onHackerRank, one of the best ways to pre",
+            "url": "https://www.hackerrank.com/domains/tutorials",
             "type": "Coding",
+            "curated_by": "rule-based authority ranking",
             "objectives": [
-              "Understand the fundamental role of HTTP in client-server communication on the web.",
-              "Experiment with basic HTTP concepts through interactive code examples.",
-              "Recognize how HTTP interacts with common web data formats and development APIs."
-            ],
-            "curated_by": "LLM-intelligent (anti-hallucination)"
+              "Understand the fundamentals of Apply Programming Fundamentals in practical scenarios",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Apply Programming Fundamentals in practical scenarios fits into Programming Fundamentals workflows"
+            ]
           },
           {
-            "title": "Overview of HTTP - HTTP | MDN - MDN Web Docs",
-            "description": "This MDN Web Docs resource provides a comprehensive and authoritative overview of HTTP, detailing its core concepts, request/response structure, and common uses from a developer's perspective. It offers the foundational technical knowledge essential for implementing web interactions.",
-            "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview",
+            "title": "ProgrammingFundamentalsinSwift | Coursera",
+            "description": "Learn Apply Programming Fundamentals in practical scenarios: ProgrammingFundamentalsinSwift. This course is part of multipleprograms.Functionsinpractice\u20225 minute",
+            "url": "https://www.coursera.org/learn/programming-fundamentals-swift",
             "type": "Coding",
+            "curated_by": "rule-based authority ranking",
             "objectives": [
-              "Grasp the architectural principles and components of the HTTP protocol.",
-              "Identify key elements of HTTP requests and responses, including methods, headers, and status codes.",
-              "Obtain reliable, developer-focused technical insights that inform practical web development and API interaction."
-            ],
-            "curated_by": "LLM-intelligent (anti-hallucination)"
+              "Understand the fundamentals of Apply Programming Fundamentals in practical scenarios",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Apply Programming Fundamentals in practical scenarios fits into Programming Fundamentals workflows"
+            ]
           }
         ],
         "total_resources_found": 15
       },
-      "cached_at": "2026-04-25T22:30:41.564790"
+      "cached_at": "2026-04-26T02:56:32.854695"
     },
     {
-      "concept": "Internet",
-      "subtopic": "Understand IP addresses and DNS.",
+      "concept": "Programming Fundamentals",
+      "subtopic": "Explore advanced patterns in Programming Fundamentals",
       "result": {
         "metadata": {
-          "concept": "Internet",
-          "subtopic": "Understand IP addresses and DNS.",
+          "concept": "Programming Fundamentals",
+          "subtopic": "Explore advanced patterns in Programming Fundamentals",
           "preference": "Interactive-Heavy",
           "version": "V3-intelligent-hybrid",
-          "processing_time_seconds": 43.64,
+          "processing_time_seconds": 25.91,
           "llm_enhanced": true
         },
         "learning_tasks": [
           {
-            "title": "DNS Explained: A Beginner\u2019s Guide to How It Works",
-            "description": "This beginner's guide from a dedicated learning platform provides a clear, step-by-step explanation of how DNS works, including the role of local DNS cache and resolvers, designed for active learning with detailed explanations and likely visual aids.",
-            "url": "https://kodekloud.com/blog/dns-explained-a-simple-guide/",
-            "type": "Learning",
-            "objectives": [
-              "Describe the fundamental role of DNS in translating domain names to IP addresses.",
-              "Explain the basic steps of a DNS lookup, including local cache and resolvers.",
-              "Identify the key components involved in the DNS resolution process."
-            ],
-            "curated_by": "LLM-intelligent (anti-hallucination)"
-          },
-          {
-            "title": "How DNS Works: A Guide to Understanding the Internet's Address Book",
-            "description": "This comprehensive guide from a highly reputable learning platform thoroughly explains the Domain Name System, detailing its function as the internet's address book and how it enables web access, ideal for structured, interactive learning.",
-            "url": "https://www.freecodecamp.org/news/how-dns-works-the-internets-address-book/",
-            "type": "Learning",
-            "objectives": [
-              "Define DNS and its importance in navigating the internet.",
-              "Understand the relationship between domain names and IP addresses.",
-              "Grasp the basic concept of how DNS facilitates accessing websites efficiently."
-            ],
-            "curated_by": "LLM-intelligent (anti-hallucination)"
-          },
-          {
-            "title": "What Is DNS and How Does It Work \u2013 A Comprehensive Guide",
-            "description": "Provided by a web hosting company, this comprehensive guide offers practical insights into DNS, clearly outlining its mechanism through a multi-step DNS lookup process, helping learners understand DNS in a real-world context.",
-            "url": "https://www.hostinger.com/tutorials/what-is-dns",
-            "type": "Learning",
-            "objectives": [
-              "Trace the multi-step process of a DNS lookup from a user's perspective.",
-              "Identify the different types of DNS servers involved in resolution.",
-              "Connect DNS functionality to practical web hosting and internet access scenarios."
-            ],
-            "curated_by": "LLM-intelligent (anti-hallucination)"
-          }
-        ],
-        "coding_tasks": [
-          {
-            "title": "GitHub - ldb/computer-network-exercises: A collection of small exercises on comp",
-            "description": "This repository offers a collection of small computer networking exercises implemented in C, providing a direct approach to understanding network protocols and concepts through hands-on coding tasks. It is ideal for learners who want to build network functionality from scratch.",
-            "url": "https://github.com/ldb/computer-network-exercises",
-            "type": "Coding",
-            "objectives": [
-              "Implement fundamental network operations using C programming.",
-              "Gain practical experience with network socket programming.",
-              "Understand the underlying mechanics of network communication through code."
-            ],
-            "curated_by": "LLM-intelligent (anti-hallucination)"
-          },
-          {
-            "title": "GitHub - range123/IP-Lab: Lab exercises for Internet Programming Lab",
-            "description": "This resource provides lab exercises specifically designed for an Internet Programming Lab, emphasizing practical application and coding to grasp IP-related concepts and broader internet protocols. It's excellent for developing programming skills in a networking context.",
-            "url": "https://github.com/range123/IP-Lab",
-            "type": "Coding",
-            "objectives": [
-              "Develop programming skills relevant to internet networking.",
-              "Apply knowledge of IP addresses and internet protocols in lab environments.",
-              "Build hands-on experience through structured programming tasks."
-            ],
-            "curated_by": "LLM-intelligent (anti-hallucination)"
-          }
-        ],
-        "total_resources_found": 21
-      },
-      "cached_at": "2026-04-25T22:31:25.270533"
-    },
-    {
-      "concept": "Internet",
-      "subtopic": "Trace the path of a web request.",
-      "result": {
-        "metadata": {
-          "concept": "Internet",
-          "subtopic": "Trace the path of a web request.",
-          "preference": "Interactive-Heavy",
-          "version": "V3-intelligent-hybrid",
-          "processing_time_seconds": 47.78,
-          "llm_enhanced": true
-        },
-        "learning_tasks": [
-          {
-            "title": "Firefox 4 Beta 9 - a huge pile of awesome - Mozilla Hacks - the",
-            "description": "Learn Trace the path of a web request.: Want a demo? Try the amazing Flight of the Navigator where we combine WebGL with a number of other t",
-            "url": "https://hacks.mozilla.org/2011/01/firefox-4-beta-9-a-huge-pile-of-awesome/",
+            "title": "MasteringProgrammingPatterns. A Guide for... -DEVCommunity",
+            "description": "Learn Explore advanced patterns in Programming Fundamentals: For juniordeveloperslooking to enhance their coding skills, understanding and applyingprogrammingpat",
+            "url": "https://dev.to/fritzlolpro/mastering-programming-patterns-a-guide-for-junior-developers-9pp",
             "type": "Learning",
             "curated_by": "rule-based authority ranking",
             "objectives": [
-              "Understand the fundamentals of Trace the path of a web request.",
-              "Apply key Internet concepts from this resource",
-              "Identify how Trace the path of a web request. fits into Internet workflows"
+              "Understand the fundamentals of Explore advanced patterns in Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Explore advanced patterns in Programming Fundamentals fits into Programming Fundamentals workflows"
             ]
           },
           {
-            "title": "Firefox 4 beta 1 is here - what's in it for web",
-            "description": "Learn Trace the path of a web request.: ... will follow us on this work since it \u2019 s one of the biggest interoperability parts of the HTML5 ",
-            "url": "https://hacks.mozilla.org/2010/07/firefox-4-beta-1-is-here-whats-in-it-for-web-developers/",
+            "title": "TopProgrammingFundamentalsCourses Online - Updated...",
+            "description": "Learn Explore advanced patterns in Programming Fundamentals: Learn thefundamentalsofprogrammingfrom a top-rated Udemy instructor. Whether you\u2019re interested in le",
+            "url": "https://www.udemy.com/topic/programming-fundamentals/",
             "type": "Learning",
             "curated_by": "rule-based authority ranking",
             "objectives": [
-              "Understand the fundamentals of Trace the path of a web request.",
-              "Apply key Internet concepts from this resource",
-              "Identify how Trace the path of a web request. fits into Internet workflows"
+              "Understand the fundamentals of Explore advanced patterns in Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Explore advanced patterns in Programming Fundamentals fits into Programming Fundamentals workflows"
             ]
           },
           {
-            "title": "These Weeks in Firefox: Issue 71 \u2013 Firefox Nightly News",
-            "description": "Learn Trace the path of a web request.: ... the installer UI out of NSIS and into a web based framework so that developers can make UI chang",
-            "url": "https://blog.nightly.mozilla.org/2020/03/18/these-weeks-in-firefox-issue-71/",
+            "title": "ProgrammingFundamentalsin Kotlin | Coursera",
+            "description": "Learn Explore advanced patterns in Programming Fundamentals: ProgrammingFundamentalsin Kotlin. This course is part of multipleprograms.Final graded quiz:Programm",
+            "url": "https://www.coursera.org/learn/meta-programming-fundamentals-kotlin",
             "type": "Learning",
             "curated_by": "rule-based authority ranking",
             "objectives": [
-              "Understand the fundamentals of Trace the path of a web request.",
-              "Apply key Internet concepts from this resource",
-              "Identify how Trace the path of a web request. fits into Internet workflows"
+              "Understand the fundamentals of Explore advanced patterns in Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Explore advanced patterns in Programming Fundamentals fits into Programming Fundamentals workflows"
             ]
           }
         ],
         "coding_tasks": [
           {
-            "title": "TRACE request method - HTTP - MDN Web Docs",
-            "description": "This MDN Web Docs entry provides the definitive explanation of the HTTP TRACE method, a crucial tool for performing diagnostic loop-back tests along the path of a web request. Understanding and utilizing this method inherently involves a coding task to send and interpret TRACE requests.",
-            "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/TRACE",
+            "title": "ProgrammingFundamentalsin Swift | Coursera",
+            "description": "Learn Explore advanced patterns in Programming Fundamentals: ProgrammingFundamentalsin Swift. This course is part of multipleprograms.Explorethe basicprogramming",
+            "url": "https://www.coursera.org/learn/programming-fundamentals-swift",
             "type": "Coding",
+            "curated_by": "rule-based authority ranking",
             "objectives": [
-              "Understand the purpose and functionality of the HTTP TRACE method.",
-              "Learn how to formulate and send a TRACE request using command-line tools or code.",
-              "Interpret the information returned by a TRACE request to diagnose network paths."
-            ],
-            "curated_by": "LLM-intelligent (anti-hallucination)"
+              "Understand the fundamentals of Explore advanced patterns in Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Explore advanced patterns in Programming Fundamentals fits into Programming Fundamentals workflows"
+            ]
           },
           {
-            "title": "Taster - Publishing with Neocities",
-            "description": "This workshop taster directly addresses tracing the path of a web request, encouraging learners to identify and locate various points along its journey. Its 'workshop' context strongly indicates an interactive, hands-on learning experience, likely involving practical coding or command-line tasks.",
-            "url": "https://gatherworkshops.github.io/Building-the-Web/taster/neocities/",
+            "title": "datacamp.com/tracks/python-programming-fundamentals",
+            "description": "Learn Explore advanced patterns in Programming Fundamentals: In this track, you\u2019ll build up yourprogrammingskills in Python!",
+            "url": "https://www.datacamp.com/tracks/python-programming-fundamentals",
             "type": "Coding",
+            "curated_by": "rule-based authority ranking",
             "objectives": [
-              "Identify key components and steps involved in the lifecycle of a web request.",
-              "Apply practical tools and techniques to actively observe and map request paths.",
-              "Develop a comprehensive, hands-on understanding of how web requests travel across the internet."
-            ],
-            "curated_by": "LLM-intelligent (anti-hallucination)"
+              "Understand the fundamentals of Explore advanced patterns in Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Explore advanced patterns in Programming Fundamentals fits into Programming Fundamentals workflows"
+            ]
           }
         ],
-        "total_resources_found": 20
+        "total_resources_found": 12
       },
-      "cached_at": "2026-04-25T22:32:13.115977"
+      "cached_at": "2026-04-26T02:56:58.820752"
+    },
+    {
+      "concept": "Programming Fundamentals",
+      "subtopic": "Build something real using Programming Fundamentals",
+      "result": {
+        "metadata": {
+          "concept": "Programming Fundamentals",
+          "subtopic": "Build something real using Programming Fundamentals",
+          "preference": "Interactive-Heavy",
+          "version": "V3-intelligent-hybrid",
+          "processing_time_seconds": 11.03,
+          "llm_enhanced": true
+        },
+        "learning_tasks": [
+          {
+            "title": "codecademy.com/learn/learn-how-to-code",
+            "description": "Learn Build something real using Programming Fundamentals: Start here and learnprogrammingfundamentalsthat can be helpful for any...",
+            "url": "https://www.codecademy.com/learn/learn-how-to-code",
+            "type": "Learning",
+            "curated_by": "rule-based authority ranking",
+            "objectives": [
+              "Understand the fundamentals of Build something real using Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Build something real using Programming Fundamentals fits into Programming Fundamentals workflows"
+            ]
+          },
+          {
+            "title": "JavaProgrammingFundamentals",
+            "description": "Learn Build something real using Programming Fundamentals: JavaProgrammingFundamentalsJava is a high-level, class-based, object-orientedprogramminglanguage tha",
+            "url": "https://www.udemy.com/course/java-programming-fundamental/",
+            "type": "Learning",
+            "curated_by": "rule-based authority ranking",
+            "objectives": [
+              "Understand the fundamentals of Build something real using Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Build something real using Programming Fundamentals fits into Programming Fundamentals workflows"
+            ]
+          },
+          {
+            "title": "ProgrammingFundamentals: Operator Precedence and... | LinkedIn",
+            "description": "Learn Build something real using Programming Fundamentals: ProgrammingLearning Journey \u2013 Day 2 Today I exploredsomeimportantprogrammingfundamentalsthat help in",
+            "url": "https://www.linkedin.com/posts/kavya-thupakula_programming-codingjourney-learninginpublic-activity-7437716576067530752-OqZW",
+            "type": "Learning",
+            "curated_by": "rule-based authority ranking",
+            "objectives": [
+              "Understand the fundamentals of Build something real using Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Build something real using Programming Fundamentals fits into Programming Fundamentals workflows"
+            ]
+          }
+        ],
+        "coding_tasks": [
+          {
+            "title": "codecademy.com/learn/learn-how-to-code",
+            "description": "Learn Build something real using Programming Fundamentals: Start here and learnprogrammingfundamentalsthat can be helpful for any...",
+            "url": "https://www.codecademy.com/learn/learn-how-to-code",
+            "type": "Coding",
+            "curated_by": "rule-based authority ranking",
+            "objectives": [
+              "Understand the fundamentals of Build something real using Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Build something real using Programming Fundamentals fits into Programming Fundamentals workflows"
+            ]
+          },
+          {
+            "title": "datacamp.com/tracks/python-programming-fundamentals",
+            "description": "Learn Build something real using Programming Fundamentals: In this track, you\u2019llbuildup yourprogrammingskills in Python!",
+            "url": "https://www.datacamp.com/tracks/python-programming-fundamentals",
+            "type": "Coding",
+            "curated_by": "rule-based authority ranking",
+            "objectives": [
+              "Understand the fundamentals of Build something real using Programming Fundamentals",
+              "Apply key Programming Fundamentals concepts from this resource",
+              "Identify how Build something real using Programming Fundamentals fits into Programming Fundamentals workflows"
+            ]
+          }
+        ],
+        "total_resources_found": 12
+      },
+      "cached_at": "2026-04-26T02:57:09.921153"
     }
   ],
   "user_shop": {
@@ -14775,7 +14790,51 @@
       "checkpoint_id": "cp-gen-000",
       "subtopic_idx": 0,
       "status": "not_started"
+    },
+    {
+      "task_id": "resource__cp-gen-000__1__0",
+      "user_id": "u-001",
+      "checkpoint_id": "cp-gen-000",
+      "subtopic_idx": 1,
+      "status": "completed"
+    },
+    {
+      "task_id": "resource__cp-gen-000__1__1",
+      "user_id": "u-001",
+      "checkpoint_id": "cp-gen-000",
+      "subtopic_idx": 1,
+      "status": "completed"
+    },
+    {
+      "task_id": "resource__cp-gen-000__1__2",
+      "user_id": "u-001",
+      "checkpoint_id": "cp-gen-000",
+      "subtopic_idx": 1,
+      "status": "completed"
+    },
+    {
+      "task_id": "resource__cp-gen-000__1__3",
+      "user_id": "u-001",
+      "checkpoint_id": "cp-gen-000",
+      "subtopic_idx": 1,
+      "status": "completed"
+    },
+    {
+      "task_id": "resource__cp-gen-000__1__4",
+      "user_id": "u-001",
+      "checkpoint_id": "cp-gen-000",
+      "subtopic_idx": 1,
+      "status": "not_started"
     }
   ],
-  "daily_done": false
+  "daily_done": true,
+  "resume_state": {
+    "added_skills": [
+      {
+        "name": "TypeScript",
+        "category": "Languages"
+      }
+    ],
+    "added_projects": []
+  }
 }

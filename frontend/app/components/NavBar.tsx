@@ -59,7 +59,7 @@ function ShopCharacter({ size, zoom = 1 }: { size: number; zoom?: number }) {
 
 export function Navbar() {
   const pathname = usePathname();
-  const navItems = ['Dashboard', 'Map', 'Tasks', 'Shop'];
+  const navItems = ['Map', 'Dashboard', 'Tasks', 'Shop'];
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { data: session } = useSession();
@@ -88,7 +88,7 @@ export function Navbar() {
         .pixel-nav-bar {
           border-width: 4px;
           border-style: solid;
-          border-color: #2d5050;
+          border-color: #334155;
           box-shadow:
             0 4px 0 0 rgba(0,0,0,0.3),
             inset 0 -2px 0 0 rgba(0,0,0,0.2);
@@ -106,7 +106,7 @@ export function Navbar() {
           left: 0;
           right: 0;
           height: 4px;
-          background: #7ab3b3;
+          background: #04A0FF;
           display: none;
           image-rendering: pixelated;
         }
@@ -118,7 +118,7 @@ export function Navbar() {
         .pixel-dropdown {
           border-width: 4px;
           border-style: solid;
-          border-color: #2d5050;
+          border-color: #334155;
           box-shadow: 4px 4px 0 0 rgba(0,0,0,0.3);
           image-rendering: pixelated;
         }
@@ -147,7 +147,7 @@ export function Navbar() {
         .pixel-avatar {
           border-width: 4px;
           border-style: solid;
-          border-color: #2d5050;
+          border-color: #334155;
           box-shadow: 2px 2px 0 0 rgba(0,0,0,0.3);
           image-rendering: pixelated;
           cursor: pointer;
@@ -169,7 +169,7 @@ export function Navbar() {
               style={{
                 borderWidth: 4,
                 borderStyle: 'solid',
-                borderColor: '#7ab3b3',
+                borderColor: '#334155',
                 boxShadow: '2px 2px 0 0 rgba(0,0,0,0.4)',
                 imageRendering: 'pixelated',
                 backgroundColor: '#2d5050',
@@ -187,15 +187,15 @@ export function Navbar() {
               />
             </div>
             <span
-              className="text-[#2d5050] text-[10px] leading-tight"
+              className="text-[#334155] text-[11px] whitespace-nowrap"
               style={{ fontFamily: "'Press Start 2P', monospace" }}
             >
-              ROLE<br />MAP
+              ROLEMAP
             </span>
           </div>
 
           {/* Pixel separator */}
-          <div className="w-1 h-8 bg-[#2d5050] shrink-0" />
+          <div className="w-1 h-8 bg-[#334155] shrink-0" />
 
           {/* Nav links */}
           <div className="flex items-center gap-6">
@@ -256,12 +256,12 @@ export function Navbar() {
           <div className="ml-auto flex items-center gap-4 shrink-0">
 
             {/* Pixel separator */}
-            <div className="w-1 h-8 bg-[#2d5050] shrink-0" />
+            <div className="w-1 h-8 bg-[#334155] shrink-0" />
 
             {/* Avatar + Dropdown */}
             <div ref={dropdownRef} className="relative">
 
-              {/* Avatar Button — uses Google profile image if available */}
+              {/* Avatar Button */}
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 className="pixel-avatar w-10 h-10 flex items-center justify-center overflow-hidden"
@@ -277,33 +277,47 @@ export function Navbar() {
                   style={{
                     right: '-1.4rem',
                     top: '3.5rem',
-                    width: '220px',
+                    width: '300px',
                     backgroundColor: '#f0f8f8',
                   }}
                 >
                   {/* User info */}
                   <div
-                    className="px-3 py-2 flex items-start gap-2"
+                    className="px-4 py-3 flex items-center gap-3"
                     style={{ borderBottom: '4px solid #2d5050' }}
                   >
+                    {/* Avatar in dropdown */}
+                    <div
+                      className="w-14 h-14 shrink-0 overflow-hidden"
+                      style={{
+                        borderWidth: 3,
+                        borderStyle: 'solid',
+                        borderColor: '#2d5050',
+                        imageRendering: 'pixelated',
+                        backgroundColor: '#c8e6c9',
+                      }}
+                    >
+                      <ShopCharacter size={56} />
+                    </div>
+
                     {/* Name and email */}
                     <div className="flex-1 min-w-0">
                       <p
-                        className="text-[#2d5050] break-words"
-                        style={{ fontFamily: "'Press Start 2P', monospace", fontSize: '8px', lineHeight: '1.2', wordBreak: 'break-word' }}
+                        className="text-[#334155] break-words"
+                        style={{ fontFamily: "'Press Start 2P', monospace", fontSize: '9px', lineHeight: '1.4', wordBreak: 'break-word' }}
                       >
                         {session?.user?.name ?? "GUEST"}
                       </p>
                       <p
-                        className="text-[#4e8888] break-words"
-                        style={{ fontFamily: "'Press Start 2P', monospace", fontSize: '7px', lineHeight: '1.2', wordBreak: 'break-word' }}
+                        className="text-[#4e8888] break-words mt-1"
+                        style={{ fontFamily: "'Press Start 2P', monospace", fontSize: '7px', lineHeight: '1.4', wordBreak: 'break-word' }}
                       >
                         {session?.user?.email ?? ""}
                       </p>
                     </div>
                   </div>
 
-                  {/* Menu items — no icons */}
+                  {/* Menu items */}
                   {[
                     { label: "PROFILE",  href: "/profile"  },
                     { label: "SETTINGS", href: "/settings" },
@@ -313,11 +327,11 @@ export function Navbar() {
                       key={item.label}
                       href={item.href}
                       onClick={() => setDropdownOpen(false)}
-                      className="pixel-dropdown-item flex items-center px-3 py-2 text-[#2d5050] transition-colors"
+                      className="pixel-dropdown-item flex items-center px-4 py-3 text-[#334155] transition-colors"
                       style={{
                         borderBottom: '2px solid #c8e6c9',
                         fontFamily: "'Press Start 2P', monospace",
-                        fontSize: '7px',
+                        fontSize: '9px',
                       }}
                     >
                       {item.label}
@@ -325,7 +339,7 @@ export function Navbar() {
                   ))}
 
                   {/* Sign out */}
-                  <div className="p-2">
+                  <div className="p-3">
                     <button
                       onClick={async () => {
                         const response = await fetch("/api/auth/signout", { method: "POST" });
@@ -333,13 +347,13 @@ export function Navbar() {
                           window.location.href = "/";
                         }
                       }}
-                      className="pixel-signout w-full flex items-center justify-center gap-2 px-2 py-2 text-white bg-red-700"
+                      className="pixel-signout w-full flex items-center justify-center gap-2 px-3 py-3 text-white bg-red-700"
                       style={{
                         fontFamily: "'Press Start 2P', monospace",
-                        fontSize: '7px',
+                        fontSize: '9px',
                       }}
                     >
-                      <svg viewBox="0 0 16 16" className="w-4 h-4 shrink-0" style={{ imageRendering: "pixelated" }}>
+                      <svg viewBox="0 0 16 16" className="w-5 h-5 shrink-0" style={{ imageRendering: "pixelated" }}>
                         <rect x="2" y="1" width="8" height="14" fill="#7f0000" />
                         <rect x="9" y="7" width="5" height="2" fill="white" />
                         <rect x="11" y="5" width="2" height="2" fill="white" />

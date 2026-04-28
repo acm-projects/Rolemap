@@ -28,7 +28,7 @@ const MAP_NODES = [
 ];
 const MAP_EDGES = [[0,1],[1,2],[2,3],[3,4],[4,5]];
 
-function MapAnimation({ active, done }: { active: boolean; done: boolean }) {
+function MapAnimation({ active, done, stepIdx }: { active: boolean; done: boolean; stepIdx: number }) {
   const [visibleNodes, setVisibleNodes] = useState(0);
   const [visibleEdges, setVisibleEdges] = useState(0);
   const mountRef = useRef(false);
@@ -49,7 +49,7 @@ function MapAnimation({ active, done }: { active: boolean; done: boolean }) {
   const NW = 72, NH = 36, R = 6;
 
   return (
-    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12, padding: '16px 0' }}>
+    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12, padding: '16px 0' }}>
       <style>{`
         @keyframes nodeIn { 0%{transform:scale(0) translate(-50%,-50%);opacity:0} 60%{transform:scale(1.12) translate(-50%,-50%);opacity:1} 100%{transform:scale(1) translate(-50%,-50%);opacity:1} }
         @keyframes edgeDraw { 0%{stroke-dashoffset:300} 100%{stroke-dashoffset:0} }
@@ -103,6 +103,12 @@ function MapAnimation({ active, done }: { active: boolean; done: boolean }) {
       <div style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 9, color: done ? '#04A0FF' : '#8ED4FF', letterSpacing: 1 }}>
         {done ? '▶ MAP READY' : `BUILDING MAP${'.'.repeat((visibleNodes % 3) + 1)}`}
       </div>
+      {active && (
+        <div style={{ width: '100%', maxWidth: 320 }}>
+          <PixelProgress value={((stepIdx + 1) / PROGRESS_STEPS.length) * 100} showLabel={false} />
+          <p style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 9, color: '#78ADCF', textAlign: 'center', marginTop: 8 }}>{PROGRESS_STEPS[stepIdx]}</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -185,14 +191,12 @@ export default function GenerateRoadmap() {
               ${
                 done
                   ? "border-t-[#8ED4FF] border-l-[#8ED4FF] border-r-[#04A0FF] border-b-[#04A0FF] bg-[#BEF8FF]"
-                  : generating
-                    ? "border-t-[#DEF2FF] border-l-[#DEF2FF] border-r-[#8ED4FF] border-b-[#8ED4FF] bg-white"
-                    : "border-t-[#DEF2FF] border-l-[#DEF2FF] border-r-[#8ED4FF] border-b-[#8ED4FF] bg-white"
+                  : "border-t-[#DEF2FF] border-l-[#DEF2FF] border-r-[#8ED4FF] border-b-[#8ED4FF] bg-white"
               }
             `}
           >
             {(generating || done) ? (
-              <MapAnimation active={generating} done={done} />
+              <MapAnimation active={generating} done={done} stepIdx={stepIdx} />
             ) : (
               <>
                 <div className="w-14 h-14 flex items-center justify-center pixel-border text-3xl select-none border-t-[#DEF2FF] border-l-[#DEF2FF] border-r-[#8ED4FF] border-b-[#8ED4FF] bg-[#E1FAFF]">

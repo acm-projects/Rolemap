@@ -492,7 +492,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
         <Handle type="target" position={Position.Left} className="opacity-0!" />
         <div
           style={{ position: 'relative', zIndex: 1, width: '100%' }}
-          className={`flex flex-col gap-2 px-5 py-4 ${isCurrent ? 'text-white' : isActive ? 'text-[#2e6666]' : isLocked ? 'text-slate-400' : 'text-slate-700'}`}
+          className={`flex flex-col gap-2 px-5 py-4 ${isCurrent ? 'text-white' : isActive ? 'text-[#2e6666]' : isLocked ? 'text-slate-500' : 'text-slate-700'}`}
         >
           <div className="flex items-center gap-2">
             {isLocked ? (
@@ -504,7 +504,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
             ) : (
               <ProjectIcon />
             )}
-            <span className="text-sm leading-tight uppercase tracking-tight">
+            <span className="text-sm leading-tight uppercase tracking-normal font-normal">
               {data.label}
             </span>
           </div>
@@ -519,7 +519,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
               </div>
             </div>
           )}
-          {isLocked && <span className="text-[10px] uppercase tracking-widest font-normal opacity-60">Locked</span>}
+          {isLocked && <span className="text-[10px] uppercase tracking-widest font-normal opacity-80">Locked</span>}
         </div>
         <Handle type="source" position={Position.Right} className="opacity-0!" />
       </div>
@@ -537,7 +537,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
         backgroundColor: bgColor,
       }}
       className={`shadow-sm transition-all flex flex-col items-center justify-center relative px-5 py-4 w-56 min-h-25
-        ${isCurrent ? 'text-white' : isActive ? 'text-[#2e6666]' : isLocked ? 'bg-white/70 text-slate-400' : 'text-slate-700'}
+        ${isCurrent ? 'bg-[#3d7a7a] text-white' : isActive ? 'bg-[#eaf4f4] text-[#2e6666]' : isLocked ? 'bg-white text-slate-500 opacity-80' : 'bg-white text-slate-700'}
         ${selected ? 'shadow-lg' : ''}`}
     >
       <Handle type="target" position={Position.Left} className="opacity-0!" />
@@ -554,7 +554,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
           ) : (
             <ProgressIcon />
           )}
-          <span className="text-sm leading-tight uppercase tracking-tight">
+          <span className="text-sm leading-tight uppercase tracking-normal font-normal">
             {data.label}
           </span>
         </div>
@@ -569,7 +569,7 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
             </div>
           </div>
         )}
-        {isLocked && <span className="text-[10px] uppercase tracking-widest font-normal opacity-60">Locked</span>}
+        {isLocked && <span className="text-[10px] uppercase tracking-widest font-normal opacity-80">Locked</span>}
       </div>
       <Handle type="source" position={Position.Right} className="opacity-0!" />
     </div>

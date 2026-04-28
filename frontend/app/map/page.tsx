@@ -1,6 +1,7 @@
-'use client';
+﻿'use client';
 
-import React, { useState, useCallback, useEffect } from 'react';
+import QuizConfetti from '../../components/ui/quiz-confetti';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   ReactFlow,
@@ -22,83 +23,15 @@ import { useCharacter } from '@/app/context/CharacterContext';
 
 const nodeTypes = { roadmap: RoadmapNode };
 
-// Confirmed asset dimensions (read from file headers):
-//   sky.png         256×240  → 2× = 512×480
-//   clouds-back.png 256×240  → 2× = 512×480
-//   clouds-front.png 256×240 → 2× = 512×480
-//   ground.png      898×106  → 2× = 1796×212
-const PIXEL: React.CSSProperties = { imageRendering: 'pixelated' };
-
-function ParallaxLayers() {
+function BackgroundGif() {
   return (
-    <>
-      {/* Sky — stretched to full viewport height, tiles only horizontally — no vertical seam */}
-      <div
-        aria-hidden="true"
-        className="fixed inset-0 z-0 pointer-events-none"
-        style={{
-          ...PIXEL,
-          backgroundImage: "url('/assets/sky.png')",
-          backgroundSize: '512px 100vh',
-          backgroundRepeat: 'repeat-x',
-          backgroundPosition: 'top left',
-        }}
-      />
-      {/* Back clouds — fade bottom edge into sky with mask gradient */}
-      <div
-        aria-hidden="true"
-        className="fixed top-0 z-1 pointer-events-none"
-        style={{
-          ...PIXEL,
-          width: '200%',
-          height: '67vh',
-          backgroundImage: "url('/assets/clouds-back.png')",
-          backgroundSize: '512px 67vh',
-          backgroundRepeat: 'repeat-x',
-          backgroundPosition: 'top left',
-          opacity: 0.85,
-          animation: 'driftClouds 120s linear infinite',
-          WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
-          maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
-        }}
-      />
-      {/* Front clouds — anchored above grass line, fades into sky */}
-      <div
-        aria-hidden="true"
-        className="fixed z-2 pointer-events-none"
-        style={{
-          ...PIXEL,
-          bottom: '18vh',
-          width: '200%',
-          height: '67vh',
-          backgroundImage: "url('/assets/clouds-front.png')",
-          backgroundSize: '512px 67vh',
-          backgroundRepeat: 'repeat-x',
-          backgroundPosition: 'top left',
-          animation: 'driftClouds 60s linear infinite',
-          WebkitMaskImage: 'linear-gradient(to bottom, black 55%, transparent 100%)',
-          maskImage: 'linear-gradient(to bottom, black 55%, transparent 100%)',
-        }}
-      />
-      {/* Ground — 33vh, fills bottom third of screen; z-[6] sits above ReactFlow canvas (z:5) to cover edge artifacts */}
-      <div
-        aria-hidden="true"
-        className="fixed bottom-0 pointer-events-none"
-        style={{
-          ...PIXEL,
-          zIndex: 6,
-          left: '-2px',
-          width: 'calc(100% + 4px)',
-          height: '33vh',
-          backgroundImage: "url('/assets/ground.png')",
-          backgroundSize: '1796px 33vh',
-          backgroundRepeat: 'repeat-x',
-          backgroundPosition: 'top left',
-          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 8%)',
-          maskImage: 'linear-gradient(to bottom, transparent 0%, black 8%)',
-        }}
-      />
-    </>
+    <img
+      aria-hidden="true"
+      src="/assets/background.gif"
+      alt=""
+      className="fixed inset-0 z-0 pointer-events-none w-full h-full"
+      style={{ objectFit: 'fill' }}
+    />
   );
 }
 
@@ -133,7 +66,7 @@ function toFlowEdges(edges: RoadmapEdge[], checkpoints: Checkpoint[]) {
         stroke: unlocked ? '#548080' : '#c8d0dc',
         strokeWidth: 7,
         strokeDasharray: '8 14',
-        strokeLinecap: 'square',
+        strokeLinecap: 'square' as const,
         animation: unlocked ? 'stones-fwd 2.4s linear infinite' : 'none',
       },
     };
@@ -154,6 +87,11 @@ function RoadmapContent() {
   const [pendingCenter, setPendingCenter] = useState<{ x: number; y: number } | null>(null);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
+
+  // State for confetti celebration effect
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [jumpingNodeLabel, setJumpingNodeLabel] = useState<string | null>(null);
+
   const { setCenter, fitView } = useReactFlow();
   const { notifyMapReady } = useCharacter();
 
@@ -186,7 +124,7 @@ function RoadmapContent() {
           const pos = laidOutNode?.position ?? activeCP.position;
           // Start camera animation
           setTimeout(() => {
-            setCenter(pos.x + 128, pos.y + 70, { zoom: 1.5, duration: 1000 });
+            setCenter(pos.x + 128, pos.y + 80, { zoom: 1.5, duration: 1000 });
           }, 200);
           // After camera settles + 600ms beat, trigger CharacterMascot fall-in
           setTimeout(() => {
@@ -223,6 +161,11 @@ function RoadmapContent() {
       setTimeout(() => {
         setNodes(ns => ns.map(n => n.id === node.id ? { ...n, data: { ...n.data, isMascotJumping: false } } : n));
       }, 1200);
+
+      // Trigger confetti on the current active node
+      setJumpingNodeLabel(data.label);
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 3000);
     }
 
     if (!data.locked && data.kind === 'quiz') {
@@ -265,7 +208,7 @@ function RoadmapContent() {
   return (
     <div className="h-screen w-screen relative overflow-hidden">
       <Navbar />
-      <ParallaxLayers />
+      <BackgroundGif />
       {/* z-index 5: above ground (z-3) and clouds (z-1/2), below navbar (z-10) */}
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 5 }}>
         <ReactFlow
@@ -294,6 +237,15 @@ function RoadmapContent() {
             }}
           />
         </div>
+      )}
+
+      {/* Confetti — above everything */}
+      {showConfetti && (
+        <QuizConfetti
+          key={jumpingNodeLabel}
+          x={jumpingNodeLabel ? nodes.find((n: any) => n.data.label === jumpingNodeLabel)?.position?.x : 0}
+          y={jumpingNodeLabel ? nodes.find((n: any) => n.data.label === jumpingNodeLabel)?.position?.y : 0}
+        />
       )}
     </div>
   );
