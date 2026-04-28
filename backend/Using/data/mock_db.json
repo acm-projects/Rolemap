@@ -6,7 +6,7 @@
       "name": "Alex Morgan",
       "image_url": null,
       "github_username": "SiriKishoreDola",
-      "xp_total": 235,
+      "xp_total": 275,
       "current_streak": 4,
       "longest_streak": 4,
       "onboarding_completed": true,
@@ -19,8 +19,8 @@
         "clothes": "suit.png",
         "pants": "pants.png",
         "shoes": "shoes.png",
-        "hair": "wavy.png",
-        "accessories": "",
+        "hair": "buzzcut.png",
+        "accessories": "hat_lucky.png",
         "color_variants": {
           "pants.png": 0,
           "skirt.png": 6,
@@ -2315,8 +2315,8 @@
     {
       "id": "ug-001",
       "user_id": "u-001",
-      "xp_total": 235,
-      "tasks_completed": 41,
+      "xp_total": 275,
+      "tasks_completed": 49,
       "leaderboard_rank": 2,
       "current_streak": 4,
       "longest_streak": 4,
@@ -14788,28 +14788,28 @@
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic_idx": 1,
-      "status": "in_progress"
+      "status": "completed"
     },
     {
       "task_id": "resource__cp-gen-000__1__1",
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic_idx": 1,
-      "status": "not_started"
+      "status": "completed"
     },
     {
       "task_id": "resource__cp-gen-000__1__2",
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic_idx": 1,
-      "status": "not_started"
+      "status": "completed"
     },
     {
       "task_id": "resource__cp-gen-000__1__3",
       "user_id": "u-001",
       "checkpoint_id": "cp-gen-000",
       "subtopic_idx": 1,
-      "status": "not_started"
+      "status": "completed"
     },
     {
       "task_id": "resource__cp-gen-000__1__4",
