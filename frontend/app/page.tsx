@@ -149,24 +149,31 @@ function LandingParallax() {
 
 function RoadmapCanvas() {
   return (
-    <div className="relative h-[560px] overflow-hidden px-4 pt-8 md:px-8 lg:h-[620px]">
-      <div className="absolute left-[6%] top-10 h-32 w-32 rounded-full bg-white/70 blur-sm lg:h-36 lg:w-36" />
-      <div className="absolute left-[16%] top-6 h-36 w-44 rounded-full bg-white/85 lg:h-44 lg:w-52" />
-      <div className="absolute left-[31%] top-14 h-28 w-32 rounded-full bg-white/80 lg:h-32 lg:w-36" />
-      <div className="absolute right-[12%] top-18 h-28 w-28 rounded-full bg-white/65 lg:h-32 lg:w-32" />
-      <div className="absolute right-[20%] top-8 h-34 w-40 rounded-full bg-white/82 lg:h-40 lg:w-48" />
-      <div className="absolute right-[34%] top-18 h-24 w-28 rounded-full bg-white/72 lg:h-28 lg:w-32" />
+    <div className="relative h-[470px] overflow-hidden px-3 pt-6 md:px-6 lg:h-[540px] lg:px-8">
+      {/* Cloud blobs */}
+      <div className="absolute left-[6%] top-10 h-24 w-24 rounded-full bg-white/70 blur-sm lg:h-28 lg:w-28" />
+      <div className="absolute left-[16%] top-6 h-28 w-36 rounded-full bg-white/85 lg:h-36 lg:w-44" />
+      <div className="absolute left-[31%] top-14 h-24 w-28 rounded-full bg-white/80 lg:h-28 lg:w-32" />
+      <div className="absolute right-[12%] top-18 h-24 w-24 rounded-full bg-white/65 lg:h-28 lg:w-28" />
+      <div className="absolute right-[20%] top-8 h-28 w-36 rounded-full bg-white/82 lg:h-36 lg:w-44" />
+      <div className="absolute right-[34%] top-18 h-20 w-24 rounded-full bg-white/72 lg:h-24 lg:w-28" />
 
-      <div className="absolute inset-x-0 top-18 mx-auto h-[400px] max-w-[680px] rounded-[3.5rem] border border-white/70 bg-white/75 shadow-[0_24px_80px_rgba(54,102,132,0.18)] backdrop-blur-[2px] lg:h-[450px] lg:max-w-[760px]">
+      <div className="absolute inset-x-0 top-16 mx-auto h-[350px] max-w-[600px] rounded-[3rem] border border-white/70 bg-white/75 shadow-[0_24px_80px_rgba(54,102,132,0.18)] backdrop-blur-[2px] lg:h-[400px] lg:max-w-[700px]">
         <div className="absolute -left-10 top-12 h-28 w-28 rounded-full bg-white/85 lg:h-32 lg:w-32" />
         <div className="absolute -right-10 top-16 h-32 w-32 rounded-full bg-white/82 lg:h-36 lg:w-36" />
         <div className="absolute left-16 -top-12 h-24 w-28 rounded-full bg-white/82 lg:h-28 lg:w-32" />
         <div className="absolute left-36 -top-14 h-28 w-32 rounded-full bg-white/90 lg:h-32 lg:w-36" />
         <div className="absolute right-24 -top-12 h-24 w-28 rounded-full bg-white/84 lg:h-28 lg:w-32" />
 
-        <div className="relative mx-5 my-5 h-[360px] overflow-hidden rounded-[2.8rem] border border-[#d6ebf4] bg-[#f7fcff] shadow-inner lg:h-[410px]">
+        {/* Inner canvas */}
+        <div className="relative mx-4 my-4 h-[320px] overflow-hidden rounded-[2.5rem] border border-[#d6ebf4] bg-[#f7fcff] shadow-inner lg:mx-5 lg:my-5 lg:h-[360px]">
           <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-transparent to-[#9ddcf8]/30" />
-          <svg className="absolute inset-0 h-full w-full opacity-35">
+
+          {/* Dot grid */}
+          <svg
+            className="absolute inset-0 h-full w-full opacity-35"
+            aria-hidden="true"
+          >
             <defs>
               <pattern
                 id="cloudDots"
@@ -181,81 +188,349 @@ function RoadmapCanvas() {
             </defs>
             <rect width="100%" height="100%" fill="url(#cloudDots)" />
           </svg>
-          <svg className="absolute inset-0 h-full w-full" fill="none">
+
+          {/* SVG canvas — nodes + connectors in one coordinate space */}
+          <svg
+            className="absolute inset-0 h-full w-full"
+            viewBox="0 0 600 320"
+            preserveAspectRatio="xMidYMid meet"
+            fill="none"
+            aria-hidden="true"
+          >
+            <defs>
+              <pattern
+                id="dots2"
+                x="0"
+                y="0"
+                width="20"
+                height="20"
+                patternUnits="userSpaceOnUse"
+              >
+                <circle cx="1.5" cy="1.5" r="1" fill="#cbd5e1" />
+              </pattern>
+            </defs>
+
+            {/* ── Connectors (drawn first, behind nodes) ── */}
+
+            {/* HTML → JavaScript */}
             <path
-              d="M 155 160 C 200 160, 200 120, 250 120"
+              d="M 196 160 C 253 160, 253 100, 260 100"
               stroke="#4e8888"
               strokeWidth="1.5"
-              strokeDasharray="4 3"
-              opacity="0.5"
-            />
-            <path
-              d="M 155 160 C 200 160, 200 220, 250 220"
-              stroke="#4e8888"
-              strokeWidth="1.5"
+              strokeDasharray="5 4"
+              strokeLinecap="round"
               opacity="0.7"
             />
+
+            {/* HTML → CSS */}
             <path
-              d="M 325 210 C 360 190, 390 185, 430 188"
+              d="M 196 160 C 253 160, 253 215, 260 215"
+              stroke="#4e8888"
+              strokeWidth="1.5"
+              strokeDasharray="5 4"
+              strokeLinecap="round"
+              opacity="0.55"
+            />
+
+            {/* CSS → React */}
+            <path
+              d="M 390 205 C 430 205, 430 130, 440 130"
               stroke="#9dc7d7"
               strokeWidth="1.5"
               strokeDasharray="4 4"
+              strokeLinecap="round"
+              opacity="0.65"
+            />
+
+            {/* CSS → Next.js */}
+            <path
+              d="M 390 225 C 430 225, 430 240, 440 240"
+              stroke="#9dc7d7"
+              strokeWidth="1.5"
+              strokeDasharray="4 4"
+              strokeLinecap="round"
               opacity="0.55"
             />
+
+            {/* ── HTML Node — completed (centre ~130, 160) ── */}
+            <g>
+              <rect
+                x="64"
+                y="122"
+                width="132"
+                height="76"
+                rx="14"
+                fill="white"
+                stroke="#e2e8f0"
+                strokeWidth="1"
+              />
+              <circle cx="88" cy="143" r="9" fill="#4e8888" />
+              <path
+                d="M84 143L87 146L93 140"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <text
+                x="102"
+                y="148"
+                fontFamily="system-ui,sans-serif"
+                fontSize="13"
+                fill="#1e293b"
+                fontWeight="500"
+              >
+                HTML
+              </text>
+              <rect
+                x="80"
+                y="172"
+                width="100"
+                height="4"
+                rx="2"
+                fill="#e2e8f0"
+              />
+              <rect
+                x="80"
+                y="172"
+                width="100"
+                height="4"
+                rx="2"
+                fill="#4e8888"
+              />
+              <text
+                x="180"
+                y="186"
+                fontFamily="system-ui,sans-serif"
+                fontSize="10"
+                fill="#4e8888"
+                textAnchor="end"
+              >
+                100%
+              </text>
+            </g>
+
+            {/* ── JavaScript Node — completed (centre ~325, 100) ── */}
+            <g>
+              <rect
+                x="260"
+                y="62"
+                width="150"
+                height="76"
+                rx="14"
+                fill="white"
+                stroke="#e2e8f0"
+                strokeWidth="1"
+              />
+              <circle cx="284" cy="83" r="9" fill="#4e8888" />
+              <path
+                d="M280 83L283 86L289 80"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <text
+                x="298"
+                y="88"
+                fontFamily="system-ui,sans-serif"
+                fontSize="13"
+                fill="#1e293b"
+                fontWeight="500"
+              >
+                Javascript
+              </text>
+              <rect
+                x="276"
+                y="112"
+                width="118"
+                height="4"
+                rx="2"
+                fill="#e2e8f0"
+              />
+              <rect
+                x="276"
+                y="112"
+                width="118"
+                height="4"
+                rx="2"
+                fill="#4e8888"
+              />
+              <text
+                x="394"
+                y="126"
+                fontFamily="system-ui,sans-serif"
+                fontSize="10"
+                fill="#4e8888"
+                textAnchor="end"
+              >
+                100%
+              </text>
+            </g>
+
+            {/* ── CSS Node — active / in progress (centre ~325, 215) ── */}
+            <g>
+              <rect
+                x="260"
+                y="178"
+                width="150"
+                height="82"
+                rx="14"
+                fill="#4e8888"
+              />
+              <text
+                x="280"
+                y="202"
+                fontFamily="system-ui,sans-serif"
+                fontSize="14"
+                fill="white"
+                fontWeight="500"
+              >
+                CSS
+              </text>
+              <circle cx="392" cy="198" r="7" fill="rgba(255,255,255,0.18)" />
+              <circle
+                cx="392"
+                cy="198"
+                r="3"
+                fill="none"
+                stroke="white"
+                strokeWidth="1.2"
+              />
+              <circle cx="392" cy="198" r="1" fill="white" />
+              <text
+                x="280"
+                y="218"
+                fontFamily="system-ui,sans-serif"
+                fontSize="10"
+                fill="rgba(255,255,255,0.6)"
+              >
+                Part 2 of 4
+              </text>
+              <rect
+                x="276"
+                y="228"
+                width="118"
+                height="4"
+                rx="2"
+                fill="rgba(255,255,255,0.2)"
+              />
+              <rect x="276" y="228" width="53" height="4" rx="2" fill="white" />
+              <text
+                x="394"
+                y="246"
+                fontFamily="system-ui,sans-serif"
+                fontSize="10"
+                fill="rgba(255,255,255,0.9)"
+                textAnchor="end"
+              >
+                IN PROGRESS
+              </text>
+            </g>
+
+            {/* ── React Node — locked (centre ~505, 130) ── */}
+            <g opacity="0.55">
+              <rect
+                x="440"
+                y="100"
+                width="118"
+                height="54"
+                rx="10"
+                fill="white"
+                stroke="#e2e8f0"
+                strokeWidth="1"
+              />
+              <rect
+                x="457"
+                y="120"
+                width="10"
+                height="8"
+                rx="1"
+                fill="none"
+                stroke="#94a3b8"
+                strokeWidth="1.2"
+              />
+              <path
+                d="M459 120V117a3 3 0 016 0v3"
+                fill="none"
+                stroke="#94a3b8"
+                strokeWidth="1.2"
+                strokeLinecap="round"
+              />
+              <text
+                x="474"
+                y="129"
+                fontFamily="system-ui,sans-serif"
+                fontSize="12"
+                fill="#64748b"
+                fontWeight="500"
+              >
+                React
+              </text>
+              <text
+                x="474"
+                y="143"
+                fontFamily="system-ui,sans-serif"
+                fontSize="10"
+                fill="#94a3b8"
+              >
+                Locked
+              </text>
+            </g>
+
+            {/* ── Next.js Node — locked (centre ~505, 240) ── */}
+            <g opacity="0.55">
+              <rect
+                x="440"
+                y="210"
+                width="118"
+                height="54"
+                rx="10"
+                fill="white"
+                stroke="#e2e8f0"
+                strokeWidth="1"
+              />
+              <rect
+                x="457"
+                y="230"
+                width="10"
+                height="8"
+                rx="1"
+                fill="none"
+                stroke="#94a3b8"
+                strokeWidth="1.2"
+              />
+              <path
+                d="M459 230V227a3 3 0 016 0v3"
+                fill="none"
+                stroke="#94a3b8"
+                strokeWidth="1.2"
+                strokeLinecap="round"
+              />
+              <text
+                x="474"
+                y="239"
+                fontFamily="system-ui,sans-serif"
+                fontSize="12"
+                fill="#64748b"
+                fontWeight="500"
+              >
+                Next.js
+              </text>
+              <text
+                x="474"
+                y="253"
+                fontFamily="system-ui,sans-serif"
+                fontSize="10"
+                fill="#94a3b8"
+              >
+                Locked
+              </text>
+            </g>
           </svg>
 
-          <div
-            className="absolute scale-110 origin-top-left lg:scale-125"
-            style={{ left: 22, top: 150 }}
-          >
-            <CompletedNode label="HTML" pct={100} />
-          </div>
-          <div
-            className="absolute scale-110 origin-top-left lg:scale-125"
-            style={{ left: 300, top: 100 }}
-          >
-            <CompletedNode label="Javascript" pct={100} />
-          </div>
-          <div
-            className="absolute w-36 rounded-xl bg-[#4e8888] p-3 shadow-lg lg:w-40"
-            style={{ left: 300, top: 235 }}
-          >
-            <div className="mb-1.5 flex items-center justify-between">
-              <span className="text-base text-white">CSS</span>
-              <div className="flex h-4 w-4 items-center justify-center rounded-full bg-white/20">
-                <svg width="8" height="8" viewBox="0 0 8 8">
-                  <circle
-                    cx="4"
-                    cy="4"
-                    r="3"
-                    stroke="white"
-                    strokeWidth="1.2"
-                    fill="none"
-                  />
-                  <circle cx="4" cy="4" r="1" fill="white" />
-                </svg>
-              </div>
-            </div>
-            <p className="mb-1.5 text-[10px] text-white/60">Part 2 of 4</p>
-            <ProgressBar pct={45} dark />
-            <p className="mt-1 text-right text-[10px] text-white/90">
-              IN PROGRESS
-            </p>
-          </div>
-          <div
-            className="absolute scale-110 origin-top-left lg:scale-125"
-            style={{ left: 500, top: 92 }}
-          >
-            <LockedNode label="React" />
-          </div>
-          <div
-            className="absolute scale-110 origin-top-left lg:scale-125"
-            style={{ left: 510, top: 255 }}
-          >
-            <LockedNode label="Next.js" />
-          </div>
-
-          <div className="absolute bottom-3 left-3 flex flex-col gap-1 rounded-lg border border-slate-200 bg-white p-2.5">
+          {/* Map Legend */}
+          <div className="absolute bottom-3 left-3 flex flex-col gap-1 rounded-lg border border-slate-200 bg-white p-2 sm:p-2.5">
             <p className="mb-1 text-[10px] uppercase tracking-widest text-slate-400">
               Map Legend
             </p>
@@ -300,16 +575,29 @@ function cubicPath(x1: number, y1: number, x2: number, y2: number): string {
   return `M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`;
 }
 
-function getRightMid(el: HTMLElement, container: HTMLElement): LinePoint {
-  const er = el.getBoundingClientRect();
-  const cr = container.getBoundingClientRect();
-  return { x: er.right - cr.left, y: er.top - cr.top + er.height / 2 };
+function branchPath(x1: number, y1: number, x2: number, y2: number): string {
+  const bend = Math.max(28, Math.abs(x2 - x1) * 0.28);
+  return `M ${x1} ${y1} C ${x1 + bend} ${y1}, ${x2 - bend} ${y2}, ${x2} ${y2}`;
 }
 
-function getLeftMid(el: HTMLElement, container: HTMLElement): LinePoint {
+function getRightMid(
+  el: HTMLElement,
+  container: HTMLElement,
+  inset = 0,
+): LinePoint {
   const er = el.getBoundingClientRect();
   const cr = container.getBoundingClientRect();
-  return { x: er.left - cr.left, y: er.top - cr.top + er.height / 2 };
+  return { x: er.right - cr.left - inset, y: er.top - cr.top + er.height / 2 };
+}
+
+function getLeftMid(
+  el: HTMLElement,
+  container: HTMLElement,
+  inset = 0,
+): LinePoint {
+  const er = el.getBoundingClientRect();
+  const cr = container.getBoundingClientRect();
+  return { x: er.left - cr.left + inset, y: er.top - cr.top + er.height / 2 };
 }
 
 function PathRoadmap() {
@@ -504,24 +792,24 @@ export default function LandingPage() {
       <LandingParallax />
 
       <main className="relative z-10">
-        <section className="px-6 pb-24 pt-20 sm:px-10 lg:px-20">
-          <div className="grid min-h-[calc(100vh-4rem)] items-center gap-14 lg:grid-cols-[minmax(0,1.05fr)_minmax(560px,820px)]">
+        <section className="px-5 pb-20 pt-14 sm:px-8 sm:pt-16 lg:px-16 lg:pb-24 lg:pt-18">
+          <div className="grid min-h-[calc(100vh-5rem)] items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(480px,720px)] lg:gap-12">
             <div className="max-w-3xl">
-              <div className="inline-flex items-center rounded-full border border-white/70 bg-white/55 px-5 py-3 text-base text-slate-700 shadow-sm backdrop-blur-sm lg:text-lg">
+              <div className="inline-flex items-center rounded-full border border-white/70 bg-white/55 px-4 py-2.5 text-sm text-slate-700 shadow-sm backdrop-blur-sm sm:text-base lg:text-lg">
                 Build your path one checkpoint at a time
               </div>
-              <h1 className="mt-8 text-6xl leading-none text-slate-900 sm:text-7xl lg:text-[6.2rem]">
+              <h1 className="mt-6 text-5xl leading-none text-slate-900 sm:text-6xl lg:text-[5.35rem]">
                 Rolemap:
                 <br />
                 Your Career,
                 <span className="text-[#2f6f88]"> Gamified.</span>
               </h1>
-              <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+              <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                 <button
                   onClick={() =>
                     signIn("google", { callbackUrl: "/OnBoarding/Major" })
                   }
-                  className="h-14 rounded-xl bg-[#4e8888] px-10 text-xl text-white shadow-lg transition-colors hover:bg-[#3d7070] sm:h-16"
+                  className="h-13 rounded-xl bg-[#0270b2] px-8 text-lg text-white shadow-lg transition-colors hover:bg-[#3d7070] sm:h-14 sm:text-xl"
                 >
                   Get Started
                 </button>
@@ -531,7 +819,7 @@ export default function LandingPage() {
                       .getElementById("how-it-works")
                       ?.scrollIntoView({ behavior: "smooth" })
                   }
-                  className="h-14 rounded-xl border-2 border-white/70 bg-white/35 px-10 text-xl text-[#2f6f88] backdrop-blur-sm transition-colors hover:bg-white/55 sm:h-16"
+                  className="h-13 rounded-xl border-2 border-white/70 bg-white/35 px-8 text-lg text-[#2f6f88] backdrop-blur-sm transition-colors hover:bg-white/55 sm:h-14 sm:text-xl"
                 >
                   Learn More
                 </button>
