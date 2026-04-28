@@ -296,6 +296,7 @@ export default function DailyPage() {
       setSubtopicIndex(d.subtopic_index);
       setTotalSubtopics(d.total_subtopics);
     }).catch(console.error);
+    api.skillDecay().then(setDecayTasks).catch(console.error);
   }
 
   const activeTaskObj = tasks.find(t => t.id === activeTask) ?? null;
