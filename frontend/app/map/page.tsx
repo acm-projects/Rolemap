@@ -1,6 +1,7 @@
-'use client';
+﻿'use client';
 
-import React, { useState, useCallback, useEffect } from 'react';
+import QuizConfetti from '../../components/ui/quiz-confetti';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   ReactFlow,
@@ -86,6 +87,11 @@ function RoadmapContent() {
   const [pendingCenter, setPendingCenter] = useState<{ x: number; y: number } | null>(null);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
+
+  // State for confetti celebration effect
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [jumpingNodeLabel, setJumpingNodeLabel] = useState<string | null>(null);
+
   const { setCenter, fitView } = useReactFlow();
   const { notifyMapReady } = useCharacter();
 
@@ -148,6 +154,11 @@ function RoadmapContent() {
       setTimeout(() => {
         setNodes(ns => ns.map(n => n.id === node.id ? { ...n, data: { ...n.data, isMascotJumping: false } } : n));
       }, 1200);
+
+      // Trigger confetti on the current active node
+      setJumpingNodeLabel(data.label);
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 3000);
     }
 
     if (!data.locked && data.kind === 'quiz') {
@@ -219,6 +230,15 @@ function RoadmapContent() {
             }}
           />
         </div>
+      )}
+
+      {/* Confetti — above everything */}
+      {showConfetti && (
+        <QuizConfetti
+          key={jumpingNodeLabel}
+          x={jumpingNodeLabel ? nodes.find((n: any) => n.data.label === jumpingNodeLabel)?.position?.x : 0}
+          y={jumpingNodeLabel ? nodes.find((n: any) => n.data.label === jumpingNodeLabel)?.position?.y : 0}
+        />
       )}
     </div>
   );

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Navbar } from "../components/NavBar";
 import { useCharacter } from "../context/CharacterContext";
 import { api } from "@/lib/api";
+import { getStoredXP, setStoredXP, spendXP } from "@/lib/xp";
 
 type Item = { id: string; name: string; file: string; cost: number; unlocked: boolean; };
 type Category = "skin" | "eyes" | "clothes" | "pants" | "shoes" | "hair" | "accessories";
@@ -161,7 +162,7 @@ function loadSavedVariants(): Partial<Record<string, number>> {
 }
 
 export default function ShopPage() {
-  const [xp, setXp] = useState(MOCK_XP);
+  const [xp, setXp] = useState(getStoredXP);
   const [activeTab, setActiveTab] = useState<Tab>("gender");
   const [gender, setGender] = useState<"boy" | "girl">(() => {
     try {
@@ -187,19 +188,25 @@ export default function ShopPage() {
     return () => clearTimeout(t);
   }, []);
 
+  useEffect(() => {
+  const handler = (e: Event) => setXp((e as CustomEvent).detail);
+  window.addEventListener("xp-updated", handler);
+  return () => window.removeEventListener("xp-updated", handler);
+  }, []);
+
   const showNotification = (msg: string) => {
     setNotification(msg);
     setTimeout(() => setNotification(null), 2000);
   };
 
   const handleBuy = (category: Category, item: Item) => {
-    if (xp < item.cost) { showNotification("NOT ENOUGH XP!"); return; }
-    setXp(prev => prev - item.cost);
-    setItems(prev => ({
-      ...prev,
-      [category]: prev[category].map(i => i.id === item.id ? { ...i, unlocked: true } : i),
-    }));
-    showNotification("UNLOCKED!");
+  if (!spendXP(item.cost)) { showNotification("NOT ENOUGH XP!"); return; }
+  setXp(getStoredXP()); // re-read after spend
+  setItems(prev => ({
+    ...prev,
+    [category]: prev[category].map(i => i.id === item.id ? { ...i, unlocked: true } : i),
+  }));
+  showNotification("UNLOCKED!");
   };
 
   const handleEquip = (category: Category, item: Item) => {
