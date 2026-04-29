@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { signIn } from "next-auth/react";
 
@@ -708,10 +709,14 @@ function PathRoadmap() {
             ref={githubRef}
             className="flex w-36 flex-col items-center gap-3 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-800">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
-                <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-              </svg>
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100 ring-1 ring-slate-200">
+              <Image
+                src="/assets/Github.svg"
+                alt="Github"
+                width={30}
+                height={30}
+                className="h-[30px] w-[30px] object-contain"
+              />
             </div>
             <span className="text-base text-slate-800">Github</span>
           </div>
@@ -719,10 +724,14 @@ function PathRoadmap() {
             ref={resumeRef}
             className="flex w-36 flex-col items-center gap-3 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#4e8888]">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z" />
-              </svg>
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#4e8888]/12 ring-1 ring-[#4e8888]/15">
+              <Image
+                src="/assets/Copy.svg"
+                alt="Resume"
+                width={28}
+                height={28}
+                className="h-7 w-10 object-contain"
+              />
             </div>
             <span className="text-base text-slate-800">Resume</span>
           </div>
@@ -772,7 +781,7 @@ function PathRoadmap() {
           ref={dreamRef}
           className="flex flex-shrink-0 flex-col items-center gap-2"
         >
-          <div className="flex flex-col items-center gap-1.5 rounded-2xl bg-[#4e8888] px-6 py-5 shadow-lg">
+          <div className="mt-10 flex flex-col items-center gap-1.5 rounded-2xl bg-[#4e8888] px-6 py-5 shadow-lg">
             <span className="whitespace-nowrap text-base text-white">
               Dream Role
             </span>
@@ -860,34 +869,32 @@ export default function LandingPage() {
             <div className="grid w-full gap-6 lg:grid-cols-3">
               {[
                 {
-                  pathKey: "trendUp" as const,
-                  viewBox: "0 0 20 12",
+                  imageSrc: "/assets/Trending.svg",
                   title: "Daily Tasks",
                   desc: "Small, manageable steps every day. We break complex career goals into 15-minute actions.",
                 },
                 {
-                  pathKey: "person" as const,
-                  viewBox: "0 0 16 16",
+                  imageSrc: "/assets/User.svg",
                   title: "Personalized Flow",
                   desc: "A visual guide tailored to your background, with AI spotting gaps and filling them in.",
                 },
                 {
-                  pathKey: "trophy" as const,
-                  viewBox: "0 0 11 18",
+                  imageSrc: "/assets/Gaming.svg",
                   title: "Gamified Progress",
                   desc: "Earn rewards, track milestones, and watch your profile level up in real time.",
                 },
-              ].map(({ pathKey, viewBox, title, desc }) => (
+              ].map(({ imageSrc, title, desc }) => (
                 <div
                   key={title}
                   className="rounded-2xl border border-white/60 bg-white/70 p-6 shadow-[0_16px_40px_rgba(80,130,155,0.14)] backdrop-blur-sm"
                 >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#4e8888]/15">
-                    <Icon
-                      path={PATHS[pathKey]}
-                      size={22}
-                      color="#4e8888"
-                      viewBox={viewBox}
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#4e8888]/10 ring-1 ring-[#4e8888]/12">
+                    <Image
+                      src={imageSrc}
+                      alt={title}
+                      width={28}
+                      height={28}
+                      className="h-7 w-7 object-contain"
                     />
                   </div>
                   <p className="mt-4 text-2xl text-slate-900">{title}</p>
