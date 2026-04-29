@@ -100,19 +100,19 @@ export default function CompanySelection() {
               <PixelCard key={company.id} onClick={() => toggleCompany(company.id)} selected={isSelected}>
                 <div
                   className={`h-full flex flex-col items-center justify-center gap-2 p-3 transition-all duration-100
-                    ${isSelected ? "bg-[#04A0FF] translate-y-[4px]" : "bg-transparent translate-y-0"}
+                    ${isSelected ? "bg-[#e1faff] translate-y-[4px]" : "bg-transparent translate-y-0"}
                   `}
                 >
                   <div
                     className={`flex items-center justify-center text-3xl font-jersey transition-colors duration-100
-                      ${isSelected ? "text-white" : "text-[#78ADCF]"}
+                      ${isSelected ? "text-[#334155]" : "text-[#78ADCF]"}
                     `}
                   >
                     {company.logo}
                   </div>
                   <span
                     className={`text-2xl text-center font-jersey transition-colors duration-100
-                      ${isSelected ? "text-white" : "text-[#334155]"}
+                      ${isSelected ? "text-[#334155]" : "text-[#334155]"}
                     `}
                   >
                     {company.name}
@@ -132,8 +132,8 @@ export default function CompanySelection() {
               return (
                 <div
                   key={id}
-                  className="flex items-center gap-1.5 bg-[#04A0FF] text-white text-sm font-jersey px-3 py-1 cursor-pointer hover:bg-[#0080cc] transition-colors"
-                  style={{ borderWidth: 2, borderStyle: 'solid', borderTopColor: '#8ED4FF', borderLeftColor: '#8ED4FF', borderRightColor: '#0060aa', borderBottomColor: '#0060aa' }}
+                  className="flex items-center gap-1.5 bg-[#e8f5f5] text-[#334155] text-sm font-jersey px-3 py-1 cursor-pointer hover:bg-[#d4eaea] transition-colors"
+                  style={{ borderWidth: 2, borderStyle: 'solid', borderTopColor: '#c0dede', borderLeftColor: '#c0dede', borderRightColor: '#8ab8b8', borderBottomColor: '#8ab8b8' }}
                   onClick={() => toggleCompany(id)}
                 >
                   {company.name}

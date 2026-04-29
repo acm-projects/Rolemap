@@ -74,19 +74,19 @@ export default function LearningPreferences() {
               <PixelCard key={p.id} onClick={() => toggle(p.id)} selected={isSelected}>
                 <div
                   className={`flex justify-center items-center p-3 flex flex-col gap-2 h-full transition-all duration-100 ${
-                    isSelected ? "bg-[#04A0FF] translate-y-[4px]" : "bg-transparent translate-y-0"
+                    isSelected ? "bg-[#e1faff] translate-y-[4px]" : "bg-transparent translate-y-0"
                   }`}
                 >
                   <div
                     className={`w-10 h-10 flex items-center justify-center transition-colors duration-100 ${
-                      isSelected ? "text-white" : "text-[#78ADCF]"
+                      isSelected ? "text-[#334155]" : "text-[#78ADCF]"
                     }`}
                   >
                     {p.icon}
                   </div>
                   <span
                     className={`text-3xl font-jersey transition-colors duration-100 ${
-                      isSelected ? "text-white" : "text-[#334155]"
+                      isSelected ? "text-[#334155]" : "text-[#334155]"
                     }`}
                   >
                     {p.label}
@@ -106,8 +106,8 @@ export default function LearningPreferences() {
               return (
                 <div
                   key={id}
-                  className="flex items-center gap-1.5 bg-[#04A0FF] text-white text-sm font-jersey px-3 py-1 cursor-pointer hover:bg-[#0080cc] transition-colors"
-                  style={{ borderWidth: 2, borderStyle: 'solid', borderTopColor: '#8ED4FF', borderLeftColor: '#8ED4FF', borderRightColor: '#0060aa', borderBottomColor: '#0060aa' }}
+                  className="flex items-center gap-1.5 bg-[#e8f5f5] text-[#334155] text-sm font-jersey px-3 py-1 cursor-pointer hover:bg-[#d4eaea] transition-colors"
+                  style={{ borderWidth: 2, borderStyle: 'solid', borderTopColor: '#c0dede', borderLeftColor: '#c0dede', borderRightColor: '#8ab8b8', borderBottomColor: '#8ab8b8' }}
                   onClick={() => toggle(id)}
                 >
                   {pref.label}

@@ -1,33 +1,103 @@
 {
-  "username": "SiriKishoreDola",
+  "username": "OhamjDung",
   "profile": {
-    "name": "Siri Kishore Dola",
-    "bio": "",
+    "name": "Tom Pham",
+    "bio": "Data Engineer | Recommender Systems & NLP | Python, R, SQL\r\n\r\n",
     "location": "",
-    "public_repos": 1,
-    "followers": 0,
-    "account_age_days": 226
+    "public_repos": 10,
+    "followers": 2,
+    "account_age_days": 714
   },
-  "languages": {},
+  "languages": {
+    "Python": 41.2,
+    "C++": 19.5,
+    "JavaScript": 12.0,
+    "Makefile": 10.5,
+    "HTML": 9.2,
+    "TypeScript": 5.1,
+    "CMake": 0.7,
+    "CSS": 0.5,
+    "C": 0.5
+  },
   "activity": {
     "commits_last_90_days": 0,
-    "active_weeks": 4,
+    "active_weeks": 5,
     "last_pushed": "2026-04-28"
   },
-  "top_repos": [],
+  "top_repos": [
+    {
+      "name": "Instagranime",
+      "stars": 1,
+      "language": "HTML",
+      "description": "Its like scrolling through Instagram ™️ but its anime recommendations. You just input your likes, dislikes, and genres you want and scroll the recommendations. The more you use it, the smarter it gets.",
+      "topics": []
+    },
+    {
+      "name": "Dattack",
+      "stars": 0,
+      "language": "Python",
+      "description": "",
+      "topics": []
+    },
+    {
+      "name": "Gemini-MapView",
+      "stars": 0,
+      "language": "HTML",
+      "description": "A map view to prompt gemini",
+      "topics": []
+    },
+    {
+      "name": "datafest",
+      "stars": 0,
+      "language": "HTML",
+      "description": "",
+      "topics": []
+    },
+    {
+      "name": "Lock-in-Labs",
+      "stars": 0,
+      "language": "Python",
+      "description": "",
+      "topics": []
+    }
+  ],
   "skill_assessment": {
-    "primary_languages": [],
-    "bio_skills": [],
+    "primary_languages": [
+      "Python",
+      "C++",
+      "JavaScript",
+      "HTML",
+      "TypeScript"
+    ],
+    "bio_skills": [
+      "Data Engineering",
+      "Recommender Systems",
+      "NLP",
+      "Python",
+      "R",
+      "SQL"
+    ],
     "detected_frameworks": [],
-    "estimated_level": "junior",
+    "estimated_level": "mid",
     "level_reasons": [
-      "1 public repositories",
-      "0 language(s) used",
-      "Account age: 226 days",
-      "0 commits in the last 90 days across 4 active weeks",
-      "Top repo stars: 0"
+      "10 public repositories",
+      "9 language(s) used",
+      "Account age: 714 days",
+      "0 commits in the last 90 days across 5 active weeks",
+      "Top repo stars: 1"
     ],
     "assessment_summary": "",
-    "strengths": []
+    "strengths": [
+      "Data Engineering",
+      "Recommender Systems",
+      "NLP",
+      "Python",
+      "R",
+      "SQL",
+      "C++",
+      "JavaScript",
+      "HTML",
+      "TypeScript"
+    ]
   }
 }

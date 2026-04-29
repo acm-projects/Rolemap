@@ -150,8 +150,8 @@ function getDiePath(cat: string, file: string): string | null {
 // Tune these to adjust sleeping character position on the card
 const CHAR_TOP_OFFSET = -18;   // px from card top (increase = lower)
 const CHAR_LEFT_OFFSET = -100; // px from card left edge — positions character outside the panel against its outer left border
-const FLIP_THRESHOLD = 180;        // if character top (px from screen top) is above this, flip horizontally
-const FLIP_BOTTOM_THRESHOLD = 480; // if character top (px from screen top) is below this, flip horizontally
+const FLIP_THRESHOLD = 230;        // if character top (px from screen top) is above this, flip horizontally
+const FLIP_BOTTOM_THRESHOLD = 550; // if character top (px from screen top) is below this, flip horizontally
 const FLIP_TOP_OFFSET = 0;     // additional px added to top when flipped (positive = lower)
 const FLIP_LEFT_OFFSET = 100;    // additional px added to left when flipped (positive = further right)
 
@@ -211,14 +211,16 @@ function DieCharacter({ taskId, falling, fallDelta }: {
 
     if (isFirst) {
       const elapsed = Date.now() - mountTime.current;
-      const delay = Math.max(0, 450 - elapsed);
+      const delay = Math.max(0, 550 - elapsed);
       const t = setTimeout(() => {
-        const pos = getCardFixed(taskId);
-        if (!pos) return;
-        setFixedPos(pos);
-        setAnimKey(k => k + 1);
-        setPhase('falling-in');
-        setTimeout(() => setPhase('sleeping'), 700);
+        requestAnimationFrame(() => {
+          const pos = getCardFixed(taskId);
+          if (!pos) return;
+          setFixedPos(pos);
+          setAnimKey(k => k + 1);
+          setPhase('falling-in');
+          setTimeout(() => setPhase('sleeping'), 700);
+        });
       }, delay);
       return () => clearTimeout(t);
     } else {
@@ -257,12 +259,16 @@ function DieCharacter({ taskId, falling, fallDelta }: {
         if (!inView) {
           anchorRef.current.style.visibility = 'hidden';
         } else {
-          anchorRef.current.style.visibility = 'visible';
           const pos = { top: cardRect.top + CHAR_TOP_OFFSET, left: cardRect.left + CHAR_LEFT_OFFSET };
           const flipped = pos.top < FLIP_THRESHOLD || pos.top > FLIP_BOTTOM_THRESHOLD;
-          anchorRef.current.style.top = (pos.top + (flipped ? FLIP_TOP_OFFSET : 0)) + 'px';
-          anchorRef.current.style.left = (pos.left + (flipped ? FLIP_LEFT_OFFSET : 0)) + 'px';
-          anchorRef.current.style.transform = flipped ? 'rotate(-90deg) scaleY(-1)' : 'rotate(-90deg)';
+          if (flipped) {
+            anchorRef.current.style.visibility = 'hidden';
+          } else {
+            anchorRef.current.style.visibility = 'visible';
+            anchorRef.current.style.top = pos.top + 'px';
+            anchorRef.current.style.left = pos.left + 'px';
+            anchorRef.current.style.transform = 'rotate(-90deg)';
+          }
         }
       }
       rafId = requestAnimationFrame(loop);
@@ -300,8 +306,8 @@ function DieCharacter({ taskId, falling, fallDelta }: {
   let kfStr = '';
 
   if (phase === 'falling-in' && fixedPos) {
-    const up = fixedPos.top + S;
-    kfStr = `@keyframes dfi${k}{0%{transform:${R} translateX(${up}px);}72%{transform:${R} translateX(-10px);}87%{transform:${R} translateX(5px);}100%{transform:${R} translateX(0);}}`;
+    const ft = fixedPos.top;
+    kfStr = `@keyframes dfi${k}{0%{top:-200px;}72%{top:${ft+12}px;}87%{top:${ft-5}px;}100%{top:${ft}px;}}`;
     containerAnim = `dfi${k} 0.65s linear forwards`;
   } else if (phase === 'falling-to-next' && fixedPos) {
     const d = fallDelta;
@@ -342,6 +348,7 @@ function DieCharacter({ taskId, falling, fallDelta }: {
           pointerEvents: 'none',
           transform: R,
           transformOrigin: 'center center',
+          ...(phase !== 'sleeping' ? { visibility: 'visible' } : {}),
           ...(containerAnim ? { animation: containerAnim } : {}),
         }}
       >
@@ -384,6 +391,19 @@ export default function DailyPage() {
     api.skillDecay().then(setDecayTasks).catch(console.error);
   }
 
+  // Filter decayTasks to show only top 2 by urgency (forgotten > decaying > review_soon)
+  const getUrgencyScore = (decay_level: string) => {
+    switch (decay_level) {
+      case 'forgotten': return 3;
+      case 'decaying': return 2;
+      case 'review_soon': return 1;
+      default: return 0;
+    }
+  };
+  const filteredDecayTasks = decayTasks
+    .sort((a, b) => getUrgencyScore(b.decay_level) - getUrgencyScore(a.decay_level))
+    .slice(0, 2);
+
   const activeTaskObj = tasks.find(t => t.id === activeTask) ?? null;
   const allDone = tasks.length > 0 && completed.length >= tasks.length;
 
@@ -408,7 +428,7 @@ export default function DailyPage() {
             const offset = el.getBoundingClientRect().top - container.getBoundingClientRect().top;
             container.scrollTop += offset - 8;
           }
-        }, 150);
+        }, 200);
       }
     }
   }, [tasks]);
@@ -436,6 +456,56 @@ export default function DailyPage() {
         setCharFalling(false);
         setCharTaskId(nextTask?.id ?? null);
       }, 550);
+    }
+  }
+
+  function handleSelectTask(taskId: string) {
+    if (activeTask === taskId) return;
+    setActiveTask(taskId);
+    setActiveDecayTask(null);
+
+    if (charTaskId && charTaskId !== taskId) {
+      const curEl = document.querySelector(`[data-task-id="${charTaskId}"]`) as HTMLElement | null;
+      const nextEl = document.querySelector(`[data-task-id="${taskId}"]`) as HTMLElement | null;
+      if (curEl && nextEl) {
+        const d = nextEl.getBoundingClientRect().top - curEl.getBoundingClientRect().top;
+        setCharFallDelta(d);
+      }
+      setCharFalling(true);
+      if (fallTimerRef.current) clearTimeout(fallTimerRef.current);
+      fallTimerRef.current = setTimeout(() => {
+        setCharFalling(false);
+        setCharTaskId(taskId);
+      }, 550);
+    } else if (!charTaskId) {
+      setCharTaskId(taskId);
+    }
+  }
+
+  function handleSelectDecayTask(decayTaskId: string) {
+    if (activeDecayTask?.id === decayTaskId) return;
+    setActiveTask(null);
+    
+    const decayTask = filteredDecayTasks.find(t => t.id === decayTaskId);
+    if (!decayTask) return;
+    setActiveDecayTask(decayTask);
+
+    // Slide character to this decay task
+    if (charTaskId) {
+      const curEl = document.querySelector(`[data-task-id="${charTaskId}"]`) as HTMLElement | null;
+      const nextEl = document.querySelector(`[data-decay-task-id="${decayTaskId}"]`) as HTMLElement | null;
+      if (curEl && nextEl) {
+        const d = nextEl.getBoundingClientRect().top - curEl.getBoundingClientRect().top;
+        setCharFallDelta(d);
+      }
+      setCharFalling(true);
+      if (fallTimerRef.current) clearTimeout(fallTimerRef.current);
+      fallTimerRef.current = setTimeout(() => {
+        setCharFalling(false);
+        setCharTaskId(decayTaskId);
+      }, 550);
+    } else if (!charTaskId) {
+      setCharTaskId(decayTaskId);
     }
   }
 
@@ -504,13 +574,14 @@ export default function DailyPage() {
             <div id="task-scroll" className="flex flex-col gap-2 flex-1 overflow-y-auto" style={{ overscrollBehavior: 'none' }}>
 
               {/* Decay review tasks */}
-              {decayTasks.map((entry) => {
+              {filteredDecayTasks.map((entry) => {
                 const style = DECAY_STYLE[entry.decay_level] ?? DECAY_STYLE.decaying;
                 const isSelected = activeDecayTask?.id === entry.id;
                 return (
                   <div
                     key={`decay-${entry.id}`}
-                    onClick={() => { setActiveDecayTask(entry); setActiveTask(null); }}
+                    data-decay-task-id={entry.id}
+                    onClick={() => handleSelectDecayTask(entry.id)}
                     style={{
                       borderWidth: 4,
                       borderStyle: 'solid',
@@ -535,11 +606,6 @@ export default function DailyPage() {
                 );
               })}
 
-              {/* Separator if both decay and regular tasks exist */}
-              {decayTasks.length > 0 && tasks.length > 0 && (
-                <div className="h-[4px] bg-[#d4e8e8] -mx-0 my-1" />
-              )}
-
               {tasks.map((task) => {
                 const isActive = activeTask === task.id;
                 const isDoneItem = completed.includes(task.id);
@@ -549,7 +615,7 @@ export default function DailyPage() {
                   <div
                     key={task.id}
                     data-task-id={task.id}
-                    onClick={() => { setActiveTask(task.id); setActiveDecayTask(null); }}
+                    onClick={() => handleSelectTask(task.id)}
                     className="cursor-pointer transition-all duration-100 active:translate-y-[1px]"
                     style={{
                       borderWidth: 2,

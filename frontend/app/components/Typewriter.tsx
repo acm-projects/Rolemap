@@ -28,7 +28,12 @@ export default function TypewriterText({
   useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
-    if (startComplete) return;
+    if (startComplete) {
+      setDisplayedText(text);
+      setCurrentIndex(text.length + 1);
+      setIsComplete(true);
+      return;
+    }
 
     if (isSkipped) {
       setDisplayedText(text);

@@ -176,19 +176,19 @@ export default function SpecialtyPage() {
               <PixelCard key={s.id} onClick={() => handleCardSelect(s.id, s.label)} selected={isSelected}>
                 <div
                   className={`h-full flex flex-col items-center justify-center gap-3 transition-all duration-100 relative ${
-                    isSelected ? "bg-[#04A0FF] translate-y-[4px]" : "bg-transparent translate-y-0"
+                    isSelected ? "bg-[#e1faff] translate-y-[4px]" : "bg-transparent translate-y-0"
                   }`}
                 >
                   <div
                     className={`w-12 h-12 flex items-center justify-center transition-colors duration-100 ${
-                      isSelected ? "text-white" : "text-[#78ADCF]"
+                      isSelected ? "text-[#334155]" : "text-[#78ADCF]"
                     }`}
                   >
                     {s.image}
                   </div>
                   <span
                     className={`text-xl text-center font-jersey leading-tight transition-colors duration-100 px-1 ${
-                      isSelected ? "text-white" : "text-[#334155]"
+                      isSelected ? "text-[#334155]" : "text-[#334155]"
                     }`}
                   >
                     {s.label}

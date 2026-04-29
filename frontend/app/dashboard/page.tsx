@@ -311,15 +311,14 @@ function PixelCard({
 const DEFAULT_EQUIPPED_DASH = { skin: 'char1.png', eyes: 'eyes.png', clothes: 'suit.png', pants: 'pants.png', shoes: 'shoes.png', hair: 'buzzcut.png', accessories: '' };
 
 const DASH_CHAR_SIZE = 70;
-const DASH_CHAR_TOP_OFFSET = -40;  // px above the anchor element
 
 function getAnchorPos() {
   const el = document.querySelector('[data-rank-you]');
   if (!el) return null;
   const r = el.getBoundingClientRect();
   return {
-    top: r.top + DASH_CHAR_TOP_OFFSET,
-    left: r.left + r.width / 2 - DASH_CHAR_SIZE / 2,
+    top: r.top - 12 + r.height / 2 - DASH_CHAR_SIZE / 2,
+    left: r.left - 100 + r.width / 2 - DASH_CHAR_SIZE / 2,
   };
 }
 

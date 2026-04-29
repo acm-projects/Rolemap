@@ -195,9 +195,9 @@ export default function GenerateRoadmap() {
               }
             `}
           >
-            {(generating || done) ? (
-              <MapAnimation active={generating} done={done} stepIdx={stepIdx} />
-            ) : (
+            {generating ? (
+              <MapAnimation active={true} done={false} stepIdx={stepIdx} />
+            ) : !done ? (
               <>
                 <div className="w-14 h-14 flex items-center justify-center pixel-border text-3xl select-none border-t-[#DEF2FF] border-l-[#DEF2FF] border-r-[#8ED4FF] border-b-[#8ED4FF] bg-[#E1FAFF]">
                   <span className="text-[#04A0FF]">✦</span>
@@ -210,13 +210,7 @@ export default function GenerateRoadmap() {
                   <span className="font-jersey">Generate Roadmap</span>
                 </PixelButton>
               </>
-            )}
-            {generating && (
-              <div className="w-full max-w-xs">
-                <PixelProgress value={((stepIdx + 1) / PROGRESS_STEPS.length) * 100} showLabel={false} />
-                <p className="text-xs text-[#78ADCF] font-jersey text-center mt-2">{PROGRESS_STEPS[stepIdx]}</p>
-              </div>
-            )}
+            ) : null}
 
             {/* Completion banner */}
             {done && !generating && (
