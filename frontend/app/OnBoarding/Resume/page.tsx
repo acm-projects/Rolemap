@@ -81,17 +81,9 @@ export default function ResumeUpload() {
           <div className="min-h-[5rem]">
             <TypewriterText
               text="Let's see where you're at"
-              speed={20}
+              speed={10}
               delay={400}
               className="text-5xl text-[#334155] leading-relaxed block"
-            />
-          </div>
-          <div className="min-h-[7rem]">
-            <TypewriterText
-              text="Connect your accounts so we can skip what you already know and personalize your roadmap."
-              speed={10}
-              delay={800}
-              className="text-2xl text-[#78ADCF] leading-relaxed max-w-2xl block mb-4"
             />
           </div>
         </div>

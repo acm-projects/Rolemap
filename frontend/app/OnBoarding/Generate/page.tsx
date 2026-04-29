@@ -20,6 +20,15 @@ const PROGRESS_STEPS = [
   "Finalizing your roadmap...",
 ];
 
+const PROGRESS_DESCRIPTIONS = [
+  "Checking connected account details and preparing your profile signals.",
+  "Reading repository languages, project patterns, and evidence of hands-on skills.",
+  "Looking for resume skills, projects, tools, and experience that should count toward your path.",
+  "Matching your background to Rolemap concepts so completed skills can be skipped.",
+  "Ordering prerequisites so each checkpoint builds naturally on what came before.",
+  "Saving your personalized map, starter tasks, and first checkpoint details.",
+];
+
 // Pixel-art map growing animation shown while generating / when done
 const MAP_NODES = [
   { x: 60,  y: 110, label: 'START' },
@@ -50,9 +59,12 @@ function MapAnimation({ active, done, stepIdx }: { active: boolean; done: boolea
 
   const W = 740, H = 180;
   const NW = 72, NH = 36, R = 6;
+  const progressValue = ((stepIdx + 1) / PROGRESS_STEPS.length) * 100;
+  const currentStep = PROGRESS_STEPS[stepIdx];
+  const currentDescription = PROGRESS_DESCRIPTIONS[stepIdx];
 
   return (
-    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12, padding: '16px 0' }}>
+    <div style={{ width: '100%', minHeight: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12, padding: '12px 0' }}>
       <style>{`
         @keyframes nodeIn { 0%{transform:scale(0) translate(-50%,-50%);opacity:0} 60%{transform:scale(1.12) translate(-50%,-50%);opacity:1} 100%{transform:scale(1) translate(-50%,-50%);opacity:1} }
         @keyframes edgeDraw { 0%{stroke-dashoffset:300} 100%{stroke-dashoffset:0} }
@@ -107,9 +119,16 @@ function MapAnimation({ active, done, stepIdx }: { active: boolean; done: boolea
         {done ? '▶ MAP READY' : `BUILDING MAP${'.'.repeat((visibleNodes % 3) + 1)}`}
       </div>
       {active && (
-        <div style={{ width: '100%', maxWidth: 320 }}>
-          <PixelProgress value={((stepIdx + 1) / PROGRESS_STEPS.length) * 100} showLabel={false} />
-          <p style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 9, color: '#78ADCF', textAlign: 'center', marginTop: 8 }}>{PROGRESS_STEPS[stepIdx]}</p>
+        <div style={{ width: '100%', maxWidth: 520, alignSelf: 'center' }}>
+          <div style={{ border: '3px solid #334155', background: '#F7FCFF', padding: 14, boxShadow: '0 4px 0 rgba(0,0,0,0.18)' }}>
+            <PixelProgress value={progressValue} showLabel={false} />
+            <p style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 10, color: '#334155', textAlign: 'center', marginTop: 12 }}>
+              {currentStep}
+            </p>
+            <p style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 8, lineHeight: 1.7, color: '#78ADCF', textAlign: 'center', marginTop: 8 }}>
+              {currentDescription}
+            </p>
+          </div>
         </div>
       )}
     </div>
@@ -196,19 +215,11 @@ export default function GenerateRoadmap() {
         <div className="mb-4">
           <PixelProgress value={100} showLabel={true} step={5} totalSteps={5} />
           <div className="min-h-[5rem]">
-            <TypewriterText text="Almost there" speed={20} delay={400} className="text-5xl text-[#334155] leading-relaxed block" />
-          </div>
-          <div className="min-h-[5rem]">
-            <TypewriterText
-              text="We'll build a personalized career roadmap tailored to your selected role and background."
-              speed={10}
-              delay={800}
-              className="text-2xl text-[#78ADCF] leading-relaxed max-w-2xl block mb-4"
-            />
+            <TypewriterText text="Almost there" speed={10} delay={400} className="text-5xl text-[#334155] leading-relaxed block" />
           </div>
         </div>
 
-        <div className="mb-4" style={{ height: done ? "auto" : "260px" }}>
+        <div className="mb-4" style={{ height: done ? "auto" : generating ? "380px" : "260px" }}>
           <div
             className={`
               pixel-border flex flex-col items-center justify-center gap-4 p-6 transition-all duration-100

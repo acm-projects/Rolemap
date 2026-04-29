@@ -66,17 +66,9 @@ export default function CompanySelection() {
           <div className="min-h-[5rem]">
             <TypewriterText
               text="Where do you want to work?"
-              speed={30}
+              speed={15}
               delay={400}
               className="text-5xl text-[#334155] mt-7 block"
-            />
-          </div>
-          <div className="min-h-[7rem]">
-            <TypewriterText
-              text="Select your target companies. We'll use this to customize your personalized learning path and interview preparation roadmap."
-              speed={10}
-              delay={900}
-              className="text-2xl text-[#78ADCF] mb-5 max-w-2xl block"
             />
           </div>
         </div>

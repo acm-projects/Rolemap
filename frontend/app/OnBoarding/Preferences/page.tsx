@@ -52,17 +52,9 @@ export default function LearningPreferences() {
           <div className="min-h-[5rem]">
             <TypewriterText
               text="How do you learn best?"
-              speed={20}
+              speed={10}
               delay={400}
               className="text-5xl text-[#334155] leading-relaxed block"
-            />
-          </div>
-          <div className="min-h-[5rem]">
-            <TypewriterText
-              text="Select the modalities that help you absorb complex technical concepts most effectively."
-              speed={10}
-              delay={800}
-              className="text-2xl text-[#78ADCF] leading-relaxed max-w-2xl block"
             />
           </div>
         </div>

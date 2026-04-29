@@ -126,17 +126,9 @@ export default function SpecialtyPage() {
           <div className="min-h-[5rem]">
             <TypewriterText
               text="What is your specialty?"
-              speed={20}
+              speed={10}
               delay={400}
               className="text-5xl text-[#334155] block mt-7"
-            />
-          </div>
-          <div className="min-h-[7rem]">
-            <TypewriterText
-              text="Pick your primary focus area. You can search for a specific role or choose from the categories below."
-              speed={10}
-              delay={800}
-              className="text-2xl text-[#78ADCF] max-w-2xl block mb-5"
             />
           </div>
         </div>

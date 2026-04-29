@@ -6,6 +6,7 @@ import ResumeDocument, {
   AddedSkill,
   AddedProject,
 } from "../components/ResumeDocument";
+import { CharacterPreview } from "../components/CharacterPreview";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -61,67 +62,6 @@ async function apiFetch(path: string, opts?: RequestInit) {
     throw new Error(err.detail ?? res.statusText);
   }
   return res.json();
-}
-
-// ─── CharacterPreview ─────────────────────────────────────────────────────────
-
-function CharacterPreview({
-  skin,
-  eyes,
-  clothes,
-  pants = "",
-  shoes = "",
-  hair,
-  accessory,
-  size = 180,
-  variants = {},
-}: {
-  skin: string;
-  eyes: string;
-  clothes: string;
-  pants?: string;
-  shoes?: string;
-  hair: string;
-  accessory: string;
-  size?: number;
-  variants?: Record<string, number>;
-}) {
-  const scale = size / 28;
-  const bgH = Math.round(scale * 1568);
-  const layers: [string, string][] = [
-    [skin, "skin"],
-    [pants, "pants"],
-    [shoes, "shoes"],
-    [clothes, "clothes"],
-    [eyes, "eyes"],
-    [hair, "hair"],
-    [accessory, "accessories"],
-  ];
-  return (
-    <div
-      className="relative overflow-hidden"
-      style={{ width: size, height: size * 1.2 }}
-    >
-      {layers
-        .filter(([f]) => f)
-        .map(([f, cat], i) => {
-          const v = variants[cat] ?? 0;
-          return (
-            <div
-              key={i}
-              className="absolute inset-0"
-              style={{
-                backgroundImage: `url(/characters/${f})`,
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: `${-(v * 256 * scale) - (32 * scale - size) / 2}px 0`,
-                backgroundSize: `auto ${bgH}px`,
-                imageRendering: "pixelated",
-              }}
-            />
-          );
-        })}
-    </div>
-  );
 }
 
 // ─── Project Picker Modal ─────────────────────────────────────────────────────
@@ -651,6 +591,7 @@ export default function ProfilePage() {
                 hair={equipped.hair}
                 accessory={equipped.accessories}
                 variants={variants}
+                showLegs
               />
             </div>
             <button
