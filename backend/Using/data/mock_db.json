@@ -15136,6 +15136,86 @@
         "total_resources_found": 14
       },
       "cached_at": "2026-04-29T02:08:15.125197"
+    },
+    {
+      "concept": "Programming Fundamentals",
+      "subtopic": "Work with fundamental data types",
+      "result": {
+        "metadata": {
+          "concept": "Programming Fundamentals",
+          "subtopic": "Work with fundamental data types",
+          "preference": "Interactive-Heavy",
+          "version": "V3-intelligent-hybrid",
+          "processing_time_seconds": 37.12,
+          "llm_enhanced": true
+        },
+        "learning_tasks": [
+          {
+            "title": "codecademy.com/learn/learn-how-to-code",
+            "description": "This interactive learning platform provides hands-on coding exercises and structured lessons for core programming concepts. It offers practical experience with fundamental data types as part of its beginner programming curriculum.",
+            "url": "https://www.codecademy.com/learn/learn-how-to-code",
+            "type": "Learning",
+            "objectives": [
+              "Define and identify various fundamental data types.",
+              "Declare and initialize variables using appropriate data types.",
+              "Manipulate and perform basic operations on data of different types."
+            ],
+            "curated_by": "LLM-intelligent (anti-hallucination)"
+          },
+          {
+            "title": "Not Passed",
+            "description": "A comprehensive, project-based curriculum designed for hands-on learning of programming fundamentals. It guides learners through practical applications of core concepts, including the use of fundamental data types, through real-world projects.",
+            "url": "https://www.freecodecamp.org/learn/the-odin-project/",
+            "type": "Learning",
+            "objectives": [
+              "Understand the practical application of data types in coding projects.",
+              "Implement and utilize different data types in a project-based context.",
+              "Make informed decisions on data type selection for specific programming tasks."
+            ],
+            "curated_by": "LLM-intelligent (anti-hallucination)"
+          },
+          {
+            "title": "Programming Fundamentals | Study.com",
+            "description": "This resource offers structured lessons, often with video explanations and quizzes, covering programming fundamentals including variables and data types. It provides a guided conceptual understanding combined with assessment opportunities.",
+            "url": "https://study.com/academy/lesson/programming-fundamentals.html",
+            "type": "Learning",
+            "objectives": [
+              "Explain the concept of variables and their role in programming.",
+              "Distinguish between different data types and their characteristics.",
+              "Assess comprehension of data types through interactive quizzes."
+            ],
+            "curated_by": "LLM-intelligent (anti-hallucination)"
+          }
+        ],
+        "coding_tasks": [
+          {
+            "title": "codecademy.com/learn/learn-how-to-code",
+            "description": "Codecademy provides an interactive learning environment where users learn programming fundamentals directly in the browser, complete with exercises that introduce and require the use of fundamental data types.",
+            "url": "https://www.codecademy.com/learn/learn-how-to-code",
+            "type": "Coding",
+            "objectives": [
+              "Identify and define core fundamental data types.",
+              "Practice declaring and manipulating variables of different data types through interactive exercises.",
+              "Understand the basic operations applicable to various fundamental data types."
+            ],
+            "curated_by": "LLM-intelligent (anti-hallucination)"
+          },
+          {
+            "title": "hackerrank.com/domains/tutorials/30-days-of-code",
+            "description": "This platform offers daily coding challenges and tutorials that guide learners through foundational programming concepts, including the practical application of various data types through hands-on coding.",
+            "url": "https://www.hackerrank.com/domains/tutorials/30-days-of-code",
+            "type": "Coding",
+            "objectives": [
+              "Apply fundamental data types in practical coding challenges.",
+              "Understand how different data types are used to solve specific problems.",
+              "Gain experience writing functional code based on tutorial guidance."
+            ],
+            "curated_by": "LLM-intelligent (anti-hallucination)"
+          }
+        ],
+        "total_resources_found": 20
+      },
+      "cached_at": "2026-04-29T02:10:51.585501"
     }
   ],
   "user_shop": {
