@@ -740,12 +740,13 @@ function PathRoadmap() {
         <div ref={processorRef} className="relative flex-shrink-0">
           <div className="absolute inset-0 scale-110 rounded-2xl bg-[#4e8888] opacity-20 blur-2xl" />
           <div className="relative flex h-28 w-28 flex-col items-center justify-center gap-2 rounded-2xl border-2 border-[#4e8888] bg-white shadow-xl">
-            <svg width="28" height="28" viewBox="0 0 27 27" fill="none">
-              <path
-                d="M13.5 2L16.5 9H24L18 13.5L20.5 20.5L13.5 16L6.5 20.5L9 13.5L3 9H10.5L13.5 2Z"
-                fill="#4e8888"
-              />
-            </svg>
+            <Image
+              src="/assets/file.svg"
+              alt="Logo"
+              className="h-10 w-13 object-contain"
+              width={10}
+              height={10}
+            />
             <span className="text-center text-xs uppercase tracking-widest text-[#4e8888]">
               Rolemap
               <br />
