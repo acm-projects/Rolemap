@@ -8,6 +8,7 @@ import asyncio
 import datetime
 import hashlib
 import json
+import os
 import logging
 import math
 import shutil
@@ -70,6 +71,8 @@ def _convert_quiz_questions(raw_questions: list) -> list:
     return result
 
 USER_ID = "u-001"
+
+MOCK_MODE: bool = os.environ.get("MOCK_MODE", "FALSE").upper() == "TRUE"
 
 # ---------------------------------------------------------------------------
 # Task_Gen V3 — lazy-loaded module (filename starts with digit, so importlib)
@@ -1084,6 +1087,22 @@ async def generate_roadmap_api(body: dict[str, Any]):
     role: str = _ROLE_MAP.get(raw_role.lower(), raw_role)
     print(f"[generate] role: '{raw_role}' -> '{role}'", flush=True)
     github_username: str = body.get("github_username", "")
+
+    if MOCK_MODE:
+        print("[generate] MOCK_MODE=TRUE — skipping pipelines, using existing mock_db.json", flush=True)
+        db = load_db()
+        db["users"][0]["onboarding_completed"] = True
+        db["users"][0]["onboarding_step"] = 5
+        if github_username:
+            db["users"][0]["github_username"] = github_username
+        save_db(db)
+        existing_cps = [cp for cp in db.get("roadmap_checkpoints", []) if cp.get("roadmap_id") == "rm-generated"]
+        return {
+            "success": True,
+            "roadmap_id": "rm-generated",
+            "steps_count": len(existing_cps),
+            "role": role,
+        }
 
     backend_dir = Path(__file__).parent.parent
     using_dir = backend_dir
