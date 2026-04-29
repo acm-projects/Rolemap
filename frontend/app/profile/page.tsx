@@ -635,7 +635,7 @@ export default function ProfilePage() {
         <div className="flex w-[320px] flex-shrink-0 items-start justify-center border-r-4 border-[#334155] bg-[#d2f6fb] p-6">
           <div className="px-box flex w-full flex-col items-center gap-4 bg-[#e8f5f5] p-4">
             <button
-              onClick={() => router.back()}
+              onClick={() => router.push("/dashboard")}
               className="pixel-font w-full self-stretch border-b-4 border-[#334155] bg-white px-3 py-3 text-xs text-[#334155] transition-all hover:bg-[#edfafd] active:translate-y-1 active:border-b-0"
             >
               BACK
@@ -665,7 +665,7 @@ export default function ProfilePage() {
         {/* Info grid */}
         <div className="grid flex-1 grid-cols-2 gap-5 overflow-hidden p-8">
           <div className="flex flex-col justify-center space-y-3 border-4 border-[#334155] bg-white p-7 shadow-[8px_8px_0_0_#bfdfe4]">
-            <h1 className="pixel-font text-3xl leading-relaxed text-[#334155]">
+            <h1 className="pixel-font text-xl leading-relaxed text-[#334155]">
               {loading
                 ? "LOADING..."
                 : (profileInfo.name?.toUpperCase() ?? "PLAYER_ONE")}

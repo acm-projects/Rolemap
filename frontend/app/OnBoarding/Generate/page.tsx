@@ -8,6 +8,9 @@ import PixelButton from "../../components/PixelButton";
 import PixelProgress from "../../components/PixelProgress";
 import TypewriterText from "../../components/Typewriter";
 
+// Adjust this to control how long the mock loading screen runs (milliseconds)
+const TIMER = 4000;
+
 const PROGRESS_STEPS = [
   "Fetching GitHub profile...",
   "Analyzing repositories...",
@@ -147,6 +150,24 @@ export default function GenerateRoadmap() {
     setGenerating(true);
     setError(null);
     setStepIdx(0);
+
+    const isMock = process.env.NEXT_PUBLIC_MOCK_MODE === "true";
+
+    if (isMock) {
+      const role = localStorage.getItem("ob_role") ?? "software engineer";
+      const githubUsername = ((session?.user as Record<string, unknown>)?.githubUsername as string) ?? "";
+      // Run timer and backend call in parallel — backend sets onboarding_completed=true instantly
+      const [res] = await Promise.all([
+        api.generateRoadmap({ role, github_username: githubUsername }).catch(() => null),
+        new Promise<void>((resolve) => setTimeout(resolve, TIMER)),
+      ]);
+      ["ob_role", "ob_companies", "ob_preferences"].forEach((k) => localStorage.removeItem(k));
+      setResult({ steps_count: (res as { steps_count?: number } | null)?.steps_count ?? 88, role });
+      setGenerating(false);
+      setDone(true);
+      return;
+    }
+
     try {
       const role = localStorage.getItem("ob_role") ?? "software engineer";
       const githubUsername = ((session?.user as Record<string, unknown>)?.githubUsername as string) ?? "";

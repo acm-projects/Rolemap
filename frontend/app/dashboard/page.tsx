@@ -11,6 +11,7 @@ import { useCharacter } from '../context/CharacterContext';
 import { api, type DashboardResponse, type DashboardRoadmap, type Checkpoint, type RoadmapEdge } from '@/lib/api';
 // ── XP sync: shared localStorage util ────────────────────────────────────────
 import { getStoredXP, setStoredXP } from '@/lib/xp';
+import { getStoredTaskProgress } from '@/lib/taskProgress';
 import {
   ReactFlow,
   Background,
@@ -435,13 +436,18 @@ export default function Dashboard() {
   const [xp, setXp] = useState(0);
 
   useEffect(() => {
-    // Read initial value from localStorage (populated below after API resolves)
     setXp(getStoredXP());
-
-    // Listen for XP changes from any page (shop spending, lesson rewards, etc.)
     const handler = (e: Event) => setXp((e as CustomEvent<number>).detail);
     window.addEventListener('xp-updated', handler);
     return () => window.removeEventListener('xp-updated', handler);
+  }, []);
+
+  useEffect(() => {
+    const stored = getStoredTaskProgress();
+    if (stored >= 0) setDisplayProgress(stored);
+    const handler = (e: Event) => setDisplayProgress((e as CustomEvent<number>).detail);
+    window.addEventListener('task-progress-updated', handler);
+    return () => window.removeEventListener('task-progress-updated', handler);
   }, []);
 
   useEffect(() => {
@@ -469,8 +475,11 @@ export default function Dashboard() {
           ? preferred
           : (d.roadmaps.find(r => r.progress_percentage > 0) ?? preferred ?? d.roadmaps[0] ?? null);
         setSelectedRoadmap(active);
-        const timer = setTimeout(() => setDisplayProgress(d.active_roadmap.progress_percentage), 300);
-        return () => clearTimeout(timer);
+        const stored = getStoredTaskProgress();
+        if (stored < 0) {
+          const timer = setTimeout(() => setDisplayProgress(d.active_roadmap.progress_percentage), 300);
+          return () => clearTimeout(timer);
+        }
       })
       .catch(console.error)
       .finally(() => setLoading(false));

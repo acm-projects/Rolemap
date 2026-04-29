@@ -6,6 +6,7 @@ import Image from "next/image";
 import pic6 from "../tasks/target.png";
 import PixelButton from "../components/PixelButton";
 import { api, type Task, type SkillDecayEntry } from "@/lib/api";
+import { setStoredTaskProgress } from "@/lib/taskProgress";
 import { useRouter } from "next/navigation";
 import { Zap } from 'lucide-react';
 
@@ -523,6 +524,10 @@ export default function DailyPage() {
   const completionPct = tasks.length > 0
     ? Math.round((completed.length / tasks.length) * 100)
     : 0;
+
+  useEffect(() => {
+    if (tasks.length > 0) setStoredTaskProgress(completionPct);
+  }, [completionPct, tasks.length]);
 
   const isDone = activeTaskObj ? completed.includes(activeTaskObj.id) : false;
 
