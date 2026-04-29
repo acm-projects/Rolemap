@@ -9,8 +9,8 @@
       "xp_total": 2455,
       "current_streak": 1,
       "longest_streak": 31,
-      "onboarding_completed": false,
-      "onboarding_step": 0,
+      "onboarding_completed": true,
+      "onboarding_step": 5,
       "created_at": "2025-09-01T00:00:00Z",
       "last_active_date": "2026-04-28",
       "character": {
@@ -2243,7 +2243,7 @@
       "title": "HTML Elements",
       "tag": "HTML",
       "status": "not_started",
-      "description": "Learn the core HTML elements and how to structure a semantic web page."
+      "description": "Learn semantic HTML structure, common elements, and how to build accessible page layouts."
     },
     {
       "id": "t-002",
@@ -2252,16 +2252,16 @@
       "title": "CSS Styling",
       "tag": "CSS",
       "status": "not_started",
-      "description": "Apply styles using selectors, the box model, and Flexbox/Grid layouts."
+      "description": "Use selectors, the box model, and modern layout tools like Flexbox and Grid to style responsive pages."
     },
     {
       "id": "t-003",
       "checkpoint_id": "cp-004",
       "user_id": "u-001",
-      "title": "Javascript Components",
+      "title": "JavaScript Components",
       "tag": "JS",
       "status": "not_started",
-      "description": "Build interactive UI components using vanilla JavaScript and DOM events."
+      "description": "Build interactive UI behavior with vanilla JavaScript, DOM updates, and event handling."
     },
     {
       "id": "t-004",
@@ -2270,7 +2270,7 @@
       "title": "Python Fundamentals",
       "tag": "Python",
       "status": "not_started",
-      "description": "Explore Python syntax, data structures, and scripting basics."
+      "description": "Cover Python syntax, variables, data structures, and simple scripting patterns."
     }
   ],
   "user_task_progress": [
