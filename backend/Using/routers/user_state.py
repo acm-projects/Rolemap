@@ -1033,6 +1033,37 @@ async def advance_tasks():
 # ---------------------------------------------------------------------------
 # POST /api/v1/onboarding/complete
 # ---------------------------------------------------------------------------
+@router.post("/mock/onboarding/reset")
+async def reset_mock_onboarding():
+    """Reset onboarding when visiting the local landing page in mock mode."""
+    if not MOCK_MODE:
+        return {"success": True, "skipped": True}
+
+    db = load_db()
+    db["users"][0]["onboarding_completed"] = False
+    db["users"][0]["onboarding_step"] = 0
+    save_db(db)
+
+    removed_uploads = 0
+    if UPLOAD_DIR.exists():
+        for upload in UPLOAD_DIR.iterdir():
+            if upload.is_file():
+                upload.unlink()
+                removed_uploads += 1
+
+    removed_resume_output = False
+    if RESUME_OUTPUT_PATH.exists():
+        RESUME_OUTPUT_PATH.unlink()
+        removed_resume_output = True
+
+    return {
+        "success": True,
+        "skipped": False,
+        "removed_uploads": removed_uploads,
+        "removed_resume_output": removed_resume_output,
+    }
+
+
 @router.post("/onboarding/complete")
 async def complete_onboarding(body: dict[str, Any]):
     db = load_db()

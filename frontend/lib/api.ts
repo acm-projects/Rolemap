@@ -1,4 +1,4 @@
-const BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+const BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000";
 
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE}${path}`, init);
@@ -199,6 +199,16 @@ export interface ShopResponse {
 export const api = {
   currentUser: () =>
     apiFetch<User>("/api/v1/users/me"),
+
+  resetMockOnboarding: () =>
+    apiFetch<{
+      success: boolean;
+      skipped: boolean;
+      removed_uploads?: number;
+      removed_resume_output?: boolean;
+    }>("/api/v1/mock/onboarding/reset", {
+      method: "POST",
+    }),
 
   dashboard: () =>
     apiFetch<DashboardResponse>("/api/v1/dashboard"),

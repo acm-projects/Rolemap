@@ -9,7 +9,7 @@ const DEFAULT_EQUIPPED = {
   pants: 'pants.png', shoes: 'shoes.png', hair: 'buzzcut.png', accessories: '',
 };
 
-const HIDDEN_PATHS = ['/', '/OnBoarding'];
+const HIDDEN_PATHS = ['/', '/OnBoarding', '/profile'];
 
 export function GlobalCharacter() {
   const { charState } = useCharacter();

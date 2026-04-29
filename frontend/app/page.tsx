@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { signIn } from "next-auth/react";
+import { api } from "@/lib/api";
 
 const PATHS = {
   check:
@@ -787,6 +788,19 @@ function PathRoadmap() {
 }
 
 export default function LandingPage() {
+  useEffect(() => {
+    const isLocalLanding =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1";
+
+    if (!isLocalLanding || window.location.port !== "3000") {
+      return;
+    }
+
+    sessionStorage.removeItem("resume_uploaded");
+    api.resetMockOnboarding().catch(() => {});
+  }, []);
+
   return (
     <div className="relative min-h-screen overflow-x-hidden text-slate-900">
       <LandingParallax />

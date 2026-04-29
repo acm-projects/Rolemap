@@ -371,6 +371,7 @@ export default function DailyPage() {
   const [totalSubtopics, setTotalSubtopics] = useState(0);
   const [decayTasks, setDecayTasks] = useState<SkillDecayEntry[]>([]);
   const [activeDecayTask, setActiveDecayTask] = useState<SkillDecayEntry | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   // Sleeping character state
   const [charTaskId, setCharTaskId] = useState<string | null>(null);
@@ -379,8 +380,10 @@ export default function DailyPage() {
   const charInitialized = useRef(false);
   const fallTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  function loadTasks() {
-    api.tasks().then(d => {
+  async function loadTasks() {
+    setLoadError(null);
+    try {
+      const d = await api.tasks();
       setTasks(d.tasks);
       setCompleted(d.tasks.filter(t => t.status === 'completed').map(t => t.id));
       setActiveTask(d.tasks.length > 0 ? d.tasks[0].id : null);
@@ -388,8 +391,15 @@ export default function DailyPage() {
       setCheckpointLabel(d.current_checkpoint_label);
       setSubtopicIndex(d.subtopic_index);
       setTotalSubtopics(d.total_subtopics);
-    }).catch(console.error);
-    api.skillDecay().then(setDecayTasks).catch(console.error);
+    } catch {
+      setLoadError('Could not reach the Rolemap API. Make sure the backend is running on port 8000.');
+    }
+
+    try {
+      setDecayTasks(await api.skillDecay());
+    } catch {
+      setDecayTasks([]);
+    }
   }
 
   // Filter decayTasks to show only top 2 by urgency (forgotten > decaying > review_soon)
@@ -439,7 +449,9 @@ export default function DailyPage() {
 
     const newCompleted = [...completed, activeTask];
     setCompleted(newCompleted);
-    api.updateTask(activeTask, 'completed').catch(console.error);
+    api.updateTask(activeTask, 'completed').catch(() => {
+      setLoadError('Could not save task progress. Please check the backend and try again.');
+    });
 
     if (charTaskId === activeTask) {
       const nextTask = tasks.find(t => !newCompleted.includes(t.id));
@@ -513,12 +525,16 @@ export default function DailyPage() {
   function handleMarkIncomplete() {
     if (!activeTask || !completed.includes(activeTask)) return;
     setCompleted(prev => prev.filter(id => id !== activeTask));
-    api.updateTask(activeTask, 'in_progress').catch(console.error);
+    api.updateTask(activeTask, 'in_progress').catch(() => {
+      setLoadError('Could not save task progress. Please check the backend and try again.');
+    });
     if (!charTaskId) setCharTaskId(activeTask);
   }
 
   function handleMoreTasks() {
-    api.advanceTasks().then(() => loadTasks()).catch(console.error);
+    api.advanceTasks()
+      .then(() => loadTasks())
+      .catch(() => setLoadError('Could not load more tasks. Please check the backend and try again.'));
   }
 
   const completionPct = tasks.length > 0
@@ -537,6 +553,12 @@ export default function DailyPage() {
       <Navbar />
 
       <div className="w-[95%] max-w-6xl mx-auto pt-[104px] pb-8 flex gap-8 h-screen">
+        {loadError && (
+          <div className="fixed left-1/2 top-24 z-50 -translate-x-1/2 border-4 border-[#334155] bg-white px-4 py-3 text-center text-xs text-[#334155] shadow-lg">
+            <p>{loadError}</p>
+            <button className="mt-2 text-[#04A0FF]" onClick={loadTasks}>Retry</button>
+          </div>
+        )}
 
         {/* ── Left Panel ── */}
         <div className="w-[320px] flex-shrink-0 flex flex-col">

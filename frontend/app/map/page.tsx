@@ -1,7 +1,7 @@
 ﻿'use client';
 
 import QuizConfetti from '../../components/ui/quiz-confetti';
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   ReactFlow,
@@ -150,6 +150,13 @@ function RoadmapContent() {
     return () => clearTimeout(timer);
   }, [pendingCenter, setCenter]);
 
+  const triggerMascotJump = useCallback((nodeId: string) => {
+    setNodes(ns => ns.map(n => n.id === nodeId ? { ...n, data: { ...n.data, isMascotJumping: true } } : n));
+    setTimeout(() => {
+      setNodes(ns => ns.map(n => n.id === nodeId ? { ...n, data: { ...n.data, isMascotJumping: false } } : n));
+    }, 1200);
+  }, [setNodes]);
+
   const handleNodeClick: NodeMouseHandler = useCallback((_event, node) => {
     const data = node.data as { label: string; progress: number; locked: boolean; kind?: string; isCurrent?: boolean };
 
@@ -157,10 +164,7 @@ function RoadmapContent() {
     setActivePanelPos({ x: node.position.x + 300, y: node.position.y + 85 });
 
     if (data.isCurrent) {
-      setNodes(ns => ns.map(n => n.id === node.id ? { ...n, data: { ...n.data, isMascotJumping: true } } : n));
-      setTimeout(() => {
-        setNodes(ns => ns.map(n => n.id === node.id ? { ...n, data: { ...n.data, isMascotJumping: false } } : n));
-      }, 1200);
+      triggerMascotJump(node.id);
 
       // Trigger confetti on the current active node
       setJumpingNodeLabel(data.label);
@@ -176,6 +180,7 @@ function RoadmapContent() {
     const cp = checkpoints.find(c => c.id === node.id);
     if (cp) {
       setActivePanel({
+        id: cp.id,
         label: cp.label,
         progress: cp.progress,
         locked: cp.locked,
@@ -185,7 +190,7 @@ function RoadmapContent() {
         subtopicCompletion: cp.subtopic_completion ?? [],
       });
     }
-  }, [checkpoints, router]);
+  }, [checkpoints, router, triggerMascotJump]);
 
   if (loading) {
     return (
@@ -229,6 +234,7 @@ function RoadmapContent() {
         <div style={{ position: 'relative', zIndex: 20 }}>
           <NodePanel
             data={activePanel}
+            onStart={() => triggerMascotJump(activePanel.id)}
             onClose={() => {
               setActivePanel(null);
               if (activePanelPos) {
@@ -243,8 +249,8 @@ function RoadmapContent() {
       {showConfetti && (
         <QuizConfetti
           key={jumpingNodeLabel}
-          x={jumpingNodeLabel ? nodes.find((n: any) => n.data.label === jumpingNodeLabel)?.position?.x : 0}
-          y={jumpingNodeLabel ? nodes.find((n: any) => n.data.label === jumpingNodeLabel)?.position?.y : 0}
+          x={jumpingNodeLabel ? nodes.find(n => n.data.label === jumpingNodeLabel)?.position?.x : 0}
+          y={jumpingNodeLabel ? nodes.find(n => n.data.label === jumpingNodeLabel)?.position?.y : 0}
         />
       )}
     </div>

@@ -6,6 +6,7 @@ import PixelProgress from './PixelProgress';
 import PixelButton from './PixelButton';
 
 export type NodePanelData = {
+  id: string;
   label: string;
   progress: number;
   description: string;
@@ -40,11 +41,40 @@ const AngleRightIcon = () => (
   </svg>
 );
 
-export function NodePanel({ data, onClose }: { data: NodePanelData; onClose: () => void }) {
+const START_MODULE_DELAY_MS = 2000;
+
+export function NodePanel({
+  data,
+  onClose,
+  onStart,
+}: {
+  data: NodePanelData;
+  onClose: () => void;
+  onStart?: () => void;
+}) {
   const router = useRouter();
+  const [isStarting, setIsStarting] = React.useState(false);
+  const startTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const statusText = data.progress === 100 ? "Completed" : data.progress > 0 ? "In Progress" : "Not Started";
   const href = data.kind === 'quiz' ? `/quiz?label=${encodeURIComponent(data.label)}` : '/tasks';
   const buttonLabel = data.kind === 'quiz' ? 'Take Quiz' : data.progress > 0 ? 'Continue Learning' : 'Start Module';
+
+  React.useEffect(() => {
+    return () => {
+      if (startTimerRef.current) {
+        clearTimeout(startTimerRef.current);
+      }
+    };
+  }, []);
+
+  const handleStart = () => {
+    if (isStarting) return;
+    setIsStarting(true);
+    onStart?.();
+    startTimerRef.current = setTimeout(() => {
+      router.push(href);
+    }, START_MODULE_DELAY_MS);
+  };
 
   return (
     <div className="fixed top-0 right-0 h-full w-[500px] z-50 flex flex-col animate-slide-in pointer-events-none">
@@ -102,7 +132,7 @@ export function NodePanel({ data, onClose }: { data: NodePanelData; onClose: () 
 
         {/* Footer */}
         <div className="px-6 pb-6 pt-4 border-t border-slate-50 flex">
-          <PixelButton variant="primary" size="md" onClick={() => router.push(href)}>
+          <PixelButton variant="primary" size="md" onClick={handleStart} disabled={isStarting}>
             <div className="flex items-center gap-2 text-xl">
               <span>{buttonLabel}</span>
               <AngleRightIcon />

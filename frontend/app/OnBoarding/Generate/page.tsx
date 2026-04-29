@@ -9,7 +9,7 @@ import PixelProgress from "../../components/PixelProgress";
 import TypewriterText from "../../components/Typewriter";
 
 // Adjust this to control how long the mock loading screen runs (milliseconds)
-const TIMER = 4000;
+const TIMER = 10000;
 
 const PROGRESS_STEPS = [
   "Fetching GitHub profile...",
@@ -152,6 +152,7 @@ export default function GenerateRoadmap() {
     setStepIdx(0);
 
     const isMock = process.env.NEXT_PUBLIC_MOCK_MODE === "true";
+    const minimumLoadingDelay = new Promise<void>((resolve) => setTimeout(resolve, TIMER));
 
     if (isMock) {
       const role = localStorage.getItem("ob_role") ?? "software engineer";
@@ -159,7 +160,7 @@ export default function GenerateRoadmap() {
       // Run timer and backend call in parallel — backend sets onboarding_completed=true instantly
       const [res] = await Promise.all([
         api.generateRoadmap({ role, github_username: githubUsername }).catch(() => null),
-        new Promise<void>((resolve) => setTimeout(resolve, TIMER)),
+        minimumLoadingDelay,
       ]);
       ["ob_role", "ob_companies", "ob_preferences"].forEach((k) => localStorage.removeItem(k));
       setResult({ steps_count: (res as { steps_count?: number } | null)?.steps_count ?? 88, role });
@@ -172,7 +173,10 @@ export default function GenerateRoadmap() {
       const role = localStorage.getItem("ob_role") ?? "software engineer";
       const githubUsername = ((session?.user as Record<string, unknown>)?.githubUsername as string) ?? "";
 
-      const res = await api.generateRoadmap({ role, github_username: githubUsername });
+      const [res] = await Promise.all([
+        api.generateRoadmap({ role, github_username: githubUsername }),
+        minimumLoadingDelay,
+      ]);
       setResult({ steps_count: res.steps_count, role: res.role });
       ["ob_role", "ob_companies", "ob_preferences"].forEach((k) => localStorage.removeItem(k));
       setDone(true);
