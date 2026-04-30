@@ -169,14 +169,12 @@ export function Navbar() {
               style={{
                 borderWidth: 4,
                 borderStyle: 'solid',
-                borderColor: '#334155',
-                boxShadow: '2px 2px 0 0 rgba(0,0,0,0.4)',
                 imageRendering: 'pixelated',
-                backgroundColor: '#2d5050',
+                boxShadow: '2px 2px 0 0 rgba(0,0,0,0.3)',
               }}
             >
               <img
-                src="/pixel-map.png"
+                src="/assets/pixel-map.png"
                 alt="Rolemap logo"
                 style={{
                   imageRendering: 'pixelated',

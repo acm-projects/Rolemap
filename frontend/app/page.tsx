@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { signIn } from "next-auth/react";
 import { api } from "@/lib/api";
-
+import Image from "next/image"
 const PATHS = {
   check:
     "M5.01667 8.51667L2.5375 6.0375L3.35417 5.22083L5.01667 6.88333L10.85 1.03542L11.6667 1.85208L5.01667 8.51667V8.51667",
@@ -732,12 +732,13 @@ function PathRoadmap() {
         <div ref={processorRef} className="relative flex-shrink-0">
           <div className="absolute inset-0 scale-110 rounded-2xl bg-[#4e8888] opacity-20 blur-2xl" />
           <div className="relative flex h-28 w-28 flex-col items-center justify-center gap-2 rounded-2xl border-2 border-[#4e8888] bg-white shadow-xl">
-            <svg width="28" height="28" viewBox="0 0 27 27" fill="none">
-              <path
-                d="M13.5 2L16.5 9H24L18 13.5L20.5 20.5L13.5 16L6.5 20.5L9 13.5L3 9H10.5L13.5 2Z"
-                fill="#4e8888"
-              />
-            </svg>
+            <Image
+            src="/assets/pixel-map.png"
+            alt="Logo"
+            width={32}
+            height={32}
+            className="h-13 w-1 object-contain"
+            />
             <span className="text-center text-xs uppercase tracking-widest text-[#4e8888]">
               Rolemap
               <br />
@@ -823,7 +824,7 @@ export default function LandingPage() {
                   onClick={() =>
                     signIn("google", { callbackUrl: "/OnBoarding/Major" })
                   }
-                  className="h-13 rounded-xl bg-[#0270b2] px-8 text-lg text-white shadow-lg transition-colors hover:bg-[#3d7070] sm:h-14 sm:text-xl"
+                  className="h-13 rounded-xl bg-[#2f6f88] px-8 text-lg text-white shadow-lg transition-colors hover:bg-[#44A4CB] sm:h-14 sm:text-xl"
                 >
                   Get Started
                 </button>
@@ -952,7 +953,7 @@ export default function LandingPage() {
                   onClick={() =>
                     signIn("google", { callbackUrl: "/OnBoarding/Major" })
                   }
-                  className="mt-10 h-16 rounded-xl bg-white px-10 text-xl text-[#4e8888] shadow-md transition-colors hover:bg-slate-50"
+                  className="mt-10 h-16 rounded-xl bg-white px-10 text-xl text-[#4e8888] shadow-md transition-colors hover:bg-slate-300 cursor-pointer"
                 >
                   Start My Journey Now
                 </button>

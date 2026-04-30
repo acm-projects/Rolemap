@@ -2243,7 +2243,7 @@
       "title": "HTML Elements",
       "tag": "HTML",
       "status": "not_started",
-      "description": "Learn semantic HTML structure, common elements, and how to build accessible page layouts."
+      "description": "Learn the core HTML elements and how to structure a semantic web page."
     },
     {
       "id": "t-002",
@@ -2252,16 +2252,16 @@
       "title": "CSS Styling",
       "tag": "CSS",
       "status": "not_started",
-      "description": "Use selectors, the box model, and modern layout tools like Flexbox and Grid to style responsive pages."
+      "description": "Apply styles using selectors, the box model, and Flexbox/Grid layouts."
     },
     {
       "id": "t-003",
       "checkpoint_id": "cp-004",
       "user_id": "u-001",
-      "title": "JavaScript Components",
+      "title": "Javascript Components",
       "tag": "JS",
       "status": "not_started",
-      "description": "Build interactive UI behavior with vanilla JavaScript, DOM updates, and event handling."
+      "description": "Build interactive UI components using vanilla JavaScript and DOM events."
     },
     {
       "id": "t-004",
@@ -2270,7 +2270,7 @@
       "title": "Python Fundamentals",
       "tag": "Python",
       "status": "not_started",
-      "description": "Cover Python syntax, variables, data structures, and simple scripting patterns."
+      "description": "Explore Python syntax, data structures, and scripting basics."
     }
   ],
   "user_task_progress": [
@@ -6076,7 +6076,7 @@
         "learning_tasks": [
           {
             "title": "Programming Fundamentals: A Guide for Beginners - DEV Community",
-            "description": "Learn Understand the core principles of Programming Fundamentals: November 15, 2024 -Official documentation: Reading the documentation of your programming language he",
+            "description": "Learn Understand the core principles of Programming Fundamentals: November 15, 2024 -Official documentation: Reading the documentation of your programming language helps you understand its core principles and features.",
             "url": "https://dev.to/luisdev07/programming-fundamentals-a-guide-for-beginners-52km",
             "type": "Learning",
             "curated_by": "rule-based authority ranking",
@@ -6087,8 +6087,8 @@
             ]
           },
           {
-            "title": "ProgrammingFundamentals| Coursera",
-            "description": "Learn Understand the core principles of Programming Fundamentals: Offered by Duke University. Embark on yourprogrammingjourney! This introductory course teaches you t",
+            "title": "Programming Fundamentals| Coursera",
+            "description": "Learn Understand the core principles of Programming Fundamentals: Offered by Duke University. Embark on your programming journey! This introductory course teaches you the fundamentals of programming, including variables, control structures, data structures, and algorithms. Gain hands-on experience with coding exercises and projects to build a strong foundation in programming.",
             "url": "https://www.coursera.org/learn/programming-fundamentals",
             "type": "Learning",
             "curated_by": "rule-based authority ranking",
@@ -6099,7 +6099,7 @@
             ]
           },
           {
-            "title": "COMPUTERPROGRAMMINGFUNDAMENTALS: [4 Books in...]",
+            "title": "Computer Programming Fundamentals: [4 Books in...]",
             "description": "Learn Understand the core principles of Programming Fundamentals: Want to build a solid foundation that will set you up for success in variousprogrammingfields?. \"Com",
             "url": "https://www.clcoding.com/2024/10/computer-programming-fundamentals-4.html",
             "type": "Learning",
