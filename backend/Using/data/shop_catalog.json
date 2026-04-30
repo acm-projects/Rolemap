@@ -1,0 +1,58 @@
+{
+  "skin": [
+    { "id": "char1", "name": "Skin 1", "file": "char1.png", "cost": 0 },
+    { "id": "char2", "name": "Skin 2", "file": "char2.png", "cost": 0 },
+    { "id": "char3", "name": "Skin 3", "file": "char3.png", "cost": 0 },
+    { "id": "char4", "name": "Skin 4", "file": "char4.png", "cost": 0 },
+    { "id": "char5", "name": "Skin 5", "file": "char5.png", "cost": 0 },
+    { "id": "char6", "name": "Skin 6", "file": "char6.png", "cost": 0 },
+    { "id": "char7", "name": "Skin 7", "file": "char7.png", "cost": 0 },
+    { "id": "char8", "name": "Skin 8", "file": "char8.png", "cost": 0 }
+  ],
+  "eyes": [
+    { "id": "eyes_default", "name": "Eyes", "file": "eyes.png", "cost": 0 },
+    { "id": "eyes_blush", "name": "Blush", "file": "blush_all.png", "cost": 0 },
+    { "id": "eyes_lipstick", "name": "Lipstick", "file": "lipstick.png", "cost": 100 }
+  ],
+  "clothes": [
+    { "id": "suit", "name": "Suit", "file": "suit.png", "cost": 0 },
+    { "id": "basic", "name": "Casual", "file": "basic.png", "cost": 150 },
+    { "id": "sporty", "name": "Sporty", "file": "sporty.png", "cost": 200 },
+    { "id": "overalls", "name": "Overalls", "file": "overalls.png", "cost": 200 },
+    { "id": "sailor", "name": "Sailor", "file": "sailor.png", "cost": 250 },
+    { "id": "stripe", "name": "Stripe", "file": "stripe.png", "cost": 250 },
+    { "id": "dress", "name": "Dress", "file": "dress.png", "cost": 300 },
+    { "id": "floral", "name": "Floral", "file": "floral.png", "cost": 300 }
+  ],
+  "pants": [
+    { "id": "pants_default", "name": "Pants", "file": "pants.png", "cost": 0 },
+    { "id": "skirt_item", "name": "Skirt", "file": "skirt.png", "cost": 100 },
+    { "id": "witch_outfit", "name": "Witch", "file": "witch.png", "cost": 300 }
+  ],
+  "shoes": [
+    { "id": "shoes_item", "name": "Shoes", "file": "shoes.png", "cost": 0 }
+  ],
+  "hair": [
+    { "id": "buzzcut", "name": "Buzzcut", "file": "buzzcut.png", "cost": 0 },
+    { "id": "wavy", "name": "Wavy", "file": "wavy.png", "cost": 0 },
+    { "id": "bob", "name": "Bob", "file": "bob.png", "cost": 100 },
+    { "id": "gentleman", "name": "Gentleman", "file": "gentleman.png", "cost": 100 },
+    { "id": "ponytail", "name": "Ponytail", "file": "ponytail.png", "cost": 150 },
+    { "id": "midiwave", "name": "Midi Wave", "file": "midiwave.png", "cost": 150 },
+    { "id": "curly", "name": "Curly", "file": "curly.png", "cost": 200 },
+    { "id": "braids", "name": "Braids", "file": "braids.png", "cost": 200 },
+    { "id": "extra_long", "name": "Extra Long", "file": "extra_long.png", "cost": 200 },
+    { "id": "french_curl", "name": "French Curl", "file": "french_curl.png", "cost": 200 },
+    { "id": "spacebuns", "name": "Space Buns", "file": "spacebuns.png", "cost": 250 },
+    { "id": "emo", "name": "Emo", "file": "emo.png", "cost": 250 }
+  ],
+  "accessories": [
+    { "id": "none", "name": "None", "file": "", "cost": 0 },
+    { "id": "glasses", "name": "Glasses", "file": "glasses.png", "cost": 100 },
+    { "id": "sunglasses", "name": "Sunglass", "file": "glasses_sun.png", "cost": 150 },
+    { "id": "hat_lucky", "name": "Lucky Hat", "file": "hat_lucky.png", "cost": 200 },
+    { "id": "hat_cowboy", "name": "Cowboy", "file": "hat_cowboy.png", "cost": 200 },
+    { "id": "earring", "name": "Earrings", "file": "earring_emerald.png", "cost": 100 },
+    { "id": "beard", "name": "Beard", "file": "beard.png", "cost": 150 }
+  ]
+}

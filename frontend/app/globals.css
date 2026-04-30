@@ -1,5 +1,22 @@
 @import "tailwindcss";
 
+/* Make ReactFlow canvas transparent so the map background shows through */
+.map-flow,
+.map-flow .react-flow__renderer,
+.map-flow .react-flow__viewport {
+  background-color: transparent !important;
+}
+
+/* Remove borders/shadows and attribution on the map page */
+.map-flow .react-flow__controls,
+.map-flow .react-flow__panel,
+.map-flow .react-flow__attribution {
+  box-shadow: none;
+  border: none;
+}
+.map-flow .react-flow__attribution {
+  display: none;
+}
 
 :root {
   --background: #eef1f7;
@@ -9,7 +26,7 @@
   --grid-color: #c8d0dc;
 }
 
-/*The @theme block tells Tailwind to make these CSS variables 
+/*The @theme block tells Tailwind to make these CSS variables
   available as utility classes*/
 @theme inline {
   --color-background: var(--background);
@@ -23,7 +40,6 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
-    /*ededed*/
   }
 }
 
@@ -36,11 +52,10 @@ body {
   background: var(--background);
 }
 
-/*For React Flow classes. Makes the ends of the connection lines 
+/*For React Flow classes. Makes the ends of the connection lines
   rounded rather than sharp squares*/
 .react-flow__edge-path {
   stroke-linecap: round;
-  /*for straight edges: stroke-linecap: square;*/
   stroke-linejoin: round;
 }
 
@@ -54,8 +69,29 @@ body {
   display: none;
 }
 
+/* Remove borders/shadows and attribution on the map page */
+.map-flow .react-flow__controls,
+.map-flow .react-flow__panel,
+.map-flow .react-flow__attribution {
+  box-shadow: none;
+  border: none;
+}
+.map-flow .react-flow__attribution {
+  display: none;
+}
+
 * {
   font-family: var(--font-jersey10), sans-serif;
+}
+
+.pixel-border {
+  border-width: 4px;
+  border-style: solid;
+  box-shadow: 0 4px 0 0 rgba(0,0,0,0.15), inset 0 -2px 0 0 rgba(0,0,0,0.08);
+  image-rendering: pixelated;
+}
+.pixel-border:active {
+  box-shadow: 0 2px 0 0 rgba(0,0,0,0.15), inset 0 2px 0 0 rgba(0,0,0,0.08);
 }
 
 @keyframes flicker {
@@ -64,4 +100,25 @@ body {
   92%  { opacity: 0.98; }
   94%  { opacity: 1; }
   97%  { opacity: 0.96; }
+}
+
+/* animating the stones on the map page */
+@keyframes stones-fwd {
+  to { stroke-dashoffset: 22; }
+}
+
+/* Hide scrollbar on the map page */
+html.map-no-scroll,
+html.map-no-scroll body {
+  overflow: hidden !important;
+  scrollbar-width: none; /* Firefox */
+}
+html.map-no-scroll ::-webkit-scrollbar {
+  display: none; /* Chrome / Safari / Edge */
+}
+
+/* Parallax background — translates by one tile width (512px) for a seamless loop */
+@keyframes driftClouds {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-512px); }
 }

@@ -1,23 +1,127 @@
 'use client';
 
-import Image from 'next/image';
+import { useState, useEffect, useRef } from 'react';
+import { CharacterPreview, Category } from './CharacterPreview';
+//import Image from 'next/image';
 import { Handle, Position } from '@xyflow/react';
+import { useCharacter } from '../context/CharacterContext';
 
+type SavedChar = { skin: string; eyes: string; clothes: string; pants: string; shoes: string; hair: string; accessories: string };
+type SavedVariants = Partial<Record<string, number>>;
+
+const DEFAULTS: SavedChar = {
+  skin: 'char1.png', eyes: 'eyes.png', clothes: 'suit.png',
+  pants: 'pants.png', shoes: 'shoes.png', hair: 'buzzcut.png', accessories: '',
+};
+
+
+function CharacterMascot({ isJumping }: { isJumping: boolean }) {
+  const { charState } = useCharacter();
+  const [char, setChar] = useState<SavedChar>(DEFAULTS);
+  const [variants, setVariants] = useState<SavedVariants>({});
+  const [fallingIn, setFallingIn] = useState(false);
+  const prevFallInKey = useRef(0);
+
+  const load = () => {
+    try {
+      const saved = localStorage.getItem('character_saved');
+      if (saved) setChar({ ...DEFAULTS, ...JSON.parse(saved) });
+      const savedV = localStorage.getItem('character_saved_variants');
+      if (savedV) setVariants(JSON.parse(savedV));
+    } catch {}
+  };
+
+  useEffect(() => {
+    load();
+    window.addEventListener('storage', load);
+    return () => window.removeEventListener('storage', load);
+  }, []);
+
+  useEffect(() => {
+    const key = charState.mascotFallInKey;
+    if (key === 0 || key === prevFallInKey.current) return;
+    prevFallInKey.current = key;
+    setFallingIn(true);
+    const t = setTimeout(() => setFallingIn(false), 800);
+    return () => clearTimeout(t);
+  }, [charState.mascotFallInKey]);
+
+  const v: Partial<Record<Category, number>> = {
+    skin:        variants[char.skin]        ?? 0,
+    eyes:        variants[char.eyes]        ?? 0,
+    clothes:     variants[char.clothes]     ?? 0,
+    pants:       variants[char.pants]       ?? 0,
+    shoes:       variants[char.shoes]       ?? 0,
+    hair:        variants[char.hair]        ?? 0,
+    accessories: variants[char.accessories] ?? 0,
+  };
+
+  // Hide during global tab transitions so GlobalCharacter doesn't double-show
+  if (charState.phase !== 'idle') return null;
+
+  return (
+    <>
+      <style>{`
+        @keyframes mascot-bounce {
+          0%   { transform: translateX(-50%) translateY(0px); }
+          35%  { transform: translateX(-50%) translateY(-20px); }
+          65%  { transform: translateX(-50%) translateY(-6px); }
+          100% { transform: translateX(-50%) translateY(0px); }
+        }
+        @keyframes mascot-fall-in {
+          0%   { transform: translateX(-50%) translateY(-600px); }
+          72%  { transform: translateX(-50%) translateY(14px); }
+          86%  { transform: translateX(-50%) translateY(-6px); }
+          100% { transform: translateX(-50%) translateY(0px); }
+        }
+      `}</style>
+      <div data-char-mascot style={{
+        position: 'absolute',
+        top: -120,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        zIndex: 10,
+        pointerEvents: 'none',
+        animation: fallingIn
+          ? 'mascot-fall-in 0.7s ease-in forwards'
+          : isJumping
+          ? 'mascot-bounce 0.35s ease-out 0.8s forwards'
+          : 'none',
+      }}>
+        <CharacterPreview
+          size={104}
+          showLegs
+          jump={false}
+          skin={char.skin} eyes={char.eyes} clothes={char.clothes}
+          pants={char.pants} shoes={char.shoes} hair={char.hair}
+          accessory={char.accessories}
+          variants={v}
+        />
+      </div>
+    </>
+  );
+}
 const CheckIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
-    <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+  <svg id="check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
+    <polygon points="22 4 22 6 21 6 21 7 20 7 20 8 19 8 19 9 18 9 18 10 17 10 17 11 16 11 16 12 15 12 15 13 14 13 14 14 13 14 13 15 12 15 12 16 11 16 11 17 10 17 10 18 8 18 8 17 7 17 7 16 6 16 6 15 5 15 5 14 4 14 4 13 3 13 3 12 2 12 2 10 4 10 4 11 5 11 5 12 6 12 6 13 7 13 7 14 8 14 8 15 10 15 10 14 11 14 11 13 12 13 12 12 13 12 13 11 14 11 14 10 15 10 15 9 16 9 16 8 17 8 17 7 18 7 18 6 19 6 19 5 20 5 20 4 22 4"/>
   </svg>
 );
 
 const ProgressIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+  <svg id="circle-notch" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
+    <polygon points="23 9 23 15 22 15 22 17 21 17 21 19 20 19 20 20 19 20 19 21 17 21 17 22 15 22 15 23 9 23 9 22 7 22 7 21 5 21 5 20 4 20 4 19 3 19 3 17 2 17 2 15 1 15 1 9 2 9 2 7 3 7 3 5 4 5 4 4 5 4 5 3 7 3 7 2 9 2 9 1 10 1 10 2 11 2 11 3 10 3 10 4 8 4 8 5 6 5 6 6 5 6 5 8 4 8 4 10 3 10 3 14 4 14 4 16 5 16 5 18 6 18 6 19 8 19 8 20 10 20 10 21 14 21 14 20 16 20 16 19 18 19 18 18 19 18 19 16 20 16 20 14 21 14 21 10 20 10 20 8 19 8 19 6 18 6 18 5 16 5 16 4 14 4 14 3 13 3 13 2 14 2 14 1 15 1 15 2 17 2 17 3 19 3 19 4 20 4 20 5 21 5 21 7 22 7 22 9 23 9"/>
+  </svg>
+);
+
+const CurrentIcon = () => (
+  <svg id="bars" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
+    <rect x="1" y="11" width="22" height="2"/><rect x="1" y="19" width="22" height="2"/><rect x="1" y="3" width="22" height="2"/>
   </svg>
 );
 
 const LockIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+  <svg id="lock-alt-solid" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
+    <path d="m20,12v-1h-1v-5h-1v-2h-1v-1h-1v-1h-2v-1h-4v1h-2v1h-1v1h-1v2h-1v5h-1v1h-1v10h1v1h16v-1h1v-10h-1Zm-12-6h1v-1h1v-1h4v1h1v1h1v5h-8v-5Z"/>
   </svg>
 );
 
@@ -32,9 +136,60 @@ interface RoadmapNodeData {
   progress: number;
   kind?: string;
   label: string;
+  isCurrent?: boolean;
+  isJumping?: boolean;
+  isMascotJumping?: boolean;
+  decayHealth?: number; // 0–100; <100 = decaying, lower = worse
 }
 
+// Pixel crack overlay — severity 0 (mild) to 1 (severe)
+function CrackOverlay({ width, height, severity }: { width: number; height: number; severity: number }) {
+  const s = Math.max(0, Math.min(1, severity));
+  // Pre-baked crack paths: light cracks at low severity, more/deeper at high
+  const cracks = [
+    // always shown (even mild decay)
+    `M${width*0.25},${height*0.1} L${width*0.18},${height*0.35} L${width*0.28},${height*0.55}`,
+    `M${width*0.7},${height*0.15} L${width*0.78},${height*0.4}`,
+    // shown at moderate+ decay
+    ...(s > 0.35 ? [
+      `M${width*0.45},${height*0.0} L${width*0.38},${height*0.3} L${width*0.48},${height*0.6} L${width*0.42},${height*0.9}`,
+      `M${width*0.8},${height*0.5} L${width*0.68},${height*0.75} L${width*0.72},${height*0.95}`,
+    ] : []),
+    // shown at severe decay
+    ...(s > 0.65 ? [
+      `M${width*0.1},${height*0.6} L${width*0.22},${height*0.8} L${width*0.15},${height*1.0}`,
+      `M${width*0.55},${height*0.2} L${width*0.65},${height*0.45} L${width*0.58},${height*0.65} L${width*0.7},${height*0.85}`,
+    ] : []),
+  ];
+
+  const crackColor = s > 0.65 ? 'rgba(90,40,10,0.7)' : s > 0.35 ? 'rgba(80,50,20,0.55)' : 'rgba(100,70,30,0.4)';
+
+  return (
+    <svg
+      width={width} height={height}
+      style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none', zIndex: 5, imageRendering: 'pixelated' }}
+    >
+      {/* dark outline for depth */}
+      {cracks.map((d, i) => <path key={`o${i}`} d={d} fill="none" stroke="rgba(0,0,0,0.35)" strokeWidth={3} strokeLinecap="square" />)}
+      {/* main crack color */}
+      {cracks.map((d, i) => <path key={`c${i}`} d={d} fill="none" stroke={crackColor} strokeWidth={1.5} strokeLinecap="square" />)}
+      {/* crumble dots at severe */}
+      {s > 0.5 && [
+        [width*0.2, height*0.55], [width*0.75, height*0.42], [width*0.45, height*0.88],
+        [width*0.6, height*0.7], [width*0.12, height*0.8],
+      ].map(([cx, cy], i) => (
+        <rect key={`d${i}`} x={cx} y={cy} width={3} height={3} fill={crackColor} />
+      ))}
+    </svg>
+  );
+}
 const BAR_COLOR = '#3d7a7a';
+
+function blendHex(hex1: string, hex2: string, t: number): string {
+  const p = (h: string) => [parseInt(h.slice(1,3),16), parseInt(h.slice(3,5),16), parseInt(h.slice(5,7),16)];
+  const [r1,g1,b1] = p(hex1), [r2,g2,b2] = p(hex2);
+  return `#${[r1+(r2-r1)*t, g1+(g2-g1)*t, b1+(b2-b1)*t].map(v => Math.round(v).toString(16).padStart(2,'0')).join('')}`;
+}
 
 function pixelRing(s: number, color: string, bgColor: string, dx = 0, dy = 0): string[] {
   return [
@@ -115,26 +270,26 @@ const LAYER_COLORS = [
  * Character image that sits above the node, peeking out from the top edge.
  * Only rendered when the node is active (in progress).
  */
-function Mascot() {
-  return (
-    <Image
-      src="/snoopy.png"
-      alt="Character"
-      width={104}
-      height={104}
-      style={{
-        position: 'absolute',
-        objectFit: 'contain',
-        top: -73,
-        left: '50%',
-        transform: 'translateX(-50%)',
-        zIndex: 10,
-        pointerEvents: 'none',
-        //imageRendering: 'pixelated',
-      }}
-    />
-  );
-}
+// function Mascot() {
+//   return (
+//     <Image
+//       src="/snoopy.png"
+//       alt="Character"
+//       width={104}
+//       height={104}
+//       style={{
+//         position: 'absolute',
+//         objectFit: 'contain',
+//         top: -73,
+//         left: '50%',
+//         transform: 'translateX(-50%)',
+//         zIndex: 10,
+//         pointerEvents: 'none',
+//         //imageRendering: 'pixelated',
+//       }}
+//     />
+//   );
+// }
 
 function OctagonPixelBorder({
   width,
@@ -271,10 +426,18 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
   const isLocked = data.locked;
   const isCompleted = data.progress === 100;
   const isActive = data.progress > 0 && data.progress < 100;
+  const isCurrent = !!data.isCurrent;
   const kind = data.kind || 'lesson';
-
-  const bgColor = isActive ? '#3d7a7a' : isLocked ? 'rgba(255,255,255,0.7)' : '#ffffff';
-  const borderColor = selected ? '#f7d22e' : isActive ? '#2e6666' : '#7ab8b8';
+  const isJumping = !!data.isJumping;
+  const isMascotJumping = !!data.isMascotJumping;
+  const decaySeverity = data.decayHealth != null ? Math.max(0, (100 - data.decayHealth) / 100) : 0;
+  const isDecaying = decaySeverity > 0;
+  const bgColor = isDecaying
+    ? `color-mix(in srgb, ${isCurrent ? '#3d7a7a' : isActive ? '#eaf4f4' : '#ffffff'} ${100 - decaySeverity * 30}%, #c8a060 ${decaySeverity * 30}%)`
+    : isCurrent ? '#3d7a7a' : isActive ? '#eaf4f4' : isLocked ? 'rgba(255,255,255,0.7)' : '#ffffff';
+  const borderColor = isDecaying
+    ? `color-mix(in srgb, #7ab8b8 ${100 - decaySeverity * 60}%, #a0642a ${decaySeverity * 60}%)`
+    : selected ? '#f7d22e' : isCurrent ? '#2e6666' : isActive ? '#4a9696' : '#7ab8b8';
 
   // ── QUIZ (circle) ──────────────────────────────────────────────
   if (kind === 'quiz') {
@@ -290,11 +453,12 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
         }}
       >
         <CirclePixelBorder size={QUIZ_SIZE} borderColor={borderColor} bgColor={bgColor} />
-        {isActive && <Mascot />}
+        {isCurrent && !data.isJumping && <CharacterMascot isJumping={isMascotJumping} />}
+        {isDecaying && <CrackOverlay width={QUIZ_SIZE} height={QUIZ_SIZE} severity={decaySeverity} />}
         <Handle type="target" position={Position.Left} className="opacity-0!" />
         <span
           style={{ position: 'relative', zIndex: 1 }}
-          className="font-bold text-xs leading-tight uppercase tracking-tight text-center px-2"
+          className={`text-xs leading-tight uppercase tracking-tight text-center px-2 ${isCurrent ? 'text-white' : isLocked ? 'text-slate-400' : 'text-slate-700'}`}
         >
           {data.label}
         </span>
@@ -323,36 +487,39 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
           borderColor={borderColor}
           bgColor={bgColor}
         />
-        {isActive && <Mascot />}
+        {isCurrent && !data.isJumping && <CharacterMascot isJumping={isMascotJumping} />}
+        {isDecaying && <CrackOverlay width={OCT_W} height={OCT_H} severity={decaySeverity} />}
         <Handle type="target" position={Position.Left} className="opacity-0!" />
         <div
           style={{ position: 'relative', zIndex: 1, width: '100%' }}
-          className={`flex flex-col gap-2 px-5 py-4 ${isActive ? 'text-white' : isLocked ? 'text-slate-400' : 'text-slate-700'}`}
+          className={`flex flex-col gap-2 px-5 py-4 ${isCurrent ? 'text-white' : isActive ? 'text-[#2e6666]' : isLocked ? 'text-slate-500' : 'text-slate-700'}`}
         >
           <div className="flex items-center gap-2">
             {isLocked ? (
               <LockIcon />
             ) : isCompleted ? (
               <CheckIcon />
+            ) : isCurrent ? (
+              <CurrentIcon />
             ) : (
               <ProjectIcon />
             )}
-            <span className="font-bold text-sm leading-tight uppercase tracking-tight">
+            <span className="text-sm leading-tight uppercase tracking-normal font-normal">
               {data.label}
             </span>
           </div>
           {!isLocked && (
             <div className="flex flex-col gap-1 w-full">
-              <PixelProgressBar progress={data.progress} isActive={isActive} />
-              <div className="flex justify-between items-center text-[10px] font-black">
+              <PixelProgressBar progress={data.progress} isActive={isCurrent} />
+              <div className="flex justify-between items-center text-[10px] font-normal">
                 <span>{isActive ? `${data.progress}%` : ''}</span>
-                <span className={isActive ? 'text-white/80' : 'text-slate-400'}>
-                  {isActive ? 'IN PROGRESS' : `${data.progress}%`}
+                <span className={isCurrent ? 'text-white/80' : 'text-[#4a9696]'}>
+                  {isActive ? 'IN PROGRESS' : isCurrent ? 'CURRENT' : `${data.progress}%`}
                 </span>
               </div>
             </div>
           )}
-          {isLocked && <span className="text-[10px] uppercase tracking-widest font-black opacity-60">Locked</span>}
+          {isLocked && <span className="text-[10px] uppercase tracking-widest font-normal opacity-80">Locked</span>}
         </div>
         <Handle type="source" position={Position.Right} className="opacity-0!" />
       </div>
@@ -367,38 +534,42 @@ export function RoadmapNode({ data, selected }: { data: RoadmapNodeData; selecte
         border: 'none',
         boxShadow: getPixelBoxShadow(borderColor, bgColor),
         margin: '16px',
+        backgroundColor: bgColor,
       }}
       className={`shadow-sm transition-all flex flex-col items-center justify-center relative px-5 py-4 w-56 min-h-25
-        ${isActive ? 'bg-[#3d7a7a] text-white' : isLocked ? 'bg-white/70 text-slate-400' : 'bg-white text-slate-700'}
+        ${isCurrent ? 'bg-[#3d7a7a] text-white' : isActive ? 'bg-[#eaf4f4] text-[#2e6666]' : isLocked ? 'bg-white text-slate-500 opacity-80' : 'bg-white text-slate-700'}
         ${selected ? 'shadow-lg' : ''}`}
     >
       <Handle type="target" position={Position.Left} className="opacity-0!" />
-      {isActive && <Mascot />}
+      {isCurrent && !data.isJumping && <CharacterMascot isJumping={isMascotJumping} />}
+      {isDecaying && <CrackOverlay width={224} height={100} severity={decaySeverity} />}
       <div className="flex flex-col gap-2 w-full">
         <div className="flex items-center gap-2">
           {isLocked ? (
             <LockIcon />
           ) : isCompleted ? (
             <CheckIcon />
+          ) : isCurrent ? (
+            <CurrentIcon />
           ) : (
             <ProgressIcon />
           )}
-          <span className="font-bold text-sm leading-tight uppercase tracking-tight">
+          <span className="text-sm leading-tight uppercase tracking-normal font-normal">
             {data.label}
           </span>
         </div>
         {!isLocked && (
           <div className="flex flex-col gap-1 w-full">
-            <PixelProgressBar progress={data.progress} isActive={isActive} />
-            <div className="flex justify-between items-center text-[10px] font-black">
+            <PixelProgressBar progress={data.progress} isActive={isCurrent} />
+            <div className="flex justify-between items-center text-[10px] font-normal">
               <span>{isActive ? `${data.progress}%` : ''}</span>
-              <span className={isActive ? 'text-white/80' : 'text-slate-400'}>
-                {isActive ? 'IN PROGRESS' : `${data.progress}%`}
+              <span className={isCurrent ? 'text-white/80' : 'text-[#4a9696]'}>
+                {isActive ? 'IN PROGRESS' : isCurrent ? 'CURRENT' : `${data.progress}%`}
               </span>
             </div>
           </div>
         )}
-        {isLocked && <span className="text-[10px] uppercase tracking-widest font-black opacity-60">Locked</span>}
+        {isLocked && <span className="text-[10px] uppercase tracking-widest font-normal opacity-80">Locked</span>}
       </div>
       <Handle type="source" position={Position.Right} className="opacity-0!" />
     </div>

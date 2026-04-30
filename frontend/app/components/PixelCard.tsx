@@ -17,12 +17,12 @@ export default function PixelCard({
       className={`
         pixel-border
         bg-white
-        border-t-[#d4e8e8] border-l-[#d4e8e8]
-        border-r-[#7ab3b3] border-b-[#7ab3b3]
+        border-t-[#DEF2FF] border-l-[#DEF2FF]
+        border-r-[#334155] border-b-[#334155]
         transition-all duration-100
         ${onClick ? "cursor-pointer" : ""}
-        ${hover && onClick ? "hover:bg-[#f0f8f8] hover:translate-y-[-2px]" : ""}
-        ${selected ? "border-t-[#7ab3b3] border-l-[#7ab3b3] border-r-[#4e8888] border-b-[#4e8888] bg-[#e8f4f4]" : ""}
+        ${hover && onClick ? "hover:bg-[#e8f5f5] hover:translate-y-[-2px]" : ""}
+        ${selected ? "border-t-[#8ED4FF] border-l-[#8ED4FF] border-r-[#334155] border-b-[#334155] bg-[#BEF8FF]" : ""}
         active:translate-y-[1px]
       `}
     >

@@ -9,12 +9,15 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@dagrejs/dagre": "^3.0.0",
     "@headlessui/react": "^2.2.9",
     "@heroicons/react": "^2.2.0",
-    "@xyflow/react": "^12.10.1",
+    "@xyflow/react": "^12.10.2",
     "autoprefixer": "^10.4.27",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "enhanced-resolve": "^5.20.1",
+    "jose": "^6.2.2",
     "lucide-react": "^0.576.0",
     "next": "^16.2.1",
     "next-auth": "^5.0.0-beta.30",

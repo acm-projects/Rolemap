@@ -1,31 +1,80 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import PixelProgress from './PixelProgress';
+import PixelButton from './PixelButton';
 
-export type NodePanelData = { 
-  label: string; 
-  progress: number; 
-  description: string; 
-  learningGoals: string[]; 
-  locked: boolean; 
+export type NodePanelData = {
+  id: string;
+  label: string;
+  progress: number;
+  description: string;
+  learningGoals: string[];
+  subtopicCompletion: boolean[];
+  locked: boolean;
   kind?: string;
 };
 
 const CloseIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4">
-    <path d="M18 6L6 18M6 6l12 12" />
+  <svg id="times-circle-solid" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-7 h-7" fill="currentColor">
+    <path d="m22,9v-2h-1v-2h-1v-1h-1v-1h-2v-1h-2v-1h-6v1h-2v1h-2v1h-1v1h-1v2h-1v2h-1v6h1v2h1v2h1v1h1v1h2v1h2v1h6v-1h2v-1h2v-1h1v-1h1v-2h1v-2h1v-6h-1Zm-8,7v-1h-1v-1h-2v1h-1v1h-1v1h-1v-1h-1v-1h1v-1h1v-1h1v-2h-1v-1h-1v-1h-1v-1h1v-1h1v1h1v1h1v1h2v-1h1v-1h1v-1h1v1h1v1h-1v1h-1v1h-1v2h1v1h1v1h1v1h-1v1h-1v-1h-1Z"/>
   </svg>
 );
 
-const CheckIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3 text-white">
-    <path fillRule="evenodd" d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l5.353 5.353 8.493-12.74a.75.75 0 0 1 1.04-.207Z" clipRule="evenodd" />
+const CheckCircleOutline = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+    <polygon points="19 9 19 10 18 10 18 11 17 11 17 12 16 12 16 13 15 13 15 14 14 14 14 15 13 15 13 16 12 16 12 17 10 17 10 16 9 16 9 15 8 15 8 14 7 14 7 13 6 13 6 12 7 12 7 11 8 11 8 12 9 12 9 13 10 13 10 14 12 14 12 13 13 13 13 12 14 12 14 11 15 11 15 10 16 10 16 9 17 9 17 8 18 8 18 9 19 9"/>
+    <path d="m22,9v-2h-1v-2h-1v-1h-1v-1h-2v-1h-2v-1h-6v1h-2v1h-2v1h-1v1h-1v2h-1v2h-1v6h1v2h1v2h1v1h1v1h2v1h2v1h6v-1h2v-1h2v-1h1v-1h1v-2h1v-2h1v-6h-1Zm-2,6v2h-1v2h-2v1h-2v1h-6v-1h-2v-1h-2v-2h-1v-2h-1v-6h1v-2h1v-2h2v-1h2v-1h6v1h2v1h2v2h1v2h1v6h-1Z"/>
   </svg>
 );
 
-export function NodePanel({ data, onClose }: { data: NodePanelData; onClose: () => void }) {
+const CheckCircleSolid = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+    <path d="m22,9v-2h-1v-2h-1v-1h-1v-1h-2v-1h-2v-1h-6v1h-2v1h-2v1h-1v1h-1v2h-1v2h-1v6h1v2h1v2h1v1h1v1h2v1h2v1h6v-1h2v-1h2v-1h1v-1h1v-2h1v-2h1v-6h-1Zm-4,3h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-2v-1h-1v-1h-1v-1h-1v-1h-1v-2h1v-1h2v1h1v1h2v-1h1v-1h1v-1h1v-1h1v-1h2v1h1v2h-1v1Z"/>
+  </svg>
+);
+
+const AngleRightIcon = () => (
+  <svg id="angle-right-solid" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
+    <polygon points="7 19 7 17 8 17 8 16 9 16 9 15 10 15 10 14 11 14 11 13 12 13 12 11 11 11 11 10 10 10 10 9 9 9 9 8 8 8 8 7 7 7 7 5 8 5 8 4 10 4 10 5 11 5 11 6 12 6 12 7 13 7 13 8 14 8 14 9 15 9 15 10 16 10 16 11 17 11 17 13 16 13 16 14 15 14 15 15 14 15 14 16 13 16 13 17 12 17 12 18 11 18 11 19 10 19 10 20 8 20 8 19 7 19"/>
+  </svg>
+);
+
+const START_MODULE_DELAY_MS = 2000;
+
+export function NodePanel({
+  data,
+  onClose,
+  onStart,
+}: {
+  data: NodePanelData;
+  onClose: () => void;
+  onStart?: () => void;
+}) {
+  const router = useRouter();
+  const [isStarting, setIsStarting] = React.useState(false);
+  const startTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const statusText = data.progress === 100 ? "Completed" : data.progress > 0 ? "In Progress" : "Not Started";
+  const href = data.kind === 'quiz' ? `/quiz?label=${encodeURIComponent(data.label)}` : '/tasks';
+  const buttonLabel = data.kind === 'quiz' ? 'Take Quiz' : data.progress > 0 ? 'Continue Learning' : 'Start Module';
+
+  React.useEffect(() => {
+    return () => {
+      if (startTimerRef.current) {
+        clearTimeout(startTimerRef.current);
+      }
+    };
+  }, []);
+
+  const handleStart = () => {
+    if (isStarting) return;
+    setIsStarting(true);
+    onStart?.();
+    startTimerRef.current = setTimeout(() => {
+      router.push(href);
+    }, START_MODULE_DELAY_MS);
+  };
 
   return (
     <div className="fixed top-0 right-0 h-full w-[500px] z-50 flex flex-col animate-slide-in pointer-events-none">
@@ -34,65 +83,61 @@ export function NodePanel({ data, onClose }: { data: NodePanelData; onClose: () 
         {/* Header */}
         <div className="px-6 pt-6 pb-5 border-b border-slate-100">
           <div className="flex items-start justify-between gap-4 mb-4">
-            <div>
-              <h2 className="text-xl font-bold text-slate-700 leading-tight">{data.label}</h2>
-              <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mt-1">
-                Progress: {data.progress}% — <span className="text-[#4a7c7c]">{statusText}</span>
-              </p>
-            </div>
-            <button 
-              onClick={onClose} 
-              className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors"
+            <h2 className="text-4xl text-slate-700 leading-tight">{data.label}</h2>
+            <button
+              onClick={onClose}
+              className="flex-shrink-0 text-slate-300 hover:text-slate-500 transition-colors mt-1"
             >
               <CloseIcon />
             </button>
           </div>
-          <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-[#4a7c7c] transition-all duration-700" 
-              style={{ width: `${data.progress}%` }} 
-            />
-          </div>
+          <p className="text-lg text-slate-400 uppercase tracking-wider mb-4">
+            Progress: {data.progress}% — <span className="text-[#4a7c7c]">{statusText}</span>
+          </p>
+          <PixelProgress value={data.progress} showLabel={false} />
         </div>
 
         {/* Content: Added custom-scrollbar class */}
         <div className="px-6 py-6 flex-1 overflow-y-auto space-y-8 custom-scrollbar">
           <section>
-            <h3 className="text-[12px] font-bold text-slate-400 uppercase tracking-[0.15em] mb-3">
+            <h3 className="text-2xl text-slate-500 uppercase tracking-[0.15em] mb-3">
               About this Module
             </h3>
-            <p className="text-sm text-slate-600 leading-relaxed font-medium">
+            <p className="text-xl text-slate-400 leading-relaxed">
               {data.description}
             </p>
           </section>
 
           <section>
-            <h3 className="text-[12px] font-bold text-slate-400 uppercase tracking-[0.15em] mb-4">
-              Key Learning Goals
+            <h3 className="text-2xl text-slate-500 uppercase tracking-[0.15em] mb-4">
+              Subtopics
             </h3>
             <ul className="space-y-4">
-              {data.learningGoals?.map((goal, idx) => (
-                <li key={idx} className="flex items-start gap-3">
-                  <div className="w-5 h-5 rounded-full bg-[#4a7c7c] flex-shrink-0 flex items-center justify-center mt-0.5">
-                    <CheckIcon />
-                  </div>
-                  <span className="text-sm text-slate-600 font-medium leading-tight">
-                    {goal}
-                  </span>
-                </li>
-              ))}
+              {data.learningGoals?.map((goal, idx) => {
+                const done = data.subtopicCompletion?.[idx] ?? false;
+                return (
+                  <li key={idx} className="flex items-start gap-3">
+                    <div className={`flex-shrink-0 mt-0.5 ${done ? 'text-[#4a7c7c]' : 'text-slate-300'}`}>
+                      {done ? <CheckCircleSolid /> : <CheckCircleOutline />}
+                    </div>
+                    <span className={`text-xl leading-tight ${done ? 'text-slate-600' : 'text-slate-400'}`}>
+                      {goal}
+                    </span>
+                  </li>
+                );
+              })}
             </ul>
           </section>
         </div>
 
         {/* Footer */}
-        <div className="px-6 pb-6 pt-4 border-t border-slate-50">
-          <Link 
-            href={data.kind === 'quiz' ? `/quiz?label=${encodeURIComponent(data.label)}` : '/tasks'}
-            className="block w-full bg-[#4a7c7c] hover:bg-[#3d6e6e] text-white font-bold text-sm py-4 rounded-2xl text-center shadow-lg shadow-[#4a7c7c]/10 transition-all active:scale-[0.98]"
-          >
-            {data.kind === 'quiz' ? 'Take Quiz' : data.progress > 0 ? 'Continue Learning' : 'Start Module'} →
-          </Link>
+        <div className="px-6 pb-6 pt-4 border-t border-slate-50 flex">
+          <PixelButton variant="primary" size="md" onClick={handleStart} disabled={isStarting}>
+            <div className="flex items-center gap-2 text-xl">
+              <span>{buttonLabel}</span>
+              <AngleRightIcon />
+            </div>
+          </PixelButton>
         </div>
       </div>
 

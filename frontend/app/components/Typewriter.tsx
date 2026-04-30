@@ -7,6 +7,7 @@ interface TypewriterTextProps {
   className?: string;
   onComplete?: () => void;
   skipOnClick?: boolean;
+  startComplete?: boolean;
 }
 
 export default function TypewriterText({
@@ -16,13 +17,24 @@ export default function TypewriterText({
   className = "",
   onComplete,
   skipOnClick = true,
+  startComplete = false,
 }: TypewriterTextProps) {
-  const [displayedText, setDisplayedText] = useState("");
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isComplete, setIsComplete] = useState(false);
+  const [displayedText, setDisplayedText] = useState(startComplete ? text : "");
+  const [currentIndex, setCurrentIndex] = useState(startComplete ? text.length + 1 : 0);
+  const [isComplete, setIsComplete] = useState(startComplete);
   const [isSkipped, setIsSkipped] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
+    if (startComplete) {
+      setDisplayedText(text);
+      setCurrentIndex(text.length + 1);
+      setIsComplete(true);
+      return;
+    }
+
     if (isSkipped) {
       setDisplayedText(text);
       setIsComplete(true);
@@ -50,7 +62,7 @@ export default function TypewriterText({
       setIsComplete(true);
       if (onComplete) onComplete();
     }
-  }, [currentIndex, text, speed, delay, isComplete, onComplete, isSkipped]);
+  }, [currentIndex, text, speed, delay, isComplete, onComplete, isSkipped, startComplete]);
 
   const handleClick = () => {
     if (skipOnClick && !isComplete) {
@@ -62,13 +74,14 @@ export default function TypewriterText({
     <span
       className={`font-jersey ${className}`}
       onClick={handleClick}
+      suppressHydrationWarning
       style={{
-        cursor: skipOnClick && !isComplete ? "pointer" : "default",
+        cursor: mounted && skipOnClick && !isComplete ? "pointer" : "default",
       }}
     >
       {displayedText}
       {!isComplete && (
-        <span className="animate-pulse inline-block w-[2px] h-[1em] bg-current ml-1" />
+        <span className="animate-pulse inline-block w-0.5 h-[1em] bg-current ml-1" />
       )}
     </span>
   );
